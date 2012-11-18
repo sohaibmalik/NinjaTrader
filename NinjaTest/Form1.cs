@@ -16,15 +16,15 @@ namespace NinjaTest
         private static void SlowsTOCHpoP()
         {
             //Laptop
-            string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            //string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
             //PC
-            //string css =@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            string css =@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
 
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_FullHistory(10000, false);
+            var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_FullHistory(12000, false);
 
             AlsiUtils.Strategies.Parameter_SlowStoch p = new Parameter_SlowStoch();
             p.Close_20 = 15;

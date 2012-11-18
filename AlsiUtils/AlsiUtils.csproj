@@ -65,6 +65,8 @@
     <Compile Include="Data Objects\PointData.cs" />
     <Compile Include="Data Objects\Tick.cs" />
     <Compile Include="Indicators\EMA.cs" />
+    <Compile Include="Indicators\SMA.cs" />
+    <Compile Include="Indicators\Variable.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Strategies\IndicatorExtentions\StochAroon.cs" />
     <Compile Include="Strategies\Parameters\Parameter_Bollinger.cs" />

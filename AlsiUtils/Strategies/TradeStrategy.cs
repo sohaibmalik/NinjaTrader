@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
+using AlsiUtils.Indicators;
 namespace AlsiUtils.Strategies
 {
     public class TradeStrategy : Indicator
@@ -76,11 +77,9 @@ namespace AlsiUtils.Strategies
             TradeSignals();
             CalcProfitLoss();
 
-
-
-
             Stats();
-            // */
+
+            // for (int x = 2; x < 100; x++) Apply_2nd_AlgoLayer(x);
 
         }
 
@@ -95,7 +94,7 @@ namespace AlsiUtils.Strategies
             _ST[0].TradeDirection = Direction.None;
             _ST[0].TradeTrigger = Trigger.None;
 
-           
+
         }
 
         private void Triggers()
@@ -378,7 +377,7 @@ namespace AlsiUtils.Strategies
                 // if (_ST[x].Timestamp.Hour == 17 && _ST[x].Timestamp.Minute == 20 && _ST[x].TradeDirection == Direction.Long) _ST[x].Reason = TradeReason.EndOfDayCloseLong;                
                 //if (_ST[x].Timestamp.Hour == 17 && _ST[x].Timestamp.Minute == 20 && _ST[x].TradeDirection == Direction.Short) _ST[x].Reason = TradeReason.EndOfDayCloseShort;
                 if (_ST[x - 1].InstrumentName != _ST[x].InstrumentName) _ST[x - 1].Reason = TradeReason.ContractExpires;
-               
+
             }
 
         }
@@ -405,8 +404,8 @@ namespace AlsiUtils.Strategies
 
                 if ((_ST[x - 1].Position && _ST[x].Position) && _ST[x - 1].markedObjectA) _ST[x].markedObjectA = true;
                 if (!_ST[x - 1].markedObjectA && _ST[x].markedObjectA) _ST[x].markedObjectB = true;
-                
-             
+
+
             }
             #endregion
         }
@@ -443,11 +442,11 @@ namespace AlsiUtils.Strategies
 
         private static void Stats()
         {
-            
+
 
 
             double totalProfit = 0;
-            double tradeCount =0;
+            double tradeCount = 0;
             for (int x = 1; x < _ST.Count; x++)
             {
 
@@ -464,13 +463,151 @@ namespace AlsiUtils.Strategies
                     _ST[x].TotalProfit = totalProfit;
                     _ST[x].TradeCount = tradeCount;
                 }
+
+                if (_ST[x].ActualTrade == Trigger.OpenLong || _ST[x].ActualTrade == Trigger.OpenShort) _ST[x].TotalProfit = totalProfit;
             }
             Debug.WriteLine("============STATS====");
             Debug.WriteLine(totalProfit);
             Debug.WriteLine(tradeCount);
         }
 
+        private static void Apply_2nd_AlgoLayer(int MA)
+        {
+            List<VariableIndicator> _st = new List<VariableIndicator>();
+            foreach (var t in _ST)
+            {
+                if (t.TotalProfit != 0)
+                {
+                    VariableIndicator v = new VariableIndicator()
+                    {
+                        Timestamp = t.Timestamp,
+                        Value = t.TotalProfit,
+                    };
+                    _st.Add(v);
+                }
+            }
 
+            var SMA = Factory_Indicator.createSMA(MA, _st);
+            double newprof = SMA[0].CustomValue;
+            TradeStrategy mt = null;
+            bool cantradeA = false;
+            bool cantradeB = false;
+            bool closepos = false;
+            bool first = true;
+            int count = 0;
+            foreach (var v in SMA)
+            {
+                count++;
+                // if (count > 30) break;          
+
+                if (first) ;
+                mt = _ST.Where(z => z.Timestamp == v.Timestamp).First();
+
+                if (!first) closepos = (mt.ActualTrade == Trigger.CloseShort || mt.ActualTrade == Trigger.CloseLong);
+                if (closepos && cantradeA) cantradeB = true;
+                else
+                    cantradeB = false;
+
+                cantradeA = (v.CustomValue > v.Sma);
+
+                if (!first && closepos && cantradeB) newprof += mt.RunningProfit;
+
+                //Debug.WriteLine(((cantradeA) ? "**" : "") + ((cantradeB) ? "**" : "") + v.Timestamp + " " + v.CustomValue + " " + v.Sma +
+                //    " TradeA :" + cantradeA + "  TradeB :" + cantradeB + " Prof " + newprof +
+                //    "   " + ((!first&&mt!=null)?mt.ActualTrade.ToString() :""));
+
+
+
+                first = false;
+            }
+
+            Debug.WriteLine(MA + "  " + newprof);
+            Debug.WriteLine("----------------------------------------------");
+
+
+        }
+
+        private static void Test()
+        {
+            List<VariableIndicator> _st = new List<VariableIndicator>();
+            foreach (var t in _ST)
+            {
+                if (t.TotalProfit != 0)
+                {
+                    VariableIndicator v = new VariableIndicator()
+                    {
+                        Timestamp = t.Timestamp,
+                        Value = t.TotalProfit,
+                    };
+                    _st.Add(v);
+                }
+            }
+
+            var SMA = Factory_Indicator.createSMA(20, _st);
+        }
+
+        public void OverNightPosAnalysis()
+        {
+            var overnightpos = from ovn in _ST
+                               where ovn.Timestamp.Hour == 17 && ovn.Timestamp.Minute == 20 && ovn.Position
+                               select ovn;
+
+
+            double Oloss_Closs = 0;
+            double Oprof_Cprof = 0;
+            double Oloss_Cprof = 0;
+            double Oprof_Closs = 0;
+            double N_Closs = 0;
+            double N_Prof = 0;
+            double Diff = 0;
+
+            int count = 0;
+            foreach (var v in overnightpos)
+            {
+                count++;
+                var closepos = (from t in _ST
+                                where t.Timestamp > v.Timestamp && !t.Position
+                                select t).First();
+
+
+                if (v.RunningProfit < 0 && closepos.RunningProfit < v.RunningProfit) Oloss_Closs++;
+                if (v.RunningProfit > 0 && closepos.RunningProfit < v.RunningProfit) Oprof_Closs++;
+                if (v.RunningProfit > 0 && closepos.RunningProfit > v.RunningProfit) Oprof_Cprof++;
+                if (v.RunningProfit < 0 && closepos.RunningProfit > v.RunningProfit) Oloss_Cprof++;
+                if (v.RunningProfit == 0 && closepos.RunningProfit > 0) N_Prof++;
+                if (v.RunningProfit == 0 && closepos.RunningProfit < 0) N_Closs++;
+
+                double diff = closepos.RunningProfit - v.RunningProfit;
+
+                // if (v.RunningProfit < 0) ;
+                //else
+                Diff += diff;
+
+                Debug.WriteLine("Overnight " + v.Timestamp + "  Pos:" + v.TradeDirection + "  " + v.Price_Close + "      " + v.RunningProfit);
+                Debug.WriteLine("Close " + closepos.Timestamp + "  Pos:" + closepos.TradeDirection + "  " + closepos.Price_Close + "      " + closepos.RunningProfit);
+                Debug.WriteLine(count + " -------------------------------------------------");
+                Debug.WriteLine("OL CL " + Oloss_Closs);
+                Debug.WriteLine("OL CP " + Oloss_Cprof);
+                Debug.WriteLine("OP CL " + Oprof_Closs);
+                Debug.WriteLine("OP CP " + Oprof_Cprof);
+                Debug.WriteLine("N CL " + N_Closs);
+                Debug.WriteLine("N CP " + N_Prof);
+                Debug.WriteLine("Diff This Trade " + diff);
+                Debug.WriteLine("Diff " + Diff);
+                Debug.WriteLine("--------------------------------------------------------");
+            }
+
+
+            Debug.WriteLine("============================================================");
+            Debug.WriteLine("Vovernight Count : " + overnightpos.Count());
+            Debug.WriteLine("OL CL " + Oloss_Closs);
+            Debug.WriteLine("OL CP " + Oloss_Cprof);
+            Debug.WriteLine("OP CL " + Oprof_Closs);
+            Debug.WriteLine("OP CP " + Oprof_Cprof);
+            Debug.WriteLine("N CL " + N_Closs);
+            Debug.WriteLine("N CP " + N_Prof);
+            Debug.WriteLine("Diff " + Diff);
+        }
 
         public bool Position { get; set; }
         public Direction TradeDirection { get; set; }
@@ -479,7 +616,7 @@ namespace AlsiUtils.Strategies
         public TradeReason Reason { get; set; }
         public double RunningProfit { get; set; }
         public string InstrumentName { get; set; }
-       
+
         public double TradedPrice { get; set; }
         public bool markedObjectA { get; set; }
         public bool markedObjectB { get; set; }
