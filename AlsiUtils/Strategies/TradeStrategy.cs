@@ -442,9 +442,7 @@ namespace AlsiUtils.Strategies
 
         private static void Stats()
         {
-
-
-
+            
             double totalProfit = 0;
             double tradeCount = 0;
             for (int x = 1; x < _ST.Count; x++)

@@ -88,31 +88,31 @@ namespace AlsiUtils
 
         public static List<Rsi> createRSI(int N, List<Price> Price)
         {
+
             List<Rsi> RSI = new List<Rsi>();
-
-            double[] _close = new double[Price.Count];
-
-
+            double[] _price = new double[Price.Count];
+            for (int x = 0; x < Price.Count; x++) _price[x] = Price[x].Close;
             double[] _rsi = new double[Price.Count];
-
-
-            for (int x = 0; x < Price.Count; x++)
-            {
-                _close[x] = Price[x].Close;
-
-            }
-
             int a, b;
 
-            Core.Rsi(0, Price.Count - 1, _close, N, out a, out b, _rsi);
+            Core.Rsi(0, Price.Count - 1, _price, N, out a, out b, _rsi);
 
-
-            foreach (double r in _rsi)
+            for (int x = 0; x < Price.Count - a; x++)
             {
+                Rsi r = new Rsi
+                {
+                    Timestamp = Price[x + a].TimeStamp,
+                    Price_Close = Price[x + a].Close,
+                    Price_High = Price[x + a].High,
+                    Price_Low = Price[x + a].Low,
+                    Price_Open = Price[x + a].Open,
+                    RSI = _rsi[x]
 
-                Debug.WriteLine(r);
+                };
+                RSI.Add(r);
             }
-            Debug.WriteLine("====NO RSI OBJECT CREATED=====");
+           
+
             return RSI;
         }
 
@@ -387,7 +387,7 @@ namespace AlsiUtils
                 EMA e = new EMA
                 {
                     Timestamp = Value[x + a].Timestamp,
-                    CustomValue= Value[x + a].Value,                 
+                    CustomValue = Value[x + a].Value,
                     Ema = _ema[x],
 
                 };
@@ -439,7 +439,7 @@ namespace AlsiUtils
             int a, b;
 
             Core.Sma(0, Value.Count - 1, _price, N, out a, out b, _sma);
-            
+
             for (int x = 0; x < Value.Count - a; x++)
             {
                 SMA e = new SMA

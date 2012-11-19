@@ -27,7 +27,7 @@ namespace NinjaTest
 
             var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_FullHistory(12000, false);
 
-            AlsiUtils.Strategies.Parameter_SlowStoch p = new Parameter_SlowStoch();
+            AlsiUtils.Strategies.Parameter_SS_RSI p = new AlsiUtils.Strategies.Parameter_SS_RSI();
             p.Close_20 = 15;
             p.Close_80 = 60;
             p.Fast_K = 3;
@@ -37,8 +37,13 @@ namespace NinjaTest
             p.Open_80 = 50;
             p.StopLoss = -250;
             p.TakeProfit = 250;
-
-            Strategy_SSPOP.SsPopStrategy(p, prices);
+            p.RSI = 15;
+            p.RSI_MA = 3;
+            p.RSI_MidLine = 45;
+            p.RSI_LowerLine = 25;
+            p.RSI_UpperLine = 75;
+            //Strategy_SSPOP.SsPopStrategy(p, prices);
+            Startegy_SSPOP_RSI.SsPopStrategy(p, prices);
 
         }
 
@@ -67,9 +72,9 @@ namespace NinjaTest
         {
 
 
-            //SlowsTOCHpoP();
+            SlowsTOCHpoP();
 
-            //Close();
+            Close();
         }
 
         private void button1_Click(object sender, System.EventArgs e)

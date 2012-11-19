@@ -72,6 +72,8 @@
     <Compile Include="Strategies\Parameters\Parameter_Bollinger.cs" />
     <Compile Include="Strategies\Parameters\Parameter_General.cs" />
     <Compile Include="Strategies\Parameters\Parameter_SlowStoch.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_SS_RSI.cs" />
+    <Compile Include="Strategies\Startegy_SSPOP_RSI.cs" />
     <Compile Include="Strategies\Strategy_Bollinger.cs" />
     <Compile Include="Strategies\Strategy_SSPOP.cs" />
     <Compile Include="Strategies\TradeStrategy.cs" />
