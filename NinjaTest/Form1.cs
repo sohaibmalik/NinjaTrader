@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using AlsiUtils.Strategies;
+using ExcelLink;
 
 
 namespace NinjaTest
@@ -37,8 +38,8 @@ namespace NinjaTest
             p.StopLoss = -250;
             p.TakeProfit = 250;
 
-            Strategy_SSPOP.SsPopStrategy(p,prices);
-           
+            Strategy_SSPOP.SsPopStrategy(p, prices);
+
         }
 
         private static void BolBand()
@@ -47,7 +48,7 @@ namespace NinjaTest
             //string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
             //PC
-            string css =@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
 
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
@@ -58,17 +59,32 @@ namespace NinjaTest
             P.N = 20;
             P.P = 2;
 
-           // Strategy_Bollinger.BollingerStrategy(P,prices);
+            // Strategy_Bollinger.BollingerStrategy(P,prices);
 
         }
 
         private void Form1_Load(object sender, System.EventArgs e)
         {
-           
-           // BolBand();
-            SlowsTOCHpoP();
-         
-            Close();
+
+
+            //SlowsTOCHpoP();
+
+            //Close();
+        }
+
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+            ExcelOrder eo = new ExcelOrder();
+            xlTradeOrder o = new xlTradeOrder()
+                                 {
+                                     BS = xlTradeOrder.BuySell.Buy,
+                                     Price = 32800,
+                                     Volume = 1,
+                                     Contract = "FZC20 ALSI",
+                                 };
+            eo.Connect();
+            eo.WriteOrder(o);
+            eo.Disconnect();
         }
     }
 }

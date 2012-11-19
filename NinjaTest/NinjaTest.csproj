@@ -81,6 +81,10 @@
       <Project>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</Project>
       <Name>AlsiUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ExcelLink\ExcelLink\ExcelLink.csproj">
+      <Project>{102678C8-C660-4FC3-89BE-B46D2F82C614}</Project>
+      <Name>ExcelLink</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

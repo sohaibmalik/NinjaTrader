@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace ExcelLink
+{
+   public class xlTradeOrder
+    {
+      public xlTradeOrder()
+      {
+          Status = "Ready";
+          Principle = "ATO071";
+          Dealer = "DJF";
+          Member = "RMDM";
+          Type = "NOR";
+          Exchange = "SXFIN";
+      }
+       public string Contract { get; set; }
+       public BuySell BS { get; set; }
+       public long Price { get; set; }
+       public int Volume { get; set; }
+       public string Status { get; set; }
+       public string Principle { get; set;}
+       public string Member { get; set; }
+       public string Type { get; set; }
+       public string Exchange { get; set; }
+       public string Dealer { get; set; }
+
+      public enum BuySell
+       {
+          Buy=1,
+           Sell=2
+       }
+    }
+}
