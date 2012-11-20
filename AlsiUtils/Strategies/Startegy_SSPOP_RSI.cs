@@ -13,9 +13,10 @@ namespace AlsiUtils.Strategies
         private static List<Rsi> _RSI;
         private static List<VariableIndicator> _rsi_to_Var = new List<VariableIndicator>();
         private static List<EMA> _RSI_MA;
+        private static List<SMA> _RSI_MA2;
         private static List<TradeStrategy> _T;
 
-        public static void SsPopStrategy(Strategies.Parameter_SS_RSI Parameters, List<Price> price)
+        public static SumStats SsPopStrategy(Strategies.Parameter_SS_RSI Parameters, List<Price> price)
         {
             _p = Parameters;
             _SS = Factory_Indicator.createSlowStochastic(Parameters.Fast_K, Parameters.Slow_K, Parameters.Slow_D, price);
@@ -36,17 +37,27 @@ namespace AlsiUtils.Strategies
             }
 
             _RSI_MA = Factory_Indicator.createEMA(Parameters.RSI_MA, _rsi_to_Var);
-
-            // foreach (EMA s in _RSI_MA) Debug.WriteLine(s.Timestamp + " " + s.Price_Close + " RSI " + s.CustomValue + "  MA " + s.Ema);                       
+            _RSI_MA2 = Factory_Indicator.createSMA(Parameters.RSI_MA2, _rsi_to_Var);
+            //  foreach (SMA s in _RSI_MA2) Debug.WriteLine(s.Timestamp + " " + s.Price_Close + " RSI " + s.CustomValue + "  MA2 " + s.Sma);                       
             DateTime sd = getStartDate();
-           // testDate();
+            //testDate();
             CutToSize(sd);
             TradeStrategy _strategy = new TradeStrategy(price, Parameters, _SS[0].Timestamp, CalcTriggers);
-
-            _strategy.Calculate();
+            SumStats s = _strategy.Calculate();
             _T = _strategy.getStrategyList();
-             //for (int x = 0; x < _T.Count; x++) DP(x);
-            //_strategy.ClearList();
+            // for (int x = 0; x < _T.Count; x++) DP(x);
+            _strategy.ClearList();
+
+            _SS.Clear();
+            _RSI.Clear();
+            _rsi_to_Var.Clear();
+            _RSI_MA.Clear();
+            _RSI_MA2.Clear();
+            _T.Clear();
+
+
+
+            return s;
 
         }
 
@@ -59,17 +70,21 @@ namespace AlsiUtils.Strategies
             {
                 foreach (var r in _RSI)
                 {
-                    foreach (var rm in _RSI_MA)
+                    foreach (var rm2 in _RSI_MA2)
                     {
-                        if (rm.Timestamp == r.Timestamp)
-                            c = rm.Timestamp;
-                        break;
+                        foreach (var rm in _RSI_MA)
+                        {
+                            if (rm.Timestamp == rm2.Timestamp)
+                                c = rm.Timestamp;
+                            break;
+                        }
+                        if (rm2.Timestamp == r.Timestamp)
+                            c = rm2.Timestamp;
                     }
-
                     if (r.Timestamp == c) break;
                 }
 
-                //Debug.WriteLine("Loop " + c);
+                //    Debug.WriteLine("Loop " + c);
 
                 break;
             }
@@ -79,15 +94,17 @@ namespace AlsiUtils.Strategies
 
         }
 
-        private static void  testDate()
+        private static void testDate()
         {
             var d = (from s in _SS
                      from r in _RSI
                      from ra in _RSI_MA
-                     where s.Timestamp == r.Timestamp && r.Timestamp == ra.Timestamp
+                     from ra2 in _RSI_MA2
+                     where s.Timestamp == r.Timestamp && r.Timestamp == ra.Timestamp && r.Timestamp == ra2.Timestamp
                      select s.Timestamp).First();
 
-           // Debug.WriteLine("Linq " + d);
+
+            Debug.WriteLine("Linq " + d);
         }
 
         private static void CutToSize(DateTime startDate)
@@ -101,8 +118,12 @@ namespace AlsiUtils.Strategies
             del = -1;
             for (int x = 0; x < _RSI_MA.Count; x++) if (_RSI_MA[x].Timestamp < startDate) del++;
             for (int x = 0; x <= del; x++) _RSI_MA.RemoveAt(0);
+            del = -1;
+            for (int x = 0; x < _RSI_MA2.Count; x++) if (_RSI_MA2[x].Timestamp < startDate) del++;
+            for (int x = 0; x <= del; x++) _RSI_MA2.RemoveAt(0);
 
-           // Debug.WriteLine("First " + _RSI[0].Timestamp + "  " + _RSI_MA[0].Timestamp + "  " + _SS[0].Timestamp);
+
+            // Debug.WriteLine("First " + _RSI[0].Timestamp + "  " + _RSI_MA[0].Timestamp + "  " + _SS[0].Timestamp + " " + _RSI_MA2[0].Timestamp);
 
         }
 
@@ -113,7 +134,9 @@ namespace AlsiUtils.Strategies
             {
                 //if(_T[x].ActualTrade!=TradeStrategy.Trigger.None)              
 
-                Debug.WriteLine(_T[x].Timestamp + "  " + Math.Round(_SS[x].D, 2) + " RSI " + Math.Round(_RSI[x].RSI, 2) + "  RsiMA " + Math.Round(_RSI_MA[x].Ema, 2) + "  Close: " + _T[x].Price_Close +
+                Debug.WriteLine(_T[x].Timestamp + " SS " + Math.Round(_SS[x].D, 2) + "  RSI " + Math.Round(_RSI[x].RSI, 2) + "  RsiMA " + Math.Round(_RSI_MA[x].Ema, 2) +
+                    "  RsiMA2 " + Math.Round(_RSI_MA2[x].Sma, 2) +
+                    "  Close: " + _T[x].Price_Close +
                     "  Actual " + _T[x].ActualTrade);
 
             }
@@ -122,31 +145,29 @@ namespace AlsiUtils.Strategies
         public static void CalcTriggers(List<TradeStrategy> strategy, int x)
         {
             if (_SS[x - 1].D < _p.Open_80 && _SS[x].D > _p.Open_80
-               
+                || (_RSI_MA2[x].Sma > _p.RSI_MidLine_Long && _RSI_MA[x - 1].Ema < _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema > _RSI_MA2[x].Sma)
                 )
-                strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenLong;          
+                strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenLong;
+
+
 
             if (_SS[x - 1].D > _p.Open_20 && _SS[x].D < _p.Open_20
-                         
+                || (_RSI_MA2[x].Sma < _p.RSI_MidLine_Short && _RSI_MA[x - 1].Ema > _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema < _RSI_MA2[x].Sma)
                 )
                 strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenShort;
 
 
 
 
-
-
-
-
             if (_SS[x - 1].D > _p.Close_80 && _SS[x].D < _p.Close_80
-                 || _RSI[x].RSI > _p.RSI_UpperLine
+               || (_RSI_MA2[x].Sma > _p.RSI_CloseLong && _RSI_MA[x - 1].Ema > _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema < _RSI_MA2[x].Sma)
               )
                 strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseLong;
 
 
 
             if (_SS[x - 1].D < _p.Close_20 && _SS[x].D > _p.Close_20
-                 ||_RSI[x].RSI < _p.RSI_LowerLine
+                  || (_RSI_MA2[x].Sma < _p.RSI_CloseShort && _RSI_MA[x - 1].Ema < _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema > _RSI_MA2[x].Sma)
                 )
                 strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseShort;
 

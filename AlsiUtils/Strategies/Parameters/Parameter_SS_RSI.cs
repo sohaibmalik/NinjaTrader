@@ -9,9 +9,11 @@ namespace AlsiUtils.Strategies
     {
       public int RSI { get; set; }
       public int RSI_MA { get; set; }
-      public int RSI_MidLine { get; set; }
-      public int RSI_LowerLine { get; set; }
-      public int RSI_UpperLine { get; set; }
+      public int RSI_MA2 { get; set; }
+      public int RSI_MidLine_Long { get; set; }
+      public int RSI_MidLine_Short { get; set; }
+      public int RSI_CloseLong { get; set; }               
+      public int RSI_CloseShort { get; set; }
      
     }
 }

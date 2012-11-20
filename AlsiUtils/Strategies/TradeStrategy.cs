@@ -48,7 +48,7 @@ namespace AlsiUtils.Strategies
             return _ST;
         }
 
-        public void Calculate()
+        public SumStats Calculate()
         {
             Prepare();
             Triggers();
@@ -77,7 +77,7 @@ namespace AlsiUtils.Strategies
             TradeSignals();
             CalcProfitLoss();
 
-            Stats();
+            return Stats();
 
             // for (int x = 2; x < 100; x++) Apply_2nd_AlgoLayer(x);
 
@@ -440,11 +440,17 @@ namespace AlsiUtils.Strategies
 
         }
 
-        private static void Stats()
+        private static SumStats Stats()
         {
-            
+
             double totalProfit = 0;
             double tradeCount = 0;
+            double prof_count = 0;
+            double loss_count = 0;
+            double prof_sum = 0;
+            double loss_sum = 0;
+           
+
             for (int x = 1; x < _ST.Count; x++)
             {
 
@@ -456,6 +462,18 @@ namespace AlsiUtils.Strategies
                     totalProfit += _ST[x].RunningProfit;
                     tradeCount++;
 
+                    if(_ST[x].RunningProfit<=0)
+                    {
+                        loss_count++;
+                        loss_sum += _ST[x].RunningProfit;
+                    }
+
+                    if (_ST[x].RunningProfit > 0)
+                    {
+                        prof_count++;
+                        prof_sum += _ST[x].RunningProfit;
+                    }
+
 
 
                     _ST[x].TotalProfit = totalProfit;
@@ -464,9 +482,34 @@ namespace AlsiUtils.Strategies
 
                 if (_ST[x].ActualTrade == Trigger.OpenLong || _ST[x].ActualTrade == Trigger.OpenShort) _ST[x].TotalProfit = totalProfit;
             }
-            Debug.WriteLine("============STATS====");
-            Debug.WriteLine(totalProfit);
-            Debug.WriteLine(tradeCount);
+
+            double avg_pl = Math.Round((totalProfit / tradeCount), 2);
+            double loss_pct = Math.Round((loss_count / tradeCount)*100, 2);
+            double prof_pct = Math.Round((prof_count / tradeCount)*100, 2);
+            double pl_ratio = Math.Round((prof_sum / loss_sum), 2);
+            double avg_profit = Math.Round((prof_count/prof_sum),2);
+            double avg_loss = Math.Round((loss_count/loss_sum),2);
+
+            Strategies.SumStats s = new Strategies.SumStats()
+            {
+              TotalProfit=totalProfit,
+              TradeCount=tradeCount,
+              Total_Avg_PL=avg_pl,
+              Pct_Prof=prof_pct,
+              Pct_Loss=loss_pct,
+              Avg_Loss=avg_loss,
+              Avg_Prof=avg_profit,
+
+            };
+
+            return s;
+            Debug.WriteLine("============STATS==============");            
+            Debug.WriteLine("Total PL " + totalProfit);
+            Debug.WriteLine("# Trades " + tradeCount);
+            Debug.WriteLine("Tot Avg PL " +avg_pl);
+            Debug.WriteLine("Prof % " + prof_pct);
+            Debug.WriteLine("Loss % " + loss_pct);
+            Debug.WriteLine("PL Ratio " + pl_ratio*-1);
         }
 
         private static void Apply_2nd_AlgoLayer(int MA)
