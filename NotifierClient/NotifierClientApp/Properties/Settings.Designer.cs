@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NinjaTest.Properties {
+namespace NotifierClientApp.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,21 +25,11 @@ namespace NinjaTest.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PIETER-PC\\SQLEXPRESS;Initial Catalog=Sim;Integrated Security=True")]
-        public string SimConnectionString {
-            get {
-                return ((string)(this["SimConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
         [global::System.Configuration.DefaultSettingValueAttribute("http://alsitm.com.winhost.wa.co.za/AlsiNotifyService.asmx")]
-        public string NinjaTest_AlsiWebService_AlsiNotifyService {
+        public string NotifierClientApp_AlsiWebService_AlsiNotifyService {
             get {
-                return ((string)(this["NinjaTest_AlsiWebService_AlsiNotifyService"]));
+                return ((string)(this["NotifierClientApp_AlsiWebService_AlsiNotifyService"]));
             }
         }
     }

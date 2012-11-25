@@ -15,6 +15,7 @@ namespace ExcelLink
           Member = "RMDM";
           Type = "NOR";
           Exchange = "SXFIN";
+          Timestamp = DateTime.Now;
       }
        public string Contract { get; set; }
        public BuySell BS { get; set; }
@@ -26,6 +27,7 @@ namespace ExcelLink
        public string Type { get; set; }
        public string Exchange { get; set; }
        public string Dealer { get; set; }
+       public DateTime Timestamp { get; set; }
 
       public enum BuySell
        {

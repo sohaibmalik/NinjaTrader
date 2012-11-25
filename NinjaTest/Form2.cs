@@ -58,6 +58,14 @@ namespace NinjaTest
             Debug.WriteLine("Event " + e.Order.Status);
         }
 
+        private void button4_Click(object sender, EventArgs e)
+        {
+            AlsiWebService.AlsiNotifyService n = new AlsiWebService.AlsiNotifyService();
+            var o = n.getLastOrder();
+
+            Debug.WriteLine(o.BS + " " + o.Price + "  " + o.Status);
+        }
+
 
     }
 }

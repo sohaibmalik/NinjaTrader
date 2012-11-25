@@ -45,6 +45,12 @@ namespace NotifierWebService
         }
 
         [WebMethod]
+        public List<xlTradeOrder> getAllOrders()
+        {
+            return TradeUpdate.Orders;
+        }
+
+        [WebMethod]
         public void clearLists()
         {
             TradeUpdate.Orders.Clear();
