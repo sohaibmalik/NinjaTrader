@@ -483,12 +483,12 @@ namespace AlsiUtils.Strategies
                 if (_ST[x].ActualTrade == Trigger.OpenLong || _ST[x].ActualTrade == Trigger.OpenShort) _ST[x].TotalProfit = totalProfit;
             }
 
-            double avg_pl = Math.Round((totalProfit / tradeCount), 2);
-            double loss_pct = Math.Round((loss_count / tradeCount)*100, 2);
-            double prof_pct = Math.Round((prof_count / tradeCount)*100, 2);
-            double pl_ratio = Math.Round((prof_sum / loss_sum), 2);
-            double avg_profit = Math.Round((prof_count/prof_sum),2);
-            double avg_loss = Math.Round((loss_count/loss_sum),2);
+            decimal avg_pl = (decimal)Math.Round((totalProfit / tradeCount), 2);
+            decimal loss_pct = (decimal)Math.Round((loss_count / tradeCount) * 100, 2);
+            decimal prof_pct = (decimal)Math.Round((prof_count / tradeCount) * 100, 2);
+            decimal pl_ratio = (decimal)Math.Round((prof_sum / loss_sum), 2);
+            decimal avg_profit = (decimal)Math.Round((prof_count / prof_sum), 2);
+            decimal avg_loss = (decimal)Math.Round((loss_count / loss_sum), 2);
 
             Strategies.SumStats s = new Strategies.SumStats()
             {

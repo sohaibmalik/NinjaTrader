@@ -37,7 +37,18 @@
             this.midSlabel = new System.Windows.Forms.Label();
             this.cLLabel = new System.Windows.Forms.Label();
             this.cSLabel = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.rsiStart = new System.Windows.Forms.NumericUpDown();
+            this.rsiEnd = new System.Windows.Forms.NumericUpDown();
+            this.maEnd = new System.Windows.Forms.NumericUpDown();
+            this.maStart = new System.Windows.Forms.NumericUpDown();
+            this.ma2End = new System.Windows.Forms.NumericUpDown();
+            this.ma2Start = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.rsiStart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rsiEnd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maEnd)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maStart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ma2End)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ma2Start)).BeginInit();
             this.SuspendLayout();
             // 
             // button2
@@ -118,22 +129,59 @@
             this.cSLabel.TabIndex = 8;
             this.cSLabel.Text = "Cs";
             // 
-            // button1
+            // rsiStart
             // 
-            this.button1.Location = new System.Drawing.Point(130, 11);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Cancel";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.rsiStart.Location = new System.Drawing.Point(123, 49);
+            this.rsiStart.Name = "rsiStart";
+            this.rsiStart.Size = new System.Drawing.Size(37, 20);
+            this.rsiStart.TabIndex = 9;
+            // 
+            // rsiEnd
+            // 
+            this.rsiEnd.Location = new System.Drawing.Point(166, 49);
+            this.rsiEnd.Name = "rsiEnd";
+            this.rsiEnd.Size = new System.Drawing.Size(37, 20);
+            this.rsiEnd.TabIndex = 10;
+            // 
+            // maEnd
+            // 
+            this.maEnd.Location = new System.Drawing.Point(166, 75);
+            this.maEnd.Name = "maEnd";
+            this.maEnd.Size = new System.Drawing.Size(37, 20);
+            this.maEnd.TabIndex = 12;
+            // 
+            // maStart
+            // 
+            this.maStart.Location = new System.Drawing.Point(123, 75);
+            this.maStart.Name = "maStart";
+            this.maStart.Size = new System.Drawing.Size(37, 20);
+            this.maStart.TabIndex = 11;
+            // 
+            // ma2End
+            // 
+            this.ma2End.Location = new System.Drawing.Point(166, 106);
+            this.ma2End.Name = "ma2End";
+            this.ma2End.Size = new System.Drawing.Size(37, 20);
+            this.ma2End.TabIndex = 14;
+            // 
+            // ma2Start
+            // 
+            this.ma2Start.Location = new System.Drawing.Point(123, 106);
+            this.ma2Start.Name = "ma2Start";
+            this.ma2Start.Size = new System.Drawing.Size(37, 20);
+            this.ma2Start.TabIndex = 13;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(266, 296);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ma2End);
+            this.Controls.Add(this.ma2Start);
+            this.Controls.Add(this.maEnd);
+            this.Controls.Add(this.maStart);
+            this.Controls.Add(this.rsiEnd);
+            this.Controls.Add(this.rsiStart);
             this.Controls.Add(this.cSLabel);
             this.Controls.Add(this.cLLabel);
             this.Controls.Add(this.midSlabel);
@@ -145,6 +193,12 @@
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.rsiStart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.rsiEnd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maEnd)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maStart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ma2End)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ma2Start)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,7 +215,12 @@
         private System.Windows.Forms.Label midSlabel;
         private System.Windows.Forms.Label cLLabel;
         private System.Windows.Forms.Label cSLabel;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.NumericUpDown rsiStart;
+        private System.Windows.Forms.NumericUpDown rsiEnd;
+        private System.Windows.Forms.NumericUpDown maEnd;
+        private System.Windows.Forms.NumericUpDown maStart;
+        private System.Windows.Forms.NumericUpDown ma2End;
+        private System.Windows.Forms.NumericUpDown ma2Start;
 
     }
 }

@@ -40,25 +40,25 @@ namespace NinjaTest
             p.TakeProfit = 250;
 
 
-            for (int rsi = 3; rsi <= 30; rsi++)
+            for (int rsi = (int)rsiStart.Value; rsi <= (int)rsiEnd.Value; rsi += 2)
             {
-                rsiLabel.Text = rsi.ToString() + " / 30";
-                for (int ma = 3; ma <= 30; ma++)
+                rsiLabel.Text = rsi.ToString() + " / " + rsiEnd.Value.ToString();
+                for (int ma = (int)maStart.Value; ma <= (int)maEnd.Value; ma += 2)
                 {
-                    maLabel.Text = ma.ToString() + " / 30";
-                    for (int ma2 = 3; ma2 <= 30; ma2++)
+                    maLabel.Text = ma.ToString() + " / " + maEnd.Value.ToString();
+                    for (int ma2 = (int)ma2Start.Value; ma2 <= (int)ma2End.Value; ma2 += 2)
                     {
-                        ma2Label.Text = ma2.ToString() + " / 30";
-                        for (int midL = 40; midL <= 55; midL++)
+                        ma2Label.Text = ma2.ToString() + " / " + ma2End.Value.ToString();
+                        for (int midL = 40; midL <= 55; midL += 2)
                         {
                             midLLabel.Text = midL.ToString() + " / 55";
-                            for (int midS = 35; midS <= 50; midS++)
+                            for (int midS = 35; midS <= 50; midS += 2)
                             {
                                 midSlabel.Text = midS.ToString() + " / 50";
-                                for (int cL = 50; cL <= 70; cL++)
+                                for (int cL = 50; cL <= 70; cL += 5)
                                 {
                                     cLLabel.Text = cL.ToString() + " / 70";
-                                    for (int cS = 30; cS <= 50; cS++)
+                                    for (int cS = 30; cS <= 50; cS += 5)
                                     {
                                         cSLabel.Text = cS.ToString() + " / 50";
                                         p.RSI = rsi;
@@ -87,13 +87,13 @@ namespace NinjaTest
             SS_RSI t = new SS_RSI()
             {
                 Total_Profit = (long)S.TotalProfit,
-                Total_avg_PL = (long)S.Total_Avg_PL,
+                Total_avg_PL = S.Total_Avg_PL,
                 Trade_Count = (int)S.TradeCount,
-                PL_Ratio = (decimal)S.PL_Ratio,
-                Avg_Profit = (decimal)S.Avg_Prof,
-                Avg_Loss = (decimal)S.Avg_Loss,
-                Pct_Profit = (decimal)S.Pct_Prof,
-                Pct_Loss = (decimal)S.Pct_Loss,
+                PL_Ratio = S.PL_Ratio,
+                Avg_Profit = S.Avg_Prof,
+                Avg_Loss = S.Avg_Loss,
+                Pct_Profit = S.Pct_Prof,
+                Pct_Loss = S.Pct_Loss,
 
                 RSI = P.RSI,
                 RSI_MA = P.RSI_MA,
@@ -159,6 +159,12 @@ namespace NinjaTest
 
         private void button2_Click(object sender, System.EventArgs e)
         {
+            ma2Start.Enabled = false;
+            ma2End.Enabled = false;
+            rsiStart.Enabled = false;
+            rsiEnd.Enabled = false;
+            maStart.Enabled = false;
+            maEnd.Enabled = false;
             BW.RunWorkerAsync();
         }
 

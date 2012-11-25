@@ -8,12 +8,12 @@ namespace AlsiUtils.Strategies
     public class SumStats
     {
         public double TotalProfit { get; set; }
-        public double Total_Avg_PL { get; set; }
-        public double Avg_Prof { get; set; }
-        public double Avg_Loss { get; set; }
-        public double Pct_Prof { get; set; }
-        public double Pct_Loss { get; set; }
+        public decimal Total_Avg_PL { get; set; }
+        public decimal Avg_Prof { get; set; }
+        public decimal  Avg_Loss { get; set; }
+        public decimal Pct_Prof { get; set; }
+        public decimal Pct_Loss { get; set; }
         public double TradeCount { get; set; }
-        public double PL_Ratio { get; set; }
+        public decimal PL_Ratio { get; set; }
     }
 }

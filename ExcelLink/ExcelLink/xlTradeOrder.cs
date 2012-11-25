@@ -9,7 +9,7 @@ namespace ExcelLink
     {
       public xlTradeOrder()
       {
-          Status = "Ready";
+          Status = orderStatus.Ready;
           Principle = "ATO071";
           Dealer = "DJF";
           Member = "RMDM";
@@ -20,7 +20,7 @@ namespace ExcelLink
        public BuySell BS { get; set; }
        public long Price { get; set; }
        public int Volume { get; set; }
-       public string Status { get; set; }
+       public orderStatus Status { get; set; }
        public string Principle { get; set;}
        public string Member { get; set; }
        public string Type { get; set; }
@@ -31,6 +31,15 @@ namespace ExcelLink
        {
           Buy=1,
            Sell=2
+       }
+
+       public enum orderStatus
+       {
+           Ready=1,
+           Completed=2,
+           Cancelled=3,
+           Active=4,
+           None=5,
        }
     }
 }
