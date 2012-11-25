@@ -115,14 +115,18 @@ namespace NotifierClientApp
            Debug.WriteLine("Checked");
         }
 
-        private void getAllOrderButton_Click(object sender, EventArgs e)
+     
+
+      
+
+        private void getAllOrderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             updateTimer.Stop();
             getAllorders();
             updateTimer.Start();
         }
 
-        private void clearAllOrderButton_Click(object sender, EventArgs e)
+        private void clearHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             service.clearLists();
             ordersListView.Items.Clear();
