@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<publishData>
+  <publishProfile publishUrl="ftp://41.185.13.152/wwwroot/" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="AlsitmTemp" publishMethod="FTP" replaceMatchingFiles="False" userName="alsitm331_ftp" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAN2JjNcT9hE68MCcxsdkVAQAAAAACAAAAAAAQZgAAAAEAACAAAACyTiU++8oBrte0AXqUXyJ2HPFJd/tn0b5XeO2a1PQTZwAAAAAOgAAAAAIAACAAAAC2ZoDBZsYE84Gt6pam2PnnQk7fsasJLy7z41EIiPCaNkAAAADdnvqZvFbi6R9/Yq4+GzV6thf6/UoilL/i3x8ZhiPhlYs4jbGE43mrI5mVP7jK6w9BLVdx879mz/YeIq6XakqJQAAAAPeKr4eJXLV3Nu8R/Yxgr3l8MJN9EE1GUnnMzl1gSlPAUqPKClAYqBrNIfoQaIlOur87/lHA4znBWXZia8uT0H8=" SelectedForPublish="True">
+    <file relUrl="bin/NotifierWebService.dll" publishTime="11/25/2012 18:42:29" />
+    <file relUrl="bin/NotifierWebService.pdb" publishTime="11/25/2012 18:42:29" />
+    <file relUrl="AlsiNotifyService.asmx" publishTime="11/25/2012 15:46:13" />
+    <file relUrl="Web.config" publishTime="11/25/2012 18:03:26" />
+  </publishProfile>
+</publishData>
