@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace NotifierClientApp
 {
@@ -14,6 +11,10 @@ namespace NotifierClientApp
     {
         AlsiWebService.AlsiNotifyService service = new AlsiWebService.AlsiNotifyService();
         AlsiWebService.xlTradeOrder lastOrder;
+        private bool _updateApp1;
+        private bool _updateApp2;
+        private DateTime _app1LastUpdate = DateTime.Now.AddDays(-1);
+        private DateTime _app2LastUpdate = DateTime.Now.AddDays(-1);
 
         public Form1()
         {
@@ -21,14 +22,14 @@ namespace NotifierClientApp
         }
 
         private void updateFromWeb(AlsiWebService.xlTradeOrder order)
-        {            
+        {
             ListViewItem lvi = new ListViewItem(order.Timestamp.ToLongTimeString());
             lvi.Tag = order;
             lvi.SubItems.Add(order.Contract);
             lvi.SubItems.Add(order.BS.ToString());
             lvi.SubItems.Add(order.Volume.ToString());
             lvi.SubItems.Add(order.Price.ToString());
-            lvi.SubItems.Add(order.Status.ToString());            
+            lvi.SubItems.Add(order.Status.ToString());
             updateListView(lvi, order);
             ColorStatus();
         }
@@ -54,20 +55,20 @@ namespace NotifierClientApp
                 ordersListView.Items[ind - 1].SubItems[5].Text = order.Status.ToString();
                 return;
             }
-            
 
-           bool oldorder =  (lastOrder.Price == order.Price
-                && lastOrder.Volume == order.Volume
-                && lastOrder.BS == order.BS
-                && lastOrder.Status == order.Status);
+
+            bool oldorder = (lastOrder.Price == order.Price
+                 && lastOrder.Volume == order.Volume
+                 && lastOrder.BS == order.BS
+                 && lastOrder.Status == order.Status);
 
             //New Order
-           if (!oldorder)
-           {
-               lastOrder = order;
-               lvi.Tag = order;
-               ordersListView.Items.Add(lvi);
-           }
+            if (!oldorder)
+            {
+                lastOrder = order;
+                lvi.Tag = order;
+                ordersListView.Items.Add(lvi);
+            }
 
 
 
@@ -79,7 +80,7 @@ namespace NotifierClientApp
                 if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Ready) i.BackColor = Color.DarkOrange;
                 if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed) i.BackColor = Color.LightGreen;
             }
-            
+
         }
 
         private void getAllorders()
@@ -96,6 +97,14 @@ namespace NotifierClientApp
             updateTimer.Enabled = true;
             updateTimer.Interval = 5000;
             updateTimer.Start();
+
+            app1Statustimer.Enabled = true;
+            app1Statustimer.Interval = 60000;
+            app1Statustimer.Start();
+            statusLabel1.Text = "AlsiTrade";
+            statusLabel2.Text = "DataManager";
+
+
         }
 
         private void updateTimer_Tick(object sender, EventArgs e)
@@ -104,20 +113,20 @@ namespace NotifierClientApp
             {
                 updateBW.RunWorkerAsync();
             }
-            catch(Exception ee)
-            {};
+            catch (Exception ee)
+            { };
         }
 
         private void updateBW_DoWork(object sender, DoWorkEventArgs e)
         {
             var o = service.getLastOrder();
-           if(o!=null) updateFromWeb(o);
-           Debug.WriteLine("Checked");
+            if (o != null) updateFromWeb(o);
+            Debug.WriteLine("Checked");
         }
 
-     
 
-      
+
+
 
         private void getAllOrderToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -132,10 +141,63 @@ namespace NotifierClientApp
             ordersListView.Items.Clear();
         }
 
-       
 
-        
-       
+
+        private void app1Statustimer_Tick(object sender, EventArgs e)
+        {
+            appStatusBW.RunWorkerAsync();
+
+            AppUpdateColors();
+        }
+
+        private void AppUpdateColors()
+        {
+            if (!_updateApp1) statusLabel1.BackColor = Color.Red;
+            else
+                statusLabel1.BackColor = Color.LightGreen;
+
+            if (!_updateApp2) statusLabel2.BackColor = Color.Red;
+            else
+                statusLabel2.BackColor = Color.LightGreen;
+        }
+
+
+
+        private void appStatusBW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            getAppUpdate();
+
+        }
+
+        private void getAppUpdate()
+        {
+            var n = DateTime.Now;
+
+            var b = service.getLastMessage();
+            if (b.Message == "AlsiTrade") _app1LastUpdate = b.TimeStamp;
+            if (b.Message == "DataManager") _app2LastUpdate = b.TimeStamp;
+
+            Debug.WriteLine("Appupdate" + b.TimeStamp + "  " + b.Message);
+
+            var check1 = _app1LastUpdate.AddSeconds(120);
+            var check2 = _app2LastUpdate.AddSeconds(120);
+
+            if (check1 > n) _updateApp1 = true;
+            else
+                _updateApp1 = false;
+
+            if (check2 > n) _updateApp2 = true;
+            else
+                _updateApp2 = false;
+        }
+
+
+
+
+
+
+
+
 
 
     }
