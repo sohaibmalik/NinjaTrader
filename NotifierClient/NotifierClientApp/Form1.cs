@@ -99,7 +99,7 @@ namespace NotifierClientApp
             updateTimer.Start();
 
             app1Statustimer.Enabled = true;
-            app1Statustimer.Interval = 60000;
+            app1Statustimer.Interval = 10000;
             app1Statustimer.Start();
             statusLabel1.Text = "AlsiTrade";
             statusLabel2.Text = "DataManager";
