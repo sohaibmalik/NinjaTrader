@@ -85,21 +85,28 @@ namespace NotifierClientApp
 
         private void getAllorders()
         {
-            var allOrders = service.getAllOrders();
-            ordersListView.Items.Clear();
-            if (allOrders.Count() > 0)
-                foreach (var o in allOrders) updateFromWeb(o);
+            try
+            {
+                var allOrders = service.getAllOrders();
+                ordersListView.Items.Clear();
+                if (allOrders.Count() > 0)
+                    foreach (var o in allOrders) updateFromWeb(o);
+            }
+            catch (Exception ex)
+            {
+
+            }
 
         }
         private void Form1_Load(object sender, EventArgs e)
         {
             CheckForIllegalCrossThreadCalls = false;
             updateTimer.Enabled = true;
-            updateTimer.Interval = 5000;
+            updateTimer.Interval = 3000;
             updateTimer.Start();
 
             app1Statustimer.Enabled = true;
-            app1Statustimer.Interval = 10000;
+            app1Statustimer.Interval = 1000;
             app1Statustimer.Start();
             statusLabel1.Text = "AlsiTrade";
             statusLabel2.Text = "DataManager";
@@ -119,9 +126,16 @@ namespace NotifierClientApp
 
         private void updateBW_DoWork(object sender, DoWorkEventArgs e)
         {
-            var o = service.getLastOrder();
-            if (o != null) updateFromWeb(o);
-            Debug.WriteLine("Checked");
+            try
+            {
+                var o = service.getLastOrder();
+                if (o != null) updateFromWeb(o);
+                //Debug.WriteLine("Checked");
+            }
+            catch (Exception ex)
+            {
+               
+            }
         }
 
 
@@ -145,9 +159,15 @@ namespace NotifierClientApp
 
         private void app1Statustimer_Tick(object sender, EventArgs e)
         {
-            appStatusBW.RunWorkerAsync();
+            try
+            {
+                appStatusBW.RunWorkerAsync();
+                AppUpdateColors();
+            }
+            catch (Exception ex)
+            {
 
-            AppUpdateColors();
+            }
         }
 
         private void AppUpdateColors()
@@ -165,30 +185,41 @@ namespace NotifierClientApp
 
         private void appStatusBW_DoWork(object sender, DoWorkEventArgs e)
         {
+             try
+             {
             getAppUpdate();
-
+            ordersListView.BackColor = Color.White;
+             }
+             catch (Exception ex)
+             {
+                 ordersListView.BackColor = Color.Red;
+                 _updateApp1 = false;
+                 _updateApp2 = false;
+                 service = new AlsiWebService.AlsiNotifyService();
+             }
         }
 
         private void getAppUpdate()
         {
-            var n = DateTime.Now;
+           
+                var n = DateTime.Now;
+                var b = service.getLastMessage();
+                if (b.Message == "AlsiTrade") _app1LastUpdate = b.TimeStamp;
+                if (b.Message == "DataManager") _app2LastUpdate = b.TimeStamp;
 
-            var b = service.getLastMessage();
-            if (b.Message == "AlsiTrade") _app1LastUpdate = b.TimeStamp;
-            if (b.Message == "DataManager") _app2LastUpdate = b.TimeStamp;
+                //Debug.WriteLine("Appupdate" + b.TimeStamp + "  " + b.Message);
 
-            Debug.WriteLine("Appupdate" + b.TimeStamp + "  " + b.Message);
+                var check1 = _app1LastUpdate.AddSeconds(20);
+                var check2 = _app2LastUpdate.AddSeconds(10);
 
-            var check1 = _app1LastUpdate.AddSeconds(120);
-            var check2 = _app2LastUpdate.AddSeconds(120);
+                if (check1 > n) _updateApp1 = true;
+                else
+                    _updateApp1 = false;
 
-            if (check1 > n) _updateApp1 = true;
-            else
-                _updateApp1 = false;
-
-            if (check2 > n) _updateApp2 = true;
-            else
-                _updateApp2 = false;
+                if (check2 > n) _updateApp2 = true;
+                else
+                    _updateApp2 = false;
+            
         }
 
 

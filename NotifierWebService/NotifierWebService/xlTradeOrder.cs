@@ -11,8 +11,7 @@ namespace ExcelLink
             Dealer = "DJF";
             Member = "RMDM";
             Type = "NOR";
-            Exchange = "SXFIN";
-            Timestamp = DateTime.UtcNow.AddHours(2);
+            Exchange = "SXFIN";           
         }
         public string Contract { get; set; }
         public BuySell BS { get; set; }

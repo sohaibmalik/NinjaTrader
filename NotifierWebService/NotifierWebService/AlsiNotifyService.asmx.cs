@@ -20,14 +20,14 @@ namespace NotifierWebService
         [WebMethod]
         public void InsertNewOrder(xlTradeOrder Order)
         {
-            Order.Timestamp = DateTime.UtcNow.AddHours(2);
+            
             TradeUpdate.Orders.Add(Order);
         }
 
         [WebMethod]
-        public void InsertMessage(string message)
+        public void InsertMessage(Boodskap message)
         {
-            TradeUpdate.Messages.Add(new Boodskap { Message = message, TimeStamp = DateTime.Now });
+            TradeUpdate.Messages.Add(message);
         }
 
         [WebMethod]
