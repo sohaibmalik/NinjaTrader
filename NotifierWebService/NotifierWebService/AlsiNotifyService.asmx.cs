@@ -1,8 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Services;
 using ExcelLink;
-using System.Collections.Generic;
-using System;
 namespace NotifierWebService
 {
     /// <summary>
@@ -21,6 +20,7 @@ namespace NotifierWebService
         [WebMethod]
         public void InsertNewOrder(xlTradeOrder Order)
         {
+            Order.Timestamp = DateTime.UtcNow.AddHours(2);
             TradeUpdate.Orders.Add(Order);
         }
 

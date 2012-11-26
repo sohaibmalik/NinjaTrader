@@ -131,14 +131,14 @@
             // getAllOrderToolStripMenuItem
             // 
             this.getAllOrderToolStripMenuItem.Name = "getAllOrderToolStripMenuItem";
-            this.getAllOrderToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
-            this.getAllOrderToolStripMenuItem.Text = "Get All Order";
+            this.getAllOrderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.getAllOrderToolStripMenuItem.Text = "Get All Orders";
             this.getAllOrderToolStripMenuItem.Click += new System.EventHandler(this.getAllOrderToolStripMenuItem_Click);
             // 
             // clearHistoryToolStripMenuItem
             // 
             this.clearHistoryToolStripMenuItem.Name = "clearHistoryToolStripMenuItem";
-            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clearHistoryToolStripMenuItem.Text = "Clear History";
             this.clearHistoryToolStripMenuItem.Click += new System.EventHandler(this.clearHistoryToolStripMenuItem_Click);
             // 
