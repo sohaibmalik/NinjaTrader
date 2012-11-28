@@ -84,9 +84,6 @@ namespace AlsiUtils
             
         }
 
-
-
-
         public static List<PointData> getHistoricalTick_FromWEB(DateTime StartDate, DateTime EndDate, string ContractName)
         {
             List<PointData> Data = new List<PointData>();
@@ -179,23 +176,7 @@ namespace AlsiUtils
         }
 
 
-        public static string InsertOrder(string InstrumnetName, string BuysSell, double Volume, double Price)
-        {
-
-            int d = DateTime.UtcNow.AddHours(2).Millisecond;
-
-
-            Debug.WriteLine("=============Sending Order To Market=================");
-            Debug.WriteLine("Instrument : " + InstrumnetName);
-            Debug.WriteLine("BuySell " + BuysSell);
-            Debug.WriteLine("Volume " + Volume);
-            Debug.WriteLine("Price " + Price);
-            Debug.WriteLine("=====================================================");
-
-
-            return "ref01";// +d.ToString();
-        }
-
+      
         #endregion
     }
 }
