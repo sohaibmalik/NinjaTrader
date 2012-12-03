@@ -38,15 +38,22 @@
             this.headerPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.headerStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.updateBW = new System.ComponentModel.BackgroundWorker();
-            this.updateTimer = new System.Windows.Forms.Timer(this.components);
+            this.OrderUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ordersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.getAllOrderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderUpdateIntervalMsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OrderUpdateToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.statusUpdateIntervalMsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.StatusUpdateToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.statusUpdateDelaySecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.DelayUpdateToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.app1Statustimer = new System.Windows.Forms.Timer(this.components);
+            this.StatusUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.appStatusBW = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -105,14 +112,15 @@
             // 
             this.updateBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.updateBW_DoWork);
             // 
-            // updateTimer
+            // OrderUpdateTimer
             // 
-            this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
+            this.OrderUpdateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ordersToolStripMenuItem});
+            this.ordersToolStripMenuItem,
+            this.settingsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(613, 24);
@@ -131,16 +139,68 @@
             // getAllOrderToolStripMenuItem
             // 
             this.getAllOrderToolStripMenuItem.Name = "getAllOrderToolStripMenuItem";
-            this.getAllOrderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.getAllOrderToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.getAllOrderToolStripMenuItem.Text = "Get All Orders";
             this.getAllOrderToolStripMenuItem.Click += new System.EventHandler(this.getAllOrderToolStripMenuItem_Click);
             // 
             // clearHistoryToolStripMenuItem
             // 
             this.clearHistoryToolStripMenuItem.Name = "clearHistoryToolStripMenuItem";
-            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.clearHistoryToolStripMenuItem.Text = "Clear History";
             this.clearHistoryToolStripMenuItem.Click += new System.EventHandler(this.clearHistoryToolStripMenuItem_Click);
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.orderUpdateIntervalMsToolStripMenuItem,
+            this.statusUpdateIntervalMsToolStripMenuItem,
+            this.statusUpdateDelaySecToolStripMenuItem});
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.settingsToolStripMenuItem.Text = "Settings";
+            // 
+            // orderUpdateIntervalMsToolStripMenuItem
+            // 
+            this.orderUpdateIntervalMsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OrderUpdateToolStripTextBox});
+            this.orderUpdateIntervalMsToolStripMenuItem.Name = "orderUpdateIntervalMsToolStripMenuItem";
+            this.orderUpdateIntervalMsToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.orderUpdateIntervalMsToolStripMenuItem.Text = "Order Update Interval ms";
+            // 
+            // OrderUpdateToolStripTextBox
+            // 
+            this.OrderUpdateToolStripTextBox.Name = "OrderUpdateToolStripTextBox";
+            this.OrderUpdateToolStripTextBox.Size = new System.Drawing.Size(100, 23);
+            this.OrderUpdateToolStripTextBox.TextChanged += new System.EventHandler(this.OrderUpdateToolStripTextBox_TextChanged);
+            // 
+            // statusUpdateIntervalMsToolStripMenuItem
+            // 
+            this.statusUpdateIntervalMsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusUpdateToolStripTextBox});
+            this.statusUpdateIntervalMsToolStripMenuItem.Name = "statusUpdateIntervalMsToolStripMenuItem";
+            this.statusUpdateIntervalMsToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.statusUpdateIntervalMsToolStripMenuItem.Text = "Status Update Interval ms";
+            // 
+            // StatusUpdateToolStripTextBox
+            // 
+            this.StatusUpdateToolStripTextBox.Name = "StatusUpdateToolStripTextBox";
+            this.StatusUpdateToolStripTextBox.Size = new System.Drawing.Size(100, 23);
+            this.StatusUpdateToolStripTextBox.TextChanged += new System.EventHandler(this.StatusUpdateToolStripTextBox_TextChanged);
+            // 
+            // statusUpdateDelaySecToolStripMenuItem
+            // 
+            this.statusUpdateDelaySecToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.DelayUpdateToolStripTextBox});
+            this.statusUpdateDelaySecToolStripMenuItem.Name = "statusUpdateDelaySecToolStripMenuItem";
+            this.statusUpdateDelaySecToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.statusUpdateDelaySecToolStripMenuItem.Text = "Status Update Delay sec";
+            // 
+            // DelayUpdateToolStripTextBox
+            // 
+            this.DelayUpdateToolStripTextBox.Name = "DelayUpdateToolStripTextBox";
+            this.DelayUpdateToolStripTextBox.Size = new System.Drawing.Size(100, 23);
+            this.DelayUpdateToolStripTextBox.TextChanged += new System.EventHandler(this.DelayUpdateToolStripTextBox_TextChanged);
             // 
             // statusStrip1
             // 
@@ -165,9 +225,9 @@
             this.statusLabel2.Size = new System.Drawing.Size(10, 17);
             this.statusLabel2.Text = ".";
             // 
-            // app1Statustimer
+            // StatusUpdateTimer
             // 
-            this.app1Statustimer.Tick += new System.EventHandler(this.app1Statustimer_Tick);
+            this.StatusUpdateTimer.Tick += new System.EventHandler(this.app1Statustimer_Tick);
             // 
             // appStatusBW
             // 
@@ -207,7 +267,7 @@
         private System.Windows.Forms.ColumnHeader headerPrice;
         private System.Windows.Forms.ColumnHeader headerStatus;
         private System.ComponentModel.BackgroundWorker updateBW;
-        private System.Windows.Forms.Timer updateTimer;
+        private System.Windows.Forms.Timer OrderUpdateTimer;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ordersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem getAllOrderToolStripMenuItem;
@@ -215,8 +275,15 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel2;
-        private System.Windows.Forms.Timer app1Statustimer;
+        private System.Windows.Forms.Timer StatusUpdateTimer;
         private System.ComponentModel.BackgroundWorker appStatusBW;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem orderUpdateIntervalMsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox OrderUpdateToolStripTextBox;
+        private System.Windows.Forms.ToolStripMenuItem statusUpdateIntervalMsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox StatusUpdateToolStripTextBox;
+        private System.Windows.Forms.ToolStripMenuItem statusUpdateDelaySecToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox DelayUpdateToolStripTextBox;
 
     }
 }

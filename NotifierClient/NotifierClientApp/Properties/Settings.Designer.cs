@@ -32,5 +32,41 @@ namespace NotifierClientApp.Properties {
                 return ((string)(this["NotifierClientApp_AlsiWebService_AlsiNotifyService"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int OrderUpdateInt {
+            get {
+                return ((int)(this["OrderUpdateInt"]));
+            }
+            set {
+                this["OrderUpdateInt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2500")]
+        public int StatusUpdateInt {
+            get {
+                return ((int)(this["StatusUpdateInt"]));
+            }
+            set {
+                this["StatusUpdateInt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int StatusDelayInt {
+            get {
+                return ((int)(this["StatusDelayInt"]));
+            }
+            set {
+                this["StatusDelayInt"] = value;
+            }
+        }
     }
 }
