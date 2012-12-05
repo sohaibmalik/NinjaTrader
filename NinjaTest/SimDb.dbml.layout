@@ -8,5 +8,11 @@
         <elementListCompartment Id="8680c4e5-9bba-440f-9332-a11b8a098c8a" absoluteBounds="3.515, 2.085, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="72f6fc02-a926-48a4-af66-987996da72ca" absoluteBounds="1.375, 1.25, 2, 3.8862125651041666">
+      <DataClassMoniker Name="/SimDbDataContext/tblRSI" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b0325e0e-11d5-4a5e-8c3b-a13d90d3121f" absoluteBounds="1.3900000000000001, 1.71, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

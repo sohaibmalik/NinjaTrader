@@ -449,7 +449,7 @@ namespace AlsiUtils.Strategies
             double loss_count = 0;
             double prof_sum = 0;
             double loss_sum = 0;
-           
+
 
             for (int x = 1; x < _ST.Count; x++)
             {
@@ -462,7 +462,7 @@ namespace AlsiUtils.Strategies
                     totalProfit += _ST[x].RunningProfit;
                     tradeCount++;
 
-                    if(_ST[x].RunningProfit<=0)
+                    if (_ST[x].RunningProfit <= 0)
                     {
                         loss_count++;
                         loss_sum += _ST[x].RunningProfit;
@@ -492,27 +492,27 @@ namespace AlsiUtils.Strategies
 
             Strategies.SumStats s = new Strategies.SumStats()
             {
-              TotalProfit=totalProfit,
-              TradeCount=tradeCount,
-              Total_Avg_PL=avg_pl,
-              Pct_Prof=prof_pct,
-              Pct_Loss=loss_pct,
-              Avg_Loss=avg_loss,
-              Avg_Prof=avg_profit,
+                TotalProfit = totalProfit,
+                TradeCount = tradeCount,
+                Total_Avg_PL = avg_pl,
+                Pct_Prof = prof_pct,
+                Pct_Loss = loss_pct,
+                Avg_Loss = avg_loss,
+                Avg_Prof = avg_profit,
 
             };
 
             return s;
-            Debug.WriteLine("============STATS==============");            
+            Debug.WriteLine("============STATS==============");
             Debug.WriteLine("Total PL " + totalProfit);
             Debug.WriteLine("# Trades " + tradeCount);
-            Debug.WriteLine("Tot Avg PL " +avg_pl);
+            Debug.WriteLine("Tot Avg PL " + avg_pl);
             Debug.WriteLine("Prof % " + prof_pct);
             Debug.WriteLine("Loss % " + loss_pct);
-            Debug.WriteLine("PL Ratio " + pl_ratio*-1);
+            Debug.WriteLine("PL Ratio " + pl_ratio * -1);
         }
 
-        private static void Apply_2nd_AlgoLayer(int MA)
+        private static void Apply_2nd_AlgoLayer(int EMA)
         {
             List<VariableIndicator> _st = new List<VariableIndicator>();
             foreach (var t in _ST)
@@ -528,15 +528,15 @@ namespace AlsiUtils.Strategies
                 }
             }
 
-            var SMA = Factory_Indicator.createSMA(MA, _st);
-            double newprof = SMA[0].CustomValue;
+            var ema = Factory_Indicator.createEMA(EMA, _st);
+            double newprof = ema[0].CustomValue;
             TradeStrategy mt = null;
             bool cantradeA = false;
             bool cantradeB = false;
             bool closepos = false;
             bool first = true;
             int count = 0;
-            foreach (var v in SMA)
+            foreach (var v in ema)
             {
                 count++;
                 // if (count > 30) break;          
@@ -549,20 +549,20 @@ namespace AlsiUtils.Strategies
                 else
                     cantradeB = false;
 
-                cantradeA = (v.CustomValue > v.Sma);
+                cantradeA = (v.CustomValue > v.Ema);
 
                 if (!first && closepos && cantradeB) newprof += mt.RunningProfit;
 
-                //Debug.WriteLine(((cantradeA) ? "**" : "") + ((cantradeB) ? "**" : "") + v.Timestamp + " " + v.CustomValue + " " + v.Sma +
-                //    " TradeA :" + cantradeA + "  TradeB :" + cantradeB + " Prof " + newprof +
-                //    "   " + ((!first&&mt!=null)?mt.ActualTrade.ToString() :""));
+                Debug.WriteLine(((cantradeA) ? "**" : "") + ((cantradeB) ? "**" : "") + v.Timestamp + " " + v.CustomValue + " " + v.Ema +
+                    " TradeA :" + cantradeA + "  TradeB :" + cantradeB + " Prof " + newprof +
+                    "   " + ((!first && mt != null) ? mt.ActualTrade.ToString() : ""));
 
 
 
                 first = false;
             }
 
-            Debug.WriteLine(MA + "  " + newprof);
+            Debug.WriteLine(EMA + "  " + newprof);
             Debug.WriteLine("----------------------------------------------");
 
 

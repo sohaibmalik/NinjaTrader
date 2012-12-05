@@ -1,6 +1,5 @@
 ﻿using System.Windows.Forms;
 using AlsiUtils.Strategies;
-using ExcelLink;
 
 
 namespace NinjaTest
@@ -80,11 +79,15 @@ namespace NinjaTest
             }
         }
 
+
+
         private static void Db(SumStats S, Parameter_SS_RSI P)
         {
             SimDbDataContext dc = new SimDbDataContext();
+            if (S.TotalProfit < 10000) return;
 
-            SS_RSI t = new SS_RSI()
+
+            tblRSI t = new tblRSI()
             {
                 Total_Profit = (long)S.TotalProfit,
                 Total_avg_PL = S.Total_Avg_PL,
@@ -104,7 +107,9 @@ namespace NinjaTest
                 CloseShort = P.RSI_CloseShort,
 
             };
-            dc.SS_RSIs.InsertOnSubmit(t);
+
+
+            dc.tblRSIs.InsertOnSubmit(t);
             dc.SubmitChanges();
         }
 
@@ -132,25 +137,9 @@ namespace NinjaTest
         private void Form1_Load(object sender, System.EventArgs e)
         {
 
-
-
-
         }
 
-        private void button1_Click(object sender, System.EventArgs e)
-        {
-            ExcelOrder eo = new ExcelOrder();
-            xlTradeOrder o = new xlTradeOrder()
-                                 {
-                                     BS = xlTradeOrder.BuySell.Buy,
-                                     Price = 32800,
-                                     Volume = 1,
-                                     Contract = "FZC20 ALSI",
-                                 };
-            eo.Connect();
-            eo.WriteOrder(o);
-            eo.Disconnect();
-        }
+
 
         private void BW_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
