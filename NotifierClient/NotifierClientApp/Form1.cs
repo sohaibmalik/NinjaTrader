@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Media;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 
 namespace NotifierClientApp
@@ -82,7 +83,7 @@ namespace NotifierClientApp
 
         }
 
-       // private bool _newTradeAlert, _tradeMatchAlert;
+        // private bool _newTradeAlert, _tradeMatchAlert;
         private DateTime _alertAcknowledged;
         private void ColorStatus()
         {
@@ -92,17 +93,17 @@ namespace NotifierClientApp
                 {
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.DarkOrange;
-                    if (_alertAcknowledged<=ordertime) balloonNotify(App.AlsiTrade, "New Order!");
-                    Debug.WriteLine(_alertAcknowledged.TimeOfDay + " ACKNOWLEDGE");
-                    Debug.WriteLine(ordertime.TimeOfDay + " ORDER");
+                    if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "New Order!");
+                    //Debug.WriteLine(_alertAcknowledged.TimeOfDay + " ACKNOWLEDGE");
+                    //Debug.WriteLine(ordertime.TimeOfDay + " ORDER");
                 }
                 if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed)
                 {
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.LightGreen;
                     if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "Order Matched!");
-                    Debug.WriteLine(_alertAcknowledged.TimeOfDay + " ----ACKNOWLEDGE");
-                    Debug.WriteLine(ordertime.TimeOfDay + " ----ORDER");
+                    // Debug.WriteLine(_alertAcknowledged.TimeOfDay + " ----ACKNOWLEDGE");
+                    // Debug.WriteLine(ordertime.TimeOfDay + " ----ORDER");
                 }
             }
 
@@ -208,7 +209,7 @@ namespace NotifierClientApp
                 Title = "DataManager";
             }
 
-
+            (new SoundPlayer(Properties.Resources.alert3)).Play();
             ni.Visible = true;
             ni.Icon = Properties.Resources.alert;
             ni.ShowBalloonTip(1000, Title, Msg, ToolTipIcon.Info);
@@ -217,11 +218,11 @@ namespace NotifierClientApp
 
         void ni_BalloonTipClicked(object sender, EventArgs e)
         {
-            _alertAcknowledged = DateTime.UtcNow.AddHours(2);            
+            _alertAcknowledged = DateTime.UtcNow.AddHours(2);
             dataManageFailedCount = 0;
             alsiTradeFailedCount = 0;
             ni.Visible = false;
-           
+
         }
 
         private void getAllOrderToolStripMenuItem_Click(object sender, EventArgs e)

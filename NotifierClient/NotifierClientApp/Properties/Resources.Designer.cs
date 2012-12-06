@@ -66,5 +66,11 @@ namespace NotifierClientApp.Properties {
                 return ((System.Drawing.Icon)(obj));
             }
         }
+        
+        internal static System.IO.UnmanagedMemoryStream alert3 {
+            get {
+                return ResourceManager.GetStream("alert3", resourceCulture);
+            }
+        }
     }
 }
