@@ -25,7 +25,7 @@ namespace NinjaTest
 
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_FullHistory(10000, false);
+            var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_MasterMinute(10000, false);
 
             AlsiUtils.Strategies.Parameter_SS_RSI p = new AlsiUtils.Strategies.Parameter_SS_RSI();
             p.Close_20 = 15;
@@ -124,7 +124,7 @@ namespace NinjaTest
 
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_FullHistory(500, false);
+            var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_MasterMinute(500, false);
 
             Parameter_Bollinger P = new Parameter_Bollinger();
             P.N = 20;
@@ -155,6 +155,11 @@ namespace NinjaTest
             maStart.Enabled = false;
             maEnd.Enabled = false;
             BW.RunWorkerAsync();
+        }
+
+        private void button1_Click(object sender, System.EventArgs e)
+        {
+
         }
 
 

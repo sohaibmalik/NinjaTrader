@@ -6,8 +6,8 @@ using System.Linq;
 using AlsiUtils.Indicators;
 namespace AlsiUtils.Strategies
 {
-    public class TradeStrategy : Indicator
-    {
+    public class TradeStrategy_BACKUP : Indicator
+    {/*
         private static List<TradeStrategy> _ST = new List<TradeStrategy>();
         private static Parameter_General _p = new Parameter_General();
 
@@ -23,7 +23,6 @@ namespace AlsiUtils.Strategies
             _p.StopLoss = parameter.StopLoss;
             _p.TakeProfit = parameter.TakeProfit;
             _Trigger = Triggers;
-            _p.CloseEndofDay = parameter.CloseEndofDay;
 
             foreach (Price s in Prices)
             {
@@ -54,7 +53,7 @@ namespace AlsiUtils.Strategies
             Prepare();
             Triggers();
 
-           PositionAndDirection();
+            PositionAndDirection();
             TradeSignals();
 
 
@@ -69,7 +68,7 @@ namespace AlsiUtils.Strategies
             TradeSignals();
             CalcProfitLoss();
 
-/*
+
             AddStopLossTriggers();
             Mark();
             ClearProf();
@@ -77,9 +76,9 @@ namespace AlsiUtils.Strategies
             PositionAndDirection();
             TradeSignals();
             CalcProfitLoss();
-            */
+
             return Stats();
-            
+
             // for (int x = 2; x < 100; x++) Apply_2nd_AlgoLayer(x);
             return new SumStats();
         }
@@ -375,11 +374,8 @@ namespace AlsiUtils.Strategies
             {
                 if (_ST[x].RunningProfit < _p.StopLoss) _ST[x].Reason = TradeReason.StopLoss;
                 if (_ST[x].RunningProfit > _p.TakeProfit) _ST[x].Reason = TradeReason.TakeProfit;
-                if (_p.CloseEndofDay)
-                {
-                     if(_ST[x].Timestamp.Hour == 17 && _ST[x].Timestamp.Minute == 20 && _ST[x].TradeDirection == Direction.Long) _ST[x].Reason = TradeReason.EndOfDayCloseLong;                
-                     if(_ST[x].Timestamp.Hour == 17 && _ST[x].Timestamp.Minute == 20 && _ST[x].TradeDirection == Direction.Short) _ST[x].Reason = TradeReason.EndOfDayCloseShort;
-                }
+                if (_ST[x].Timestamp.Hour == 17 && _ST[x].Timestamp.Minute == 20 && _ST[x].TradeDirection == Direction.Long) _ST[x].Reason = TradeReason.EndOfDayCloseLong;                
+                if (_ST[x].Timestamp.Hour == 17 && _ST[x].Timestamp.Minute == 20 && _ST[x].TradeDirection == Direction.Short) _ST[x].Reason = TradeReason.EndOfDayCloseShort;
                 if (_ST[x - 1].InstrumentName != _ST[x].InstrumentName) _ST[x - 1].Reason = TradeReason.ContractExpires;
 
             }
@@ -700,7 +696,7 @@ namespace AlsiUtils.Strategies
             EndOfDayCloseShort = 9,
             ContractExpires = 10
         }
-
+        */
     }
 
 

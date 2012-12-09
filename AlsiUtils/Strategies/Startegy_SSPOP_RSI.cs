@@ -144,30 +144,30 @@ namespace AlsiUtils.Strategies
 
         public static void CalcTriggers(List<TradeStrategy> strategy, int x)
         {
-            if (/*_SS[x - 1].D < _p.Open_80 && _SS[x].D > _p.Open_80
-                || */(_RSI_MA2[x].Sma > _p.RSI_MidLine_Long && _RSI_MA[x - 1].Ema < _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema > _RSI_MA2[x].Sma)
+            if (_SS[x - 1].D < _p.Open_80 && _SS[x].D > _p.Open_80
+                || (_RSI_MA2[x].Sma > _p.RSI_MidLine_Long && _RSI_MA[x - 1].Ema < _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema > _RSI_MA2[x].Sma)
                 )
                 strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenLong;
 
 
 
-            if (/*_SS[x - 1].D > _p.Open_20 && _SS[x].D < _p.Open_20
-                || */(_RSI_MA2[x].Sma < _p.RSI_MidLine_Short && _RSI_MA[x - 1].Ema > _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema < _RSI_MA2[x].Sma)
+            if (_SS[x - 1].D > _p.Open_20 && _SS[x].D < _p.Open_20
+                || (_RSI_MA2[x].Sma < _p.RSI_MidLine_Short && _RSI_MA[x - 1].Ema > _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema < _RSI_MA2[x].Sma)
                 )
                 strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenShort;
 
 
 
 
-            if (/*_SS[x - 1].D > _p.Close_80 && _SS[x].D < _p.Close_80
-               ||*/ (_RSI_MA2[x].Sma > _p.RSI_CloseLong && _RSI_MA[x - 1].Ema > _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema < _RSI_MA2[x].Sma)
+            if (_SS[x - 1].D > _p.Close_80 && _SS[x].D < _p.Close_80
+               || (_RSI_MA2[x].Sma > _p.RSI_CloseLong && _RSI_MA[x - 1].Ema > _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema < _RSI_MA2[x].Sma)
               )
                 strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseLong;
 
 
 
-            if (/*_SS[x - 1].D < _p.Close_20 && _SS[x].D > _p.Close_20
-                  || */(_RSI_MA2[x].Sma < _p.RSI_CloseShort && _RSI_MA[x - 1].Ema < _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema > _RSI_MA2[x].Sma)
+            if (_SS[x - 1].D < _p.Close_20 && _SS[x].D > _p.Close_20
+                  || (_RSI_MA2[x].Sma < _p.RSI_CloseShort && _RSI_MA[x - 1].Ema < _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema > _RSI_MA2[x].Sma)
                 )
                 strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseShort;
 

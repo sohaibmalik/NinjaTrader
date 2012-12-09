@@ -7,19 +7,11 @@ namespace AlsiUtils.Strategies
 {
    public class Parameter_General
     {
-        private int _TakeProfit;
+       
 
-        public int TakeProfit
-        {
-            get { return _TakeProfit; }
-            set { _TakeProfit = value; }
-        }
-        private int _StopLoss;
-
-        public int StopLoss
-        {
-            get { return _StopLoss; }
-            set { _StopLoss = value; }
-        }
+        public int TakeProfit{get;set;}
+        public int StopLoss { get; set;}
+        public bool CloseEndofDay { get; set; }
+        
     }
 }

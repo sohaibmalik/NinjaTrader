@@ -68,7 +68,10 @@
     <Compile Include="Indicators\SMA.cs" />
     <Compile Include="Indicators\Variable.cs" />
     <Compile Include="Statistics.cs" />
+    <Compile Include="Strategies\Copy of TradeStrategy_BAckup.cs" />
+    <Compile Include="Strategies\EMA_Scalp.cs" />
     <Compile Include="Strategies\IndicatorExtentions\StochAroon.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_EMA_Scalp.cs" />
     <Compile Include="Strategies\SumStats.cs" />
     <Compile Include="Strategies\Parameters\Parameter_Bollinger.cs" />
     <Compile Include="Strategies\Parameters\Parameter_General.cs" />

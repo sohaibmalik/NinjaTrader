@@ -61,6 +61,12 @@
     <Compile Include="Form2.Designer.cs">
       <DependentUpon>Form2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Form3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form3.Designer.cs">
+      <DependentUpon>Form3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimDb.designer.cs">
@@ -78,6 +84,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form2.resx">
       <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form3.resx">
+      <DependentUpon>Form3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -122,10 +131,6 @@
     <ProjectReference Include="..\AlsiUtils\AlsiUtils.csproj">
       <Project>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</Project>
       <Name>AlsiUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ExcelLink\ExcelLink\ExcelLink.csproj">
-      <Project>{102678C8-C660-4FC3-89BE-B46D2F82C614}</Project>
-      <Name>ExcelLink</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

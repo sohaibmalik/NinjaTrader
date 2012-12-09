@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="AlsiTrade" Class="AlsiDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=ALSI-PC;Initial Catalog=AlsiTrade;Integrated Security=True" SettingsObjectName="AlsiUtils.Properties.Settings" SettingsPropertyName="AlsiTradeConnectionString1" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True" SettingsObjectName="AlsiUtils.Properties.Settings" SettingsPropertyName="AlsiTradeConnectionString2" Provider="System.Data.SqlClient" />
   <Table Name="dbo.DebugLog" Member="DebugLogs">
     <Type Name="DebugLog">
       <Column Name="N" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -133,6 +133,27 @@
       <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.AllHistoricMinute" Member="AllHistoricMinutes">
+    <Type Name="AllHistoricMinute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="V" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OHLC_5_Minute" Member="OHLC_5_Minutes">
+    <Type Name="OHLC_5_Minute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
   <Function Name="dbo.Clean_OHLC_Temp" Method="Clean_OHLC_Temp">
     <Return Type="System.Int32" />
   </Function>
@@ -157,9 +178,6 @@
   <Function Name="dbo.OHLC_10_Temp" Method="OHLC_10_Temp">
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.OHLC_5" Method="OHLC_5" IsComposable="true">
-    <Return Type="object" />
-  </Function>
   <Function Name="dbo.RemoveDUPS_TickMinute" Method="RemoveDUPS_TickMinute">
     <Return Type="System.Int32" />
   </Function>
@@ -167,6 +185,18 @@
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.CleanLogs" Method="CleanLogs">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_10_AllHistory" Method="OHLC_10_AllHistory">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.UpadteAllHistory" Method="UpadteAllHistory">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_5" Method="OHLC_5">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_5_AllHistory" Method="OHLC_5_AllHistory">
     <Return Type="System.Int32" />
   </Function>
 </Database>
