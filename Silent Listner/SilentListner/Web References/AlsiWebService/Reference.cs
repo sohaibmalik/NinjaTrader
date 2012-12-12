@@ -13,7 +13,7 @@
 // 
 #pragma warning disable 1591
 
-namespace NotifierClientApp.AlsiWebService {
+namespace SilentListner.AlsiWebService {
     using System;
     using System.Web.Services;
     using System.Diagnostics;
@@ -35,6 +35,8 @@ namespace NotifierClientApp.AlsiWebService {
         
         private System.Threading.SendOrPostCallback getLastMessageOperationCompleted;
         
+        private System.Threading.SendOrPostCallback GetAllMessagesOperationCompleted;
+        
         private System.Threading.SendOrPostCallback getLastOrderOperationCompleted;
         
         private System.Threading.SendOrPostCallback getAllOrdersOperationCompleted;
@@ -49,7 +51,7 @@ namespace NotifierClientApp.AlsiWebService {
         
         /// <remarks/>
         public AlsiNotifyService() {
-            this.Url = global::NotifierClientApp.Properties.Settings.Default.NotifierClientApp_AlsiWebService_AlsiNotifyService;
+            this.Url = global::SilentListner.Properties.Settings.Default.SilentListner_AlsiWebService_AlsiNotifyService;
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;
@@ -91,6 +93,9 @@ namespace NotifierClientApp.AlsiWebService {
         
         /// <remarks/>
         public event getLastMessageCompletedEventHandler getLastMessageCompleted;
+        
+        /// <remarks/>
+        public event GetAllMessagesCompletedEventHandler GetAllMessagesCompleted;
         
         /// <remarks/>
         public event getLastOrderCompletedEventHandler getLastOrderCompleted;
@@ -187,6 +192,33 @@ namespace NotifierClientApp.AlsiWebService {
             if ((this.getLastMessageCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.getLastMessageCompleted(this, new getLastMessageCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetAllMessages", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public Boodskap[] GetAllMessages() {
+            object[] results = this.Invoke("GetAllMessages", new object[0]);
+            return ((Boodskap[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetAllMessagesAsync() {
+            this.GetAllMessagesAsync(null);
+        }
+        
+        /// <remarks/>
+        public void GetAllMessagesAsync(object userState) {
+            if ((this.GetAllMessagesOperationCompleted == null)) {
+                this.GetAllMessagesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetAllMessagesOperationCompleted);
+            }
+            this.InvokeAsync("GetAllMessages", new object[0], this.GetAllMessagesOperationCompleted, userState);
+        }
+        
+        private void OnGetAllMessagesOperationCompleted(object arg) {
+            if ((this.GetAllMessagesCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetAllMessagesCompleted(this, new GetAllMessagesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -596,6 +628,32 @@ namespace NotifierClientApp.AlsiWebService {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((Boodskap)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
+    public delegate void GetAllMessagesCompletedEventHandler(object sender, GetAllMessagesCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetAllMessagesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetAllMessagesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public Boodskap[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((Boodskap[])(this.results[0]));
             }
         }
     }

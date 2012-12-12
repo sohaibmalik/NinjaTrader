@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace NotifierClientApp
 {
-    public partial class Form1 : Form
+    public partial class Notify : Form
     {
         AlsiWebService.AlsiNotifyService service = new AlsiWebService.AlsiNotifyService();
         AlsiWebService.xlTradeOrder lastOrder;
@@ -22,7 +22,7 @@ namespace NotifierClientApp
         private StatusFail onStatusFail;
         private NotifyIcon ni = new NotifyIcon();
 
-        public Form1()
+        public Notify()
         {
             InitializeComponent();
             ni.BalloonTipClicked += new EventHandler(ni_BalloonTipClicked);

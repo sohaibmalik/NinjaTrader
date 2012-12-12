@@ -23,16 +23,6 @@ namespace NotifierClientApp.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://alsitm.com.winhost.wa.co.za/AlsiNotifyService.asmx")]
-        public string NotifierClientApp_AlsiWebService_AlsiNotifyService {
-            get {
-                return ((string)(this["NotifierClientApp_AlsiWebService_AlsiNotifyService"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5000")]
@@ -66,6 +56,26 @@ namespace NotifierClientApp.Properties {
             }
             set {
                 this["StatusDelayInt"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.alsitm.com/AlsiNotifyService.asmx")]
+        public string NotifierClientApp_AlsiWebService_AlsiNotifyService {
+            get {
+                return ((string)(this["NotifierClientApp_AlsiWebService_AlsiNotifyService"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:4979/AlsiNotifyService.asmx")]
+        public string NotifierClientApp_localhost_AlsiNotifyService {
+            get {
+                return ((string)(this["NotifierClientApp_localhost_AlsiNotifyService"]));
             }
         }
     }

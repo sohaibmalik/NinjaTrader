@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace NotifierClientApp
+namespace SilentListner
 {
     static class Program
     {
@@ -15,7 +15,7 @@ namespace NotifierClientApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Notify());
+            Application.Run(new SilentListner());
         }
     }
 }

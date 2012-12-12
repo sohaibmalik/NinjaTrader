@@ -69,6 +69,11 @@ namespace AlsiUtils.Strategies
             TradeSignals();
             CalcProfitLoss();
 
+            OverNightPosAnalysis();
+          return Stats();
+
+         //  for (int x = 5; x < 100;x++ ) Apply_2nd_AlgoLayer(x);
+           
 /*
             AddStopLossTriggers();
             Mark();
@@ -78,9 +83,7 @@ namespace AlsiUtils.Strategies
             TradeSignals();
             CalcProfitLoss();
             */
-            return Stats();
-            
-            // for (int x = 2; x < 100; x++) Apply_2nd_AlgoLayer(x);
+          
             return new SumStats();
         }
 
@@ -557,9 +560,9 @@ namespace AlsiUtils.Strategies
 
                 if (!first && closepos && cantradeB) newprof += mt.RunningProfit;
 
-                Debug.WriteLine(((cantradeA) ? "**" : "") + ((cantradeB) ? "**" : "") + v.Timestamp + " " + v.CustomValue + " " + v.Ema +
-                    " TradeA :" + cantradeA + "  TradeB :" + cantradeB + " Prof " + newprof +
-                    "   " + ((!first && mt != null) ? mt.ActualTrade.ToString() : ""));
+                //Debug.WriteLine(((cantradeA) ? "**" : "") + ((cantradeB) ? "**" : "") + v.Timestamp + " " + v.CustomValue + " " + v.Ema +
+                //    " TradeA :" + cantradeA + "  TradeB :" + cantradeB + " Prof " + newprof +
+                //    "   " + ((!first && mt != null) ? mt.ActualTrade.ToString() : ""));
 
 
 
@@ -644,7 +647,7 @@ namespace AlsiUtils.Strategies
 
 
             Debug.WriteLine("============================================================");
-            Debug.WriteLine("Vovernight Count : " + overnightpos.Count());
+            Debug.WriteLine("Overnight Count : " + overnightpos.Count());
             Debug.WriteLine("OL CL " + Oloss_Closs);
             Debug.WriteLine("OL CP " + Oloss_Cprof);
             Debug.WriteLine("OP CL " + Oprof_Closs);

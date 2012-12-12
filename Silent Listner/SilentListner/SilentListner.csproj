@@ -5,15 +5,16 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9A790E7D-9347-45AF-8DD5-49A2E6AC40DB}</ProjectGuid>
+    <ProjectGuid>{CE8BBDA2-74CB-41E3-AEEB-62A57E09B094}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NotifierClientApp</RootNamespace>
-    <AssemblyName>NotifierClientApp</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>SilentListner</RootNamespace>
+    <AssemblyName>SilentListner</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\Alsi\Dropbox\Alsi Trade App\WebNotify\</PublishUrl>
+    <PublishUrl>C:\Users\Pieter\Dropbox\Alsi Trade App\Listner\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -50,13 +51,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\alert.ico</ApplicationIcon>
+    <ApplicationIcon>Apps-utilities-system-monitor.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D8DA7CAAF76D0C5B7B82F5D1782557896F9AFAE7</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>02B2074A795E3F8193645AC327ABA4566E3F55E8</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>NotifierClientApp_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>SilentListner_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -68,11 +69,10 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -80,27 +80,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Notify.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Notify.Designer.cs">
-      <DependentUpon>Notify.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SilentListner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SilentListner.Designer.cs">
+      <DependentUpon>SilentListner.cs</DependentUpon>
+    </Compile>
     <Compile Include="Web References\AlsiWebService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="Web References\AlsiWebService_T\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Notify.resx">
-      <DependentUpon>Notify.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -109,10 +101,11 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SilentListner.resx">
+      <DependentUpon>SilentListner.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="NotifierClientApp_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -122,57 +115,21 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="SilentListner_TemporaryKey.pfx" />
+    <None Include="Web References\AlsiWebService\AlsiNotifyService.wsdl" />
     <None Include="Web References\AlsiWebService\Boodskap.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\AlsiWebService\Command.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\AlsiWebService\xlTradeOrder.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService_T\Boodskap1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService_T\Command1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService\AlsiNotifyService.wsdl" />
     <None Include="Web References\AlsiWebService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Web References\AlsiWebService_T\AlsiNotifyService.wsdl" />
-    <None Include="Web References\AlsiWebService_T\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\AlsiWebService_T\xlTradeOrder1.datasource">
+    <None Include="Web References\AlsiWebService\xlTradeOrder.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\alert.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\alert3.wav" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -181,17 +138,6 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://localhost:4979/AlsiNotifyService.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\AlsiWebService_T\</RelPath>
-      <UpdateFromURL>http://localhost:4979/AlsiNotifyService.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>NotifierClientApp_localhost_AlsiNotifyService</CachedSettingsPropName>
-    </WebReferenceUrl>
     <WebReferenceUrl Include="http://www.alsitm.com/AlsiNotifyService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\AlsiWebService\</RelPath>
@@ -201,14 +147,36 @@
       <CachedDynamicPropName>
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>NotifierClientApp_AlsiWebService_AlsiNotifyService</CachedSettingsPropName>
+      <CachedSettingsPropName>SilentListner_AlsiWebService_AlsiNotifyService</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
     <None Include="Web References\AlsiWebService\AlsiNotifyService.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Web References\AlsiWebService_T\AlsiNotifyService.disco" />
+    <Content Include="Apps-utilities-system-monitor.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -20,7 +20,6 @@ namespace NotifierWebService
         [WebMethod]
         public void InsertNewOrder(xlTradeOrder Order)
         {
-            
             TradeUpdate.Orders.Add(Order);
         }
 
@@ -36,6 +35,15 @@ namespace NotifierWebService
             if (TradeUpdate.Messages.Count == 0) return new Boodskap { Message = "None Found", TimeStamp = DateTime.Now };
             return TradeUpdate.Messages.FindLast(z => z.Message != null);
         }
+        [WebMethod]
+        public List<Boodskap> GetAllMessages()
+        {
+            var mesges = TradeUpdate.Messages;
+            if (mesges == null)
+                mesges.Add(new Boodskap() { Message = "Startup Msg", TimeStamp = DateTime.Now });            
+                return mesges;
+        }
+
 
         [WebMethod]
         public xlTradeOrder getLastOrder()
@@ -57,6 +65,24 @@ namespace NotifierWebService
             TradeUpdate.Messages.Clear();
         }
 
+        [WebMethod]
+        public void SendCommand(RemoteCommand.Command Command)
+        {
+            RemoteCommand.DoSomething = Command;
+        }
+
+        [WebMethod]
+        public RemoteCommand.Command GetCommand()
+        {
+            RemoteCommand.Command CurrentCommand = RemoteCommand.DoSomething;
+            RemoteCommand.DoSomething = RemoteCommand.Command.Idle;
+            if (CurrentCommand != null)
+                return CurrentCommand;
+            else
+                RemoteCommand.DoSomething = RemoteCommand.Command.Idle;
+            CurrentCommand = RemoteCommand.DoSomething;
+            return CurrentCommand;
+        }
 
 
 

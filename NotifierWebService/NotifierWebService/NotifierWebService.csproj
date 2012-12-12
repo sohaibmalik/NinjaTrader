@@ -58,6 +58,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="RemoteCommand.cs" />
     <Compile Include="TradeUpdate.cs" />
     <Compile Include="xlTradeOrder.cs" />
   </ItemGroup>

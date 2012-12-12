@@ -13,7 +13,7 @@
 // 
 #pragma warning disable 1591
 
-namespace NotifierClientApp.AlsiWebService {
+namespace NotifierClientApp.AlsiWebService_T {
     using System;
     using System.Web.Services;
     using System.Diagnostics;
@@ -49,7 +49,7 @@ namespace NotifierClientApp.AlsiWebService {
         
         /// <remarks/>
         public AlsiNotifyService() {
-            this.Url = global::NotifierClientApp.Properties.Settings.Default.NotifierClientApp_AlsiWebService_AlsiNotifyService;
+            this.Url = global::NotifierClientApp.Properties.Settings.Default.NotifierClientApp_localhost_AlsiNotifyService;
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;
