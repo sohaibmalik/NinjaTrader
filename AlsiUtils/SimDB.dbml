@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="emaSim" Class="SimDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PIETER-PC;Initial Catalog=emaSim;Integrated Security=True" SettingsObjectName="AlsiUtils.Properties.Settings" SettingsPropertyName="emaSimConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.tbl2Min" Member="tbl2Mins">
+    <Type Name="tbl2Min">
+      <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Trades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TotalPL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AvgPL" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Win" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="Loose" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+      <Column Name="E_A1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="E_A2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="E_B1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="E_B2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="E_C" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Period" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CloseEndDay" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

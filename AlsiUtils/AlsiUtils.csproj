@@ -67,6 +67,11 @@
     <Compile Include="Indicators\EMA.cs" />
     <Compile Include="Indicators\SMA.cs" />
     <Compile Include="Indicators\Variable.cs" />
+    <Compile Include="SimDB.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SimDB.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Statistics.cs" />
     <Compile Include="Strategies\Copy of TradeStrategy_BAckup.cs" />
     <Compile Include="Strategies\EMA_Scalp.cs" />
@@ -122,6 +127,11 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="SimDB.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>SimDB.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -131,7 +141,11 @@
       <DependentUpon>AlsiDB.dbml</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="SimDB.dbml.layout">
+      <DependentUpon>SimDB.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

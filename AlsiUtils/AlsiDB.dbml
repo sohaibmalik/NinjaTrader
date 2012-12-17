@@ -154,6 +154,26 @@
       <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.OHLC_2_Minute" Member="OHLC_2_Minutes">
+    <Type Name="OHLC_2_Minute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OHLC_3_Minute" Member="OHLC_3_Minutes">
+    <Type Name="OHLC_3_Minute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
   <Function Name="dbo.Clean_OHLC_Temp" Method="Clean_OHLC_Temp">
     <Return Type="System.Int32" />
   </Function>
@@ -197,6 +217,15 @@
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.OHLC_5_AllHistory" Method="OHLC_5_AllHistory">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_2" Method="OHLC_2">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_3" Method="OHLC_3">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_2_AllHistory" Method="OHLC_2_AllHistory">
     <Return Type="System.Int32" />
   </Function>
 </Database>

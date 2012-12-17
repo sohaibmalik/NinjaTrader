@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="SimDB">
+  <DataContextMoniker Name="/SimDBDataContext" />
+  <nestedChildShapes>
+    <classShape Id="81635b72-8bc6-49f7-8917-2c8dc18ab72a" absoluteBounds="3.75, 1.875, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/SimDBDataContext/tbl2Min" />
+      <nestedChildShapes>
+        <elementListCompartment Id="990d814e-d2ee-44cb-9f2c-30962fb54768" absoluteBounds="3.765, 2.335, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

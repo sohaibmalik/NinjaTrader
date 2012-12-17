@@ -42,5 +42,15 @@ namespace NinjaTest.Properties {
                 return ((string)(this["NinjaTest_AlsiWebService_AlsiNotifyService"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PIETER-PC;Initial Catalog=emaSim;Integrated Security=True")]
+        public string emaSimConnectionString {
+            get {
+                return ((string)(this["emaSimConnectionString"]));
+            }
+        }
     }
 }

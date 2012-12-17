@@ -22,5 +22,7 @@ namespace AlsiUtils.Strategies
        public int B_EMA6 { get; set; }
 
        public int C_EMA { get; set; }
+
+       public int Period { get; set; }
     }
 }

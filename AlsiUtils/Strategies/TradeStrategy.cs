@@ -69,7 +69,7 @@ namespace AlsiUtils.Strategies
             TradeSignals();
             CalcProfitLoss();
 
-            OverNightPosAnalysis();
+          //  OverNightPosAnalysis();
           return Stats();
 
          //  for (int x = 5; x < 100;x++ ) Apply_2nd_AlgoLayer(x);
@@ -490,7 +490,7 @@ namespace AlsiUtils.Strategies
                 if (_ST[x].ActualTrade == Trigger.OpenLong || _ST[x].ActualTrade == Trigger.OpenShort) _ST[x].TotalProfit = totalProfit;
             }
 
-            decimal avg_pl = (decimal)Math.Round((totalProfit / tradeCount), 2);
+            decimal avg_pl = (decimal)Math.Round((totalProfit / tradeCount),5);
             decimal loss_pct = (decimal)Math.Round((loss_count / tradeCount) * 100, 2);
             decimal prof_pct = (decimal)Math.Round((prof_count / tradeCount) * 100, 2);
             decimal pl_ratio = (decimal)Math.Round((prof_sum / loss_sum), 2);

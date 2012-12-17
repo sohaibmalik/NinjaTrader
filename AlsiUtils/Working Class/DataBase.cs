@@ -166,13 +166,7 @@ namespace AlsiUtils
         }
 
 
-        /// <summary>
-        /// Use This Function To get All prices from Masterminute Historical Data..For Historical Clacs
-        /// </summary>
-        /// <param name="numberOfPeriods"></param>
-        /// <param name="reverseList"></param>
-        /// <returns></returns>
-        static public List<Price> readDataFromDataBase_10_MIN_MasterMinute(int numberOfPeriods, bool reverseList)
+        static public List<Price> readDataFromDataBase(timeframe T,dataTable TD,DateTime Start,DateTime End, bool reverseList)
         {
             try
             {
@@ -180,189 +174,98 @@ namespace AlsiUtils
 
                 AlsiDBDataContext dc = new AlsiDBDataContext();
                 dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-                dc.OHLC_10();
-
-                var count = (from p in dc.OHLC_10_Minutes
-                             select (p.Stamp)).Count();
-
-                //Console.WriteLine("10 Minute Data Count : " + count);
-
-
-                var result = from q in dc.OHLC_10_Minutes
-                                         .Skip(count - numberOfPeriods)
-                                         .Take(numberOfPeriods)
-                             select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
-
-                foreach (var v in result)
+          
+                if (TD == dataTable.AllHistory)
                 {
-                    Price p = new Price();
-                    p.Close = v.C;
-                    p.Open = v.O;
-                    p.High = v.H;
-                    p.Low = v.L;
-                    p.TimeStamp = v.Stamp;
-                    p.InstrumentName = v.Instrument;
-                    prices.Add(p);
-
+                    if (T == timeframe.minute_2) dc.OHLC_2_AllHistory();
+                    if (T == timeframe.minute_5) dc.OHLC_5_AllHistory();
+                    if (T == timeframe.minute_10) dc.OHLC_10_AllHistory();
                 }
+                if (TD == dataTable.MasterMinute)
+                {
+                    if (T == timeframe.minute_2) dc.OHLC_2();
+                    if (T == timeframe.minute_5) dc.OHLC_5();
+                    if (T == timeframe.minute_10) dc.OHLC_10();
+                }
+
+
+             
+
+                if (T == timeframe.minute_2)
+                {
+                   var result = from q in dc.OHLC_2_Minutes 
+                                 where q.Stamp>Start && q.Stamp<End
+                                 select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
+
+                    foreach (var v in result)
+                    {
+                        Price p = new Price();
+                        p.Close = v.C;
+                        p.Open = v.O;
+                        p.High = v.H;
+                        p.Low = v.L;
+                        p.TimeStamp = v.Stamp;
+                        p.InstrumentName = v.Instrument;
+                        prices.Add(p);
+
+                    }
+                }
+
+                if (T == timeframe.minute_5)
+                {
+                    var result = from q in dc.OHLC_5_Minutes
+                                 where q.Stamp > Start && q.Stamp < End
+                                 select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
+
+                    foreach (var v in result)
+                    {
+                        Price p = new Price();
+                        p.Close = v.C;
+                        p.Open = v.O;
+                        p.High = v.H;
+                        p.Low = v.L;
+                        p.TimeStamp = v.Stamp;
+                        p.InstrumentName = v.Instrument;
+                        prices.Add(p);
+
+                    }
+                }
+                if (T == timeframe.minute_10)
+                {
+                    var result = from q in dc.OHLC_10_Minutes
+                                 where q.Stamp > Start && q.Stamp < End
+                                 select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
+
+                    foreach (var v in result)
+                    {
+                        Price p = new Price();
+                        p.Close = v.C;
+                        p.Open = v.O;
+                        p.High = v.H;
+                        p.Low = v.L;
+                        p.TimeStamp = v.Stamp;
+                        p.InstrumentName = v.Instrument;
+                        prices.Add(p);
+
+                    }
+                }
+
+             
+
+
+
 
                 if (reverseList) prices.Reverse();
                 return prices;
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("readDataFromDataBase_10_MIN  Database Busy : " + ex.Message);
+                Debug.WriteLine("readDataFromDataBase   Database Busy : " + ex.Message);
                 return null;
             }
         }
 
-        static public List<Price> readDataFromDataBase_5_MIN_MasterMinute(int numberOfPeriods, bool reverseList)
-        {
-            try
-            {
-                List<Price> prices = new List<Price>();
-
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-                dc.OHLC_5();
-
-                var count = (from p in dc.OHLC_5_Minutes
-                             select (p.Stamp)).Count();
-
-                //Console.WriteLine("10 Minute Data Count : " + count);
-
-
-                var result = from q in dc.OHLC_5_Minutes
-                                         .Skip(count - numberOfPeriods)
-                                         .Take(numberOfPeriods)
-                             select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
-
-                foreach (var v in result)
-                {
-                    Price p = new Price();
-                    p.Close = v.C;
-                    p.Open = v.O;
-                    p.High = v.H;
-                    p.Low = v.L;
-                    p.TimeStamp = v.Stamp;
-                    p.InstrumentName = v.Instrument;
-                    prices.Add(p);
-
-                }
-
-                if (reverseList) prices.Reverse();
-                return prices;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("readDataFromDataBase_5_MIN  Database Busy : " + ex.Message);
-                return null;
-            }
-        }
-
-        static public List<Price> readDataFromDataBase_5_MIN_AllHistory(int numberOfPeriods, bool reverseList)
-        {
-            try
-            {
-                List<Price> prices = new List<Price>();
-
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-                dc.OHLC_5_AllHistory();
-
-                var count = (from p in dc.OHLC_5_Minutes
-                             select (p.Stamp)).Count();
-
-                //Console.WriteLine("10 Minute Data Count : " + count);
-
-
-                var result = from q in dc.OHLC_5_Minutes
-                                         .Skip(count - numberOfPeriods)
-                                         .Take(numberOfPeriods)
-                             select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
-
-                foreach (var v in result)
-                {
-                    Price p = new Price();
-                    p.Close = v.C;
-                    p.Open = v.O;
-                    p.High = v.H;
-                    p.Low = v.L;
-                    p.TimeStamp = v.Stamp;
-                    p.InstrumentName = v.Instrument;
-                    prices.Add(p);
-
-                }
-
-                if (reverseList) prices.Reverse();
-                return prices;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("readDataFromDataBase_5_MIN  Database Busy : " + ex.Message);
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Use This Function To get All Historical Data since 1997 ..For Historical Clacs
-        /// </summary>
-        /// <param name="numberOfPeriods"></param>
-        /// <param name="reverseList">to get all data between Start and End : -1 else specify number of periods</param>
-        /// <param name="StartDate"></param>
-        /// <param name="EndDate"></param>
-        /// <returns>List of 10 minute prices</returns>
-        static public List<Price> readDataFromDataBase_10_MIN_ALLHistory(int numberOfPeriods, bool reverseList)
-        {
-           
-            try
-            {
-                List<Price> prices = new List<Price>();
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-                dc.OHLC_10_AllHistory();
-
-                var count = (from p in dc.OHLC_10_Minutes
-                             select (p.Stamp)).Count();
-
-                //Console.WriteLine("10 Minute Data Count : " + count);
-
-                
-
-                var result = from q in dc.OHLC_10_Minutes
-                                         .Skip(count - numberOfPeriods)
-                                         .Take(numberOfPeriods)
-                             select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
-
-                foreach (var v in result)
-                {
-                    Price p = new Price();
-                    p.Close = v.C;
-                    p.Open = v.O;
-                    p.High = v.H;
-                    p.Low = v.L;
-                    p.TimeStamp = v.Stamp;
-                    p.InstrumentName = v.Instrument;
-                    prices.Add(p);
-
-                }
-
-                if (reverseList) prices.Reverse();
-                return prices;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("readDataFromDataBase_10_MIN  Database Busy : " + ex.Message);
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Use This Function To get Temp Data For Trading
-        /// </summary>
-        /// <param name="numberOfPeriods"></param>
-        /// <param name="reverseList"></param>
-        /// <returns></returns>
+       
         static public List<Price> readDataFromDataBase_10_MIN_TempTable(bool reverseList)
         {
             try
@@ -901,6 +804,20 @@ namespace AlsiUtils
 
         #endregion
 
+      public  enum timeframe
+        {
+            minute_1,
+            minute_2,
+            minute_3,
+            minute_5,
+            minute_10,
+        }
+
+       public enum dataTable
+        {
+            MasterMinute,
+            AllHistory,
+        }
 
     }
 }

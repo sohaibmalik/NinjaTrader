@@ -25,7 +25,7 @@ namespace NinjaTest
 
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_MasterMinute(10000, false);
+        //    var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_MasterMinute(10000, false);
 
             AlsiUtils.Strategies.Parameter_SS_RSI p = new AlsiUtils.Strategies.Parameter_SS_RSI();
             p.Close_20 = 15;
@@ -67,7 +67,7 @@ namespace NinjaTest
                                         p.RSI_MidLine_Short = midS;
                                         p.RSI_CloseLong = cL;
                                         p.RSI_CloseShort = cS;
-                                        Db(Startegy_SSPOP_RSI.SsPopStrategy(p, prices), p);
+                                      //  Db(Startegy_SSPOP_RSI.SsPopStrategy(p, prices), p);
 
 
                                     }
@@ -83,34 +83,34 @@ namespace NinjaTest
 
         private static void Db(SumStats S, Parameter_SS_RSI P)
         {
-            SimDbDataContext dc = new SimDbDataContext();
-            if (S.TotalProfit < 10000) return;
+            //SimDbDataContext dc = new SimDbDataContext();
+            //if (S.TotalProfit < 10000) return;
 
 
-            tblRSI t = new tblRSI()
-            {
-                Total_Profit = (long)S.TotalProfit,
-                Total_avg_PL = S.Total_Avg_PL,
-                Trade_Count = (int)S.TradeCount,
-                PL_Ratio = S.PL_Ratio,
-                Avg_Profit = S.Avg_Prof,
-                Avg_Loss = S.Avg_Loss,
-                Pct_Profit = S.Pct_Prof,
-                Pct_Loss = S.Pct_Loss,
+            //tblRSI t = new tblRSI()
+            //{
+            //    Total_Profit = (long)S.TotalProfit,
+            //    Total_avg_PL = S.Total_Avg_PL,
+            //    Trade_Count = (int)S.TradeCount,
+            //    PL_Ratio = S.PL_Ratio,
+            //    Avg_Profit = S.Avg_Prof,
+            //    Avg_Loss = S.Avg_Loss,
+            //    Pct_Profit = S.Pct_Prof,
+            //    Pct_Loss = S.Pct_Loss,
 
-                RSI = P.RSI,
-                RSI_MA = P.RSI_MA,
-                RSI_MA2 = P.RSI_MA2,
-                Mid_Long = P.RSI_MidLine_Long,
-                Mid_Short = P.RSI_MidLine_Short,
-                CloseLong = P.RSI_CloseLong,
-                CloseShort = P.RSI_CloseShort,
+            //    RSI = P.RSI,
+            //    RSI_MA = P.RSI_MA,
+            //    RSI_MA2 = P.RSI_MA2,
+            //    Mid_Long = P.RSI_MidLine_Long,
+            //    Mid_Short = P.RSI_MidLine_Short,
+            //    CloseLong = P.RSI_CloseLong,
+            //    CloseShort = P.RSI_CloseShort,
 
-            };
+            //};
 
 
-            dc.tblRSIs.InsertOnSubmit(t);
-            dc.SubmitChanges();
+            //dc.tblRSIs.InsertOnSubmit(t);
+            //dc.SubmitChanges();
         }
 
         private static void BolBand()
@@ -124,7 +124,7 @@ namespace NinjaTest
 
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_MasterMinute(500, false);
+          //  var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_MasterMinute(500, false);
 
             Parameter_Bollinger P = new Parameter_Bollinger();
             P.N = 20;

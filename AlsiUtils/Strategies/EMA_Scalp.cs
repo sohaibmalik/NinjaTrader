@@ -72,7 +72,7 @@ namespace AlsiUtils.Strategies
 
 
             //return s;
-            if (true)//(s.Total_Avg_PL > 21)
+            if(true)//s.Total_Avg_PL >15 || s.Total_Avg_PL <-15)
             {
                
                 Debug.WriteLine(P.A_EMA1 + "  " + P.A_EMA6 + "  " + P.B_EMA1 + "  " + P.B_EMA6 + "   " + P.C_EMA + " tp:" + P.TakeProfit);
@@ -81,7 +81,28 @@ namespace AlsiUtils.Strategies
                 Debug.WriteLine("Avg " + s.Total_Avg_PL);
                 Debug.WriteLine("Win % " + s.Pct_Prof);
                 Debug.WriteLine("Loss % " + s.Pct_Loss);
+                Debug.WriteLine("EOF Close " + P.CloseEndofDay);
+                Debug.WriteLine("Period " + P.Period);
                 Debug.WriteLine("==========================================");
+
+                SimDBDataContext dc = new SimDBDataContext();
+                tbl2Min n = new tbl2Min 
+                {
+                    Trades = (int)s.TradeCount,
+                    TotalPL = (int)s.TotalProfit,
+                    Win = s.Pct_Prof,
+                    Loose = s.Pct_Loss,
+                    AvgPL = s.Total_Avg_PL,
+                    E_A1=P.A_EMA1,
+                    E_A2=P.A_EMA6,
+                    E_B1 =P.B_EMA1,
+                    E_B2 =P.B_EMA6,
+                    E_C=P.C_EMA,                
+                    CloseEndDay=true.ToString(),
+
+                };
+                //dc.tbl2Mins.InsertOnSubmit(n);
+                //dc.SubmitChanges();
             }
 
         }
@@ -136,7 +157,7 @@ namespace AlsiUtils.Strategies
         private static void DP(int x)
         {
 
-            if (false)//_T[x].ActualTrade != TradeStrategy.Trigger.None)
+            if(_T[x].ActualTrade != TradeStrategy.Trigger.None)
             {
 
                 Debug.WriteLine(_T[x].Timestamp
@@ -148,7 +169,7 @@ namespace AlsiUtils.Strategies
                      + "  B1:" + Math.Round(B_1[x].Ema, 2)
                      + "  B6:" + Math.Round(B_6[x].Ema, 2)
                      + " Pos:" + _T[x].Position
-                     + "  RunPL:" + _T[x].RunningProfit
+                     + "  RunPL:," + _T[x].RunningProfit
                      + "," + _T[x].TotalProfit
                      + "," + _T[x].Reason
                     );
