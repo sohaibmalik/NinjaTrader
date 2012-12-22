@@ -86,8 +86,6 @@
     <Compile Include="Strategies\Strategy_Bollinger.cs" />
     <Compile Include="Strategies\Strategy_SSPOP.cs" />
     <Compile Include="Strategies\TradeStrategy.cs" />
-    <Compile Include="Updater.cs" />
-    <Compile Include="WebData.cs" />
     <Compile Include="Working Class\DEBUGClass.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>

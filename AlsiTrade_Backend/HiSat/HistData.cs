@@ -1,22 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
+using AlsiUtils;
+using System.Net;
+using System.IO;
+using System.Diagnostics;
 using MoreLinq;
-
-namespace AlsiUtils
+namespace AlsiTrade_Backend.HiSat
 {
-    public class WebData
+   public static class HistData
     {
-
-
-        #region WebClient
-
-
-        public static List<PointData> getHistoricalMinute_FromWEB(DateTime StartDate, DateTime EndDate, int TimeFrame, string ContractName)
+        public static List<PointData> GetHistoricalMINUTE_FromWEB(DateTime StartDate, DateTime EndDate, int TimeFrame, string ContractName)
         {
             string startdate = StartDate.ToString("yyyyMMdd");
             string endddate = EndDate.ToString("yyyyMMdd");
@@ -41,17 +36,6 @@ namespace AlsiUtils
                 string _rawData = sr.ReadLine();
                 if (!rawData.Contains(_rawData)) rawData.Add(_rawData);
             }
-
-
-
-
-
-
-
-
-
-
-
 
             foreach (string ss in rawData)
             {
@@ -79,12 +63,12 @@ namespace AlsiUtils
                 Data.Add(p);
 
             }
-            
-         return Data.DistinctBy(t => t.TimeStamp).ToList();
-            
+
+            return Data.DistinctBy(t => t.TimeStamp).ToList();
+
         }
 
-        public static List<PointData> getHistoricalTick_FromWEB(DateTime StartDate, DateTime EndDate, string ContractName)
+        public static List<PointData> GetHistoricalTICK_FromWEB(DateTime StartDate, DateTime EndDate, string ContractName)
         {
             List<PointData> Data = new List<PointData>();
 
@@ -153,8 +137,7 @@ namespace AlsiUtils
                         countMili++;
                         Data[x].TimeStamp = Data[x].TimeStamp.AddMilliseconds(countMili);
                     }
-                    else
-                    //if (Data[x].TimeStamp.Second!=Data[x+1].TimeStamp.Second)
+                    else                  
                     {
                         countMili++;
                         Data[x].TimeStamp = Data[x].TimeStamp.AddMilliseconds(countMili);
@@ -175,8 +158,5 @@ namespace AlsiUtils
 
         }
 
-
-      
-        #endregion
     }
 }

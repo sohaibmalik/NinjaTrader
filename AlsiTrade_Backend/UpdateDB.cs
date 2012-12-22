@@ -1,10 +1,14 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using AlsiUtils;
 using AlsiUtils.Data_Objects;
+using System.Diagnostics;
 
-namespace AlsiUtils
+namespace AlsiTrade_Backend
 {
-    public class Updater
+    public class UpdateDB
     {
         /// <summary>
         /// Full DataBase Update from Webdata
@@ -22,7 +26,7 @@ namespace AlsiUtils
             Debug.WriteLine("FULL UPDATE");
             Debug.WriteLine("Start Date " + Last.Date + "   End Date " + Now.Date);
             GlobalObjects.Prices.Clear();
-            GlobalObjects.Prices = WebData.getHistoricalMinute_FromWEB(Last, Now, 1, ContractName);
+            GlobalObjects.Prices = HiSat.HistData.GetHistoricalMINUTE_FromWEB(Last, Now, 1, ContractName);
             UpdatePricesToImportMinute();
 
         }
@@ -69,7 +73,5 @@ namespace AlsiUtils
             dc.CleanUp();
 
         }
-
-
     }
 }
