@@ -66,6 +66,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -77,11 +78,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AlsiTrade_Backend\AlsiTrade_Backend.csproj">
+    <ProjectReference Include="..\AlsiTrade_Backend\AlsiTrade_Backend.csproj">
       <Project>{AE391C4B-1E3C-4092-AF0B-D8844625FCF9}</Project>
       <Name>AlsiTrade_Backend</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\AlsiUtils\AlsiUtils.csproj">
+    <ProjectReference Include="..\AlsiUtils\AlsiUtils.csproj">
       <Project>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</Project>
       <Name>AlsiUtils</Name>
     </ProjectReference>
