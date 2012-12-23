@@ -209,7 +209,7 @@ namespace NotifierClientApp
                 Title = "DataManager";
             }
 
-            (new SoundPlayer(Properties.Resources.alert3)).Play();
+           // (new SoundPlayer(Properties.Resources.alert3)).Play();
             ni.Visible = true;
             ni.Icon = Properties.Resources.alert;
             ni.ShowBalloonTip(1000, Title, Msg, ToolTipIcon.Info);

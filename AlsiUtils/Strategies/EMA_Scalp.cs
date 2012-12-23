@@ -72,7 +72,7 @@ namespace AlsiUtils.Strategies
 
 
             //return s;
-            if(true)//s.Total_Avg_PL >15 || s.Total_Avg_PL <-15)
+            if(s.Total_Avg_PL >15 || s.Total_Avg_PL <-15)
             {
                
                 Debug.WriteLine(P.A_EMA1 + "  " + P.A_EMA6 + "  " + P.B_EMA1 + "  " + P.B_EMA6 + "   " + P.C_EMA + " tp:" + P.TakeProfit);
@@ -86,7 +86,7 @@ namespace AlsiUtils.Strategies
                 Debug.WriteLine("==========================================");
 
                 SimDBDataContext dc = new SimDBDataContext();
-                tbl2Min n = new tbl2Min 
+                tbl5Min n = new tbl5Min 
                 {
                     Trades = (int)s.TradeCount,
                     TotalPL = (int)s.TotalProfit,
@@ -98,11 +98,11 @@ namespace AlsiUtils.Strategies
                     E_B1 =P.B_EMA1,
                     E_B2 =P.B_EMA6,
                     E_C=P.C_EMA,                
-                    CloseEndDay=true.ToString(),
+                    CloseEndDay=P.CloseEndofDay.ToString(),
 
                 };
-                //dc.tbl2Mins.InsertOnSubmit(n);
-                //dc.SubmitChanges();
+                dc.tbl5Mins.InsertOnSubmit(n);
+                dc.SubmitChanges();
             }
 
         }
@@ -157,7 +157,7 @@ namespace AlsiUtils.Strategies
         private static void DP(int x)
         {
 
-            if(_T[x].ActualTrade != TradeStrategy.Trigger.None)
+            if(false)//_T[x].ActualTrade != TradeStrategy.Trigger.None)
             {
 
                 Debug.WriteLine(_T[x].Timestamp
