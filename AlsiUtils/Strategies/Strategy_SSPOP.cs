@@ -38,16 +38,16 @@ namespace AlsiUtils.Strategies
 
 
             if (_SS[x - 1].D < _p.Open_80 && _SS[x].D > _p.Open_80)
-                strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenLong;
+                strategy[x].TradeTrigger = Trade.Trigger.OpenLong;
 
             if (_SS[x - 1].D > _p.Close_80 && _SS[x].D < _p.Close_80)
-                strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseLong;
+                strategy[x].TradeTrigger = Trade.Trigger.CloseLong;
 
             if (_SS[x - 1].D > _p.Open_20 && _SS[x].D < _p.Open_20)
-                strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenShort;
+                strategy[x].TradeTrigger = Trade.Trigger.OpenShort;
 
             if (_SS[x - 1].D < _p.Close_20 && _SS[x].D > _p.Close_20)
-                strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseShort;
+                strategy[x].TradeTrigger = Trade.Trigger.CloseShort;
 
 
 

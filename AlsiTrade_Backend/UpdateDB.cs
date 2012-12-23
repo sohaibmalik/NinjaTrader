@@ -25,8 +25,8 @@ namespace AlsiTrade_Backend
             DebugClass.WriteLine("Start Date " + Last.Date + "   End Date " + Now.Date);
             Debug.WriteLine("FULL UPDATE");
             Debug.WriteLine("Start Date " + Last.Date + "   End Date " + Now.Date);
-            GlobalObjects.Prices.Clear();
-            GlobalObjects.Prices = HiSat.HistData.GetHistoricalMINUTE_FromWEB(Last, Now, 1, ContractName);
+            GlobalObjects.Points.Clear();
+            GlobalObjects.Points = HiSat.HistData.GetHistoricalMINUTE_FromWEB(Last, Now, 1, ContractName);
             UpdatePricesToImportMinute();
 
         }
@@ -37,9 +37,9 @@ namespace AlsiTrade_Backend
             dc.Connection.ConnectionString = GlobalObjects.CustomConnectionString;
             dc.ClearImportTable();
             decimal progress = 0;
-            decimal totProgress = GlobalObjects.Prices.Count;
+            decimal totProgress = GlobalObjects.Points.Count;
 
-            foreach (PointData price in GlobalObjects.Prices)
+            foreach (PointData price in GlobalObjects.Points)
             {
                 int open = price.Open;
                 int high = price.High;
@@ -68,7 +68,7 @@ namespace AlsiTrade_Backend
 
 
             }
-            GlobalObjects.Prices.Clear();
+            GlobalObjects.Points.Clear();
             dc.UpadteImport();
             dc.CleanUp();
 

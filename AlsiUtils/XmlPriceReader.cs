@@ -167,9 +167,9 @@ namespace AlsiUtils
             dc.Connection.ConnectionString = GlobalObjects.CustomConnectionString;
             dc.ClearImportTable();
             decimal progress = 0;
-            decimal totProgress = GlobalObjects.Prices.Count;
+            decimal totProgress = GlobalObjects.Points.Count;
 
-            foreach (PointData price in GlobalObjects.Prices)
+            foreach (PointData price in GlobalObjects.Points)
             {
                 int open = price.Open;
                 int high = price.High;
@@ -196,7 +196,7 @@ namespace AlsiUtils
                 int p = Convert.ToInt16(100 * (progress / totProgress));
                 
             }
-            GlobalObjects.Prices.Clear();
+            GlobalObjects.Points.Clear();
              dc.UpadteImport();
             dc.CleanUp();
         }
@@ -209,7 +209,7 @@ namespace AlsiUtils
             FileInfo f = new FileInfo(@"D:\WK48.XML");
 
             var price = AlsiUtils.XmlPriceReader.getPriceFromXML(f, "DEC12ALSI");
-            AlsiUtils.Data_Objects.GlobalObjects.Prices = price;
+            AlsiUtils.Data_Objects.GlobalObjects.Points = price;
             AlsiUtils.XmlPriceReader.UpdatetoMinuteImport();
         }
     }

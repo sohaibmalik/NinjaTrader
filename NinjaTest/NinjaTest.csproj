@@ -124,7 +124,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Documents\Visual Studio 2010\Projects\Alsi Trade System\AlsiTrade_Backend\AlsiTrade_Backend.csproj">
+    <ProjectReference Include="..\AlsiTrade_Backend\AlsiTrade_Backend.csproj">
       <Project>{AE391C4B-1E3C-4092-AF0B-D8844625FCF9}</Project>
       <Name>AlsiTrade_Backend</Name>
     </ProjectReference>

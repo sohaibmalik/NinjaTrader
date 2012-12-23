@@ -4,7 +4,7 @@ using System.Data.Linq.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-
+using AlsiUtils.Data_Objects;
 
 namespace AlsiUtils
 {
@@ -12,7 +12,16 @@ namespace AlsiUtils
 
     public class DataBase
     {
+      public static void SetConnectionString()
+        {
+            //Laptop
+            //string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
+            //PC
+            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
+
+        }
 
         #region AlsiTrade
 
@@ -57,8 +66,8 @@ namespace AlsiUtils
                 {
 
                     Time = TradeObject.TimeStamp,
-                    BuySell = TradeObject.BuyorSell,
-                    Reason = TradeObject.TradeReason,
+                    //BuySell = TradeObject.BuyorSell,
+                    //Reason = TradeObject.TradeReason,
                     Price = (int)TradeObject.TradedPrice,
                     Volume = TradeObject.TradeVolume,
                     ForeColor = TradeObject.ForeColor.ToKnownColor().ToString(),
@@ -146,8 +155,8 @@ namespace AlsiUtils
                 {
                     Trade l = new Trade();
                     l.TimeStamp = (DateTime)v.Time;
-                    l.BuyorSell = v.BuySell;
-                    l.TradeReason = v.Reason;
+                   // l.BuyorSell = v.BuySell;
+                   // l.TradeReason = v.Reason;
                     l.TradedPrice = (double)v.Price;
                     l.TradeVolume = (int)v.Volume;
                     l.ForeColor = Color.FromName(v.ForeColor);
@@ -166,7 +175,7 @@ namespace AlsiUtils
         }
 
 
-        static public List<Price> readDataFromDataBase(timeframe T,dataTable TD,DateTime Start,DateTime End, bool reverseList)
+        static public List<Price> readDataFromDataBase(GlobalObjects.TimeInterval T,dataTable TD,DateTime Start,DateTime End, bool reverseList)
         {
             try
             {
@@ -177,21 +186,21 @@ namespace AlsiUtils
           
                 if (TD == dataTable.AllHistory)
                 {
-                    if (T == timeframe.minute_2) dc.OHLC_2_AllHistory();
-                    if (T == timeframe.minute_5) dc.OHLC_5_AllHistory();
-                    if (T == timeframe.minute_10) dc.OHLC_10_AllHistory();
+                    if (T == GlobalObjects.TimeInterval.Minute_2) dc.OHLC_2_AllHistory();
+                    if (T == GlobalObjects.TimeInterval.Minute_5) dc.OHLC_5_AllHistory();
+                    if (T == GlobalObjects.TimeInterval.Minute_10) dc.OHLC_10_AllHistory();
                 }
                 if (TD == dataTable.MasterMinute)
                 {
-                    if (T == timeframe.minute_2) dc.OHLC_2();
-                    if (T == timeframe.minute_5) dc.OHLC_5();
-                    if (T == timeframe.minute_10) dc.OHLC_10();
+                    if (T == GlobalObjects.TimeInterval.Minute_2) dc.OHLC_2();
+                    if (T == GlobalObjects.TimeInterval.Minute_5) dc.OHLC_5();
+                    if (T == GlobalObjects.TimeInterval.Minute_10) dc.OHLC_10();
                 }
 
 
-             
 
-                if (T == timeframe.minute_2)
+
+                if (T == GlobalObjects.TimeInterval.Minute_2)
                 {
                    var result = from q in dc.OHLC_2_Minutes 
                                  where q.Stamp>Start && q.Stamp<End
@@ -211,7 +220,7 @@ namespace AlsiUtils
                     }
                 }
 
-                if (T == timeframe.minute_5)
+                if (T == GlobalObjects.TimeInterval.Minute_5)
                 {
                     var result = from q in dc.OHLC_5_Minutes
                                  where q.Stamp > Start && q.Stamp < End
@@ -230,7 +239,7 @@ namespace AlsiUtils
 
                     }
                 }
-                if (T == timeframe.minute_10)
+                if (T == GlobalObjects.TimeInterval.Minute_10)
                 {
                     var result = from q in dc.OHLC_10_Minutes
                                  where q.Stamp > Start && q.Stamp < End
@@ -804,15 +813,7 @@ namespace AlsiUtils
 
         #endregion
 
-      public  enum timeframe
-        {
-            minute_1,
-            minute_2,
-            minute_3,
-            minute_5,
-            minute_10,
-        }
-
+     
        public enum dataTable
         {
             MasterMinute,

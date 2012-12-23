@@ -147,14 +147,14 @@ namespace AlsiUtils.Strategies
             if (_SS[x - 1].D < _p.Open_80 && _SS[x].D > _p.Open_80
                 || (_RSI_MA2[x].Sma > _p.RSI_MidLine_Long && _RSI_MA[x - 1].Ema < _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema > _RSI_MA2[x].Sma)
                 )
-                strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenLong;
+                strategy[x].TradeTrigger = Trade.Trigger.OpenLong;
 
 
 
             if (_SS[x - 1].D > _p.Open_20 && _SS[x].D < _p.Open_20
                 || (_RSI_MA2[x].Sma < _p.RSI_MidLine_Short && _RSI_MA[x - 1].Ema > _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema < _RSI_MA2[x].Sma)
                 )
-                strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenShort;
+                strategy[x].TradeTrigger = Trade.Trigger.OpenShort;
 
 
 
@@ -162,14 +162,14 @@ namespace AlsiUtils.Strategies
             if (_SS[x - 1].D > _p.Close_80 && _SS[x].D < _p.Close_80
                || (_RSI_MA2[x].Sma > _p.RSI_CloseLong && _RSI_MA[x - 1].Ema > _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema < _RSI_MA2[x].Sma)
               )
-                strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseLong;
+                strategy[x].TradeTrigger = Trade.Trigger.CloseLong;
 
 
 
             if (_SS[x - 1].D < _p.Close_20 && _SS[x].D > _p.Close_20
                   || (_RSI_MA2[x].Sma < _p.RSI_CloseShort && _RSI_MA[x - 1].Ema < _RSI_MA2[x - 1].Sma && _RSI_MA[x].Ema > _RSI_MA2[x].Sma)
                 )
-                strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseShort;
+                strategy[x].TradeTrigger = Trade.Trigger.CloseShort;
 
         }
 

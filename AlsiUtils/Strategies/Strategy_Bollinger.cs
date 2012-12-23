@@ -50,11 +50,11 @@ namespace AlsiUtils.Strategies
             //if (_SS[x - 1].D < _p.Close_20 && _SS[x].D > _p.Close_20)
             //    strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseShort;
 
-            if (_BB[x - 1].Price_Close > _BB[x - 1].Lower && _BB[x].Price_Close < _BB[x].Lower) strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenShort;
-            if (_BB[x - 1].Price_Close < _BB[x - 1].Upper && _BB[x].Price_Close > _BB[x].Upper) strategy[x].TradeTrigger = TradeStrategy.Trigger.OpenLong;
+            if (_BB[x - 1].Price_Close > _BB[x - 1].Lower && _BB[x].Price_Close < _BB[x].Lower) strategy[x].TradeTrigger = Trade.Trigger.OpenShort;
+            if (_BB[x - 1].Price_Close < _BB[x - 1].Upper && _BB[x].Price_Close > _BB[x].Upper) strategy[x].TradeTrigger = Trade.Trigger.OpenLong;
 
-            if (_BB[x - 1].Price_Close > _BB[x - 1].Mid && _BB[x].Price_Close < _BB[x].Mid) strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseLong;
-            if (_BB[x - 1].Price_Close < _BB[x - 1].Mid && _BB[x].Price_Close > _BB[x].Mid) strategy[x].TradeTrigger = TradeStrategy.Trigger.CloseShort;
+            if (_BB[x - 1].Price_Close > _BB[x - 1].Mid && _BB[x].Price_Close < _BB[x].Mid) strategy[x].TradeTrigger = Trade.Trigger.CloseLong;
+            if (_BB[x - 1].Price_Close < _BB[x - 1].Mid && _BB[x].Price_Close > _BB[x].Mid) strategy[x].TradeTrigger = Trade.Trigger.CloseShort;
 
         }
 

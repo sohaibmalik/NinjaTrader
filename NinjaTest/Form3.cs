@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
-
+using AlsiUtils.Data_Objects;
 
 namespace NinjaTest
 {
@@ -41,7 +41,7 @@ namespace NinjaTest
 
 
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.DataBase.timeframe.minute_5, AlsiUtils.DataBase.dataTable.MasterMinute,
+            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute,
                s, end, false);
             Debug.WriteLine("Start Date " + prices[0].TimeStamp);
 
@@ -63,17 +63,10 @@ namespace NinjaTest
                                 {
                                     AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
                                     {
-                                        A_EMA1 = x,
-                                        A_EMA3 = 1,
-                                        A_EMA4 = 1,
-                                        A_EMA5 = 1,
-                                        A_EMA6 = y,
-                                        B_EMA1 = a,
-                                        B_EMA2 = 1,
-                                        B_EMA3 = 1,
-                                        B_EMA4 = 1,
-                                        B_EMA5 = 1,
-                                        B_EMA6 = b,
+                                        A_EMA1 = x,                                    
+                                        A_EMA2 = y,
+                                        B_EMA1 = a,                                      
+                                        B_EMA2 = b,
                                         C_EMA = z,
                                         TakeProfit = 250,
                                         StopLoss = -250,
@@ -82,7 +75,7 @@ namespace NinjaTest
                                     };
 
 
-                                    AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices);
+                                   // AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices);
                                 }
                             }
                         }
@@ -104,23 +97,16 @@ namespace NinjaTest
             DateTime e = new DateTime(2012, 12, 15);
 
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.DataBase.timeframe.minute_5, AlsiUtils.DataBase.dataTable.MasterMinute,
+            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute,
                s, e, false);
                 Debug.WriteLine("Start Date " + prices[0].TimeStamp);
               
                     AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
                     {
-                        A_EMA1 = 10,
-                        A_EMA3 = 1,
-                        A_EMA4 = 1,
-                        A_EMA5 = 1,
-                        A_EMA6 = 14,
-                        B_EMA1 = 24,
-                        B_EMA2 = 1,
-                        B_EMA3 = 1,
-                        B_EMA4 = 1,
-                        B_EMA5 = 1,
-                        B_EMA6 = 28,
+                        A_EMA1 = 10,                     
+                        A_EMA2 = 14,
+                        B_EMA1 = 24,                     
+                        B_EMA2 = 28,
                         C_EMA = 30,
                         TakeProfit = 500,
                         StopLoss = -500,
@@ -130,7 +116,7 @@ namespace NinjaTest
                     };
 
 
-                    AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices);
+                   // AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices);
                 
         }
 

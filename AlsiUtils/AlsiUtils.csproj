@@ -111,7 +111,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Data Objects\Trade.cs" />
-    <Compile Include="Strategies\Strategy_Live.cs" />
     <Compile Include="XmlPriceReader.cs" />
   </ItemGroup>
   <ItemGroup>

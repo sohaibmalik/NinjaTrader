@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="HISAT_API">
-      <HintPath>..\..\..\..\..\Desktop\NinjaTrader\External Libraries\HISAT_API.dll</HintPath>
+      <HintPath>..\External Libraries\HISAT_API.dll</HintPath>
     </Reference>
-    <Reference Include="MoreLinq, Version=1.0.11522.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Desktop\NinjaTrader\External Libraries\MoreLinq\MoreLinq.dll</HintPath>
+    <Reference Include="MoreLinq">
+      <HintPath>..\External Libraries\MoreLinq\MoreLinq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,17 +47,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DoStuff.cs" />
     <Compile Include="HiSat\HistData.cs" />
     <Compile Include="HiSat\LiveFeed.cs" />
     <Compile Include="PrepareForTrade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RunCalcs.cs" />
+    <Compile Include="SendOrder.cs" />
     <Compile Include="UpdateDB.cs" />
     <Compile Include="UpdateTimer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Desktop\NinjaTrader\AlsiUtils\AlsiUtils.csproj">
+    <ProjectReference Include="..\AlsiUtils\AlsiUtils.csproj">
       <Project>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</Project>
       <Name>AlsiUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExcelLink\ExcelLink\ExcelLink.csproj">
+      <Project>{102678C8-C660-4FC3-89BE-B46D2F82C614}</Project>
+      <Name>ExcelLink</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

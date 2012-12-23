@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using AlsiUtils;
 namespace ExcelLink
 {
    public class xlTradeOrder
@@ -17,7 +17,7 @@ namespace ExcelLink
           Exchange = "SXFIN";
       }
        public string Contract { get; set; }
-       public BuySell BS { get; set; }
+       public  Trade.BuySell BS { get; set; }
        public double Price { get; set; }
        public int Volume { get; set; }
        public orderStatus Status { get; set; }
@@ -27,12 +27,7 @@ namespace ExcelLink
        public string Exchange { get; set; }
        public string Dealer { get; set; }
 
-      public enum BuySell
-       {
-          Buy=1,
-           Sell=2
-       }
-
+    
        public enum orderStatus
        {
            Ready=1,
