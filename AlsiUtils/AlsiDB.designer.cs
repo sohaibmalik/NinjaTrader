@@ -30,12 +30,18 @@ namespace AlsiUtils
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertDebugLog(DebugLog instance);
-    partial void UpdateDebugLog(DebugLog instance);
-    partial void DeleteDebugLog(DebugLog instance);
+    partial void InsertAllHistoricMinute(AllHistoricMinute instance);
+    partial void UpdateAllHistoricMinute(AllHistoricMinute instance);
+    partial void DeleteAllHistoricMinute(AllHistoricMinute instance);
     partial void InsertTradeLog(TradeLog instance);
     partial void UpdateTradeLog(TradeLog instance);
     partial void DeleteTradeLog(TradeLog instance);
+    partial void InsertDebugLog(DebugLog instance);
+    partial void UpdateDebugLog(DebugLog instance);
+    partial void DeleteDebugLog(DebugLog instance);
+    partial void InsertImportMinute(ImportMinute instance);
+    partial void UpdateImportMinute(ImportMinute instance);
+    partial void DeleteImportMinute(ImportMinute instance);
     partial void InsertLog(Log instance);
     partial void UpdateLog(Log instance);
     partial void DeleteLog(Log instance);
@@ -48,36 +54,27 @@ namespace AlsiUtils
     partial void InsertOHLC_10_Minute_Temp(OHLC_10_Minute_Temp instance);
     partial void UpdateOHLC_10_Minute_Temp(OHLC_10_Minute_Temp instance);
     partial void DeleteOHLC_10_Minute_Temp(OHLC_10_Minute_Temp instance);
-    partial void InsertRawTick(RawTick instance);
-    partial void UpdateRawTick(RawTick instance);
-    partial void DeleteRawTick(RawTick instance);
-    partial void InsertSubmittedOrder(SubmittedOrder instance);
-    partial void UpdateSubmittedOrder(SubmittedOrder instance);
-    partial void DeleteSubmittedOrder(SubmittedOrder instance);
-    partial void InsertSubmittedOrders_Matched(SubmittedOrders_Matched instance);
-    partial void UpdateSubmittedOrders_Matched(SubmittedOrders_Matched instance);
-    partial void DeleteSubmittedOrders_Matched(SubmittedOrders_Matched instance);
-    partial void InsertTickMinute(TickMinute instance);
-    partial void UpdateTickMinute(TickMinute instance);
-    partial void DeleteTickMinute(TickMinute instance);
-    partial void InsertTickTEMP(TickTEMP instance);
-    partial void UpdateTickTEMP(TickTEMP instance);
-    partial void DeleteTickTEMP(TickTEMP instance);
-    partial void InsertImportMinute(ImportMinute instance);
-    partial void UpdateImportMinute(ImportMinute instance);
-    partial void DeleteImportMinute(ImportMinute instance);
-    partial void InsertAllHistoricMinute(AllHistoricMinute instance);
-    partial void UpdateAllHistoricMinute(AllHistoricMinute instance);
-    partial void DeleteAllHistoricMinute(AllHistoricMinute instance);
-    partial void InsertOHLC_5_Minute(OHLC_5_Minute instance);
-    partial void UpdateOHLC_5_Minute(OHLC_5_Minute instance);
-    partial void DeleteOHLC_5_Minute(OHLC_5_Minute instance);
     partial void InsertOHLC_2_Minute(OHLC_2_Minute instance);
     partial void UpdateOHLC_2_Minute(OHLC_2_Minute instance);
     partial void DeleteOHLC_2_Minute(OHLC_2_Minute instance);
     partial void InsertOHLC_3_Minute(OHLC_3_Minute instance);
     partial void UpdateOHLC_3_Minute(OHLC_3_Minute instance);
     partial void DeleteOHLC_3_Minute(OHLC_3_Minute instance);
+    partial void InsertOHLC_5_Minute(OHLC_5_Minute instance);
+    partial void UpdateOHLC_5_Minute(OHLC_5_Minute instance);
+    partial void DeleteOHLC_5_Minute(OHLC_5_Minute instance);
+    partial void InsertOHLC_Temp(OHLC_Temp instance);
+    partial void UpdateOHLC_Temp(OHLC_Temp instance);
+    partial void DeleteOHLC_Temp(OHLC_Temp instance);
+    partial void InsertRawTick(RawTick instance);
+    partial void UpdateRawTick(RawTick instance);
+    partial void DeleteRawTick(RawTick instance);
+    partial void InsertTickMinute(TickMinute instance);
+    partial void UpdateTickMinute(TickMinute instance);
+    partial void DeleteTickMinute(TickMinute instance);
+    partial void InsertTickTEMP(TickTEMP instance);
+    partial void UpdateTickTEMP(TickTEMP instance);
+    partial void DeleteTickTEMP(TickTEMP instance);
     #endregion
 		
 		public AlsiDBDataContext() : 
@@ -110,11 +107,11 @@ namespace AlsiUtils
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<DebugLog> DebugLogs
+		public System.Data.Linq.Table<AllHistoricMinute> AllHistoricMinutes
 		{
 			get
 			{
-				return this.GetTable<DebugLog>();
+				return this.GetTable<AllHistoricMinute>();
 			}
 		}
 		
@@ -123,6 +120,22 @@ namespace AlsiUtils
 			get
 			{
 				return this.GetTable<TradeLog>();
+			}
+		}
+		
+		public System.Data.Linq.Table<DebugLog> DebugLogs
+		{
+			get
+			{
+				return this.GetTable<DebugLog>();
+			}
+		}
+		
+		public System.Data.Linq.Table<ImportMinute> ImportMinutes
+		{
+			get
+			{
+				return this.GetTable<ImportMinute>();
 			}
 		}
 		
@@ -158,6 +171,38 @@ namespace AlsiUtils
 			}
 		}
 		
+		public System.Data.Linq.Table<OHLC_2_Minute> OHLC_2_Minutes
+		{
+			get
+			{
+				return this.GetTable<OHLC_2_Minute>();
+			}
+		}
+		
+		public System.Data.Linq.Table<OHLC_3_Minute> OHLC_3_Minutes
+		{
+			get
+			{
+				return this.GetTable<OHLC_3_Minute>();
+			}
+		}
+		
+		public System.Data.Linq.Table<OHLC_5_Minute> OHLC_5_Minutes
+		{
+			get
+			{
+				return this.GetTable<OHLC_5_Minute>();
+			}
+		}
+		
+		public System.Data.Linq.Table<OHLC_Temp> OHLC_Temps
+		{
+			get
+			{
+				return this.GetTable<OHLC_Temp>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Raw_Import> Raw_Imports
 		{
 			get
@@ -182,22 +227,6 @@ namespace AlsiUtils
 			}
 		}
 		
-		public System.Data.Linq.Table<SubmittedOrder> SubmittedOrders
-		{
-			get
-			{
-				return this.GetTable<SubmittedOrder>();
-			}
-		}
-		
-		public System.Data.Linq.Table<SubmittedOrders_Matched> SubmittedOrders_Matcheds
-		{
-			get
-			{
-				return this.GetTable<SubmittedOrders_Matched>();
-			}
-		}
-		
 		public System.Data.Linq.Table<TickMinute> TickMinutes
 		{
 			get
@@ -214,46 +243,6 @@ namespace AlsiUtils
 			}
 		}
 		
-		public System.Data.Linq.Table<ImportMinute> ImportMinutes
-		{
-			get
-			{
-				return this.GetTable<ImportMinute>();
-			}
-		}
-		
-		public System.Data.Linq.Table<AllHistoricMinute> AllHistoricMinutes
-		{
-			get
-			{
-				return this.GetTable<AllHistoricMinute>();
-			}
-		}
-		
-		public System.Data.Linq.Table<OHLC_5_Minute> OHLC_5_Minutes
-		{
-			get
-			{
-				return this.GetTable<OHLC_5_Minute>();
-			}
-		}
-		
-		public System.Data.Linq.Table<OHLC_2_Minute> OHLC_2_Minutes
-		{
-			get
-			{
-				return this.GetTable<OHLC_2_Minute>();
-			}
-		}
-		
-		public System.Data.Linq.Table<OHLC_3_Minute> OHLC_3_Minutes
-		{
-			get
-			{
-				return this.GetTable<OHLC_3_Minute>();
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.Clean_OHLC_Temp")]
 		public int Clean_OHLC_Temp()
 		{
@@ -263,6 +252,13 @@ namespace AlsiUtils
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpdateTick")]
 		public int UpdateTick()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CleanLogs")]
+		public int CleanLogs()
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((int)(result.ReturnValue));
@@ -289,42 +285,21 @@ namespace AlsiUtils
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ImportRawTick", IsComposable=true)]
-		public object ImportRawTick()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ClearTempTable")]
+		public int ClearTempTable()
 		{
-			return ((object)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod()))).ReturnValue));
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ImportRawTick")]
+		public void ImportRawTick()
+		{
+			this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_10")]
 		public int OHLC_10()
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_10_Temp")]
-		public int OHLC_10_Temp()
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.RemoveDUPS_TickMinute")]
-		public int RemoveDUPS_TickMinute()
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpadteImport")]
-		public int UpadteImport()
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CleanLogs")]
-		public int CleanLogs()
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((int)(result.ReturnValue));
@@ -337,8 +312,29 @@ namespace AlsiUtils
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpadteAllHistory")]
-		public int UpadteAllHistory()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_10_Temp")]
+		public int OHLC_10_Temp()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_2")]
+		public int OHLC_2()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_2_AllHistory")]
+		public int OHLC_2_AllHistory()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_3")]
+		public int OHLC_3()
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((int)(result.ReturnValue));
@@ -358,25 +354,467 @@ namespace AlsiUtils
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_2")]
-		public int OHLC_2()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_5_Temp")]
+		public void OHLC_5_Temp()
+		{
+			this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.RemoveDUPS_TickMinute")]
+		public int RemoveDUPS_TickMinute()
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_3")]
-		public int OHLC_3()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpadteAllHistory")]
+		public int UpadteAllHistory()
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_2_AllHistory")]
-		public int OHLC_2_AllHistory()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.UpadteImport")]
+		public int UpadteImport()
 		{
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 			return ((int)(result.ReturnValue));
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AllHistoricMinute")]
+	public partial class AllHistoricMinute : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.DateTime _Stamp;
+		
+		private int _O;
+		
+		private int _H;
+		
+		private int _L;
+		
+		private int _C;
+		
+		private int _V;
+		
+		private string _Instrument;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnStampChanging(System.DateTime value);
+    partial void OnStampChanged();
+    partial void OnOChanging(int value);
+    partial void OnOChanged();
+    partial void OnHChanging(int value);
+    partial void OnHChanged();
+    partial void OnLChanging(int value);
+    partial void OnLChanged();
+    partial void OnCChanging(int value);
+    partial void OnCChanged();
+    partial void OnVChanging(int value);
+    partial void OnVChanged();
+    partial void OnInstrumentChanging(string value);
+    partial void OnInstrumentChanged();
+    #endregion
+		
+		public AllHistoricMinute()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime Stamp
+		{
+			get
+			{
+				return this._Stamp;
+			}
+			set
+			{
+				if ((this._Stamp != value))
+				{
+					this.OnStampChanging(value);
+					this.SendPropertyChanging();
+					this._Stamp = value;
+					this.SendPropertyChanged("Stamp");
+					this.OnStampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
+		public int O
+		{
+			get
+			{
+				return this._O;
+			}
+			set
+			{
+				if ((this._O != value))
+				{
+					this.OnOChanging(value);
+					this.SendPropertyChanging();
+					this._O = value;
+					this.SendPropertyChanged("O");
+					this.OnOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
+		public int H
+		{
+			get
+			{
+				return this._H;
+			}
+			set
+			{
+				if ((this._H != value))
+				{
+					this.OnHChanging(value);
+					this.SendPropertyChanging();
+					this._H = value;
+					this.SendPropertyChanged("H");
+					this.OnHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
+		public int L
+		{
+			get
+			{
+				return this._L;
+			}
+			set
+			{
+				if ((this._L != value))
+				{
+					this.OnLChanging(value);
+					this.SendPropertyChanging();
+					this._L = value;
+					this.SendPropertyChanged("L");
+					this.OnLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
+		public int C
+		{
+			get
+			{
+				return this._C;
+			}
+			set
+			{
+				if ((this._C != value))
+				{
+					this.OnCChanging(value);
+					this.SendPropertyChanging();
+					this._C = value;
+					this.SendPropertyChanged("C");
+					this.OnCChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_V", DbType="Int NOT NULL")]
+		public int V
+		{
+			get
+			{
+				return this._V;
+			}
+			set
+			{
+				if ((this._V != value))
+				{
+					this.OnVChanging(value);
+					this.SendPropertyChanging();
+					this._V = value;
+					this.SendPropertyChanged("V");
+					this.OnVChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Instrument
+		{
+			get
+			{
+				return this._Instrument;
+			}
+			set
+			{
+				if ((this._Instrument != value))
+				{
+					this.OnInstrumentChanging(value);
+					this.SendPropertyChanging();
+					this._Instrument = value;
+					this.SendPropertyChanged("Instrument");
+					this.OnInstrumentChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TradeLog")]
+	public partial class TradeLog : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _N;
+		
+		private System.Nullable<System.DateTime> _Time;
+		
+		private string _BuySell;
+		
+		private string _Reason;
+		
+		private System.Nullable<int> _Price;
+		
+		private System.Nullable<int> _Volume;
+		
+		private string _ForeColor;
+		
+		private string _BackColor;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnNChanging(int value);
+    partial void OnNChanged();
+    partial void OnTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnTimeChanged();
+    partial void OnBuySellChanging(string value);
+    partial void OnBuySellChanged();
+    partial void OnReasonChanging(string value);
+    partial void OnReasonChanged();
+    partial void OnPriceChanging(System.Nullable<int> value);
+    partial void OnPriceChanged();
+    partial void OnVolumeChanging(System.Nullable<int> value);
+    partial void OnVolumeChanged();
+    partial void OnForeColorChanging(string value);
+    partial void OnForeColorChanged();
+    partial void OnBackColorChanging(string value);
+    partial void OnBackColorChanged();
+    #endregion
+		
+		public TradeLog()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_N", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int N
+		{
+			get
+			{
+				return this._N;
+			}
+			set
+			{
+				if ((this._N != value))
+				{
+					this.OnNChanging(value);
+					this.SendPropertyChanging();
+					this._N = value;
+					this.SendPropertyChanged("N");
+					this.OnNChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Time", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Time
+		{
+			get
+			{
+				return this._Time;
+			}
+			set
+			{
+				if ((this._Time != value))
+				{
+					this.OnTimeChanging(value);
+					this.SendPropertyChanging();
+					this._Time = value;
+					this.SendPropertyChanged("Time");
+					this.OnTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuySell", DbType="VarChar(4)")]
+		public string BuySell
+		{
+			get
+			{
+				return this._BuySell;
+			}
+			set
+			{
+				if ((this._BuySell != value))
+				{
+					this.OnBuySellChanging(value);
+					this.SendPropertyChanging();
+					this._BuySell = value;
+					this.SendPropertyChanged("BuySell");
+					this.OnBuySellChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reason", DbType="VarChar(300)")]
+		public string Reason
+		{
+			get
+			{
+				return this._Reason;
+			}
+			set
+			{
+				if ((this._Reason != value))
+				{
+					this.OnReasonChanging(value);
+					this.SendPropertyChanging();
+					this._Reason = value;
+					this.SendPropertyChanged("Reason");
+					this.OnReasonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Int")]
+		public System.Nullable<int> Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="Int")]
+		public System.Nullable<int> Volume
+		{
+			get
+			{
+				return this._Volume;
+			}
+			set
+			{
+				if ((this._Volume != value))
+				{
+					this.OnVolumeChanging(value);
+					this.SendPropertyChanging();
+					this._Volume = value;
+					this.SendPropertyChanged("Volume");
+					this.OnVolumeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ForeColor", DbType="VarChar(50)")]
+		public string ForeColor
+		{
+			get
+			{
+				return this._ForeColor;
+			}
+			set
+			{
+				if ((this._ForeColor != value))
+				{
+					this.OnForeColorChanging(value);
+					this.SendPropertyChanging();
+					this._ForeColor = value;
+					this.SendPropertyChanged("ForeColor");
+					this.OnForeColorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BackColor", DbType="VarChar(50)")]
+		public string BackColor
+		{
+			get
+			{
+				return this._BackColor;
+			}
+			set
+			{
+				if ((this._BackColor != value))
+				{
+					this.OnBackColorChanging(value);
+					this.SendPropertyChanging();
+					this._BackColor = value;
+					this.SendPropertyChanged("BackColor");
+					this.OnBackColorChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -514,211 +952,187 @@ namespace AlsiUtils
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TradeLog")]
-	public partial class TradeLog : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ImportMinute")]
+	public partial class ImportMinute : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _N;
+		private System.DateTime _Stamp;
 		
-		private System.Nullable<System.DateTime> _Time;
+		private int _O;
 		
-		private string _BuySell;
+		private int _H;
 		
-		private string _Reason;
+		private int _L;
 		
-		private System.Nullable<int> _Price;
+		private int _C;
 		
-		private System.Nullable<int> _Volume;
+		private int _V;
 		
-		private string _ForeColor;
-		
-		private string _BackColor;
+		private string _Instrument;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnNChanging(int value);
-    partial void OnNChanged();
-    partial void OnTimeChanging(System.Nullable<System.DateTime> value);
-    partial void OnTimeChanged();
-    partial void OnBuySellChanging(string value);
-    partial void OnBuySellChanged();
-    partial void OnReasonChanging(string value);
-    partial void OnReasonChanged();
-    partial void OnPriceChanging(System.Nullable<int> value);
-    partial void OnPriceChanged();
-    partial void OnVolumeChanging(System.Nullable<int> value);
-    partial void OnVolumeChanged();
-    partial void OnForeColorChanging(string value);
-    partial void OnForeColorChanged();
-    partial void OnBackColorChanging(string value);
-    partial void OnBackColorChanged();
+    partial void OnStampChanging(System.DateTime value);
+    partial void OnStampChanged();
+    partial void OnOChanging(int value);
+    partial void OnOChanged();
+    partial void OnHChanging(int value);
+    partial void OnHChanged();
+    partial void OnLChanging(int value);
+    partial void OnLChanged();
+    partial void OnCChanging(int value);
+    partial void OnCChanged();
+    partial void OnVChanging(int value);
+    partial void OnVChanged();
+    partial void OnInstrumentChanging(string value);
+    partial void OnInstrumentChanged();
     #endregion
 		
-		public TradeLog()
+		public ImportMinute()
 		{
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_N", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int N
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime Stamp
 		{
 			get
 			{
-				return this._N;
+				return this._Stamp;
 			}
 			set
 			{
-				if ((this._N != value))
+				if ((this._Stamp != value))
 				{
-					this.OnNChanging(value);
+					this.OnStampChanging(value);
 					this.SendPropertyChanging();
-					this._N = value;
-					this.SendPropertyChanged("N");
-					this.OnNChanged();
+					this._Stamp = value;
+					this.SendPropertyChanged("Stamp");
+					this.OnStampChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Time", DbType="DateTime")]
-		public System.Nullable<System.DateTime> Time
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
+		public int O
 		{
 			get
 			{
-				return this._Time;
+				return this._O;
 			}
 			set
 			{
-				if ((this._Time != value))
+				if ((this._O != value))
 				{
-					this.OnTimeChanging(value);
+					this.OnOChanging(value);
 					this.SendPropertyChanging();
-					this._Time = value;
-					this.SendPropertyChanged("Time");
-					this.OnTimeChanged();
+					this._O = value;
+					this.SendPropertyChanged("O");
+					this.OnOChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuySell", DbType="VarChar(4)")]
-		public string BuySell
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
+		public int H
 		{
 			get
 			{
-				return this._BuySell;
+				return this._H;
 			}
 			set
 			{
-				if ((this._BuySell != value))
+				if ((this._H != value))
 				{
-					this.OnBuySellChanging(value);
+					this.OnHChanging(value);
 					this.SendPropertyChanging();
-					this._BuySell = value;
-					this.SendPropertyChanged("BuySell");
-					this.OnBuySellChanged();
+					this._H = value;
+					this.SendPropertyChanged("H");
+					this.OnHChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reason", DbType="VarChar(50)")]
-		public string Reason
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
+		public int L
 		{
 			get
 			{
-				return this._Reason;
+				return this._L;
 			}
 			set
 			{
-				if ((this._Reason != value))
+				if ((this._L != value))
 				{
-					this.OnReasonChanging(value);
+					this.OnLChanging(value);
 					this.SendPropertyChanging();
-					this._Reason = value;
-					this.SendPropertyChanged("Reason");
-					this.OnReasonChanged();
+					this._L = value;
+					this.SendPropertyChanged("L");
+					this.OnLChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Int")]
-		public System.Nullable<int> Price
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
+		public int C
 		{
 			get
 			{
-				return this._Price;
+				return this._C;
 			}
 			set
 			{
-				if ((this._Price != value))
+				if ((this._C != value))
 				{
-					this.OnPriceChanging(value);
+					this.OnCChanging(value);
 					this.SendPropertyChanging();
-					this._Price = value;
-					this.SendPropertyChanged("Price");
-					this.OnPriceChanged();
+					this._C = value;
+					this.SendPropertyChanged("C");
+					this.OnCChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="Int")]
-		public System.Nullable<int> Volume
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_V", DbType="Int NOT NULL")]
+		public int V
 		{
 			get
 			{
-				return this._Volume;
+				return this._V;
 			}
 			set
 			{
-				if ((this._Volume != value))
+				if ((this._V != value))
 				{
-					this.OnVolumeChanging(value);
+					this.OnVChanging(value);
 					this.SendPropertyChanging();
-					this._Volume = value;
-					this.SendPropertyChanged("Volume");
-					this.OnVolumeChanged();
+					this._V = value;
+					this.SendPropertyChanged("V");
+					this.OnVChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ForeColor", DbType="VarChar(50)")]
-		public string ForeColor
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50)")]
+		public string Instrument
 		{
 			get
 			{
-				return this._ForeColor;
+				return this._Instrument;
 			}
 			set
 			{
-				if ((this._ForeColor != value))
+				if ((this._Instrument != value))
 				{
-					this.OnForeColorChanging(value);
+					this.OnInstrumentChanging(value);
 					this.SendPropertyChanging();
-					this._ForeColor = value;
-					this.SendPropertyChanged("ForeColor");
-					this.OnForeColorChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BackColor", DbType="VarChar(50)")]
-		public string BackColor
-		{
-			get
-			{
-				return this._BackColor;
-			}
-			set
-			{
-				if ((this._BackColor != value))
-				{
-					this.OnBackColorChanging(value);
-					this.SendPropertyChanging();
-					this._BackColor = value;
-					this.SendPropertyChanged("BackColor");
-					this.OnBackColorChanged();
+					this._Instrument = value;
+					this.SendPropertyChanged("Instrument");
+					this.OnInstrumentChanged();
 				}
 			}
 		}
@@ -1472,6 +1886,710 @@ namespace AlsiUtils
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OHLC_2_Minute")]
+	public partial class OHLC_2_Minute : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.DateTime _Stamp;
+		
+		private int _O;
+		
+		private int _H;
+		
+		private int _L;
+		
+		private int _C;
+		
+		private string _Instrument;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnStampChanging(System.DateTime value);
+    partial void OnStampChanged();
+    partial void OnOChanging(int value);
+    partial void OnOChanged();
+    partial void OnHChanging(int value);
+    partial void OnHChanged();
+    partial void OnLChanging(int value);
+    partial void OnLChanged();
+    partial void OnCChanging(int value);
+    partial void OnCChanged();
+    partial void OnInstrumentChanging(string value);
+    partial void OnInstrumentChanged();
+    #endregion
+		
+		public OHLC_2_Minute()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime Stamp
+		{
+			get
+			{
+				return this._Stamp;
+			}
+			set
+			{
+				if ((this._Stamp != value))
+				{
+					this.OnStampChanging(value);
+					this.SendPropertyChanging();
+					this._Stamp = value;
+					this.SendPropertyChanged("Stamp");
+					this.OnStampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
+		public int O
+		{
+			get
+			{
+				return this._O;
+			}
+			set
+			{
+				if ((this._O != value))
+				{
+					this.OnOChanging(value);
+					this.SendPropertyChanging();
+					this._O = value;
+					this.SendPropertyChanged("O");
+					this.OnOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
+		public int H
+		{
+			get
+			{
+				return this._H;
+			}
+			set
+			{
+				if ((this._H != value))
+				{
+					this.OnHChanging(value);
+					this.SendPropertyChanging();
+					this._H = value;
+					this.SendPropertyChanged("H");
+					this.OnHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
+		public int L
+		{
+			get
+			{
+				return this._L;
+			}
+			set
+			{
+				if ((this._L != value))
+				{
+					this.OnLChanging(value);
+					this.SendPropertyChanging();
+					this._L = value;
+					this.SendPropertyChanged("L");
+					this.OnLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
+		public int C
+		{
+			get
+			{
+				return this._C;
+			}
+			set
+			{
+				if ((this._C != value))
+				{
+					this.OnCChanging(value);
+					this.SendPropertyChanging();
+					this._C = value;
+					this.SendPropertyChanged("C");
+					this.OnCChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50)")]
+		public string Instrument
+		{
+			get
+			{
+				return this._Instrument;
+			}
+			set
+			{
+				if ((this._Instrument != value))
+				{
+					this.OnInstrumentChanging(value);
+					this.SendPropertyChanging();
+					this._Instrument = value;
+					this.SendPropertyChanged("Instrument");
+					this.OnInstrumentChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OHLC_3_Minute")]
+	public partial class OHLC_3_Minute : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.DateTime _Stamp;
+		
+		private int _O;
+		
+		private int _H;
+		
+		private int _L;
+		
+		private int _C;
+		
+		private string _Instrument;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnStampChanging(System.DateTime value);
+    partial void OnStampChanged();
+    partial void OnOChanging(int value);
+    partial void OnOChanged();
+    partial void OnHChanging(int value);
+    partial void OnHChanged();
+    partial void OnLChanging(int value);
+    partial void OnLChanged();
+    partial void OnCChanging(int value);
+    partial void OnCChanged();
+    partial void OnInstrumentChanging(string value);
+    partial void OnInstrumentChanged();
+    #endregion
+		
+		public OHLC_3_Minute()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime Stamp
+		{
+			get
+			{
+				return this._Stamp;
+			}
+			set
+			{
+				if ((this._Stamp != value))
+				{
+					this.OnStampChanging(value);
+					this.SendPropertyChanging();
+					this._Stamp = value;
+					this.SendPropertyChanged("Stamp");
+					this.OnStampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
+		public int O
+		{
+			get
+			{
+				return this._O;
+			}
+			set
+			{
+				if ((this._O != value))
+				{
+					this.OnOChanging(value);
+					this.SendPropertyChanging();
+					this._O = value;
+					this.SendPropertyChanged("O");
+					this.OnOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
+		public int H
+		{
+			get
+			{
+				return this._H;
+			}
+			set
+			{
+				if ((this._H != value))
+				{
+					this.OnHChanging(value);
+					this.SendPropertyChanging();
+					this._H = value;
+					this.SendPropertyChanged("H");
+					this.OnHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
+		public int L
+		{
+			get
+			{
+				return this._L;
+			}
+			set
+			{
+				if ((this._L != value))
+				{
+					this.OnLChanging(value);
+					this.SendPropertyChanging();
+					this._L = value;
+					this.SendPropertyChanged("L");
+					this.OnLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
+		public int C
+		{
+			get
+			{
+				return this._C;
+			}
+			set
+			{
+				if ((this._C != value))
+				{
+					this.OnCChanging(value);
+					this.SendPropertyChanging();
+					this._C = value;
+					this.SendPropertyChanged("C");
+					this.OnCChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50)")]
+		public string Instrument
+		{
+			get
+			{
+				return this._Instrument;
+			}
+			set
+			{
+				if ((this._Instrument != value))
+				{
+					this.OnInstrumentChanging(value);
+					this.SendPropertyChanging();
+					this._Instrument = value;
+					this.SendPropertyChanged("Instrument");
+					this.OnInstrumentChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OHLC_5_Minute")]
+	public partial class OHLC_5_Minute : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.DateTime _Stamp;
+		
+		private int _O;
+		
+		private int _H;
+		
+		private int _L;
+		
+		private int _C;
+		
+		private string _Instrument;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnStampChanging(System.DateTime value);
+    partial void OnStampChanged();
+    partial void OnOChanging(int value);
+    partial void OnOChanged();
+    partial void OnHChanging(int value);
+    partial void OnHChanged();
+    partial void OnLChanging(int value);
+    partial void OnLChanged();
+    partial void OnCChanging(int value);
+    partial void OnCChanged();
+    partial void OnInstrumentChanging(string value);
+    partial void OnInstrumentChanged();
+    #endregion
+		
+		public OHLC_5_Minute()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime Stamp
+		{
+			get
+			{
+				return this._Stamp;
+			}
+			set
+			{
+				if ((this._Stamp != value))
+				{
+					this.OnStampChanging(value);
+					this.SendPropertyChanging();
+					this._Stamp = value;
+					this.SendPropertyChanged("Stamp");
+					this.OnStampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
+		public int O
+		{
+			get
+			{
+				return this._O;
+			}
+			set
+			{
+				if ((this._O != value))
+				{
+					this.OnOChanging(value);
+					this.SendPropertyChanging();
+					this._O = value;
+					this.SendPropertyChanged("O");
+					this.OnOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
+		public int H
+		{
+			get
+			{
+				return this._H;
+			}
+			set
+			{
+				if ((this._H != value))
+				{
+					this.OnHChanging(value);
+					this.SendPropertyChanging();
+					this._H = value;
+					this.SendPropertyChanged("H");
+					this.OnHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
+		public int L
+		{
+			get
+			{
+				return this._L;
+			}
+			set
+			{
+				if ((this._L != value))
+				{
+					this.OnLChanging(value);
+					this.SendPropertyChanging();
+					this._L = value;
+					this.SendPropertyChanged("L");
+					this.OnLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
+		public int C
+		{
+			get
+			{
+				return this._C;
+			}
+			set
+			{
+				if ((this._C != value))
+				{
+					this.OnCChanging(value);
+					this.SendPropertyChanging();
+					this._C = value;
+					this.SendPropertyChanged("C");
+					this.OnCChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50)")]
+		public string Instrument
+		{
+			get
+			{
+				return this._Instrument;
+			}
+			set
+			{
+				if ((this._Instrument != value))
+				{
+					this.OnInstrumentChanging(value);
+					this.SendPropertyChanging();
+					this._Instrument = value;
+					this.SendPropertyChanged("Instrument");
+					this.OnInstrumentChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OHLC_Temp")]
+	public partial class OHLC_Temp : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.DateTime _Stamp;
+		
+		private int _O;
+		
+		private int _H;
+		
+		private int _L;
+		
+		private int _C;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnStampChanging(System.DateTime value);
+    partial void OnStampChanged();
+    partial void OnOChanging(int value);
+    partial void OnOChanged();
+    partial void OnHChanging(int value);
+    partial void OnHChanged();
+    partial void OnLChanging(int value);
+    partial void OnLChanged();
+    partial void OnCChanging(int value);
+    partial void OnCChanged();
+    #endregion
+		
+		public OHLC_Temp()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime Stamp
+		{
+			get
+			{
+				return this._Stamp;
+			}
+			set
+			{
+				if ((this._Stamp != value))
+				{
+					this.OnStampChanging(value);
+					this.SendPropertyChanging();
+					this._Stamp = value;
+					this.SendPropertyChanged("Stamp");
+					this.OnStampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
+		public int O
+		{
+			get
+			{
+				return this._O;
+			}
+			set
+			{
+				if ((this._O != value))
+				{
+					this.OnOChanging(value);
+					this.SendPropertyChanging();
+					this._O = value;
+					this.SendPropertyChanged("O");
+					this.OnOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
+		public int H
+		{
+			get
+			{
+				return this._H;
+			}
+			set
+			{
+				if ((this._H != value))
+				{
+					this.OnHChanging(value);
+					this.SendPropertyChanging();
+					this._H = value;
+					this.SendPropertyChanged("H");
+					this.OnHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
+		public int L
+		{
+			get
+			{
+				return this._L;
+			}
+			set
+			{
+				if ((this._L != value))
+				{
+					this.OnLChanging(value);
+					this.SendPropertyChanging();
+					this._L = value;
+					this.SendPropertyChanged("L");
+					this.OnLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
+		public int C
+		{
+			get
+			{
+				return this._C;
+			}
+			set
+			{
+				if ((this._C != value))
+				{
+					this.OnCChanging(value);
+					this.SendPropertyChanging();
+					this._C = value;
+					this.SendPropertyChanged("C");
+					this.OnCChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Raw_Import")]
 	public partial class Raw_Import
 	{
@@ -1647,463 +2765,6 @@ namespace AlsiUtils
 					this._Price = value;
 					this.SendPropertyChanged("Price");
 					this.OnPriceChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SubmittedOrders")]
-	public partial class SubmittedOrder : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _OrderRef;
-		
-		private string _Instrument;
-		
-		private System.Nullable<System.DateTime> _TimeStamp;
-		
-		private string _BuySell;
-		
-		private System.Nullable<int> _Price;
-		
-		private System.Nullable<int> _Qty;
-		
-		private EntitySet<SubmittedOrders_Matched> _SubmittedOrders_Matcheds;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnOrderRefChanging(string value);
-    partial void OnOrderRefChanged();
-    partial void OnInstrumentChanging(string value);
-    partial void OnInstrumentChanged();
-    partial void OnTimeStampChanging(System.Nullable<System.DateTime> value);
-    partial void OnTimeStampChanged();
-    partial void OnBuySellChanging(string value);
-    partial void OnBuySellChanged();
-    partial void OnPriceChanging(System.Nullable<int> value);
-    partial void OnPriceChanged();
-    partial void OnQtyChanging(System.Nullable<int> value);
-    partial void OnQtyChanged();
-    #endregion
-		
-		public SubmittedOrder()
-		{
-			this._SubmittedOrders_Matcheds = new EntitySet<SubmittedOrders_Matched>(new Action<SubmittedOrders_Matched>(this.attach_SubmittedOrders_Matcheds), new Action<SubmittedOrders_Matched>(this.detach_SubmittedOrders_Matcheds));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderRef", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string OrderRef
-		{
-			get
-			{
-				return this._OrderRef;
-			}
-			set
-			{
-				if ((this._OrderRef != value))
-				{
-					this.OnOrderRefChanging(value);
-					this.SendPropertyChanging();
-					this._OrderRef = value;
-					this.SendPropertyChanged("OrderRef");
-					this.OnOrderRefChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(20)")]
-		public string Instrument
-		{
-			get
-			{
-				return this._Instrument;
-			}
-			set
-			{
-				if ((this._Instrument != value))
-				{
-					this.OnInstrumentChanging(value);
-					this.SendPropertyChanging();
-					this._Instrument = value;
-					this.SendPropertyChanged("Instrument");
-					this.OnInstrumentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeStamp", DbType="DateTime")]
-		public System.Nullable<System.DateTime> TimeStamp
-		{
-			get
-			{
-				return this._TimeStamp;
-			}
-			set
-			{
-				if ((this._TimeStamp != value))
-				{
-					this.OnTimeStampChanging(value);
-					this.SendPropertyChanging();
-					this._TimeStamp = value;
-					this.SendPropertyChanged("TimeStamp");
-					this.OnTimeStampChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuySell", DbType="VarChar(4)")]
-		public string BuySell
-		{
-			get
-			{
-				return this._BuySell;
-			}
-			set
-			{
-				if ((this._BuySell != value))
-				{
-					this.OnBuySellChanging(value);
-					this.SendPropertyChanging();
-					this._BuySell = value;
-					this.SendPropertyChanged("BuySell");
-					this.OnBuySellChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Int")]
-		public System.Nullable<int> Price
-		{
-			get
-			{
-				return this._Price;
-			}
-			set
-			{
-				if ((this._Price != value))
-				{
-					this.OnPriceChanging(value);
-					this.SendPropertyChanging();
-					this._Price = value;
-					this.SendPropertyChanged("Price");
-					this.OnPriceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Qty", DbType="Int")]
-		public System.Nullable<int> Qty
-		{
-			get
-			{
-				return this._Qty;
-			}
-			set
-			{
-				if ((this._Qty != value))
-				{
-					this.OnQtyChanging(value);
-					this.SendPropertyChanging();
-					this._Qty = value;
-					this.SendPropertyChanged("Qty");
-					this.OnQtyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SubmittedOrder_SubmittedOrders_Matched", Storage="_SubmittedOrders_Matcheds", ThisKey="OrderRef", OtherKey="OrderRef")]
-		public EntitySet<SubmittedOrders_Matched> SubmittedOrders_Matcheds
-		{
-			get
-			{
-				return this._SubmittedOrders_Matcheds;
-			}
-			set
-			{
-				this._SubmittedOrders_Matcheds.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_SubmittedOrders_Matcheds(SubmittedOrders_Matched entity)
-		{
-			this.SendPropertyChanging();
-			entity.SubmittedOrder = this;
-		}
-		
-		private void detach_SubmittedOrders_Matcheds(SubmittedOrders_Matched entity)
-		{
-			this.SendPropertyChanging();
-			entity.SubmittedOrder = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SubmittedOrders_Matched")]
-	public partial class SubmittedOrders_Matched : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _OrderRef;
-		
-		private string _MatchedRef;
-		
-		private string _Instrument;
-		
-		private System.Nullable<System.DateTime> _TimeStamp;
-		
-		private string _BuySell;
-		
-		private System.Nullable<int> _Price;
-		
-		private System.Nullable<int> _Qty;
-		
-		private EntityRef<SubmittedOrder> _SubmittedOrder;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnOrderRefChanging(string value);
-    partial void OnOrderRefChanged();
-    partial void OnMatchedRefChanging(string value);
-    partial void OnMatchedRefChanged();
-    partial void OnInstrumentChanging(string value);
-    partial void OnInstrumentChanged();
-    partial void OnTimeStampChanging(System.Nullable<System.DateTime> value);
-    partial void OnTimeStampChanged();
-    partial void OnBuySellChanging(string value);
-    partial void OnBuySellChanged();
-    partial void OnPriceChanging(System.Nullable<int> value);
-    partial void OnPriceChanged();
-    partial void OnQtyChanging(System.Nullable<int> value);
-    partial void OnQtyChanged();
-    #endregion
-		
-		public SubmittedOrders_Matched()
-		{
-			this._SubmittedOrder = default(EntityRef<SubmittedOrder>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderRef", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string OrderRef
-		{
-			get
-			{
-				return this._OrderRef;
-			}
-			set
-			{
-				if ((this._OrderRef != value))
-				{
-					if (this._SubmittedOrder.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnOrderRefChanging(value);
-					this.SendPropertyChanging();
-					this._OrderRef = value;
-					this.SendPropertyChanged("OrderRef");
-					this.OnOrderRefChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MatchedRef", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string MatchedRef
-		{
-			get
-			{
-				return this._MatchedRef;
-			}
-			set
-			{
-				if ((this._MatchedRef != value))
-				{
-					this.OnMatchedRefChanging(value);
-					this.SendPropertyChanging();
-					this._MatchedRef = value;
-					this.SendPropertyChanged("MatchedRef");
-					this.OnMatchedRefChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(20)")]
-		public string Instrument
-		{
-			get
-			{
-				return this._Instrument;
-			}
-			set
-			{
-				if ((this._Instrument != value))
-				{
-					this.OnInstrumentChanging(value);
-					this.SendPropertyChanging();
-					this._Instrument = value;
-					this.SendPropertyChanged("Instrument");
-					this.OnInstrumentChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeStamp", DbType="DateTime")]
-		public System.Nullable<System.DateTime> TimeStamp
-		{
-			get
-			{
-				return this._TimeStamp;
-			}
-			set
-			{
-				if ((this._TimeStamp != value))
-				{
-					this.OnTimeStampChanging(value);
-					this.SendPropertyChanging();
-					this._TimeStamp = value;
-					this.SendPropertyChanged("TimeStamp");
-					this.OnTimeStampChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuySell", DbType="VarChar(4)")]
-		public string BuySell
-		{
-			get
-			{
-				return this._BuySell;
-			}
-			set
-			{
-				if ((this._BuySell != value))
-				{
-					this.OnBuySellChanging(value);
-					this.SendPropertyChanging();
-					this._BuySell = value;
-					this.SendPropertyChanged("BuySell");
-					this.OnBuySellChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Int")]
-		public System.Nullable<int> Price
-		{
-			get
-			{
-				return this._Price;
-			}
-			set
-			{
-				if ((this._Price != value))
-				{
-					this.OnPriceChanging(value);
-					this.SendPropertyChanging();
-					this._Price = value;
-					this.SendPropertyChanged("Price");
-					this.OnPriceChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Qty", DbType="Int")]
-		public System.Nullable<int> Qty
-		{
-			get
-			{
-				return this._Qty;
-			}
-			set
-			{
-				if ((this._Qty != value))
-				{
-					this.OnQtyChanging(value);
-					this.SendPropertyChanging();
-					this._Qty = value;
-					this.SendPropertyChanged("Qty");
-					this.OnQtyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SubmittedOrder_SubmittedOrders_Matched", Storage="_SubmittedOrder", ThisKey="OrderRef", OtherKey="OrderRef", IsForeignKey=true)]
-		public SubmittedOrder SubmittedOrder
-		{
-			get
-			{
-				return this._SubmittedOrder.Entity;
-			}
-			set
-			{
-				SubmittedOrder previousValue = this._SubmittedOrder.Entity;
-				if (((previousValue != value) 
-							|| (this._SubmittedOrder.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SubmittedOrder.Entity = null;
-						previousValue.SubmittedOrders_Matcheds.Remove(this);
-					}
-					this._SubmittedOrder.Entity = value;
-					if ((value != null))
-					{
-						value.SubmittedOrders_Matcheds.Add(this);
-						this._OrderRef = value.OrderRef;
-					}
-					else
-					{
-						this._OrderRef = default(string);
-					}
-					this.SendPropertyChanged("SubmittedOrder");
 				}
 			}
 		}
@@ -2468,964 +3129,6 @@ namespace AlsiUtils
 					this._Tick = value;
 					this.SendPropertyChanged("Tick");
 					this.OnTickChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ImportMinute")]
-	public partial class ImportMinute : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.DateTime _Stamp;
-		
-		private int _O;
-		
-		private int _H;
-		
-		private int _L;
-		
-		private int _C;
-		
-		private int _V;
-		
-		private string _Instrument;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnStampChanging(System.DateTime value);
-    partial void OnStampChanged();
-    partial void OnOChanging(int value);
-    partial void OnOChanged();
-    partial void OnHChanging(int value);
-    partial void OnHChanged();
-    partial void OnLChanging(int value);
-    partial void OnLChanged();
-    partial void OnCChanging(int value);
-    partial void OnCChanged();
-    partial void OnVChanging(int value);
-    partial void OnVChanged();
-    partial void OnInstrumentChanging(string value);
-    partial void OnInstrumentChanged();
-    #endregion
-		
-		public ImportMinute()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
-		public System.DateTime Stamp
-		{
-			get
-			{
-				return this._Stamp;
-			}
-			set
-			{
-				if ((this._Stamp != value))
-				{
-					this.OnStampChanging(value);
-					this.SendPropertyChanging();
-					this._Stamp = value;
-					this.SendPropertyChanged("Stamp");
-					this.OnStampChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
-		public int O
-		{
-			get
-			{
-				return this._O;
-			}
-			set
-			{
-				if ((this._O != value))
-				{
-					this.OnOChanging(value);
-					this.SendPropertyChanging();
-					this._O = value;
-					this.SendPropertyChanged("O");
-					this.OnOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
-		public int H
-		{
-			get
-			{
-				return this._H;
-			}
-			set
-			{
-				if ((this._H != value))
-				{
-					this.OnHChanging(value);
-					this.SendPropertyChanging();
-					this._H = value;
-					this.SendPropertyChanged("H");
-					this.OnHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
-		public int L
-		{
-			get
-			{
-				return this._L;
-			}
-			set
-			{
-				if ((this._L != value))
-				{
-					this.OnLChanging(value);
-					this.SendPropertyChanging();
-					this._L = value;
-					this.SendPropertyChanged("L");
-					this.OnLChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
-		public int C
-		{
-			get
-			{
-				return this._C;
-			}
-			set
-			{
-				if ((this._C != value))
-				{
-					this.OnCChanging(value);
-					this.SendPropertyChanging();
-					this._C = value;
-					this.SendPropertyChanged("C");
-					this.OnCChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_V", DbType="Int NOT NULL")]
-		public int V
-		{
-			get
-			{
-				return this._V;
-			}
-			set
-			{
-				if ((this._V != value))
-				{
-					this.OnVChanging(value);
-					this.SendPropertyChanging();
-					this._V = value;
-					this.SendPropertyChanged("V");
-					this.OnVChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50)")]
-		public string Instrument
-		{
-			get
-			{
-				return this._Instrument;
-			}
-			set
-			{
-				if ((this._Instrument != value))
-				{
-					this.OnInstrumentChanging(value);
-					this.SendPropertyChanging();
-					this._Instrument = value;
-					this.SendPropertyChanged("Instrument");
-					this.OnInstrumentChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.AllHistoricMinute")]
-	public partial class AllHistoricMinute : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.DateTime _Stamp;
-		
-		private int _O;
-		
-		private int _H;
-		
-		private int _L;
-		
-		private int _C;
-		
-		private int _V;
-		
-		private string _Instrument;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnStampChanging(System.DateTime value);
-    partial void OnStampChanged();
-    partial void OnOChanging(int value);
-    partial void OnOChanged();
-    partial void OnHChanging(int value);
-    partial void OnHChanged();
-    partial void OnLChanging(int value);
-    partial void OnLChanged();
-    partial void OnCChanging(int value);
-    partial void OnCChanged();
-    partial void OnVChanging(int value);
-    partial void OnVChanged();
-    partial void OnInstrumentChanging(string value);
-    partial void OnInstrumentChanged();
-    #endregion
-		
-		public AllHistoricMinute()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
-		public System.DateTime Stamp
-		{
-			get
-			{
-				return this._Stamp;
-			}
-			set
-			{
-				if ((this._Stamp != value))
-				{
-					this.OnStampChanging(value);
-					this.SendPropertyChanging();
-					this._Stamp = value;
-					this.SendPropertyChanged("Stamp");
-					this.OnStampChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
-		public int O
-		{
-			get
-			{
-				return this._O;
-			}
-			set
-			{
-				if ((this._O != value))
-				{
-					this.OnOChanging(value);
-					this.SendPropertyChanging();
-					this._O = value;
-					this.SendPropertyChanged("O");
-					this.OnOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
-		public int H
-		{
-			get
-			{
-				return this._H;
-			}
-			set
-			{
-				if ((this._H != value))
-				{
-					this.OnHChanging(value);
-					this.SendPropertyChanging();
-					this._H = value;
-					this.SendPropertyChanged("H");
-					this.OnHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
-		public int L
-		{
-			get
-			{
-				return this._L;
-			}
-			set
-			{
-				if ((this._L != value))
-				{
-					this.OnLChanging(value);
-					this.SendPropertyChanging();
-					this._L = value;
-					this.SendPropertyChanged("L");
-					this.OnLChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
-		public int C
-		{
-			get
-			{
-				return this._C;
-			}
-			set
-			{
-				if ((this._C != value))
-				{
-					this.OnCChanging(value);
-					this.SendPropertyChanging();
-					this._C = value;
-					this.SendPropertyChanged("C");
-					this.OnCChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_V", DbType="Int NOT NULL")]
-		public int V
-		{
-			get
-			{
-				return this._V;
-			}
-			set
-			{
-				if ((this._V != value))
-				{
-					this.OnVChanging(value);
-					this.SendPropertyChanging();
-					this._V = value;
-					this.SendPropertyChanged("V");
-					this.OnVChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Instrument
-		{
-			get
-			{
-				return this._Instrument;
-			}
-			set
-			{
-				if ((this._Instrument != value))
-				{
-					this.OnInstrumentChanging(value);
-					this.SendPropertyChanging();
-					this._Instrument = value;
-					this.SendPropertyChanged("Instrument");
-					this.OnInstrumentChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OHLC_5_Minute")]
-	public partial class OHLC_5_Minute : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.DateTime _Stamp;
-		
-		private int _O;
-		
-		private int _H;
-		
-		private int _L;
-		
-		private int _C;
-		
-		private string _Instrument;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnStampChanging(System.DateTime value);
-    partial void OnStampChanged();
-    partial void OnOChanging(int value);
-    partial void OnOChanged();
-    partial void OnHChanging(int value);
-    partial void OnHChanged();
-    partial void OnLChanging(int value);
-    partial void OnLChanged();
-    partial void OnCChanging(int value);
-    partial void OnCChanged();
-    partial void OnInstrumentChanging(string value);
-    partial void OnInstrumentChanged();
-    #endregion
-		
-		public OHLC_5_Minute()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
-		public System.DateTime Stamp
-		{
-			get
-			{
-				return this._Stamp;
-			}
-			set
-			{
-				if ((this._Stamp != value))
-				{
-					this.OnStampChanging(value);
-					this.SendPropertyChanging();
-					this._Stamp = value;
-					this.SendPropertyChanged("Stamp");
-					this.OnStampChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
-		public int O
-		{
-			get
-			{
-				return this._O;
-			}
-			set
-			{
-				if ((this._O != value))
-				{
-					this.OnOChanging(value);
-					this.SendPropertyChanging();
-					this._O = value;
-					this.SendPropertyChanged("O");
-					this.OnOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
-		public int H
-		{
-			get
-			{
-				return this._H;
-			}
-			set
-			{
-				if ((this._H != value))
-				{
-					this.OnHChanging(value);
-					this.SendPropertyChanging();
-					this._H = value;
-					this.SendPropertyChanged("H");
-					this.OnHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
-		public int L
-		{
-			get
-			{
-				return this._L;
-			}
-			set
-			{
-				if ((this._L != value))
-				{
-					this.OnLChanging(value);
-					this.SendPropertyChanging();
-					this._L = value;
-					this.SendPropertyChanged("L");
-					this.OnLChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
-		public int C
-		{
-			get
-			{
-				return this._C;
-			}
-			set
-			{
-				if ((this._C != value))
-				{
-					this.OnCChanging(value);
-					this.SendPropertyChanging();
-					this._C = value;
-					this.SendPropertyChanged("C");
-					this.OnCChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50)")]
-		public string Instrument
-		{
-			get
-			{
-				return this._Instrument;
-			}
-			set
-			{
-				if ((this._Instrument != value))
-				{
-					this.OnInstrumentChanging(value);
-					this.SendPropertyChanging();
-					this._Instrument = value;
-					this.SendPropertyChanged("Instrument");
-					this.OnInstrumentChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OHLC_2_Minute")]
-	public partial class OHLC_2_Minute : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.DateTime _Stamp;
-		
-		private int _O;
-		
-		private int _H;
-		
-		private int _L;
-		
-		private int _C;
-		
-		private string _Instrument;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnStampChanging(System.DateTime value);
-    partial void OnStampChanged();
-    partial void OnOChanging(int value);
-    partial void OnOChanged();
-    partial void OnHChanging(int value);
-    partial void OnHChanged();
-    partial void OnLChanging(int value);
-    partial void OnLChanged();
-    partial void OnCChanging(int value);
-    partial void OnCChanged();
-    partial void OnInstrumentChanging(string value);
-    partial void OnInstrumentChanged();
-    #endregion
-		
-		public OHLC_2_Minute()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
-		public System.DateTime Stamp
-		{
-			get
-			{
-				return this._Stamp;
-			}
-			set
-			{
-				if ((this._Stamp != value))
-				{
-					this.OnStampChanging(value);
-					this.SendPropertyChanging();
-					this._Stamp = value;
-					this.SendPropertyChanged("Stamp");
-					this.OnStampChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
-		public int O
-		{
-			get
-			{
-				return this._O;
-			}
-			set
-			{
-				if ((this._O != value))
-				{
-					this.OnOChanging(value);
-					this.SendPropertyChanging();
-					this._O = value;
-					this.SendPropertyChanged("O");
-					this.OnOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
-		public int H
-		{
-			get
-			{
-				return this._H;
-			}
-			set
-			{
-				if ((this._H != value))
-				{
-					this.OnHChanging(value);
-					this.SendPropertyChanging();
-					this._H = value;
-					this.SendPropertyChanged("H");
-					this.OnHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
-		public int L
-		{
-			get
-			{
-				return this._L;
-			}
-			set
-			{
-				if ((this._L != value))
-				{
-					this.OnLChanging(value);
-					this.SendPropertyChanging();
-					this._L = value;
-					this.SendPropertyChanged("L");
-					this.OnLChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
-		public int C
-		{
-			get
-			{
-				return this._C;
-			}
-			set
-			{
-				if ((this._C != value))
-				{
-					this.OnCChanging(value);
-					this.SendPropertyChanging();
-					this._C = value;
-					this.SendPropertyChanged("C");
-					this.OnCChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50)")]
-		public string Instrument
-		{
-			get
-			{
-				return this._Instrument;
-			}
-			set
-			{
-				if ((this._Instrument != value))
-				{
-					this.OnInstrumentChanging(value);
-					this.SendPropertyChanging();
-					this._Instrument = value;
-					this.SendPropertyChanged("Instrument");
-					this.OnInstrumentChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OHLC_3_Minute")]
-	public partial class OHLC_3_Minute : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private System.DateTime _Stamp;
-		
-		private int _O;
-		
-		private int _H;
-		
-		private int _L;
-		
-		private int _C;
-		
-		private string _Instrument;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnStampChanging(System.DateTime value);
-    partial void OnStampChanged();
-    partial void OnOChanging(int value);
-    partial void OnOChanged();
-    partial void OnHChanging(int value);
-    partial void OnHChanged();
-    partial void OnLChanging(int value);
-    partial void OnLChanged();
-    partial void OnCChanging(int value);
-    partial void OnCChanged();
-    partial void OnInstrumentChanging(string value);
-    partial void OnInstrumentChanged();
-    #endregion
-		
-		public OHLC_3_Minute()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
-		public System.DateTime Stamp
-		{
-			get
-			{
-				return this._Stamp;
-			}
-			set
-			{
-				if ((this._Stamp != value))
-				{
-					this.OnStampChanging(value);
-					this.SendPropertyChanging();
-					this._Stamp = value;
-					this.SendPropertyChanged("Stamp");
-					this.OnStampChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
-		public int O
-		{
-			get
-			{
-				return this._O;
-			}
-			set
-			{
-				if ((this._O != value))
-				{
-					this.OnOChanging(value);
-					this.SendPropertyChanging();
-					this._O = value;
-					this.SendPropertyChanged("O");
-					this.OnOChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
-		public int H
-		{
-			get
-			{
-				return this._H;
-			}
-			set
-			{
-				if ((this._H != value))
-				{
-					this.OnHChanging(value);
-					this.SendPropertyChanging();
-					this._H = value;
-					this.SendPropertyChanged("H");
-					this.OnHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
-		public int L
-		{
-			get
-			{
-				return this._L;
-			}
-			set
-			{
-				if ((this._L != value))
-				{
-					this.OnLChanging(value);
-					this.SendPropertyChanging();
-					this._L = value;
-					this.SendPropertyChanged("L");
-					this.OnLChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
-		public int C
-		{
-			get
-			{
-				return this._C;
-			}
-			set
-			{
-				if ((this._C != value))
-				{
-					this.OnCChanging(value);
-					this.SendPropertyChanging();
-					this._C = value;
-					this.SendPropertyChanged("C");
-					this.OnCChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Instrument", DbType="VarChar(50)")]
-		public string Instrument
-		{
-			get
-			{
-				return this._Instrument;
-			}
-			set
-			{
-				if ((this._Instrument != value))
-				{
-					this.OnInstrumentChanging(value);
-					this.SendPropertyChanging();
-					this._Instrument = value;
-					this.SendPropertyChanged("Instrument");
-					this.OnInstrumentChanged();
 				}
 			}
 		}

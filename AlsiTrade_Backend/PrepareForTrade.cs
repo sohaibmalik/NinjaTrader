@@ -7,13 +7,15 @@ namespace AlsiTrade_Backend
 {
     public class PrepareForTrade
     {
-        public void GetPricesFromWeb(GlobalObjects.TimeInterval Interval)
+        public void GetPricesFromWeb(GlobalObjects.TimeInterval Interval,string ContractName)
         {
-            var PD = HiSat.HistData.GetHistoricalMINUTE_FromWEB(DateTime.Now.AddDays(-5), DateTime.Now, (int)Interval, "MAR13ALSI");
-            var pd = PD.Last().TimeStamp;
-            var t = ConvertTime(GlobalObjects.TimeInterval.Minute_5);
+            
+            GlobalObjects.Points  = HiSat.HistData.GetHistoricalMINUTE_FromWEB(DateTime.Now.AddDays(-5), DateTime.Now, (int)Interval, ContractName);
+            var pd = GlobalObjects.Points.Last().TimeStamp;
+            var t = ConvertTime(Interval);
             if (pd.Day == t.Day && pd.Hour == t.Hour && pd.Minute == t.Minute)
             {
+                AlsiTrade_Backend.UpdateDB.UpdatePricesToTempTable();
                 PricesSyncedEvent p = new PricesSyncedEvent();
                 p.ReadyForTradeCalcs = true;
                 onPriceSync(this, p);
@@ -43,6 +45,7 @@ namespace AlsiTrade_Backend
                     break;
 
                 case GlobalObjects.TimeInterval.Minute_2:
+                    t=_Now.AddMinutes(-2);
                     break;
 
                 case GlobalObjects.TimeInterval.Minute_5:

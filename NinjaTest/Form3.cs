@@ -45,9 +45,9 @@ namespace NinjaTest
                s, end, false);
             Debug.WriteLine("Start Date " + prices[0].TimeStamp);
 
-            for (int x = 21; x <= 30; x++)
+            for (int x = 21; x <= 24; x++)
             {
-                for (int y = 8; y <= 40; y++)
+                for (int y = 8; y <= 28; y++)
                 {
                    
                     for (int a = 27; a <= 50; a++)
@@ -75,7 +75,7 @@ namespace NinjaTest
                                     };
 
 
-                                   // AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices);
+                                    AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices,false);
                                 }
                             }
                         }

@@ -17,7 +17,7 @@ namespace AlsiTrade_Backend
             e.onMatch += new OrderMatched(e_onMatch);
         }
 
-        public void SendOrderToMarket(Trade trade, int volume, string contract)
+        public void SendOrderToMarket(Trade trade)
         {
             if (trade.BuyorSell != Trade.BuySell.None)
             {
@@ -26,8 +26,8 @@ namespace AlsiTrade_Backend
                 {
                     BS = trade.BuyorSell,
                     Price = trade.CurrentPrice,
-                    Volume = volume,
-                    Contract = contract,
+                    Volume = trade.TradeVolume,
+                    Contract = trade.InstrumentName,
 
                 };
 

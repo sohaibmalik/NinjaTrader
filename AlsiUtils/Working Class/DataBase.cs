@@ -12,7 +12,7 @@ namespace AlsiUtils
 
     public class DataBase
     {
-      public static void SetConnectionString()
+        public static void SetConnectionString()
         {
             //Laptop
             //string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
@@ -66,8 +66,8 @@ namespace AlsiUtils
                 {
 
                     Time = TradeObject.TimeStamp,
-                    //BuySell = TradeObject.BuyorSell,
-                    //Reason = TradeObject.TradeReason,
+                    BuySell = TradeObject.BuyorSell.ToString(),
+                    Reason = TradeObject.Reason.ToString(),
                     Price = (int)TradeObject.TradedPrice,
                     Volume = TradeObject.TradeVolume,
                     ForeColor = TradeObject.ForeColor.ToKnownColor().ToString(),
@@ -155,8 +155,8 @@ namespace AlsiUtils
                 {
                     Trade l = new Trade();
                     l.TimeStamp = (DateTime)v.Time;
-                   // l.BuyorSell = v.BuySell;
-                   // l.TradeReason = v.Reason;
+                    // l.BuyorSell = v.BuySell;
+                    // l.TradeReason = v.Reason;
                     l.TradedPrice = (double)v.Price;
                     l.TradeVolume = (int)v.Volume;
                     l.ForeColor = Color.FromName(v.ForeColor);
@@ -175,7 +175,7 @@ namespace AlsiUtils
         }
 
 
-        static public List<Price> readDataFromDataBase(GlobalObjects.TimeInterval T,dataTable TD,DateTime Start,DateTime End, bool reverseList)
+        static public List<Price> readDataFromDataBase(GlobalObjects.TimeInterval T, dataTable TD, DateTime Start, DateTime End, bool reverseList)
         {
             try
             {
@@ -183,7 +183,29 @@ namespace AlsiUtils
 
                 AlsiDBDataContext dc = new AlsiDBDataContext();
                 dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-          
+
+                if (TD == dataTable.Temp)
+                {
+                    var result = from q in dc.OHLC_Temps
+                                 where q.Stamp > Start && q.Stamp < End
+                                 select new { q.Stamp, q.O, q.H, q.L, q.C,};
+
+                    foreach (var v in result)
+                    {
+                        Price p = new Price();
+                        p.Close = v.C;
+                        p.Open = v.O;
+                        p.High = v.H;
+                        p.Low = v.L;
+                        p.TimeStamp = v.Stamp;                      
+                        prices.Add(p);
+
+                    }
+                    dc.Clean_OHLC_Temp();
+                    if (reverseList) prices.Reverse();
+                    return prices;
+                }
+             
                 if (TD == dataTable.AllHistory)
                 {
                     if (T == GlobalObjects.TimeInterval.Minute_2) dc.OHLC_2_AllHistory();
@@ -197,13 +219,14 @@ namespace AlsiUtils
                     if (T == GlobalObjects.TimeInterval.Minute_10) dc.OHLC_10();
                 }
 
+              
 
 
 
                 if (T == GlobalObjects.TimeInterval.Minute_2)
                 {
-                   var result = from q in dc.OHLC_2_Minutes 
-                                 where q.Stamp>Start && q.Stamp<End
+                    var result = from q in dc.OHLC_2_Minutes
+                                 where q.Stamp > Start && q.Stamp < End
                                  select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
 
                     foreach (var v in result)
@@ -259,7 +282,7 @@ namespace AlsiUtils
                     }
                 }
 
-             
+
 
 
 
@@ -274,7 +297,7 @@ namespace AlsiUtils
             }
         }
 
-       
+
         static public List<Price> readDataFromDataBase_10_MIN_TempTable(bool reverseList)
         {
             try
@@ -329,7 +352,7 @@ namespace AlsiUtils
 
                 AlsiDBDataContext dc = new AlsiDBDataContext();
                 dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-               
+
 
                 var count = (from p in dc.MasterMinutes
                              select (p.Stamp)).Count();
@@ -365,7 +388,7 @@ namespace AlsiUtils
             }
         }
 
-        
+
         static public void get_10min_high_low_from_ticks(out double High, out double Low)
         {
             try
@@ -456,34 +479,7 @@ namespace AlsiUtils
 
         #region DataManager
 
-        static public DateTime getLastUpToDate()
-        {
-            AlsiDBDataContext dc = new AlsiDBDataContext();
-            dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-            dc.OHLC_10();
-
-            var count = (from p in dc.OHLC_10_Minutes
-                         select (p.Stamp)).Count();
-
-            //Debug.WriteLine("10 Minute Data Count : " + count);
-
-
-            var lastdate = from q in dc.OHLC_10_Minutes
-                                     .Skip(count - 1)
-                                     .Take(1)
-                           select new { q.Stamp };
-
-            DateTime last = new DateTime();
-
-            foreach (var v in lastdate)
-            {
-                last = v.Stamp;
-            }
-
-
-            return last;
-
-        }
+      
 
         static public List<Tick> readDataFromDataBase_Tick(int numberOfPeriods, bool reverseList, out int DbRecordCount)
         {
@@ -813,9 +809,10 @@ namespace AlsiUtils
 
         #endregion
 
-     
-       public enum dataTable
+
+        public enum dataTable
         {
+            Temp,
             MasterMinute,
             AllHistory,
         }

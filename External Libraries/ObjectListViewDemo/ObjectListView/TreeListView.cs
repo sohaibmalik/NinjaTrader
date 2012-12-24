@@ -5,6 +5,10 @@
  * Date: 23/09/2008 11:15 AM
  *
  * Change log:
+ * 2012-10-25  JPP  - Circumvent annoying bug in ListView control where changing
+ *                    selection would leave artefacts on the control.
+ * 2012-08-10  JPP  - Don't trigger selection changed events during expands
+ * 
  * v2.5.1
  * 2012-04-30  JPP  - Fixed bug where CheckedObjects would return model objects that had been filtered out.
  *                  - Allow any column to render the tree, not just column 0 (still not sure about this one)
@@ -240,6 +244,15 @@ namespace BrightIdeasSoftware
             set { this.Roots = value; }
         }
 
+        [Browsable(false),
+        DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public override IEnumerable ObjectsForClustering {
+            get {
+                for (int i = 0; i < this.TreeModel.GetObjectCount(); i++)
+                    yield return this.TreeModel.GetNthObject(i);
+            }
+        }
+
         /// <summary>
         /// After expanding a branch, should the TreeListView attempts to show as much of the 
         /// revealed descendents as possible.
@@ -404,10 +417,15 @@ namespace BrightIdeasSoftware
         /// </summary>
         /// <param name="preserveState">If true, the control will try to preserve selection and expansion</param>
         public virtual void RebuildAll(bool preserveState) {
+            int previousTopItemIndex = preserveState ? this.TopItemIndex : -1;
+
             this.RebuildAll(
                 preserveState ? this.SelectedObjects : null,
                 preserveState ? this.ExpandedObjects : null,
                 preserveState ? this.CheckedObjects : null);
+
+            if (preserveState)
+                this.TopItemIndex = previousTopItemIndex;
         }
 
         /// <summary>
@@ -422,20 +440,27 @@ namespace BrightIdeasSoftware
             CanExpandGetterDelegate canExpand = this.CanExpandGetter;
             ChildrenGetterDelegate childrenGetter = this.ChildrenGetter;
 
-            // Give ourselves a new data structure
-            this.TreeModel = new Tree(this);
-            this.VirtualListDataSource = this.TreeModel;
+            try {
+                this.BeginUpdate();
 
-            // Put back the bits we didn't want to forget
-            this.CanExpandGetter = canExpand;
-            this.ChildrenGetter = childrenGetter;
-            if (expanded != null)
-                this.ExpandedObjects = expanded;
-            this.Roots = roots;
-            if (selected != null)
-                this.SelectedObjects = selected;
-            if (checkedObjects != null)
-                this.CheckedObjects = checkedObjects;
+                // Give ourselves a new data structure
+                this.TreeModel = new Tree(this);
+                this.VirtualListDataSource = this.TreeModel;
+
+                // Put back the bits we didn't want to forget
+                this.CanExpandGetter = canExpand;
+                this.ChildrenGetter = childrenGetter;
+                if (expanded != null)
+                    this.ExpandedObjects = expanded;
+                this.Roots = roots;
+                if (selected != null)
+                    this.SelectedObjects = selected;
+                if (checkedObjects != null)
+                    this.CheckedObjects = checkedObjects;
+            }
+            finally {
+                this.EndUpdate();
+            }
         }
 
         /// <summary>
@@ -456,7 +481,8 @@ namespace BrightIdeasSoftware
 
             // Update the size of the list and restore the selection
             this.UpdateVirtualListSize();
-            this.SelectedObjects = selection;
+            using (this.SuspendSelectionEventsDuring())
+                this.SelectedObjects = selection;
 
             // Redraw the items that were changed by the expand operation
             this.RedrawItems(index, this.GetItemCount() - 1, false);
@@ -491,11 +517,13 @@ namespace BrightIdeasSoftware
                 return;
             IList selection = this.SelectedObjects;
             int index = this.TreeModel.ExpandAll();
-            if (index >= 0) {
-                this.UpdateVirtualListSize();
+            if (index < 0) 
+                return;
+
+            this.UpdateVirtualListSize();
+            using (this.SuspendSelectionEventsDuring())
                 this.SelectedObjects = selection;
-                this.RedrawItems(index, this.GetItemCount() - 1, false);
-            }
+            this.RedrawItems(index, this.GetItemCount() - 1, false);
         }
 
         /// <summary>
@@ -560,6 +588,16 @@ namespace BrightIdeasSoftware
 
         //------------------------------------------------------------------------------------------
         // Commands - Tree traversal
+
+        /// <summary>
+        /// Return whether or not the given model can expand.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <remarks>The given model must have already been seen in the tree</remarks>
+        public virtual bool CanExpand(Object model) {
+            Branch br = this.TreeModel.GetBranch(model);
+            return (br != null && br.CanExpand);
+        }
 
         /// <summary>
         /// Return the model object that is the parent of the given model object.
@@ -649,13 +687,36 @@ namespace BrightIdeasSoftware
         #region Event handlers
 
         /// <summary>
+        /// The application is idle and a SelectionChanged event has been scheduled
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected override void HandleApplicationIdle(object sender, EventArgs e) {
+            base.HandleApplicationIdle(sender, e);
+
+            // There is an annoying redraw bug on ListViews that use indentation and
+            // that have full row select enabled. When the selection reduces to a subset
+            // of previously selected rows, or when the selection is extended using
+            // shift-pageup/down, then the space occupied by the identation is not
+            // invalidated, and hence remains highlighted.
+            // Ideally we'd want to know exactly which rows were selected or deselected
+            // and then invalidate just the indentation region of those rows,
+            // but that's too much work. So just redraw the control.
+            // Actually... the selection issues show just slightly for non-full row select
+            // controls as well. So, always redraw the control after the selection
+            // changes.
+            this.Invalidate();
+        }
+
+        /// <summary>
         /// Decide if the given key event should be handled as a normal key input to the control?
         /// </summary>
         /// <param name="keyData"></param>
         /// <returns></returns>
         protected override bool IsInputKey(Keys keyData) {
             // We want to handle Left and Right keys within the control
-            if (((keyData & Keys.KeyCode) == Keys.Left) || ((keyData & Keys.KeyCode) == Keys.Right)) 
+            Keys key = keyData & Keys.KeyCode;
+            if (key == Keys.Left || key == Keys.Right) 
                 return true;
             
             return base.IsInputKey(keyData);
@@ -884,7 +945,7 @@ namespace BrightIdeasSoftware
             /// <returns>The index of the model in flat list version of the tree</returns>
             public virtual int RebuildChildren(Object model) {
                 Branch br = this.GetBranch(model);
-                if (br == null || !br.Visible)
+                if (br == null || !br.Visible || !br.CanExpand)
                     return -1;
 
                 int count = br.NumberVisibleDescendents;
@@ -894,9 +955,10 @@ namespace BrightIdeasSoftware
                 int index = this.GetObjectIndex(model);
                 if (count > 0)
                     this.objectList.RemoveRange(index + 1, count);
-                br.FetchChildren();
-                if (br.IsExpanded)
+                if (br.CanExpand && br.IsExpanded) {
+                    br.FetchChildren();
                     this.InsertChildren(br, index + 1);
+                }
                 return index;
             }
 
@@ -923,12 +985,12 @@ namespace BrightIdeasSoftware
             /// <param name="model"></param>
             /// <param name="isExpanded"></param>
             internal void SetModelExpanded(object model, bool isExpanded) {
-                if (model != null) {
-                    if (isExpanded)
-                        this.mapObjectToExpanded[model] = true;
-                    else
-                        this.mapObjectToExpanded.Remove(model);
-                }
+                if (model == null) return;
+
+                if (isExpanded)
+                    this.mapObjectToExpanded[model] = true;
+                else
+                    this.mapObjectToExpanded.Remove(model);
             }
 
             /// <summary>
@@ -1293,6 +1355,9 @@ namespace BrightIdeasSoftware
             /// </summary>
             public List<Branch> FilteredChildBranches {
                 get {
+                    if (!this.IsExpanded)
+                        return new List<Branch>();
+
                     if (!this.Tree.IsFiltering)
                         return this.ChildBranches;
 
@@ -1470,8 +1535,10 @@ namespace BrightIdeasSoftware
             /// </summary>
             public virtual void ExpandAll() {
                 this.Expand();
-                foreach (Branch br in this.ChildBranches)
-                    br.ExpandAll();
+                foreach (Branch br in this.ChildBranches) {
+                    if (br.CanExpand)
+                        br.ExpandAll();
+                }
             }
 
             /// <summary>
@@ -1534,7 +1601,7 @@ namespace BrightIdeasSoftware
             /// Force a refresh of all children recursively
             /// </summary>
             public virtual void RefreshChildren() {
-                if (this.IsExpanded) {
+                if (this.IsExpanded && this.CanExpand) {
                     this.FetchChildren();
                     foreach (Branch br in this.ChildBranches)
                         br.RefreshChildren();

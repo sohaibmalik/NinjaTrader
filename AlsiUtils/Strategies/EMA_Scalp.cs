@@ -23,7 +23,7 @@ namespace AlsiUtils.Strategies
 
         public static List<Trade> EmaScalp(Parameter_EMA_Scalp P, List<Price> price,bool tradeOnly)
         {
-
+           
 
             A_1 = Factory_Indicator.createEMA(P.A_EMA1, price);
             A_6 = Factory_Indicator.createEMA(P.A_EMA2, price);
@@ -38,17 +38,8 @@ namespace AlsiUtils.Strategies
             TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].Timestamp, CalcTriggers);
             SumStats s = _strategy.Calculate();
             _T = _strategy.getStrategyList();
-            for (int x = 0; x < _T.Count; x++) DP(x);
+           // for (int x = 0; x < _T.Count; x++) DP(x);
 
-            //_strategy.ClearList(); //FOR SIMULATOR
-
-            return GetTradeData(tradeOnly); // REAL TRADING
-
-           // Clear();//FOR SIMULATOR
-
-
-
-            //return s;
             if (true)//s.Total_Avg_PL >15 || s.Total_Avg_PL <-15)
             {
 
@@ -62,27 +53,40 @@ namespace AlsiUtils.Strategies
                 Debug.WriteLine("Period " + P.Period);
                 Debug.WriteLine("==========================================");
 
-                SimDBDataContext dc = new SimDBDataContext();
-                tbl5Min n = new tbl5Min
-                {
-                    Trades = (int)s.TradeCount,
-                    TotalPL = (int)s.TotalProfit,
-                    Win = s.Pct_Prof,
-                    Loose = s.Pct_Loss,
-                    AvgPL = s.Total_Avg_PL,
-                    E_A1 = P.A_EMA1,
-                    E_A2 = P.A_EMA2,
-                    E_B1 = P.B_EMA1,
-                    E_B2 = P.B_EMA2,
-                    E_C = P.C_EMA,
-                    CloseEndDay = P.CloseEndofDay.ToString(),
+                //SimDBDataContext dc = new SimDBDataContext();
+                //tbl5Min n = new tbl5Min
+                //{
+                //    Trades = (int)s.TradeCount,
+                //    TotalPL = (int)s.TotalProfit,
+                //    Win = s.Pct_Prof,
+                //    Loose = s.Pct_Loss,
+                //    AvgPL = s.Total_Avg_PL,
+                //    E_A1 = P.A_EMA1,
+                //    E_A2 = P.A_EMA2,
+                //    E_B1 = P.B_EMA1,
+                //    E_B2 = P.B_EMA2,
+                //    E_C = P.C_EMA,
+                //    CloseEndDay = P.CloseEndofDay.ToString(),
 
-                };
+                //};
                 // dc.tbl5Mins.InsertOnSubmit(n);
                 // dc.SubmitChanges();
             }
 
+
+
+            //_strategy.ClearList(); //FOR SIMULATOR
+
+            return GetTradeData(tradeOnly); // REAL TRADING
+
+            //Clear();//FOR SIMULATOR
+
+
+
+            //return s;
            
+
+            return new List<Trade>();
 
         }
 
@@ -121,7 +125,7 @@ namespace AlsiUtils.Strategies
         private static void DP(int x)
         {
 
-            if (false)//_T[x].ActualTrade != Trade.Trigger.None)
+            if (true)//_T[x].ActualTrade != Trade.Trigger.None)
             {
 
                 Debug.WriteLine(_T[x].Timestamp
@@ -145,26 +149,27 @@ namespace AlsiUtils.Strategies
         public static List<Trade> GetTradeData(bool TradesOnly)
         {
             List<Trade> trades = new List<Trade>();
-            foreach (var v in _T)
+           for (int x = 0; x < _T.Count; x++)
             {
                 var t = new Trade()
                 {
-                    InstrumentName = v.InstrumentName,
-                    BuyorSell = TradeStrategy.GetBuySell(v.ActualTrade),
-                    CurrentDirection = v.TradeDirection,
-                    Position = v.Position,
-                    RunningProfit = v.RunningProfit,
-                    TimeStamp = v.Timestamp,
-                    TotalPL = v.TotalProfit,
-                    TradedPrice = v.TradedPrice,
-                    Reason =v.ActualTrade,
-                    CurrentPrice = v.Price_Close,
+                    InstrumentName = _T[x].InstrumentName,
+                    BuyorSell = TradeStrategy.GetBuySell(_T[x].ActualTrade),
+                    CurrentDirection = _T[x].TradeDirection,
+                    Position = _T[x].Position,
+                    RunningProfit = _T[x].RunningProfit,
+                    TimeStamp = _T[x].Timestamp,
+                    TotalPL = _T[x].TotalProfit,
+                    TradedPrice = _T[x].Price_Close,
+                    Reason =_T[x].ActualTrade,
+                    CurrentPrice = _T[x].Price_Close,
+                    IndicatorNotes = "A1:" + A_1[x].Ema + "  A2:" + A_6[x].Ema + "  B1:" + B_1[x].Ema + "  B2:" + B_6[x].Ema + "  C:" + E1[x].Ema
                     
                 };
 
                 if (TradesOnly)
                 {
-                    if (v.ActualTrade != Trade.Trigger.None) trades.Add(t);
+                    if (_T[x].ActualTrade != Trade.Trigger.None) trades.Add(t);
                 }
                 else
                 {

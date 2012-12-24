@@ -15,10 +15,12 @@ namespace AlsiTrade_Backend
         /// </summary>
         /// <param name="ContractName">Contract name : example "DEC12ALSI"</param>
         /// <param name="CustomConnectionString">Custom Connection String, this will set Current Connection String</param>
-        public static void FullHistoricUpdate(string ContractName, string CustomConnectionString)
+        public static void FullHistoricUpdate_MasterMinute(string ContractName)
         {
-            GlobalObjects.CustomConnectionString = CustomConnectionString;
-            DateTime Last = DataBase.getLastUpToDate();
+           
+            AlsiDBDataContext dc = new AlsiDBDataContext();
+
+            DateTime Last = dc.MasterMinutes.AsEnumerable().Last().Stamp;
             DebugClass.WriteLine(Last);
             DateTime Now = DateTime.UtcNow.AddHours(2);
             DebugClass.WriteLine("FULL UPDATE");
@@ -31,7 +33,7 @@ namespace AlsiTrade_Backend
 
         }
 
-        private static void UpdatePricesToImportMinute()
+        public static void UpdatePricesToImportMinute()
         {
             AlsiDBDataContext dc = new AlsiDBDataContext();
             dc.Connection.ConnectionString = GlobalObjects.CustomConnectionString;
@@ -71,6 +73,47 @@ namespace AlsiTrade_Backend
             GlobalObjects.Points.Clear();
             dc.UpadteImport();
             dc.CleanUp();
+
+        }
+
+        public static void UpdatePricesToTempTable()
+        {
+            AlsiDBDataContext dc = new AlsiDBDataContext();
+            dc.Connection.ConnectionString = GlobalObjects.CustomConnectionString;
+            dc.ClearTempTable();
+            decimal progress = 0;
+            decimal totProgress = GlobalObjects.Points.Count;
+
+            foreach (PointData price in GlobalObjects.Points)
+            {
+                int open = price.Open;
+                int high = price.High;
+                int low = price.Low;
+                int close = price.Close;
+                int volume = price.Volume;
+
+                OHLC_Temp  c = new OHLC_Temp
+                {
+                    Stamp = price.TimeStamp,
+                    O = open,
+                    H = high,
+                    L = low,
+                    C = close,                  
+                };
+
+
+                dc.OHLC_Temps.InsertOnSubmit(c);
+                dc.SubmitChanges();
+                progress++;
+
+                int p = Convert.ToInt16(100 * (progress / totProgress));
+
+
+
+            }
+            GlobalObjects.Points.Clear();
+           
+            
 
         }
     }

@@ -12,12 +12,12 @@ namespace AlsiTrade_Backend
     public class RunCalcs
     {
 
-        public static List<Trade> RunEMAScalpLiveTrade(Parameter_EMA_Scalp Parameter, GlobalObjects.TimeInterval Interval, bool TradesOnly)
+        public static List<Trade> RunEMAScalpLiveTrade(Parameter_EMA_Scalp Parameter, GlobalObjects.TimeInterval Interval)
         {
             DateTime s = DateTime.Now.AddDays(-10);
-            DateTime e = DateTime.Now;
-            GlobalObjects.Prices = AlsiUtils.DataBase.readDataFromDataBase(Interval, AlsiUtils.DataBase.dataTable.MasterMinute, s, e, false);
-            return AlsiUtils.Strategies.EMA_Scalp.EmaScalp(Parameter, GlobalObjects.Prices, TradesOnly);
+            DateTime e = DateTime.UtcNow.AddHours(5);
+            GlobalObjects.Prices = AlsiUtils.DataBase.readDataFromDataBase(Interval, AlsiUtils.DataBase.dataTable.Temp, s, e, false);
+            return AlsiUtils.Strategies.EMA_Scalp.EmaScalp(Parameter, GlobalObjects.Prices, false);
 
         }
 

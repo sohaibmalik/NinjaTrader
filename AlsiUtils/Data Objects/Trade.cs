@@ -40,7 +40,7 @@ namespace AlsiUtils
 
 
         public enum BuySell
-        {
+        {          
             Buy,
             Sell,
             None,
@@ -77,6 +77,22 @@ namespace AlsiUtils
             ContractExpires = 10
         }
        
-        
+        public static string BuySellToString(BuySell BS)
+        {
+            if (BS == BuySell.Buy) return "Buy";
+            if (BS == BuySell.Sell) return "Sell";
+            if (BS == BuySell.None) return "None";
+            return "";
+        }
+
+        public static BuySell BuySellFromString(string BS)
+        {
+            if (BS == "Buy") return BuySell.Buy;
+            if (BS == "Sell") return BuySell.Sell;
+            if (BS == "None") return BuySell.None;
+            return BuySell.None;
+        }
+
+
     }
 }
