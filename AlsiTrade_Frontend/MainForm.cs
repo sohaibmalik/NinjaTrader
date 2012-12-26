@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using AlsiTrade_Backend;
+using AlsiUtils;
 using AlsiUtils.Data_Objects;
 using AlsiUtils.Strategies;
-using AlsiUtils;
-using System.Diagnostics;
 using BrightIdeasSoftware;
 
 namespace FrontEnd
 {
+   
     public partial class MainForm : Form
     {
         private PrepareForTrade p;
@@ -32,7 +30,7 @@ namespace FrontEnd
         private OLVColumn ColCurrentPrice;
         private OLVColumn ColTotalProf;
         private OLVColumn ColInstrument;
-
+       
 
         DateTime masterStart, masterEnd, allhistoStart, allhistoEnd;
         public MainForm()
@@ -54,7 +52,9 @@ namespace FrontEnd
             marketOrder.onOrderSend += new MarketOrder.OrderSend(marketOrder_onOrderSend);
             marketOrder.onOrderMatch += new MarketOrder.OrderMatch(marketOrder_onOrderMatch);
             BuildListViewColumns();
+          
         }
+                  
 
         void marketOrder_onOrderMatch(object sender, MarketOrder.OrderMatchEvent e)
         {
@@ -135,12 +135,12 @@ namespace FrontEnd
 
         private void BuildListViewColumns()
         {
+            
             ColStamp = new OLVColumn
             {
                 Name = "cStamp",
                 AspectName = "TimeStamp",
                 Text = "Time",
-                Sortable = true,
                 Groupable = false,
                 IsVisible = true,
                 Width = 150
@@ -150,14 +150,92 @@ namespace FrontEnd
             ColReason = new OLVColumn
             {
                 Name = "cReason",
-                AspectName="Reason",
-                Text="Reason",
-                IsVisible=true,
-                Width=150
+                AspectName = "Reason",
+                Text = "Reason",
+                IsVisible = true,
+                Width = 70
             };
             histListview.AllColumns.Add(ColReason);
-        }
 
+            ColBuySell = new OLVColumn
+            {
+                Name = "cBuySell",
+                AspectName = "BuyorSell",
+                Text = "Buy or Sell",
+                IsVisible = true,
+                Width = 70
+            };
+            histListview.AllColumns.Add(ColBuySell);
+
+           
+
+            ColCurrentDirection = new OLVColumn
+             {
+                 Name = "cDirection",
+                 AspectName = "CurrentDirection",
+                 Text = "Direction",
+                 IsVisible = true,
+                 Width = 60
+             };
+            histListview.AllColumns.Add(ColCurrentDirection);
+
+            ColCurrentPrice = new OLVColumn
+            {
+                Name = "cPrice",
+                AspectName = "CurrentPrice",
+                Text = "Price",
+                IsVisible = true,
+                Width = 50
+            };
+            histListview.AllColumns.Add(ColCurrentPrice);
+
+            ColPosition = new OLVColumn
+            {
+                Name = "cPosition",
+                ShowTextInHeader = false,
+                AspectName = "Position",
+                Text = "Position",
+                Sortable = false,
+                Groupable = false,
+                Width = 60
+            };
+            histListview.AllColumns.Add(ColPosition);
+
+            ColRunningProf = new OLVColumn
+            {
+                Name = "cRunningProfit",
+                AspectName = "RunningProfit",
+                Text = "Running Profit",
+                IsVisible = true,
+                Width = 50
+            };
+            histListview.AllColumns.Add(ColRunningProf);
+
+            ColTotalProf = new OLVColumn
+            {
+                Name = "cTotalProf",
+                AspectName = "TotalPL",
+                Text = "Total Profit",
+                IsVisible = true,
+                Width = 50
+            };
+            histListview.AllColumns.Add(ColTotalProf);
+
+            ColInstrument = new OLVColumn
+            {
+                Name = "cInstrument",
+                AspectName = "InstrumentName",
+                Text = "Instrument",
+                IsVisible = true,
+                Width = 80
+            };
+            histListview.AllColumns.Add(ColInstrument);
+
+
+            ColPosition.ImageGetter = rowObject => ((Trade)rowObject).Position ? "add" : "add";
+
+        }       
+                
         private void UpdateTradeLog(Trade t)
         {
 
@@ -281,7 +359,7 @@ namespace FrontEnd
         private void runHistCalcButton_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-
+            exportToTextButton.Enabled = false;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_1;
             if (_2minRadioButton.Checked) t = GlobalObjects.TimeInterval.Minute_2;
             if (_5minRadioButton.Checked) t = GlobalObjects.TimeInterval.Minute_5;
@@ -297,9 +375,11 @@ namespace FrontEnd
 
             _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, onlyTradesRadioButton.Checked, startDateTimePicker.Value, endDateTimePicker.Value, dt);
             _tempTradeList.Reverse();
+            histListview.Items.Clear();
             histListview.RebuildColumns();
             histListview.SetObjects(_tempTradeList);
-                Cursor = Cursors.Default;
+            Cursor = Cursors.Default;
+            exportToTextButton.Enabled = true;
         }
 
         private void loadTradeLogButton_Click(object sender, EventArgs e)
@@ -480,7 +560,6 @@ namespace FrontEnd
             Properties.Settings.Default.Save();
         }
 
-
         private void recentRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
@@ -531,7 +610,20 @@ namespace FrontEnd
             Cursor = Cursors.Default;
         }
 
+        private void histListview_CellClick(object sender, CellClickEventArgs e)
+        {
+            var z = (Trade)histListview.GetSelectedObject();
+            Debug.WriteLine(z.Position);
+        }
 
+        private void exportToTextButton_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            DoStuff.ExportToText(_tempTradeList);
+            Cursor = Cursors.Default;
+        }
+
+      
 
     }
 }

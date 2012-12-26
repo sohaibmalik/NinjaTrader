@@ -15,6 +15,7 @@ namespace AlsiUtils.Strategies
         public delegate void Triggers_Delegate(List<TradeStrategy> TradeStraterty, int Index);
         public static Triggers_Delegate _Trigger;
 
+        
         public TradeStrategy()
         {
 
@@ -448,7 +449,7 @@ namespace AlsiUtils.Strategies
 
         }
 
-        private static SumStats Stats()
+        private  SumStats Stats()
         {
 
             double totalProfit = 0;
@@ -509,8 +510,7 @@ namespace AlsiUtils.Strategies
                 Avg_Prof = avg_profit,
 
             };
-
-            return s;
+                       
             Debug.WriteLine("============STATS==============");
             Debug.WriteLine("Total PL " + totalProfit);
             Debug.WriteLine("# Trades " + tradeCount);
@@ -518,6 +518,12 @@ namespace AlsiUtils.Strategies
             Debug.WriteLine("Prof % " + prof_pct);
             Debug.WriteLine("Loss % " + loss_pct);
             Debug.WriteLine("PL Ratio " + pl_ratio * -1);
+
+            StatsCalculatedEvent sc = new StatsCalculatedEvent();
+            sc.run = true;
+            OnStatsCaculated(this, sc);
+          
+            return s;
         }
 
         private static void Apply_2nd_AlgoLayer(int EMA)
@@ -704,9 +710,13 @@ namespace AlsiUtils.Strategies
 
         public double TotalProfit { get; set; }
         public double TradeCount { get; set; }
-        
-     
 
+        public event StatsCalculated OnStatsCaculated;
+        public delegate void StatsCalculated(object sender,StatsCalculatedEvent e);
+        public class StatsCalculatedEvent:EventArgs
+        {
+            public bool run;
+        }
        
 
     }

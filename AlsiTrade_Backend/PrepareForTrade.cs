@@ -67,5 +67,6 @@ namespace AlsiTrade_Backend
 
         }
 
+       
     }
 }

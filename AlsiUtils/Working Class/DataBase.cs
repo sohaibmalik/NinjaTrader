@@ -15,10 +15,10 @@ namespace AlsiUtils
         public static void SetConnectionString()
         {
             //Laptop
-            //string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
             //PC
-            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            //string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
         }

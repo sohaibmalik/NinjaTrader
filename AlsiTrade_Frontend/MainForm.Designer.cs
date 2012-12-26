@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.settingsTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -96,11 +98,13 @@
             this.columnVol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.historicalTradesTabPage = new System.Windows.Forms.TabPage();
             this.histListview = new BrightIdeasSoftware.ObjectListView();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.DBPricesGridView = new System.Windows.Forms.DataGridView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.exportToTextButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -193,7 +197,7 @@
             this.tradelogOnlyTradesCheckBox.AutoSize = true;
             this.tradelogOnlyTradesCheckBox.Location = new System.Drawing.Point(9, 74);
             this.tradelogOnlyTradesCheckBox.Name = "tradelogOnlyTradesCheckBox";
-            this.tradelogOnlyTradesCheckBox.Size = new System.Drawing.Size(113, 17);
+            this.tradelogOnlyTradesCheckBox.Size = new System.Drawing.Size(121, 19);
             this.tradelogOnlyTradesCheckBox.TabIndex = 4;
             this.tradelogOnlyTradesCheckBox.Text = "Show Only Trades";
             this.tradelogOnlyTradesCheckBox.UseVisualStyleBackColor = true;
@@ -203,7 +207,7 @@
             this.loadTodayRadioButton.AutoSize = true;
             this.loadTodayRadioButton.Location = new System.Drawing.Point(9, 48);
             this.loadTodayRadioButton.Name = "loadTodayRadioButton";
-            this.loadTodayRadioButton.Size = new System.Drawing.Size(82, 17);
+            this.loadTodayRadioButton.Size = new System.Drawing.Size(87, 19);
             this.loadTodayRadioButton.TabIndex = 3;
             this.loadTodayRadioButton.Text = "Load Today";
             this.loadTodayRadioButton.UseVisualStyleBackColor = true;
@@ -214,7 +218,7 @@
             this.loadNumberRadioButton.Checked = true;
             this.loadNumberRadioButton.Location = new System.Drawing.Point(9, 23);
             this.loadNumberRadioButton.Name = "loadNumberRadioButton";
-            this.loadNumberRadioButton.Size = new System.Drawing.Size(72, 17);
+            this.loadNumberRadioButton.Size = new System.Drawing.Size(75, 19);
             this.loadNumberRadioButton.TabIndex = 2;
             this.loadNumberRadioButton.TabStop = true;
             this.loadNumberRadioButton.Text = "Load Last";
@@ -223,7 +227,7 @@
             // 
             // loadTradeLogNumericUpDown
             // 
-            this.loadTradeLogNumericUpDown.Location = new System.Drawing.Point(90, 23);
+            this.loadTradeLogNumericUpDown.Location = new System.Drawing.Point(104, 22);
             this.loadTradeLogNumericUpDown.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -472,6 +476,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.exportToTextButton);
             this.tabPage2.Controls.Add(this.statsGroupBox);
             this.tabPage2.Controls.Add(this.orderDetailGroupBox);
             this.tabPage2.Controls.Add(this.timeframeGroupBox);
@@ -655,7 +660,7 @@
             // 
             // runHistCalcButton
             // 
-            this.runHistCalcButton.Location = new System.Drawing.Point(8, 377);
+            this.runHistCalcButton.Location = new System.Drawing.Point(8, 344);
             this.runHistCalcButton.Name = "runHistCalcButton";
             this.runHistCalcButton.Size = new System.Drawing.Size(75, 23);
             this.runHistCalcButton.TabIndex = 0;
@@ -852,12 +857,21 @@
             // 
             this.histListview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.histListview.FullRowSelect = true;
+            this.histListview.GridLines = true;
+            this.histListview.GroupImageList = this.imageList;
             this.histListview.Location = new System.Drawing.Point(3, 3);
             this.histListview.Name = "histListview";
             this.histListview.Size = new System.Drawing.Size(769, 458);
+            this.histListview.SmallImageList = this.imageList;
             this.histListview.TabIndex = 0;
             this.histListview.UseCompatibleStateImageBehavior = false;
             this.histListview.View = System.Windows.Forms.View.Details;
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "blue");
             // 
             // tabPage3
             // 
@@ -899,11 +913,23 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1142, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // exportToTextButton
+            // 
+            this.exportToTextButton.Enabled = false;
+            this.exportToTextButton.Location = new System.Drawing.Point(9, 373);
+            this.exportToTextButton.Name = "exportToTextButton";
+            this.exportToTextButton.Size = new System.Drawing.Size(75, 23);
+            this.exportToTextButton.TabIndex = 11;
+            this.exportToTextButton.Text = "Export";
+            this.exportToTextButton.UseVisualStyleBackColor = true;
+            this.exportToTextButton.Click += new System.EventHandler(this.exportToTextButton_Click);
             // 
             // MainForm
             // 
@@ -1031,7 +1057,9 @@
         private System.Windows.Forms.Label dbPriceCountLabel;
         private System.Windows.Forms.Button UpdateAllHistoPrices;
         private System.Windows.Forms.ToolStripStatusLabel runningMinuteTooltripLabel;
+        private System.Windows.Forms.ImageList imageList;
         private BrightIdeasSoftware.ObjectListView histListview;
+        private System.Windows.Forms.Button exportToTextButton;
         
     }
 }

@@ -66,6 +66,7 @@
     <Compile Include="Data Objects\Tick.cs" />
     <Compile Include="Indicators\EMA.cs" />
     <Compile Include="Indicators\SMA.cs" />
+    <Compile Include="Indicators\StandardDev.cs" />
     <Compile Include="Indicators\Variable.cs" />
     <Compile Include="SimDB.designer.cs">
       <AutoGen>True</AutoGen>

@@ -1,44 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using AlsiUtils.Indicators;
 using System.Diagnostics;
+using System.Linq;
 
 namespace AlsiUtils.Strategies
 {
-    public static class EMA_Scalp
+    public delegate void StatsCalced();
+
+    public class EMA_Scalp
     {
         private static List<TradeStrategy> _T;
-
         private static List<EMA> A_1;
-
         private static List<EMA> A_6;
-
         private static List<EMA> B_1;
-
         private static List<EMA> B_6;
-
         private static List<EMA> E1;
 
-        public static List<Trade> EmaScalp(Parameter_EMA_Scalp P, List<Price> price,bool tradeOnly)
-        {
-           
 
+        public static List<Trade> EmaScalp(Parameter_EMA_Scalp P, List<Price> price, bool tradeOnly)
+        {
             A_1 = Factory_Indicator.createEMA(P.A_EMA1, price);
             A_6 = Factory_Indicator.createEMA(P.A_EMA2, price);
-
             B_1 = Factory_Indicator.createEMA(P.B_EMA1, price);
             B_6 = Factory_Indicator.createEMA(P.B_EMA2, price);
-
             E1 = Factory_Indicator.createEMA(P.C_EMA, price);
 
             DateTime sd = E1[0].Timestamp;
             CutToSize(sd);
             TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].Timestamp, CalcTriggers);
+            _strategy.OnStatsCaculated += new TradeStrategy.StatsCalculated(_strategy_OnStatsCaculated);
             SumStats s = _strategy.Calculate();
             _T = _strategy.getStrategyList();
-           // for (int x = 0; x < _T.Count; x++) DP(x);
+
+
+
+            // for (int x = 0; x < _T.Count; x++) DP(x);
 
             if (true)//s.Total_Avg_PL >15 || s.Total_Avg_PL <-15)
             {
@@ -76,7 +72,7 @@ namespace AlsiUtils.Strategies
 
 
             //_strategy.ClearList(); //FOR SIMULATOR
-
+            GetSTDV();
             return GetTradeData(tradeOnly); // REAL TRADING
 
             //Clear();//FOR SIMULATOR
@@ -84,16 +80,18 @@ namespace AlsiUtils.Strategies
 
 
             //return s;
-           
+
 
             return new List<Trade>();
 
         }
 
+
+
+
+
         private static void Clear()
         {
-          
-
             A_1.Clear();
             A_6.Clear();
 
@@ -149,8 +147,9 @@ namespace AlsiUtils.Strategies
         public static List<Trade> GetTradeData(bool TradesOnly)
         {
             List<Trade> trades = new List<Trade>();
-           for (int x = 0; x < _T.Count; x++)
+            for (int x = 0; x < _T.Count; x++)
             {
+
                 var t = new Trade()
                 {
                     InstrumentName = _T[x].InstrumentName,
@@ -161,10 +160,10 @@ namespace AlsiUtils.Strategies
                     TimeStamp = _T[x].Timestamp,
                     TotalPL = _T[x].TotalProfit,
                     TradedPrice = _T[x].Price_Close,
-                    Reason =_T[x].ActualTrade,
+                    Reason = _T[x].ActualTrade,
                     CurrentPrice = _T[x].Price_Close,
                     IndicatorNotes = "A1:" + A_1[x].Ema + "  A2:" + A_6[x].Ema + "  B1:" + B_1[x].Ema + "  B2:" + B_6[x].Ema + "  C:" + E1[x].Ema
-                    
+
                 };
 
                 if (TradesOnly)
@@ -179,6 +178,27 @@ namespace AlsiUtils.Strategies
 
             Clear();
             return trades;
+        }
+
+        private static void GetSTDV()
+        {
+            var viList = new List<Indicators.VariableIndicator>();
+            var tl = GetTradeData(true);
+            var list = tl.Where(z => z.Reason == Trade.Trigger.CloseLong || z.Reason == Trade.Trigger.CloseShort);
+            foreach (var l in list)
+            {
+                var VI = new Indicators.VariableIndicator()
+                {
+                    Value = l.TotalPL,
+                    Timestamp = l.TimeStamp,
+
+                };
+                viList.Add(VI);
+            }
+
+            var SDTDEV = Factory_Indicator.creatStandardDeviation(1, 10, viList);
+            foreach (var v in SDTDEV)
+                Debug.WriteLine(v.N + "," + v.SingleStdev + "," + v.CustomValue + "," + v.StdDev);
         }
 
         public static void CalcTriggers(List<TradeStrategy> strategy, int x)
@@ -211,6 +231,21 @@ namespace AlsiUtils.Strategies
 
 
         }
+
+        static void _strategy_OnStatsCaculated(object sender, TradeStrategy.StatsCalculatedEvent e)
+        {
+            OnStatsCalc();
+        }
+
+
+
+        public static void OnStatsCalc()
+        {
+            Debug.WriteLine("======================fgdffffffffffffffff=================");
+
+        }
+
+
 
     }
 }

@@ -111,7 +111,7 @@ namespace AlsiUtils
                 };
                 RSI.Add(r);
             }
-           
+
 
             return RSI;
         }
@@ -453,6 +453,36 @@ namespace AlsiUtils
             }
 
             return sma;
+        }
+
+        public static List<StandardDev> creatStandardDeviation(double STDEV,int N, List<VariableIndicator> Value)
+        {
+            List<StandardDev> stdev = new List<StandardDev>();
+           
+
+            double[] _price = new double[Value.Count];
+
+            for (int x = 0; x < Value.Count; x++) _price[x] = Value[x].Value;
+
+            double[] _stdev = new double[Value.Count];
+            int a, b;
+
+            Core.StdDev(0, Value.Count - 1, _price, N, STDEV, out a, out b, _stdev);
+            
+            for (int x = 0; x < Value.Count - a; x++)
+            {
+                StandardDev e = new StandardDev
+                {
+                    N=N,
+                    Timestamp = Value[x + a].Timestamp,
+                    CustomValue = Value[x + a].Value,
+                    StdDev = _stdev[x],
+                    SingleStdev=STDEV,
+                };
+                stdev.Add(e);
+            }
+
+            return stdev;
         }
     }
 }

@@ -88,12 +88,15 @@ namespace NinjaTest
 
         private static void RunSingle()
         {
+            //Laptop
+            string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
               //PC
-            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            //string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
+            
 
-            DateTime s = new DateTime(2012, 02, 02);
+            DateTime s = new DateTime(2012, 01, 01);
             DateTime e = new DateTime(2012, 12, 15);
 
 
@@ -103,20 +106,20 @@ namespace NinjaTest
               
                     AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
                     {
-                        A_EMA1 = 10,                     
-                        A_EMA2 = 14,
-                        B_EMA1 = 24,                     
-                        B_EMA2 = 28,
-                        C_EMA = 30,
-                        TakeProfit = 500,
-                        StopLoss = -500,
+                        A_EMA1 = 16,                     
+                        A_EMA2 = 17,
+                        B_EMA1 = 43,                     
+                        B_EMA2 = 45,
+                        C_EMA = 52,
+                        TakeProfit = 250,
+                        StopLoss = -250,
                         CloseEndofDay = false,
                         Period = prices.Count,
                         
                     };
 
 
-                   // AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices);
+                    AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices,false);
                 
         }
 
@@ -127,8 +130,8 @@ namespace NinjaTest
 
         private void Form3_Load(object sender, EventArgs e)
         {
-            //RunSingle();
-            //Close();
+            RunSingle();
+            Close();
         }
 
 
