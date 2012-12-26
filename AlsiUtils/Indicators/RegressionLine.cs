@@ -5,11 +5,11 @@ using System.Text;
 
 namespace AlsiUtils.Indicators
 {
-    public class StandardDev:Indicator
+    class RegressionLine:Indicator 
     {
-        public int N { get; set; }       
-        public double StdDev { get; set; }
+        public int N { get; set; }
+        public double Regression { get; set; }
+        public double Slope { get; set; }
         public double CustomValue { get; set; }
-        public double SingleStdev { get; set; }
     }
 }

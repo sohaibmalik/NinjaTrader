@@ -13,7 +13,7 @@ namespace AlsiUtils.Strategies
         {
             _p = Parameters;
             _SS = Factory_Indicator.createSlowStochastic(Parameters.Fast_K, Parameters.Slow_K, Parameters.Slow_D, price);
-            TradeStrategy _strategy = new TradeStrategy(price, Parameters, _SS[0].Timestamp, CalcTriggers);
+            TradeStrategy _strategy = new TradeStrategy(price, Parameters, _SS[0].TimeStamp, CalcTriggers);
 
             _strategy.Calculate();
             _T = _strategy.getStrategyList();
@@ -26,10 +26,10 @@ namespace AlsiUtils.Strategies
         private static void DP(int x)
         {
            
-            if(_T[x].Timestamp.Month == 9 && _T[x].Timestamp.Day >18)
+            if(_T[x].TimeStamp.Month == 9 && _T[x].TimeStamp.Day >18)
             {
                 //if(_T[x].ActualTrade!=TradeStrategy.Trigger.None)
-                Debug.WriteLine(_T[x].Timestamp + "  " + _SS[x].D + "  Close: " + _T[x].Price_Close + "   Traded:" + _T[x].TradedPrice + "   actual:" + _T[x].ActualTrade + "   position:" + _T[x].Position + "    Prof " + _T[x].RunningProfit + "  Reason: " + _T[x].Reason + "  trigger: " + _T[x].TradeTrigger + "  A* " + _T[x].markedObjectA + "  B* " + _T[x].markedObjectB + "  Dir " + _T[x].TradeDirection + "   Prof : " + _T[x].TotalProfit + "--------------------------------------------------- " + _T[x].InstrumentName);
+                Debug.WriteLine(_T[x].TimeStamp + "  " + _SS[x].D + "  Close: " + _T[x].Price_Close + "   Traded:" + _T[x].TradedPrice + "   actual:" + _T[x].ActualTrade + "   position:" + _T[x].Position + "    Prof " + _T[x].RunningProfit + "  Reason: " + _T[x].Reason + "  trigger: " + _T[x].TradeTrigger + "  A* " + _T[x].markedObjectA + "  B* " + _T[x].markedObjectB + "  Dir " + _T[x].TradeDirection + "   Prof : " + _T[x].TotalProfit + "--------------------------------------------------- " + _T[x].InstrumentName);
             }
         }
 

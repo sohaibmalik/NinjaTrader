@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="AlsiTrade" Class="AlsiDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=ALSI-PC;Initial Catalog=AlsiTrade;Integrated Security=True" SettingsObjectName="AlsiUtils.Properties.Settings" SettingsPropertyName="AlsiTradeConnectionString1" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True" SettingsObjectName="AlsiUtils.Properties.Settings" SettingsPropertyName="AlsiTradeConnectionString2" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AllHistoricMinute" Member="AllHistoricMinutes">
     <Type Name="AllHistoricMinute">
       <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -23,14 +23,6 @@
       <Column Name="BackColor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.DebugLog" Member="DebugLogs">
-    <Type Name="DebugLog">
-      <Column Name="N" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="DateTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Debug" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="Sender" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.ImportMinute" Member="ImportMinutes">
     <Type Name="ImportMinute">
       <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -40,16 +32,6 @@
       <Column Name="C" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="V" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.[Log]" Member="Logs">
-    <Type Name="Log">
-      <Column Name="N" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="SourceApp" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Subject" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="Details" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="Colour" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.MasterMinute" Member="MasterMinutes">
@@ -71,15 +53,6 @@
       <Column Name="L" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="C" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.OHLC_10_Minute_Temp" Member="OHLC_10_Minute_Temps">
-    <Type Name="OHLC_10_Minute_Temp">
-      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="O" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="H" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="L" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="C" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.OHLC_2_Minute" Member="OHLC_2_Minutes">
@@ -166,9 +139,7 @@
   <Function Name="dbo.UpdateTick" Method="UpdateTick">
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.CleanLogs" Method="CleanLogs">
-    <Return Type="System.Int32" />
-  </Function>
+  <Function Name="dbo.CleanLogs" Method="CleanLogs" />
   <Function Name="dbo.CleanTick" Method="CleanTick">
     <Return Type="System.Int32" />
   </Function>
@@ -206,7 +177,6 @@
   <Function Name="dbo.OHLC_5_AllHistory" Method="OHLC_5_AllHistory">
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.OHLC_5_Temp" Method="OHLC_5_Temp" />
   <Function Name="dbo.RemoveDUPS_TickMinute" Method="RemoveDUPS_TickMinute">
     <Return Type="System.Int32" />
   </Function>

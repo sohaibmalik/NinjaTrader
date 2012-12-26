@@ -16,7 +16,7 @@ namespace AlsiUtils.Strategies
         private static List<SMA> _RSI_MA2;
         private static List<TradeStrategy> _T;
 
-        public static SumStats SsPopStrategy(Strategies.Parameter_SS_RSI Parameters, List<Price> price)
+        public static void SsPopStrategy(Strategies.Parameter_SS_RSI Parameters, List<Price> price)
         {
             _p = Parameters;
             _SS = Factory_Indicator.createSlowStochastic(Parameters.Fast_K, Parameters.Slow_K, Parameters.Slow_D, price);
@@ -26,7 +26,7 @@ namespace AlsiUtils.Strategies
             {
                 VariableIndicator v = new VariableIndicator()
                 {
-                    Timestamp = r.Timestamp,
+                    TimeStamp = r.TimeStamp,
                     Price_Close = r.Price_Close,
                     Price_High = r.Price_High,
                     Price_Low = r.Price_Low,
@@ -42,8 +42,8 @@ namespace AlsiUtils.Strategies
             DateTime sd = getStartDate();
             //testDate();
             CutToSize(sd);
-            TradeStrategy _strategy = new TradeStrategy(price, Parameters, _SS[0].Timestamp, CalcTriggers);
-            SumStats s = _strategy.Calculate();
+            TradeStrategy _strategy = new TradeStrategy(price, Parameters, _SS[0].TimeStamp, CalcTriggers);
+           
             _T = _strategy.getStrategyList();
             // for (int x = 0; x < _T.Count; x++) DP(x);
             _strategy.ClearList();
@@ -57,7 +57,7 @@ namespace AlsiUtils.Strategies
 
 
 
-            return s;
+           
 
         }
 
@@ -74,14 +74,14 @@ namespace AlsiUtils.Strategies
                     {
                         foreach (var rm in _RSI_MA)
                         {
-                            if (rm.Timestamp == rm2.Timestamp)
-                                c = rm.Timestamp;
+                            if (rm.TimeStamp == rm2.TimeStamp)
+                                c = rm.TimeStamp;
                             break;
                         }
-                        if (rm2.Timestamp == r.Timestamp)
-                            c = rm2.Timestamp;
+                        if (rm2.TimeStamp == r.TimeStamp)
+                            c = rm2.TimeStamp;
                     }
-                    if (r.Timestamp == c) break;
+                    if (r.TimeStamp == c) break;
                 }
 
                 //    Debug.WriteLine("Loop " + c);
@@ -100,8 +100,8 @@ namespace AlsiUtils.Strategies
                      from r in _RSI
                      from ra in _RSI_MA
                      from ra2 in _RSI_MA2
-                     where s.Timestamp == r.Timestamp && r.Timestamp == ra.Timestamp && r.Timestamp == ra2.Timestamp
-                     select s.Timestamp).First();
+                     where s.TimeStamp == r.TimeStamp && r.TimeStamp == ra.TimeStamp && r.TimeStamp == ra2.TimeStamp
+                     select s.TimeStamp).First();
 
 
             Debug.WriteLine("Linq " + d);
@@ -110,16 +110,16 @@ namespace AlsiUtils.Strategies
         private static void CutToSize(DateTime startDate)
         {
             int del = -1;
-            for (int x = 0; x < _RSI.Count; x++) if (_RSI[x].Timestamp < startDate) del++;
+            for (int x = 0; x < _RSI.Count; x++) if (_RSI[x].TimeStamp < startDate) del++;
             for (int x = 0; x <= del; x++) _RSI.RemoveAt(0);
             del = -1;
-            for (int x = 0; x < _SS.Count; x++) if (_SS[x].Timestamp < startDate) del++;
+            for (int x = 0; x < _SS.Count; x++) if (_SS[x].TimeStamp < startDate) del++;
             for (int x = 0; x <= del; x++) _SS.RemoveAt(0);
             del = -1;
-            for (int x = 0; x < _RSI_MA.Count; x++) if (_RSI_MA[x].Timestamp < startDate) del++;
+            for (int x = 0; x < _RSI_MA.Count; x++) if (_RSI_MA[x].TimeStamp < startDate) del++;
             for (int x = 0; x <= del; x++) _RSI_MA.RemoveAt(0);
             del = -1;
-            for (int x = 0; x < _RSI_MA2.Count; x++) if (_RSI_MA2[x].Timestamp < startDate) del++;
+            for (int x = 0; x < _RSI_MA2.Count; x++) if (_RSI_MA2[x].TimeStamp < startDate) del++;
             for (int x = 0; x <= del; x++) _RSI_MA2.RemoveAt(0);
 
 
@@ -134,7 +134,7 @@ namespace AlsiUtils.Strategies
             {
                 //if(_T[x].ActualTrade!=TradeStrategy.Trigger.None)              
 
-                Debug.WriteLine(_T[x].Timestamp + " SS " + Math.Round(_SS[x].D, 2) + "  RSI " + Math.Round(_RSI[x].RSI, 2) + "  RsiMA " + Math.Round(_RSI_MA[x].Ema, 2) +
+                Debug.WriteLine(_T[x].TimeStamp + " SS " + Math.Round(_SS[x].D, 2) + "  RSI " + Math.Round(_RSI[x].RSI, 2) + "  RsiMA " + Math.Round(_RSI_MA[x].Ema, 2) +
                     "  RsiMA2 " + Math.Round(_RSI_MA2[x].Sma, 2) +
                     "  Close: " + _T[x].Price_Close +
                     "  Actual " + _T[x].ActualTrade);

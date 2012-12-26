@@ -9,12 +9,12 @@ namespace AlsiUtils
     {
       
    
-        private DateTime _Timestamp;
+        private DateTime _TimeStamp;
 
-        public DateTime Timestamp
+        public DateTime TimeStamp
         {
-            get { return _Timestamp; }
-            set { _Timestamp = value; }
+            get { return _TimeStamp; }
+            set { _TimeStamp = value; }
         }
         private double _Price_Close;
 

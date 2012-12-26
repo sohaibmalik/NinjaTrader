@@ -25,29 +25,28 @@ namespace AlsiUtils.Strategies
             B_6 = Factory_Indicator.createEMA(P.B_EMA2, price);
             E1 = Factory_Indicator.createEMA(P.C_EMA, price);
 
-            DateTime sd = E1[0].Timestamp;
+            DateTime sd = E1[0].TimeStamp;
             CutToSize(sd);
-            TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].Timestamp, CalcTriggers);
-            _strategy.OnStatsCaculated += new TradeStrategy.StatsCalculated(_strategy_OnStatsCaculated);
-            SumStats s = _strategy.Calculate();
+            TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].TimeStamp, CalcTriggers);           
+            _strategy.Calculate();
             _T = _strategy.getStrategyList();
 
 
 
             // for (int x = 0; x < _T.Count; x++) DP(x);
 
-            if (true)//s.Total_Avg_PL >15 || s.Total_Avg_PL <-15)
-            {
+            //if (true)//s.Total_Avg_PL >15 || s.Total_Avg_PL <-15)
+            //{
 
-                Debug.WriteLine(P.A_EMA1 + "  " + P.A_EMA2 + "  " + P.B_EMA1 + "  " + P.B_EMA2 + "   " + P.C_EMA + " tp:" + P.TakeProfit);
-                Debug.WriteLine("Trades " + s.TradeCount);
-                Debug.WriteLine("Total " + s.TotalProfit);
-                Debug.WriteLine("Avg " + s.Total_Avg_PL);
-                Debug.WriteLine("Win % " + s.Pct_Prof);
-                Debug.WriteLine("Loss % " + s.Pct_Loss);
-                Debug.WriteLine("EOF Close " + P.CloseEndofDay);
-                Debug.WriteLine("Period " + P.Period);
-                Debug.WriteLine("==========================================");
+            //    Debug.WriteLine(P.A_EMA1 + "  " + P.A_EMA2 + "  " + P.B_EMA1 + "  " + P.B_EMA2 + "   " + P.C_EMA + " tp:" + P.TakeProfit);
+            //    Debug.WriteLine("Trades " + s.TradeCount);
+            //    Debug.WriteLine("Total " + s.TotalProfit);
+            //    Debug.WriteLine("Avg " + s.Total_Avg_PL);
+            //    Debug.WriteLine("Win % " + s.Pct_Prof);
+            //    Debug.WriteLine("Loss % " + s.Pct_Loss);
+            //    Debug.WriteLine("EOF Close " + P.CloseEndofDay);
+            //    Debug.WriteLine("Period " + P.Period);
+            //    Debug.WriteLine("==========================================");
 
                 //SimDBDataContext dc = new SimDBDataContext();
                 //tbl5Min n = new tbl5Min
@@ -67,12 +66,12 @@ namespace AlsiUtils.Strategies
                 //};
                 // dc.tbl5Mins.InsertOnSubmit(n);
                 // dc.SubmitChanges();
-            }
+            //}
 
 
 
             //_strategy.ClearList(); //FOR SIMULATOR
-            GetSTDV();
+
             return GetTradeData(tradeOnly); // REAL TRADING
 
             //Clear();//FOR SIMULATOR
@@ -106,17 +105,17 @@ namespace AlsiUtils.Strategies
         private static void CutToSize(DateTime startDate)
         {
             int del = -1;
-            for (int x = 0; x < A_1.Count; x++) if (A_1[x].Timestamp < startDate) del++;
+            for (int x = 0; x < A_1.Count; x++) if (A_1[x].TimeStamp < startDate) del++;
             for (int x = 0; x <= del; x++) A_1.RemoveAt(0);
             del = -1;
-            for (int x = 0; x < A_6.Count; x++) if (A_6[x].Timestamp < startDate) del++;
+            for (int x = 0; x < A_6.Count; x++) if (A_6[x].TimeStamp < startDate) del++;
             for (int x = 0; x <= del; x++) A_6.RemoveAt(0);
 
             del = -1;
-            for (int x = 0; x < B_1.Count; x++) if (B_1[x].Timestamp < startDate) del++;
+            for (int x = 0; x < B_1.Count; x++) if (B_1[x].TimeStamp < startDate) del++;
             for (int x = 0; x <= del; x++) B_1.RemoveAt(0);
             del = -1;
-            for (int x = 0; x < B_6.Count; x++) if (B_6[x].Timestamp < startDate) del++;
+            for (int x = 0; x < B_6.Count; x++) if (B_6[x].TimeStamp < startDate) del++;
             for (int x = 0; x <= del; x++) B_6.RemoveAt(0);
         }
 
@@ -126,7 +125,7 @@ namespace AlsiUtils.Strategies
             if (true)//_T[x].ActualTrade != Trade.Trigger.None)
             {
 
-                Debug.WriteLine(_T[x].Timestamp
+                Debug.WriteLine(_T[x].TimeStamp
                      + "," + _T[x].ActualTrade
                      + "," + _T[x].Price_Close
                      + ", E:" + Math.Round(E1[x].Ema, 2)
@@ -157,7 +156,7 @@ namespace AlsiUtils.Strategies
                     CurrentDirection = _T[x].TradeDirection,
                     Position = _T[x].Position,
                     RunningProfit = _T[x].RunningProfit,
-                    TimeStamp = _T[x].Timestamp,
+                    TimeStamp = _T[x].TimeStamp,
                     TotalPL = _T[x].TotalProfit,
                     TradedPrice = _T[x].Price_Close,
                     Reason = _T[x].ActualTrade,
@@ -180,26 +179,7 @@ namespace AlsiUtils.Strategies
             return trades;
         }
 
-        private static void GetSTDV()
-        {
-            var viList = new List<Indicators.VariableIndicator>();
-            var tl = GetTradeData(true);
-            var list = tl.Where(z => z.Reason == Trade.Trigger.CloseLong || z.Reason == Trade.Trigger.CloseShort);
-            foreach (var l in list)
-            {
-                var VI = new Indicators.VariableIndicator()
-                {
-                    Value = l.TotalPL,
-                    Timestamp = l.TimeStamp,
 
-                };
-                viList.Add(VI);
-            }
-
-            var SDTDEV = Factory_Indicator.creatStandardDeviation(1, 10, viList);
-            foreach (var v in SDTDEV)
-                Debug.WriteLine(v.N + "," + v.SingleStdev + "," + v.CustomValue + "," + v.StdDev);
-        }
 
         public static void CalcTriggers(List<TradeStrategy> strategy, int x)
         {
@@ -232,18 +212,11 @@ namespace AlsiUtils.Strategies
 
         }
 
-        static void _strategy_OnStatsCaculated(object sender, TradeStrategy.StatsCalculatedEvent e)
-        {
-            OnStatsCalc();
-        }
+     
 
 
 
-        public static void OnStatsCalc()
-        {
-            Debug.WriteLine("======================fgdffffffffffffffff=================");
-
-        }
+      
 
 
 

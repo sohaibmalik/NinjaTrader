@@ -9,36 +9,27 @@ namespace AlsiUtils
     public class Trade
     {
         public double TradedPrice { get; set; }
-
         public DateTime TimeStamp { get; set; }
-
         public Trigger Reason { get; set; }
-
         public int TradeVolume { get; set; }
-
         public BuySell BuyorSell { get; set; }
-
         public string Notes { get; set; }
-
         public bool Position { get; set; }
-
         public double RunningProfit { get; set; }
-
         public Direction CurrentDirection { get; set; }
-
         public double CurrentPrice { get; set; }
-
         public double TotalPL { get; set; }
-
         public string IndicatorNotes { get; set; }
-
         public Color ForeColor { get; set; }
-
         public Color BackColor { get; set; }
-
         public string InstrumentName { get; set; }
+        public int TradeCount { get; set; }       
+        public AlsiUtils.Data_Objects.RegressionExt Extention {get;set;}
 
-
+     public Trade()
+        {
+            Extention = new Data_Objects.RegressionExt();
+        }
         public enum BuySell
         {          
             Buy,
@@ -93,6 +84,6 @@ namespace AlsiUtils
             return BuySell.None;
         }
 
-
+     
     }
 }

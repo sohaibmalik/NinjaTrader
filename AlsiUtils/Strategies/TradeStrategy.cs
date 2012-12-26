@@ -33,7 +33,7 @@ namespace AlsiUtils.Strategies
                 {
                     TradeStrategy st = new TradeStrategy
                     {
-                        Timestamp = s.TimeStamp,
+                        TimeStamp = s.TimeStamp,
                         Price_Open = s.Open,
                         Price_Close = s.Close,
                         Price_High = s.High,
@@ -51,7 +51,7 @@ namespace AlsiUtils.Strategies
             return _ST;
         }
 
-        public SumStats Calculate()
+        public void Calculate()
         {
             Prepare();
             Triggers();
@@ -72,7 +72,7 @@ namespace AlsiUtils.Strategies
             CalcProfitLoss();
 
             //  OverNightPosAnalysis();
-            return Stats();
+          
 
             //  for (int x = 5; x < 100;x++ ) Apply_2nd_AlgoLayer(x);
 
@@ -86,7 +86,7 @@ namespace AlsiUtils.Strategies
                         CalcProfitLoss();
                         */
 
-            return new SumStats();
+           
         }
 
         public void ClearList()
@@ -382,8 +382,8 @@ namespace AlsiUtils.Strategies
                 if (_ST[x].RunningProfit > _p.TakeProfit) _ST[x].Reason = Trade.TradeReason.TakeProfit;
                 if (_p.CloseEndofDay)
                 {
-                    if (_ST[x].Timestamp.Hour == 17 && _ST[x].Timestamp.Minute == 20 && _ST[x].TradeDirection == Trade.Direction.Long) _ST[x].Reason = Trade.TradeReason.EndOfDayCloseLong;
-                    if (_ST[x].Timestamp.Hour == 17 && _ST[x].Timestamp.Minute == 20 && _ST[x].TradeDirection == Trade.Direction.Short) _ST[x].Reason = Trade.TradeReason.EndOfDayCloseShort;
+                    if (_ST[x].TimeStamp.Hour == 17 && _ST[x].TimeStamp.Minute == 20 && _ST[x].TradeDirection == Trade.Direction.Long) _ST[x].Reason = Trade.TradeReason.EndOfDayCloseLong;
+                    if (_ST[x].TimeStamp.Hour == 17 && _ST[x].TimeStamp.Minute == 20 && _ST[x].TradeDirection == Trade.Direction.Short) _ST[x].Reason = Trade.TradeReason.EndOfDayCloseShort;
                 }
                 if (_ST[x - 1].InstrumentName != _ST[x].InstrumentName) _ST[x - 1].Reason = Trade.TradeReason.ContractExpires;
 
@@ -448,221 +448,11 @@ namespace AlsiUtils.Strategies
             #endregion
 
         }
+               
 
-        private  SumStats Stats()
-        {
+    
 
-            double totalProfit = 0;
-            double tradeCount = 0;
-            double prof_count = 0;
-            double loss_count = 0;
-            double prof_sum = 0;
-            double loss_sum = 0;
-
-
-            for (int x = 1; x < _ST.Count; x++)
-            {
-
-                if (_ST[x].ActualTrade == Trade.Trigger.CloseLong || _ST[x].ActualTrade == Trade.Trigger.CloseShort ||
-                    _ST[x].ActualTrade == Trade.Trigger.StopLoss || _ST[x].ActualTrade == Trade.Trigger.TakeProfit ||
-                    _ST[x].ActualTrade == Trade.Trigger.EndOfDayCloseLong || _ST[x].ActualTrade == Trade.Trigger.EndOfDayCloseShort
-                    )
-                {
-                    totalProfit += _ST[x].RunningProfit;
-                    tradeCount++;
-
-                    if (_ST[x].RunningProfit <= 0)
-                    {
-                        loss_count++;
-                        loss_sum += _ST[x].RunningProfit;
-                    }
-
-                    if (_ST[x].RunningProfit > 0)
-                    {
-                        prof_count++;
-                        prof_sum += _ST[x].RunningProfit;
-                    }
-
-
-
-                    _ST[x].TotalProfit = totalProfit;
-                    _ST[x].TradeCount = tradeCount;
-                }
-
-                if (_ST[x].ActualTrade == Trade.Trigger.OpenLong || _ST[x].ActualTrade == Trade.Trigger.OpenShort) _ST[x].TotalProfit = totalProfit;
-            }
-
-            decimal avg_pl = (decimal)Math.Round((totalProfit / tradeCount), 5);
-            decimal loss_pct = (decimal)Math.Round((loss_count / tradeCount) * 100, 2);
-            decimal prof_pct = (decimal)Math.Round((prof_count / tradeCount) * 100, 2);
-            decimal pl_ratio = (decimal)Math.Round((prof_sum / loss_sum), 2);
-            decimal avg_profit = (decimal)Math.Round((prof_count / prof_sum), 2);
-            decimal avg_loss = (decimal)Math.Round((loss_count / loss_sum), 2);
-
-            Strategies.SumStats s = new Strategies.SumStats()
-            {
-                TotalProfit = totalProfit,
-                TradeCount = tradeCount,
-                Total_Avg_PL = avg_pl,
-                Pct_Prof = prof_pct,
-                Pct_Loss = loss_pct,
-                Avg_Loss = avg_loss,
-                Avg_Prof = avg_profit,
-
-            };
-                       
-            Debug.WriteLine("============STATS==============");
-            Debug.WriteLine("Total PL " + totalProfit);
-            Debug.WriteLine("# Trades " + tradeCount);
-            Debug.WriteLine("Tot Avg PL " + avg_pl);
-            Debug.WriteLine("Prof % " + prof_pct);
-            Debug.WriteLine("Loss % " + loss_pct);
-            Debug.WriteLine("PL Ratio " + pl_ratio * -1);
-
-            StatsCalculatedEvent sc = new StatsCalculatedEvent();
-            sc.run = true;
-            OnStatsCaculated(this, sc);
-          
-            return s;
-        }
-
-        private static void Apply_2nd_AlgoLayer(int EMA)
-        {
-            List<VariableIndicator> _st = new List<VariableIndicator>();
-            foreach (var t in _ST)
-            {
-                if (t.TotalProfit != 0)
-                {
-                    VariableIndicator v = new VariableIndicator()
-                    {
-                        Timestamp = t.Timestamp,
-                        Value = t.TotalProfit,
-                    };
-                    _st.Add(v);
-                }
-            }
-
-            var ema = Factory_Indicator.createEMA(EMA, _st);
-            double newprof = ema[0].CustomValue;
-            TradeStrategy mt = null;
-            bool cantradeA = false;
-            bool cantradeB = false;
-            bool closepos = false;
-            bool first = true;
-            int count = 0;
-            foreach (var v in ema)
-            {
-                count++;
-                // if (count > 30) break;          
-
-                if (first) ;
-                mt = _ST.Where(z => z.Timestamp == v.Timestamp).First();
-
-                if (!first) closepos = (mt.ActualTrade == Trade.Trigger.CloseShort || mt.ActualTrade == Trade.Trigger.CloseLong);
-                if (closepos && cantradeA) cantradeB = true;
-                else
-                    cantradeB = false;
-
-                cantradeA = (v.CustomValue > v.Ema);
-
-                if (!first && closepos && cantradeB) newprof += mt.RunningProfit;
-
-                //Debug.WriteLine(((cantradeA) ? "**" : "") + ((cantradeB) ? "**" : "") + v.Timestamp + " " + v.CustomValue + " " + v.Ema +
-                //    " TradeA :" + cantradeA + "  TradeB :" + cantradeB + " Prof " + newprof +
-                //    "   " + ((!first && mt != null) ? mt.ActualTrade.ToString() : ""));
-
-
-
-                first = false;
-            }
-
-            Debug.WriteLine(EMA + "  " + newprof);
-            Debug.WriteLine("----------------------------------------------");
-
-
-        }
-
-        private static void Test()
-        {
-            List<VariableIndicator> _st = new List<VariableIndicator>();
-            foreach (var t in _ST)
-            {
-                if (t.TotalProfit != 0)
-                {
-                    VariableIndicator v = new VariableIndicator()
-                    {
-                        Timestamp = t.Timestamp,
-                        Value = t.TotalProfit,
-                    };
-                    _st.Add(v);
-                }
-            }
-
-            var SMA = Factory_Indicator.createSMA(20, _st);
-        }
-
-        public void OverNightPosAnalysis()
-        {
-            var overnightpos = from ovn in _ST
-                               where ovn.Timestamp.Hour == 17 && ovn.Timestamp.Minute == 20 && ovn.Position
-                               select ovn;
-
-
-            double Oloss_Closs = 0;
-            double Oprof_Cprof = 0;
-            double Oloss_Cprof = 0;
-            double Oprof_Closs = 0;
-            double N_Closs = 0;
-            double N_Prof = 0;
-            double Diff = 0;
-
-            int count = 0;
-            foreach (var v in overnightpos)
-            {
-                count++;
-                var closepos = (from t in _ST
-                                where t.Timestamp > v.Timestamp && !t.Position
-                                select t).First();
-
-
-                if (v.RunningProfit < 0 && closepos.RunningProfit < v.RunningProfit) Oloss_Closs++;
-                if (v.RunningProfit > 0 && closepos.RunningProfit < v.RunningProfit) Oprof_Closs++;
-                if (v.RunningProfit > 0 && closepos.RunningProfit > v.RunningProfit) Oprof_Cprof++;
-                if (v.RunningProfit < 0 && closepos.RunningProfit > v.RunningProfit) Oloss_Cprof++;
-                if (v.RunningProfit == 0 && closepos.RunningProfit > 0) N_Prof++;
-                if (v.RunningProfit == 0 && closepos.RunningProfit < 0) N_Closs++;
-
-                double diff = closepos.RunningProfit - v.RunningProfit;
-
-                // if (v.RunningProfit < 0) ;
-                //else
-                Diff += diff;
-
-                Debug.WriteLine("Overnight " + v.Timestamp + "  Pos:" + v.TradeDirection + "  " + v.Price_Close + "      " + v.RunningProfit);
-                Debug.WriteLine("Close " + closepos.Timestamp + "  Pos:" + closepos.TradeDirection + "  " + closepos.Price_Close + "      " + closepos.RunningProfit);
-                Debug.WriteLine(count + " -------------------------------------------------");
-                Debug.WriteLine("OL CL " + Oloss_Closs);
-                Debug.WriteLine("OL CP " + Oloss_Cprof);
-                Debug.WriteLine("OP CL " + Oprof_Closs);
-                Debug.WriteLine("OP CP " + Oprof_Cprof);
-                Debug.WriteLine("N CL " + N_Closs);
-                Debug.WriteLine("N CP " + N_Prof);
-                Debug.WriteLine("Diff This Trade " + diff);
-                Debug.WriteLine("Diff " + Diff);
-                Debug.WriteLine("--------------------------------------------------------");
-            }
-
-
-            Debug.WriteLine("============================================================");
-            Debug.WriteLine("Overnight Count : " + overnightpos.Count());
-            Debug.WriteLine("OL CL " + Oloss_Closs);
-            Debug.WriteLine("OL CP " + Oloss_Cprof);
-            Debug.WriteLine("OP CL " + Oprof_Closs);
-            Debug.WriteLine("OP CP " + Oprof_Cprof);
-            Debug.WriteLine("N CL " + N_Closs);
-            Debug.WriteLine("N CP " + N_Prof);
-            Debug.WriteLine("Diff " + Diff);
-        }
+    
 
         public static Trade.BuySell GetBuySell(Trade.Trigger trigger)
         {
@@ -711,14 +501,105 @@ namespace AlsiUtils.Strategies
         public double TotalProfit { get; set; }
         public double TradeCount { get; set; }
 
-        public event StatsCalculated OnStatsCaculated;
-        public delegate void StatsCalculated(object sender,StatsCalculatedEvent e);
-        public class StatsCalculatedEvent:EventArgs
-        {
-            public bool run;
-        }
+     
        
+        public class Expansion
+        {           
+            private static void Apply_2nd_AlgoLayer(int EMA)
+            {
+                List<VariableIndicator> _st = new List<VariableIndicator>();
+                foreach (var t in _ST)
+                {
+                    if (t.TotalProfit != 0)
+                    {
+                        VariableIndicator v = new VariableIndicator()
+                        {
+                            TimeStamp = t.TimeStamp,
+                            Value = t.TotalProfit,
+                        };
+                        _st.Add(v);
+                    }
+                }
 
+                var ema = Factory_Indicator.createEMA(EMA, _st);
+                double newprof = ema[0].CustomValue;
+                TradeStrategy mt = null;
+                bool cantradeA = false;
+                bool cantradeB = false;
+                bool closepos = false;
+                bool first = true;
+                int count = 0;
+                foreach (var v in ema)
+                {
+                    count++;
+                    // if (count > 30) break;          
+
+                    if (first) ;
+                    mt = _ST.Where(z => z.TimeStamp == v.TimeStamp).First();
+
+                    if (!first) closepos = (mt.ActualTrade == Trade.Trigger.CloseShort || mt.ActualTrade == Trade.Trigger.CloseLong);
+                    if (closepos && cantradeA) cantradeB = true;
+                    else
+                        cantradeB = false;
+
+                    cantradeA = (v.CustomValue > v.Ema);
+
+                    if (!first && closepos && cantradeB) newprof += mt.RunningProfit;
+
+                    //Debug.WriteLine(((cantradeA) ? "**" : "") + ((cantradeB) ? "**" : "") + v.Timestamp + " " + v.CustomValue + " " + v.Ema +
+                    //    " TradeA :" + cantradeA + "  TradeB :" + cantradeB + " Prof " + newprof +
+                    //    "   " + ((!first && mt != null) ? mt.ActualTrade.ToString() : ""));
+
+
+
+                    first = false;
+                }
+
+                Debug.WriteLine(EMA + "  " + newprof);
+                Debug.WriteLine("----------------------------------------------");
+
+
+            }
+
+            public static List<Trade> ApplyRegressionFilter(int N,List<Trade> Trades)
+            {
+                Trades = Statistics.RegressionAnalysis_OnPL(N,Trades);               
+
+                for (int x = N + 1; x < Trades.Count(); x++)
+                {
+                    if (Trades[x - 2].Extention.Slope < Trades[x - 1].Extention.Slope) Trades[x].Extention.IsSlopeHigherThanPrevSlope = true;
+                    if (Trades[x - 1].Extention.Slope > 0) Trades[x].Extention.IsSlopeBiggerZero = true;
+
+                    Trades[x].Extention.OrderVol = 1;
+                    if (!Trades[x].Extention.IsSlopeBiggerZero && Trades[x].Extention.IsSlopeHigherThanPrevSlope)
+                        Trades[x].Extention.OrderVol = 2;
+                   
+                                         
+                    
+                 }
+
+                return Trades;
+            }
+         
+            public static List<Trade> MergeNewTrades(List<Trade>OriginalTrades,List<Trade>ModifiedTrades)
+            {
+                for (int x = 0; x < OriginalTrades.Count; x++)
+                {
+
+                    foreach (var t in ModifiedTrades)
+                    {
+                        if (OriginalTrades[x].TimeStamp == t.TimeStamp)
+                        {
+                            OriginalTrades[x] = t;
+                            break;
+                        }
+                    }
+
+                }
+
+                    return OriginalTrades;
+            }
+        }
     }
 
 

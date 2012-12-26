@@ -47,7 +47,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="TA-Lib-Core">
+    <Reference Include="TA-Lib-Core, Version=1.0.2813.38947, Culture=neutral, PublicKeyToken=fdb2a6b268f56aa5, processorArchitecture=MSIL">
       <HintPath>..\External Libraries\TA-Lib-Core.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -61,10 +61,12 @@
       <DependentUpon>AlsiDB.dbml</DependentUpon>
     </Compile>
     <Compile Include="AppMonitor.cs" />
+    <Compile Include="Data Objects\RegressionExt.cs" />
     <Compile Include="Data Objects\GlobalObjects.cs" />
     <Compile Include="Data Objects\PointData.cs" />
     <Compile Include="Data Objects\Tick.cs" />
     <Compile Include="Indicators\EMA.cs" />
+    <Compile Include="Indicators\RegressionLine.cs" />
     <Compile Include="Indicators\SMA.cs" />
     <Compile Include="Indicators\StandardDev.cs" />
     <Compile Include="Indicators\Variable.cs" />
@@ -78,7 +80,6 @@
     <Compile Include="Strategies\EMA_Scalp.cs" />
     <Compile Include="Strategies\IndicatorExtentions\StochAroon.cs" />
     <Compile Include="Strategies\Parameters\Parameter_EMA_Scalp.cs" />
-    <Compile Include="Strategies\SumStats.cs" />
     <Compile Include="Strategies\Parameters\Parameter_Bollinger.cs" />
     <Compile Include="Strategies\Parameters\Parameter_General.cs" />
     <Compile Include="Strategies\Parameters\Parameter_SlowStoch.cs" />

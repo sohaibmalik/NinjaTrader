@@ -33,7 +33,7 @@ namespace AlsiUtils.Strategies
 
         private static void DP(int x)
         {
-            Debug.WriteLine(_T[x].Timestamp + "  MID " + _BB[x].Mid + "  Close: " + _T[x].Price_Close + "   Traded:" + _T[x].TradedPrice + "   actual:" + _T[x].ActualTrade + "   position:" + _T[x].Position + "  Prof " + _T[x].RunningProfit + "   " + _T[x].Reason + "  trigger: " + _T[x].TradeTrigger + "  * " + _T[x].markedObjectB + "  Dir " + _T[x].TradeDirection);
+            Debug.WriteLine(_T[x].TimeStamp + "  MID " + _BB[x].Mid + "  Close: " + _T[x].Price_Close + "   Traded:" + _T[x].TradedPrice + "   actual:" + _T[x].ActualTrade + "   position:" + _T[x].Position + "  Prof " + _T[x].RunningProfit + "   " + _T[x].Reason + "  trigger: " + _T[x].TradeTrigger + "  * " + _T[x].markedObjectB + "  Dir " + _T[x].TradeDirection);
         }
         public static void CalcTriggers(List<TradeStrategy> strategy, int x)
         {

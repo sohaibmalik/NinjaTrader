@@ -81,37 +81,37 @@ namespace NinjaTest
 
 
 
-        private static void Db(SumStats S, Parameter_SS_RSI P)
-        {
-            //SimDbDataContext dc = new SimDbDataContext();
-            //if (S.TotalProfit < 10000) return;
+        //private static void Db(SumStats S, Parameter_SS_RSI P)
+        //{
+        //    //SimDbDataContext dc = new SimDbDataContext();
+        //    //if (S.TotalProfit < 10000) return;
 
 
-            //tblRSI t = new tblRSI()
-            //{
-            //    Total_Profit = (long)S.TotalProfit,
-            //    Total_avg_PL = S.Total_Avg_PL,
-            //    Trade_Count = (int)S.TradeCount,
-            //    PL_Ratio = S.PL_Ratio,
-            //    Avg_Profit = S.Avg_Prof,
-            //    Avg_Loss = S.Avg_Loss,
-            //    Pct_Profit = S.Pct_Prof,
-            //    Pct_Loss = S.Pct_Loss,
+        //    //tblRSI t = new tblRSI()
+        //    //{
+        //    //    Total_Profit = (long)S.TotalProfit,
+        //    //    Total_avg_PL = S.Total_Avg_PL,
+        //    //    Trade_Count = (int)S.TradeCount,
+        //    //    PL_Ratio = S.PL_Ratio,
+        //    //    Avg_Profit = S.Avg_Prof,
+        //    //    Avg_Loss = S.Avg_Loss,
+        //    //    Pct_Profit = S.Pct_Prof,
+        //    //    Pct_Loss = S.Pct_Loss,
 
-            //    RSI = P.RSI,
-            //    RSI_MA = P.RSI_MA,
-            //    RSI_MA2 = P.RSI_MA2,
-            //    Mid_Long = P.RSI_MidLine_Long,
-            //    Mid_Short = P.RSI_MidLine_Short,
-            //    CloseLong = P.RSI_CloseLong,
-            //    CloseShort = P.RSI_CloseShort,
+        //    //    RSI = P.RSI,
+        //    //    RSI_MA = P.RSI_MA,
+        //    //    RSI_MA2 = P.RSI_MA2,
+        //    //    Mid_Long = P.RSI_MidLine_Long,
+        //    //    Mid_Short = P.RSI_MidLine_Short,
+        //    //    CloseLong = P.RSI_CloseLong,
+        //    //    CloseShort = P.RSI_CloseShort,
 
-            //};
+        //    //};
 
 
-            //dc.tblRSIs.InsertOnSubmit(t);
-            //dc.SubmitChanges();
-        }
+        //    //dc.tblRSIs.InsertOnSubmit(t);
+        //    //dc.SubmitChanges();
+        //}
 
         private static void BolBand()
         {

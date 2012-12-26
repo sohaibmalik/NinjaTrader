@@ -63,6 +63,7 @@
             this.emaB2TextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.exportToTextButton = new System.Windows.Forms.Button();
             this.statsGroupBox = new System.Windows.Forms.GroupBox();
             this.orderDetailGroupBox = new System.Windows.Forms.GroupBox();
             this.onlyTradesRadioButton = new System.Windows.Forms.RadioButton();
@@ -104,7 +105,9 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.exportToTextButton = new System.Windows.Forms.Button();
+            this.statsListView = new System.Windows.Forms.ListView();
+            this.columnStat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -117,6 +120,7 @@
             this.riskGroupBox.SuspendLayout();
             this.emaGroupBox.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.statsGroupBox.SuspendLayout();
             this.orderDetailGroupBox.SuspendLayout();
             this.timeframeGroupBox.SuspendLayout();
             this.timespanGroupBox.SuspendLayout();
@@ -197,7 +201,7 @@
             this.tradelogOnlyTradesCheckBox.AutoSize = true;
             this.tradelogOnlyTradesCheckBox.Location = new System.Drawing.Point(9, 74);
             this.tradelogOnlyTradesCheckBox.Name = "tradelogOnlyTradesCheckBox";
-            this.tradelogOnlyTradesCheckBox.Size = new System.Drawing.Size(121, 19);
+            this.tradelogOnlyTradesCheckBox.Size = new System.Drawing.Size(113, 17);
             this.tradelogOnlyTradesCheckBox.TabIndex = 4;
             this.tradelogOnlyTradesCheckBox.Text = "Show Only Trades";
             this.tradelogOnlyTradesCheckBox.UseVisualStyleBackColor = true;
@@ -207,7 +211,7 @@
             this.loadTodayRadioButton.AutoSize = true;
             this.loadTodayRadioButton.Location = new System.Drawing.Point(9, 48);
             this.loadTodayRadioButton.Name = "loadTodayRadioButton";
-            this.loadTodayRadioButton.Size = new System.Drawing.Size(87, 19);
+            this.loadTodayRadioButton.Size = new System.Drawing.Size(82, 17);
             this.loadTodayRadioButton.TabIndex = 3;
             this.loadTodayRadioButton.Text = "Load Today";
             this.loadTodayRadioButton.UseVisualStyleBackColor = true;
@@ -218,7 +222,7 @@
             this.loadNumberRadioButton.Checked = true;
             this.loadNumberRadioButton.Location = new System.Drawing.Point(9, 23);
             this.loadNumberRadioButton.Name = "loadNumberRadioButton";
-            this.loadNumberRadioButton.Size = new System.Drawing.Size(75, 19);
+            this.loadNumberRadioButton.Size = new System.Drawing.Size(72, 17);
             this.loadNumberRadioButton.TabIndex = 2;
             this.loadNumberRadioButton.TabStop = true;
             this.loadNumberRadioButton.Text = "Load Last";
@@ -490,8 +494,20 @@
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // exportToTextButton
+            // 
+            this.exportToTextButton.Enabled = false;
+            this.exportToTextButton.Location = new System.Drawing.Point(9, 373);
+            this.exportToTextButton.Name = "exportToTextButton";
+            this.exportToTextButton.Size = new System.Drawing.Size(75, 23);
+            this.exportToTextButton.TabIndex = 11;
+            this.exportToTextButton.Text = "Export";
+            this.exportToTextButton.UseVisualStyleBackColor = true;
+            this.exportToTextButton.Click += new System.EventHandler(this.exportToTextButton_Click);
+            // 
             // statsGroupBox
             // 
+            this.statsGroupBox.Controls.Add(this.statsListView);
             this.statsGroupBox.Location = new System.Drawing.Point(154, 154);
             this.statsGroupBox.Name = "statsGroupBox";
             this.statsGroupBox.Size = new System.Drawing.Size(177, 296);
@@ -845,10 +861,10 @@
             // historicalTradesTabPage
             // 
             this.historicalTradesTabPage.Controls.Add(this.histListview);
-            this.historicalTradesTabPage.Location = new System.Drawing.Point(4, 24);
+            this.historicalTradesTabPage.Location = new System.Drawing.Point(4, 22);
             this.historicalTradesTabPage.Name = "historicalTradesTabPage";
             this.historicalTradesTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.historicalTradesTabPage.Size = new System.Drawing.Size(775, 464);
+            this.historicalTradesTabPage.Size = new System.Drawing.Size(775, 466);
             this.historicalTradesTabPage.TabIndex = 1;
             this.historicalTradesTabPage.Text = "History";
             this.historicalTradesTabPage.UseVisualStyleBackColor = true;
@@ -920,16 +936,29 @@
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // exportToTextButton
+            // statsListView
             // 
-            this.exportToTextButton.Enabled = false;
-            this.exportToTextButton.Location = new System.Drawing.Point(9, 373);
-            this.exportToTextButton.Name = "exportToTextButton";
-            this.exportToTextButton.Size = new System.Drawing.Size(75, 23);
-            this.exportToTextButton.TabIndex = 11;
-            this.exportToTextButton.Text = "Export";
-            this.exportToTextButton.UseVisualStyleBackColor = true;
-            this.exportToTextButton.Click += new System.EventHandler(this.exportToTextButton_Click);
+            this.statsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnStat,
+            this.columnValue});
+            this.statsListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statsListView.FullRowSelect = true;
+            this.statsListView.GridLines = true;
+            this.statsListView.Location = new System.Drawing.Point(3, 19);
+            this.statsListView.Name = "statsListView";
+            this.statsListView.Size = new System.Drawing.Size(171, 274);
+            this.statsListView.TabIndex = 0;
+            this.statsListView.UseCompatibleStateImageBehavior = false;
+            this.statsListView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnStat
+            // 
+            this.columnStat.Text = "Statistic";
+            this.columnStat.Width = 100;
+            // 
+            // columnValue
+            // 
+            this.columnValue.Text = "Value";
             // 
             // MainForm
             // 
@@ -960,6 +989,7 @@
             this.emaGroupBox.ResumeLayout(false);
             this.emaGroupBox.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.statsGroupBox.ResumeLayout(false);
             this.orderDetailGroupBox.ResumeLayout(false);
             this.orderDetailGroupBox.PerformLayout();
             this.timeframeGroupBox.ResumeLayout(false);
@@ -1060,6 +1090,9 @@
         private System.Windows.Forms.ImageList imageList;
         private BrightIdeasSoftware.ObjectListView histListview;
         private System.Windows.Forms.Button exportToTextButton;
+        private System.Windows.Forms.ListView statsListView;
+        private System.Windows.Forms.ColumnHeader columnStat;
+        private System.Windows.Forms.ColumnHeader columnValue;
         
     }
 }

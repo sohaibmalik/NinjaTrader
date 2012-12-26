@@ -19,6 +19,7 @@ namespace FrontEnd
         private UpdateTimer U5;
         MarketOrder marketOrder;
         GlobalObjects.TimeInterval _Interval;
+        private Statistics _Stats = new Statistics();
 
         private OLVColumn ColStamp;
         private OLVColumn ColReason;
@@ -51,10 +52,12 @@ namespace FrontEnd
             U5.onStartUpdate += new UpdateTimer.StartUpdate(U5_onStartUpdate);
             marketOrder.onOrderSend += new MarketOrder.OrderSend(marketOrder_onOrderSend);
             marketOrder.onOrderMatch += new MarketOrder.OrderMatch(marketOrder_onOrderMatch);
+            _Stats.OnStatsCaculated += new Statistics.StatsCalculated(_Stats_OnStatsCaculated);
             BuildListViewColumns();
           
         }
-                  
+
+          
 
         void marketOrder_onOrderMatch(object sender, MarketOrder.OrderMatchEvent e)
         {
@@ -97,6 +100,18 @@ namespace FrontEnd
 
         }
 
+        void _Stats_OnStatsCaculated(object sender, Statistics.StatsCalculatedEvent e)
+        {
+            Debug.WriteLine("============STATS==============");
+            Debug.WriteLine("Total PL " + e.SumStats.TotalProfit);
+            Debug.WriteLine("# Trades " + e.SumStats.TradeCount);
+            Debug.WriteLine("Tot Avg PL " + e.SumStats.Total_Avg_PL);
+            Debug.WriteLine("Prof % " + e.SumStats.Pct_Prof);
+            Debug.WriteLine("Loss % " + e.SumStats.Pct_Loss);
+            PopulateStatBox(e.SumStats);
+        }
+               
+
         private Parameter_EMA_Scalp GetParameters()
         {
             AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
@@ -131,6 +146,31 @@ namespace FrontEnd
             endDateTimePicker.Value = DateTime.Now;
             startDateTimePicker.Value = DateTime.Now.AddDays(-50);
             endDateTimePicker.MaxDate = DateTime.Now;
+        }
+
+        private void PopulateStatBox(SummaryStats Stats)
+        {
+            statsListView.Items.Clear();
+
+            ListViewItem n = new ListViewItem("Total Profit");
+            n.SubItems.Add(Stats.TotalProfit.ToString());
+            statsListView.Items.Add(n);
+
+            ListViewItem n1 = new ListViewItem("Trade Count");
+            n1.SubItems.Add(Stats.TradeCount.ToString());
+            statsListView.Items.Add(n1);
+
+            ListViewItem n2 = new ListViewItem("Total avg Profit");
+            n2.SubItems.Add(Stats.Total_Avg_PL.ToString());
+            statsListView.Items.Add(n2);
+
+            ListViewItem n3 = new ListViewItem("Win Trades");
+            n3.SubItems.Add(Stats.Pct_Prof.ToString());
+            statsListView.Items.Add(n3);
+
+            ListViewItem n4 = new ListViewItem("Loss Trades");
+            n4.SubItems.Add(Stats.Pct_Loss.ToString());
+            statsListView.Items.Add(n4);
         }
 
         private void BuildListViewColumns()
@@ -374,11 +414,13 @@ namespace FrontEnd
             { dt = DataBase.dataTable.AllHistory; }
 
             _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, onlyTradesRadioButton.Checked, startDateTimePicker.Value, endDateTimePicker.Value, dt);
-            _tempTradeList.Reverse();
+            var _trades = _Stats.CalcBasicTradeStats(_tempTradeList);
+            _trades.Reverse();
             histListview.Items.Clear();
             histListview.RebuildColumns();
-            histListview.SetObjects(_tempTradeList);
+            histListview.SetObjects(_trades);
             Cursor = Cursors.Default;
+            dataTabControl.SelectedIndex = 1;
             exportToTextButton.Enabled = true;
         }
 

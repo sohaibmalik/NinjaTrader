@@ -64,7 +64,7 @@ namespace AlsiUtils
                 m.L = L;
                 m.M = M;
                 m.S = S;
-                m.Timestamp = Price[x + zeroCount].TimeStamp;
+                m.TimeStamp = Price[x + zeroCount].TimeStamp;
                 m.Trigger = trigger[x];
                 m.Line = macd[x];
                 m.Histogram = hist[x] * 2;
@@ -101,7 +101,7 @@ namespace AlsiUtils
             {
                 Rsi r = new Rsi
                 {
-                    Timestamp = Price[x + a].TimeStamp,
+                    TimeStamp = Price[x + a].TimeStamp,
                     Price_Close = Price[x + a].Close,
                     Price_High = Price[x + a].High,
                     Price_Low = Price[x + a].Low,
@@ -153,7 +153,7 @@ namespace AlsiUtils
             for (int x = 0; x < Price.Count - c - a; x++)
             {
                 Trix t = new Trix();
-                t.Timestamp = Price[x + a + c].TimeStamp;
+                t.TimeStamp = Price[x + a + c].TimeStamp;
                 t.Price_Close = Price[x + a + c].Close;
                 t.TRIX = _trix[x + c];
                 t.TRMA = _trma[x];
@@ -211,7 +211,7 @@ namespace AlsiUtils
                 SlowStoch ss = new SlowStoch();
                 ss.D = _ssD[x];
                 ss.K = _ssK[x];
-                ss.Timestamp = Price[x + zeroCount].TimeStamp;
+                ss.TimeStamp = Price[x + zeroCount].TimeStamp;
                 ss.Fast_K = Fast_K;
                 ss.Slow_D = Slow_D;
                 ss.Slow_K = Slow_K;
@@ -267,7 +267,7 @@ namespace AlsiUtils
                 aa.Aroon_Up = _aroonUP[x];
                 aa.Aroon_Down = _aroonDOWN[x];
                 aa.N = N;
-                aa.Timestamp = Price[d].TimeStamp;
+                aa.TimeStamp = Price[d].TimeStamp;
 
                 aa.Price_Close = Price[d].Close;
                 aa.Price_High = Price[d].High;
@@ -328,7 +328,7 @@ namespace AlsiUtils
                 bb.Upper = _upperBand[x];
                 bb.N = N;
                 bb.P = P;
-                bb.Timestamp = Price[x + a].TimeStamp;
+                bb.TimeStamp = Price[x + a].TimeStamp;
                 bb.Price_Close = Price[x + a].Close;
                 bb.Price_High = Price[x + a].High;
                 bb.Price_Low = Price[x + a].Low;
@@ -356,7 +356,7 @@ namespace AlsiUtils
             {
                 EMA e = new EMA
                 {
-                    Timestamp = Price[x + a].TimeStamp,
+                    TimeStamp = Price[x + a].TimeStamp,
                     Price_Close = Price[x + a].Close,
                     Price_High = Price[x + a].High,
                     Price_Low = Price[x + a].Low,
@@ -386,7 +386,7 @@ namespace AlsiUtils
             {
                 EMA e = new EMA
                 {
-                    Timestamp = Value[x + a].Timestamp,
+                    TimeStamp = Value[x + a].TimeStamp,
                     CustomValue = Value[x + a].Value,
                     Ema = _ema[x],
 
@@ -414,7 +414,7 @@ namespace AlsiUtils
             {
                 SMA e = new SMA
                 {
-                    Timestamp = Price[x + a].TimeStamp,
+                    TimeStamp = Price[x + a].TimeStamp,
                     Price_Close = Price[x + a].Close,
                     Price_High = Price[x + a].High,
                     Price_Low = Price[x + a].Low,
@@ -444,7 +444,7 @@ namespace AlsiUtils
             {
                 SMA e = new SMA
                 {
-                    Timestamp = Value[x + a].Timestamp,
+                    TimeStamp = Value[x + a].TimeStamp,
                     CustomValue = Value[x + a].Value,
                     Sma = _sma[x],
 
@@ -455,10 +455,10 @@ namespace AlsiUtils
             return sma;
         }
 
-        public static List<StandardDev> creatStandardDeviation(double STDEV,int N, List<VariableIndicator> Value)
+        public static List<StandardDev> creatStandardDeviation(double STDEV, int N, List<VariableIndicator> Value)
         {
             List<StandardDev> stdev = new List<StandardDev>();
-           
+
 
             double[] _price = new double[Value.Count];
 
@@ -468,21 +468,56 @@ namespace AlsiUtils
             int a, b;
 
             Core.StdDev(0, Value.Count - 1, _price, N, STDEV, out a, out b, _stdev);
-            
+
             for (int x = 0; x < Value.Count - a; x++)
             {
                 StandardDev e = new StandardDev
                 {
-                    N=N,
-                    Timestamp = Value[x + a].Timestamp,
+                    N = N,
+                    TimeStamp = Value[x + a].TimeStamp,
                     CustomValue = Value[x + a].Value,
                     StdDev = _stdev[x],
-                    SingleStdev=STDEV,
+                    SingleStdev = STDEV,
                 };
                 stdev.Add(e);
             }
 
             return stdev;
+        }
+
+
+        public static List<RegressionLine>  createRegression(int N, List<VariableIndicator> Value)
+        {
+            List<RegressionLine> REG = new List<RegressionLine>(); 
+            double[] _price = new double[Value.Count];
+
+            for (int x = 0; x < Value.Count; x++) _price[x] = Value[x].Value;
+
+            double[] _reg = new double[Value.Count];
+
+            double[] _slope = new double[Value.Count];
+            int a, b;
+
+
+            Core.LinearReg(0, Value.Count - 1, _price, N, out a, out b, _reg);
+            Core.LinearRegSlope(0, Value.Count - 1, _price, N, out a, out b, _slope);
+            for (int x = 0; x < Value.Count - a; x++)
+            {
+
+                RegressionLine e = new RegressionLine
+                {
+                    N = N,
+                    TimeStamp = Value[x + a].TimeStamp,
+                    CustomValue = Value[x + a].Value,
+                    Regression = _reg[x],
+                    Slope = _slope[x],
+                };
+                REG.Add(e);
+               
+            }
+
+            return REG;
+
         }
     }
 }

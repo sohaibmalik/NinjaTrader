@@ -84,7 +84,7 @@ namespace AlsiUtils
                 if (x > 0)
                 { 
                 a.N = N;
-                a.Timestamp = prices[x-1].TimeStamp;
+                a.TimeStamp = prices[x-1].TimeStamp;
                 a.Aroon_Down = aroonDown;
                 a.Aroon_Up = aroonup;
                 a.Price_Close = prices[x-1].Close;

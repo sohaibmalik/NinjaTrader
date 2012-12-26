@@ -15,10 +15,10 @@ namespace AlsiUtils
         public static void SetConnectionString()
         {
             //Laptop
-            string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            // string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
             //PC
-            //string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
         }
@@ -26,34 +26,13 @@ namespace AlsiUtils
         #region AlsiTrade
 
 
-        public static void InsertLog(string SourceApp, string Subject, string Detail, Color LineColor)
-        {
-            try
-            {
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-                Log l = new Log()
-                {
-                    SourceApp = SourceApp,
-                    Time = DateTime.UtcNow.AddHours(2),
-                    Subject = Subject,
-                    Details = Detail,
-                    Colour = LineColor.ToKnownColor().ToString()
-                };
-                dc.Logs.InsertOnSubmit(l);
-                dc.SubmitChanges();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Cannot write Log");
-                Debug.WriteLine(ex.Message);
-            }
 
 
 
 
 
-        }
+
+
 
         static public void InsertTradeLog(Trade TradeObject)
         {
@@ -89,47 +68,7 @@ namespace AlsiUtils
 
         }
 
-        static public List<LogData> GetLogFromDatabase(string Filter, int numberofLogs)
-        {
-            List<LogData> logdata = new List<LogData>();
-            try
-            {
 
-
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-
-                var count = (from p in dc.Logs
-                             where SqlMethods.Like(Filter, p.SourceApp)
-                             select (p.Time)).Count();
-
-
-                var result = (from q in dc.Logs
-                              where SqlMethods.Like(Filter, q.SourceApp)
-                              orderby q.Time ascending
-                              select new { q.Time, q.Subject, q.Details, q.Colour })
-                                            .Skip(count - numberofLogs)
-                                         .Take(numberofLogs);
-
-                foreach (var v in result)
-                {
-                    LogData l = new LogData();
-                    l.TimeStamp = v.Time;
-                    l.Subject = v.Subject;
-                    l.LogDetail = v.Details;
-                    l.LineColor = Color.FromName(v.Colour);
-                    logdata.Add(l);
-                }
-
-                return logdata;
-            }
-            catch (Exception ex)
-            {
-
-                return logdata;
-            }
-
-        }
 
         static public List<Trade> GetTradeLogFromDatabase(int numberofLogs)
         {
@@ -188,7 +127,7 @@ namespace AlsiUtils
                 {
                     var result = from q in dc.OHLC_Temps
                                  where q.Stamp > Start && q.Stamp < End
-                                 select new { q.Stamp, q.O, q.H, q.L, q.C,};
+                                 select new { q.Stamp, q.O, q.H, q.L, q.C, };
 
                     foreach (var v in result)
                     {
@@ -197,7 +136,7 @@ namespace AlsiUtils
                         p.Open = v.O;
                         p.High = v.H;
                         p.Low = v.L;
-                        p.TimeStamp = v.Stamp;                      
+                        p.TimeStamp = v.Stamp;
                         prices.Add(p);
 
                     }
@@ -205,21 +144,58 @@ namespace AlsiUtils
                     if (reverseList) prices.Reverse();
                     return prices;
                 }
-             
+
                 if (TD == dataTable.AllHistory)
                 {
-                    if (T == GlobalObjects.TimeInterval.Minute_2) dc.OHLC_2_AllHistory();
-                    if (T == GlobalObjects.TimeInterval.Minute_5) dc.OHLC_5_AllHistory();
-                    if (T == GlobalObjects.TimeInterval.Minute_10) dc.OHLC_10_AllHistory();
+                    if (T == GlobalObjects.TimeInterval.Minute_2)
+                    {
+                        var firstinDB = dc.OHLC_2_Minutes.AsEnumerable().First().Stamp;
+                        var lastinDB = dc.OHLC_2_Minutes.AsEnumerable().Last().Stamp;
+                        if (firstinDB > Start) dc.OHLC_2_AllHistory();
+                        if (lastinDB > End) dc.OHLC_2_AllHistory();
+                    }
+                    if (T == GlobalObjects.TimeInterval.Minute_5)
+                    {
+                        var firstinDB = dc.OHLC_5_Minutes.AsEnumerable().First().Stamp;
+                        var lastinDB = dc.OHLC_5_Minutes.AsEnumerable().Last().Stamp;
+                        if (firstinDB > Start) dc.OHLC_5_AllHistory();
+                        if (lastinDB < End) dc.OHLC_5_AllHistory();
+
+                    }
+                    if (T == GlobalObjects.TimeInterval.Minute_10)
+                    {
+                        var firstinDB = dc.OHLC_10_Minutes.AsEnumerable().First().Stamp;
+                        var lastinDB = dc.OHLC_10_Minutes.AsEnumerable().Last().Stamp;
+                        if (firstinDB > Start) dc.OHLC_10_AllHistory();
+                        if (lastinDB < End) dc.OHLC_10_AllHistory();
+                    }
                 }
                 if (TD == dataTable.MasterMinute)
                 {
-                    if (T == GlobalObjects.TimeInterval.Minute_2) dc.OHLC_2();
-                    if (T == GlobalObjects.TimeInterval.Minute_5) dc.OHLC_5();
-                    if (T == GlobalObjects.TimeInterval.Minute_10) dc.OHLC_10();
+                    if (T == GlobalObjects.TimeInterval.Minute_2)
+                    {
+                        var firstinDB = dc.OHLC_2_Minutes.AsEnumerable().First().Stamp;
+                        var lastinDB = dc.OHLC_2_Minutes.AsEnumerable().Last().Stamp;
+                        if (firstinDB > Start) dc.OHLC_2();
+                        if (lastinDB < End) dc.OHLC_2();
+                    }
+                    if (T == GlobalObjects.TimeInterval.Minute_5)
+                    {
+                        var firstinDB = dc.OHLC_5_Minutes.AsEnumerable().First().Stamp;
+                        var lastinDB = dc.OHLC_5_Minutes.AsEnumerable().Last().Stamp;
+                        if (firstinDB > Start) dc.OHLC_5();
+                        if (lastinDB < End) dc.OHLC_5();
+                    }
+                    if (T == GlobalObjects.TimeInterval.Minute_10)
+                    {
+                        var firstinDB = dc.OHLC_10_Minutes.AsEnumerable().First().Stamp;
+                        var lastinDB = dc.OHLC_10_Minutes.AsEnumerable().Last().Stamp;
+                        if (firstinDB > Start) dc.OHLC_10();
+                        if (lastinDB < End) dc.OHLC_10();
+                    }
                 }
 
-              
+
 
 
 
@@ -298,51 +274,6 @@ namespace AlsiUtils
         }
 
 
-        static public List<Price> readDataFromDataBase_10_MIN_TempTable(bool reverseList)
-        {
-            try
-            {
-                List<Price> prices = new List<Price>();
-
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-
-                //var count = (from p in dc.OHLC_10_Minutes
-                //             select (p.Stamp)).Count();
-
-                //Console.WriteLine("10 Minute Data Count : " + count);
-
-
-                var result = from q in dc.OHLC_10_Minute_Temps
-                             select new { q.Stamp, q.O, q.H, q.L, q.C };
-
-
-
-
-                foreach (var v in result)
-                {
-                    Price p = new Price();
-                    p.Close = v.C;
-                    p.Open = v.O;
-                    p.High = v.H;
-                    p.Low = v.L;
-                    p.TimeStamp = v.Stamp;
-                    p.InstrumentName = "Temp Instrument";
-                    prices.Add(p);
-                }
-
-                if (reverseList) prices.Reverse();
-                return prices;
-
-
-
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("readDataFromDataBase_10_MIN_TEMP  Database Busy : " + ex.Message);
-                return null;
-            }
-        }
 
         static public List<Price> readDataFromDataBase_1_MIN_MasterMinute(int numberOfPeriods, bool reverseList)
         {
@@ -479,7 +410,7 @@ namespace AlsiUtils
 
         #region DataManager
 
-      
+
 
         static public List<Tick> readDataFromDataBase_Tick(int numberOfPeriods, bool reverseList, out int DbRecordCount)
         {
@@ -667,33 +598,6 @@ namespace AlsiUtils
             return prices;
         }
 
-        static public List<PointData> readDataFromDataBase_10Minute_Temp(bool reverseList)
-        {
-            List<PointData> prices = new List<PointData>();
-
-            AlsiDBDataContext dc = new AlsiDBDataContext();
-            dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-
-            var result = from q in dc.OHLC_10_Minute_Temps
-                         select new { q.Stamp, q.O, q.H, q.L, q.C };
-
-            foreach (var v in result)
-            {
-                PointData p = new PointData();
-                p.TimeStamp = v.Stamp;
-                p.Close = v.C;
-                p.Open = v.O;
-                p.High = v.H;
-                p.Low = v.L;
-
-                prices.Add(p);
-            }
-
-            if (reverseList) prices.Reverse();
-            return prices;
-        }
-
-
 
         /// <summary>
         /// Insert Ticks into RAwTICK Table
@@ -745,67 +649,8 @@ namespace AlsiUtils
 
         }
 
-        static public List<LogData> GetLogFromDatabase(int numberofLogs)
-        {
-            List<LogData> logdata = new List<LogData>();
-            try
-            {
 
 
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-
-                var count = (from p in dc.Logs
-                             where SqlMethods.Like("Data Management", p.SourceApp)
-                             select (p.Time)).Count();
-
-
-                var result = (from q in dc.Logs
-                              where SqlMethods.Like("Data Management", q.SourceApp)
-                              orderby q.Time ascending
-                              select new { q.Time, q.Subject, q.Details, q.Colour })
-                                            .Skip(count - numberofLogs)
-                                         .Take(numberofLogs);
-
-                foreach (var v in result)
-                {
-                    LogData l = new LogData();
-                    l.TimeStamp = v.Time;
-                    l.Subject = v.Subject;
-                    l.LogDetail = v.Details;
-                    l.LineColor = Color.FromName(v.Colour);
-                    logdata.Add(l);
-                }
-
-                return logdata;
-            }
-            catch (Exception ex)
-            {
-
-                return logdata;
-            }
-
-        }
-
-        public static void InsertDebugLog(DateTime time, string DebugMsg, string SenderApp)
-        {
-            try
-            {
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-
-                DebugLog l = new DebugLog()
-                {
-                    DateTime = time,
-                    Sender = SenderApp,
-                    Debug = DebugMsg
-
-                };
-                dc.DebugLogs.InsertOnSubmit(l);
-                dc.SubmitChanges();
-            }
-            catch { }
-        }
 
         #endregion
 
