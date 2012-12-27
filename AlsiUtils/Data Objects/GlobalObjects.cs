@@ -7,7 +7,7 @@ namespace AlsiUtils.Data_Objects
 {
    public static class GlobalObjects
     {
-       public static List<PointData> Points = new List<PointData>();
+       public static List<Price> Points = new List<Price>();
        public static List<Price> Prices = new List<Price>();
        public static string CustomConnectionString;
        public static Trade LastTrade; //Last Trade form long list Carry over to temp list when trading

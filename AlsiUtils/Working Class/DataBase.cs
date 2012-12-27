@@ -47,6 +47,7 @@ namespace AlsiUtils
                     Time = TradeObject.TimeStamp,
                     BuySell = TradeObject.BuyorSell.ToString(),
                     Reason = TradeObject.Reason.ToString(),
+                    Notes=TradeObject.IndicatorNotes.ToString(),
                     Price = (int)TradeObject.TradedPrice,
                     Volume = TradeObject.TradeVolume,
                     ForeColor = TradeObject.ForeColor.ToKnownColor().ToString(),
@@ -121,7 +122,7 @@ namespace AlsiUtils
                 List<Price> prices = new List<Price>();
 
                 AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
+               
 
                 if (TD == dataTable.Temp)
                 {
@@ -412,192 +413,12 @@ namespace AlsiUtils
 
 
 
-        static public List<Tick> readDataFromDataBase_Tick(int numberOfPeriods, bool reverseList, out int DbRecordCount)
-        {
-            try
-            {
-                List<Tick> prices = new List<Tick>();
 
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-                var count = (from p in dc.RawTicks
-                             select (p.Stamp)).Count();
+      
 
+       
 
-                //Debug.WriteLine("1 Minute Data Count : " + count);
-                DbRecordCount = count;
-
-                var result = from q in dc.RawTicks
-                                         .Skip(count - numberOfPeriods)
-                                         .Take(numberOfPeriods)
-                             orderby q.Stamp ascending
-                             select new { q.Stamp, q.Price };
-
-                foreach (var v in result)
-                {
-                    Tick p = new Tick();
-                    p.Stamp = Convert.ToDateTime(v.Stamp);
-                    p.Price = Convert.ToInt32(v.Price);
-
-                    prices.Add(p);
-                }
-
-                if (reverseList) prices.Reverse();
-                return prices;
-            }
-            catch (Exception ex)
-            {
-                DbRecordCount = 0;
-                return null;
-            }
-        }
-
-        static public List<Tick> readDataFromDataBase_Tick(bool reverseList, out int DbRecordCount)
-        {
-            try
-            {
-                List<Tick> prices = new List<Tick>();
-
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-                var count = (from p in dc.RawTicks
-                             select (p.Stamp)).Count();
-
-
-
-                DbRecordCount = count;
-
-                var result = from q in dc.RawTicks
-                             orderby q.Stamp ascending
-                             select new { q.Stamp, q.Price };
-
-                foreach (var v in result)
-                {
-                    Tick p = new Tick();
-                    p.Stamp = Convert.ToDateTime(v.Stamp);
-                    p.Price = Convert.ToInt32(v.Price);
-
-                    prices.Add(p);
-                }
-
-                if (reverseList) prices.Reverse();
-                return prices;
-            }
-            catch (Exception ex)
-            {
-                DbRecordCount = 0;
-                return null;
-            }
-        }
-
-        static public List<Tick> readDataFromDataBase_Tick(bool reverseList, out int DbRecordCount, DateTime StartTime)
-        {
-            try
-            {
-                List<Tick> prices = new List<Tick>();
-
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-                var count = (from p in dc.RawTicks
-                             where p.Stamp > StartTime
-                             select (p.Stamp)).Count();
-
-
-
-                DbRecordCount = count;
-
-                var result = from q in dc.RawTicks
-                             where q.Stamp > StartTime
-                             orderby q.Stamp ascending
-                             select new { q.Stamp, q.Price };
-
-                foreach (var v in result)
-                {
-                    Tick p = new Tick();
-                    p.Stamp = Convert.ToDateTime(v.Stamp);
-                    p.Price = Convert.ToInt32(v.Price);
-
-                    prices.Add(p);
-                }
-
-                if (reverseList) prices.Reverse();
-                return prices;
-            }
-            catch (Exception ex)
-            {
-                DbRecordCount = 0;
-                return null;
-            }
-        }
-
-        static public List<PointData> readDataFromDataBase_1Minute(int numberOfPeriods, bool reverseList)
-        {
-            List<PointData> prices = new List<PointData>();
-
-            AlsiDBDataContext dc = new AlsiDBDataContext();
-            dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-            var count = (from p in dc.MasterMinutes
-                         select (p.Stamp)).Count();
-
-            Debug.WriteLine("1 Minute Data Count : " + count);
-
-
-            var result = from q in dc.MasterMinutes
-                                     .Skip(count - numberOfPeriods)
-                                     .Take(numberOfPeriods)
-                         select new { q.Stamp, q.O, q.H, q.L, q.C, q.V, q.Instrument };
-
-            foreach (var v in result)
-            {
-                PointData p = new PointData();
-                p.TimeStamp = v.Stamp;
-                p.Close = v.C;
-                p.Open = v.O;
-                p.High = v.H;
-                p.Low = v.L;
-                p.Volume = Convert.ToInt32(v.V);
-                p.InstrumentName = v.Instrument;
-                prices.Add(p);
-            }
-
-            if (reverseList) prices.Reverse();
-            return prices;
-        }
-
-        static public List<PointData> readDataFromDataBase_10Minute(int numberOfPeriods, bool reverseList)
-        {
-            List<PointData> prices = new List<PointData>();
-
-            AlsiDBDataContext dc = new AlsiDBDataContext();
-            dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-            dc.OHLC_10();
-            var count = (from p in dc.OHLC_10_Minutes
-                         select (p.Stamp)).Count();
-
-            Debug.WriteLine("10 Minute Data Count : " + count);
-
-
-            var result = from q in dc.OHLC_10_Minutes
-                                     .Skip(count - numberOfPeriods)
-                                     .Take(numberOfPeriods)
-                         select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
-
-            foreach (var v in result)
-            {
-                PointData p = new PointData();
-                p.TimeStamp = v.Stamp;
-                p.Close = v.C;
-                p.Open = v.O;
-                p.High = v.H;
-                p.Low = v.L;
-                p.InstrumentName = v.Instrument;
-                prices.Add(p);
-            }
-
-            if (reverseList) prices.Reverse();
-            return prices;
-        }
-
+       
 
         /// <summary>
         /// Insert Ticks into RAwTICK Table
@@ -606,8 +427,7 @@ namespace AlsiUtils
         /// <param name="Price">Singe Price</param>
         static public void insertTicks(DateTime Stamp, int Price)
         {
-            AlsiDBDataContext dc = new AlsiDBDataContext();
-            dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
+            AlsiDBDataContext dc = new AlsiDBDataContext();            
             int p = Price;
 
             RawTick c = new RawTick
@@ -623,21 +443,21 @@ namespace AlsiUtils
 
         }
 
-        static public void insertMinuteDataToMinteImport(List<PointData> MinuteData)
+        static public void insertMinuteDataToMinteImport(List<Price> MinuteData)
         {
             AlsiDBDataContext dc = new AlsiDBDataContext();
             dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
             dc.ClearImportTable();
-            foreach (PointData p in MinuteData)
+            foreach (Price p in MinuteData)
             {
                 ImportMinute i = new ImportMinute()
                 {
                     Stamp = p.TimeStamp,
-                    O = p.Open,
-                    H = p.High,
-                    L = p.Low,
-                    C = p.Close,
-                    V = p.Volume
+                    O = (int)p.Open,
+                    H = (int)p.High,
+                    L = (int)p.Low,
+                    C = (int)p.Close,
+                    V = (int)p.Volume
 
                 };
 

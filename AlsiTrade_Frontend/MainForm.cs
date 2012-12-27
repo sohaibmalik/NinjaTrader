@@ -6,13 +6,14 @@ using System.Linq;
 using System.Windows.Forms;
 using AlsiTrade_Backend;
 using AlsiUtils;
+using AlsiTrade_Backend.HiSat;
 using AlsiUtils.Data_Objects;
 using AlsiUtils.Strategies;
 using BrightIdeasSoftware;
-
+using Communicator;
 namespace FrontEnd
 {
-   
+
     public partial class MainForm : Form
     {
         private PrepareForTrade p;
@@ -31,7 +32,7 @@ namespace FrontEnd
         private OLVColumn ColCurrentPrice;
         private OLVColumn ColTotalProf;
         private OLVColumn ColInstrument;
-       
+        AlsiTrade_Backend.HiSat.LiveFeed feed;
 
         DateTime masterStart, masterEnd, allhistoStart, allhistoEnd;
         public MainForm()
@@ -42,60 +43,94 @@ namespace FrontEnd
         private void MainForm_Load(object sender, EventArgs e)
         {
             CheckForIllegalCrossThreadCalls = false;
+            Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
             _Interval = GlobalObjects.TimeInterval.Minute_5;
             AlsiUtils.DataBase.SetConnectionString();
             PopulateControls();
             U5 = new UpdateTimer(_Interval);
-            p = new PrepareForTrade();
+            p = new PrepareForTrade(_Interval);
             marketOrder = new MarketOrder();
             p.onPriceSync += new PrepareForTrade.PricesSynced(p_onPriceSync);
             U5.onStartUpdate += new UpdateTimer.StartUpdate(U5_onStartUpdate);
             marketOrder.onOrderSend += new MarketOrder.OrderSend(marketOrder_onOrderSend);
             marketOrder.onOrderMatch += new MarketOrder.OrderMatch(marketOrder_onOrderMatch);
             _Stats.OnStatsCaculated += new Statistics.StatsCalculated(_Stats_OnStatsCaculated);
+            feed = new AlsiTrade_Backend.HiSat.LiveFeed(Properties.Settings.Default.HISAT_INST);
             BuildListViewColumns();
-          
+            DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST);
         }
 
-          
+
 
         void marketOrder_onOrderMatch(object sender, MarketOrder.OrderMatchEvent e)
         {
-            Debug.WriteLine("MATCHED : " + e.Success);
-            Debug.WriteLine("Trade : " + e.Trade.TimeStamp + "  " + e.Trade.BuyorSell + "  " + e.Trade.CurrentDirection + "  " + e.Trade.TradeVolume);
+
+            EmailMsg msg = new EmailMsg();
+            msg.Title = "Order Matched";
+            msg.Body =  e.Trade.ToString();
+            DoStuff.SendEmail(e.Trade, msg);
+           
+
         }
 
         void marketOrder_onOrderSend(object sender, MarketOrder.OrderSendEvent e)
         {
-            Debug.WriteLine("Success : " + e.Success);
-            Debug.WriteLine("Trade : " + e.Trade.TimeStamp + "  " + e.Trade.BuyorSell + "  " + e.Trade.CurrentDirection + "  " + e.Trade.TradeVolume);
+            if (e.Success)
+            {
+               
+                EmailMsg msg = new EmailMsg();
+                msg.Title = "New Trade";
+                msg.Body = "an Order was generated and sucessfully send to Excel \n" + e.Trade.ToString();
+                DoStuff.SendEmail(e.Trade, msg);
+               
+            }
+            else
+            {
+                      
+                EmailMsg msg = new EmailMsg();
+                msg.Title = "Trade input Failed";
+                msg.Body = "an Order was generated but could not be send to Excel. \n" + e.Trade.ToString();
+                DoStuff.SendEmail(e.Trade,msg);
+            }
+
         }
 
         void U5_onStartUpdate(object sender, UpdateTimer.StartUpDateEvent e)
         {
             Debug.WriteLine(e.Message + "  " + e.Interval);
-            p.GetPricesFromWeb(_Interval, Properties.Settings.Default.HISAT_INST);
+            p.GetPricesFromWeb(Properties.Settings.Default.HISAT_INST);
+            //p.GetPricesFromTick();
+
         }
 
+        private static int timeout = 0;
         void p_onPriceSync(object sender, PrepareForTrade.PricesSyncedEvent e)
         {
             Debug.WriteLine("Prices Synced : " + e.ReadyForTradeCalcs);
             if (e.ReadyForTradeCalcs)
             {
-
                 var trades = RunCalcs.RunEMAScalpLiveTrade(GetParameters(), _Interval);
                 var lt = trades.Last();
                 Debug.WriteLine(lt.Notes);
-                lt.TradeVolume = 2;
+                lt.TradeVolume = Properties.Settings.Default.VOL;
+                lt.InstrumentName = Properties.Settings.Default.OTS_INST;
                 marketOrder.SendOrderToMarket(lt);
-                UpdateTradeLog(SetTradeLogColor(lt));
+                UpdateTradeLog(SetTradeLogColor(lt), true);
             }
             else
             {
-                return;
-                System.Threading.Thread.Sleep(3000);
-                // GlobalObjects.Prices.Reverse();
-                p.GetPricesFromWeb(_Interval, Properties.Settings.Default.HISAT_INST);
+                timeout++;
+                if (timeout == 3)
+                {
+                    timeout = 0;
+                    p.GetPricesFromTick();
+                }
+                else
+                {
+                    Debug.WriteLine(timeout);
+                    System.Threading.Thread.Sleep(1000);
+                    p.GetPricesFromWeb(Properties.Settings.Default.HISAT_INST);
+                }
             }
 
         }
@@ -110,7 +145,7 @@ namespace FrontEnd
             Debug.WriteLine("Loss % " + e.SumStats.Pct_Loss);
             PopulateStatBox(e.SumStats);
         }
-               
+
 
         private Parameter_EMA_Scalp GetParameters()
         {
@@ -175,7 +210,7 @@ namespace FrontEnd
 
         private void BuildListViewColumns()
         {
-            
+
             ColStamp = new OLVColumn
             {
                 Name = "cStamp",
@@ -207,7 +242,7 @@ namespace FrontEnd
             };
             histListview.AllColumns.Add(ColBuySell);
 
-           
+
 
             ColCurrentDirection = new OLVColumn
              {
@@ -271,12 +306,22 @@ namespace FrontEnd
             };
             histListview.AllColumns.Add(ColInstrument);
 
+            ColNotes = new OLVColumn
+            {
+                Name = "cNotes",
+                AspectName = "IndicatorNotes",
+                Text = "Notes",
+                IsVisible = true,
+                Width = 150
+            };
+            histListview.AllColumns.Add(ColNotes);
+
 
             ColPosition.ImageGetter = rowObject => ((Trade)rowObject).Position ? "add" : "add";
 
-        }       
-                
-        private void UpdateTradeLog(Trade t)
+        }
+
+        private void UpdateTradeLog(Trade t, bool WritetoDB)
         {
 
 
@@ -285,12 +330,13 @@ namespace FrontEnd
             lvi.SubItems.Add(t.Reason.ToString());
             lvi.SubItems.Add(t.TradedPrice.ToString());
             lvi.SubItems.Add(t.TradeVolume.ToString());
+            lvi.SubItems.Add(t.IndicatorNotes.ToString());
             lvi.ForeColor = t.ForeColor;
             lvi.BackColor = t.BackColor;
             liveTradeListView.Items.Add(lvi);
 
 
-            DataBase.InsertTradeLog(t);
+            if (WritetoDB) DataBase.InsertTradeLog(t);
 
 
 
@@ -347,14 +393,14 @@ namespace FrontEnd
                 if (onlyTrades)
                 {
                     tl = from x in dc.TradeLogs
-                         where x.Time >= DateTime.UtcNow.AddHours(3)
+                         where x.Time.Value.Date == DateTime.Now.Date
                          where x.BuySell != "None"
                          select x;
                 }
                 else
                 {
                     tl = from x in dc.TradeLogs
-                         where x.Time >= DateTime.UtcNow.AddHours(3)
+                         where x.Time.Value.Date == DateTime.Now.Date
                          select x;
                 }
             }
@@ -376,7 +422,8 @@ namespace FrontEnd
 
 
 
-
+            liveTradeListView.BeginUpdate();
+            Cursor = Cursors.WaitCursor;
             foreach (var v in tl)
             {
                 Trade t = new Trade()
@@ -384,13 +431,16 @@ namespace FrontEnd
                     TimeStamp = (DateTime)v.Time.Value,
                     TradeVolume = (int)v.Volume,
                     BuyorSell = Trade.BuySellFromString(v.BuySell),
+                    IndicatorNotes = v.Notes,
                     CurrentPrice = (double)v.Price,
                     ForeColor = Color.FromName(v.ForeColor),
                     BackColor = Color.FromName(v.BackColor),
 
                 };
-                UpdateTradeLog(t);
+                UpdateTradeLog(t, false);
             }
+            liveTradeListView.EndUpdate();
+            Cursor = Cursors.Default;
         }
 
 
@@ -413,7 +463,7 @@ namespace FrontEnd
             else
             { dt = DataBase.dataTable.AllHistory; }
 
-            _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, onlyTradesRadioButton.Checked, startDateTimePicker.Value, endDateTimePicker.Value, dt);
+            _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, onlyTradesRadioButton.Checked, startDateTimePicker.Value, endDateTimePicker.Value.AddHours(5), dt);
             var _trades = _Stats.CalcBasicTradeStats(_tempTradeList);
             _trades.Reverse();
             histListview.Items.Clear();
@@ -665,7 +715,12 @@ namespace FrontEnd
             Cursor = Cursors.Default;
         }
 
-      
+        private void button1_Click(object sender, EventArgs e)
+        {
+            p.GetPricesFromTick();
+        }
+
+
 
     }
 }

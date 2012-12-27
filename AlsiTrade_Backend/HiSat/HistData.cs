@@ -9,9 +9,9 @@ using System.Diagnostics;
 using MoreLinq;
 namespace AlsiTrade_Backend.HiSat
 {
-   public static class HistData
+   public  class HistData
     {
-        public static List<PointData> GetHistoricalMINUTE_FromWEB(DateTime StartDate, DateTime EndDate, int TimeFrame, string ContractName)
+        public static List<Price> GetHistoricalMINUTE_FromWEB(DateTime StartDate, DateTime EndDate, int TimeFrame, string ContractName)
         {
             string startdate = StartDate.ToString("yyyyMMdd");
             string endddate = EndDate.ToString("yyyyMMdd");
@@ -20,7 +20,7 @@ namespace AlsiTrade_Backend.HiSat
             Debug.WriteLine(URL);
 
 
-            List<PointData> Data = new List<PointData>();
+            List<Price> Data = new List<Price>();
             List<string> rawData = new List<string>();
 
 
@@ -40,7 +40,7 @@ namespace AlsiTrade_Backend.HiSat
             foreach (string ss in rawData)
             {
 
-                PointData p = new PointData();
+                Price p = new Price();
                 List<string> data = new List<string>(ss.Split(','));
                 string date = data[0];
 
@@ -68,9 +68,9 @@ namespace AlsiTrade_Backend.HiSat
 
         }
 
-        public static List<PointData> GetHistoricalTICK_FromWEB(DateTime StartDate, DateTime EndDate, string ContractName)
+        public static List<Price> GetHistoricalTICK_FromWEB(DateTime StartDate, DateTime EndDate, string ContractName)
         {
-            List<PointData> Data = new List<PointData>();
+            List<Price> Data = new List<Price>();
 
             try
             {
@@ -104,7 +104,7 @@ namespace AlsiTrade_Backend.HiSat
                 for (int x = 0; x < rawData.Count; x++)
                 {
 
-                    PointData p = new PointData();
+                    Price p = new Price();
                     List<string> data = new List<string>(rawData[x].Split(','));
                     string date = data[0];
 

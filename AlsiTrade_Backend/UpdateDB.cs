@@ -20,15 +20,11 @@ namespace AlsiTrade_Backend
            
             AlsiDBDataContext dc = new AlsiDBDataContext();
 
-            DateTime Last = dc.MasterMinutes.AsEnumerable().Last().Stamp;
-            DebugClass.WriteLine(Last);
-            DateTime Now = DateTime.UtcNow.AddHours(2);
-            DebugClass.WriteLine("FULL UPDATE");
-            DebugClass.WriteLine("Start Date " + Last.Date + "   End Date " + Now.Date);
-            Debug.WriteLine("FULL UPDATE");
-            Debug.WriteLine("Start Date " + Last.Date + "   End Date " + Now.Date);
+            DateTime Last = dc.MasterMinutes.AsEnumerable().Last().Stamp;         
+            DateTime Now = DateTime.UtcNow.AddHours(2);          
             GlobalObjects.Points.Clear();
             GlobalObjects.Points = HiSat.HistData.GetHistoricalMINUTE_FromWEB(Last, Now, 1, ContractName);
+          
             UpdatePricesToImportMinute();
 
         }
@@ -36,18 +32,17 @@ namespace AlsiTrade_Backend
         public static void UpdatePricesToImportMinute()
         {
             AlsiDBDataContext dc = new AlsiDBDataContext();
-            dc.Connection.ConnectionString = GlobalObjects.CustomConnectionString;
             dc.ClearImportTable();
             decimal progress = 0;
             decimal totProgress = GlobalObjects.Points.Count;
 
-            foreach (PointData price in GlobalObjects.Points)
+            foreach (Price price in GlobalObjects.Points)
             {
-                int open = price.Open;
-                int high = price.High;
-                int low = price.Low;
-                int close = price.Close;
-                int volume = price.Volume;
+                int open = (int)price.Open;
+                int high = (int)price.High;
+                int low = (int)price.Low;
+                int close = (int)price.Close;
+                int volume = (int)price.Volume;
 
                 ImportMinute c = new ImportMinute
                 {
@@ -76,6 +71,47 @@ namespace AlsiTrade_Backend
 
         }
 
+        public static void UpdatePricesToImportMinuteForTradeUpdate()
+        {
+            AlsiDBDataContext dc = new AlsiDBDataContext();
+            dc.ClearImportTable();
+            decimal progress = 0;
+            decimal totProgress = GlobalObjects.Points.Count;
+
+            foreach (Price price in GlobalObjects.Points)
+            {
+                int open = (int)price.Open;
+                int high = (int)price.High;
+                int low = (int)price.Low;
+                int close = (int)price.Close;
+                int volume = (int)price.Volume;
+
+                ImportMinute c = new ImportMinute
+                {
+                    Stamp = price.TimeStamp,
+                    O = open,
+                    H = high,
+                    L = low,
+                    C = close,
+                    V = volume,
+                    Instrument = price.InstrumentName
+                };
+
+
+                dc.ImportMinutes.InsertOnSubmit(c);
+                dc.SubmitChanges();
+                progress++;
+
+                int p = Convert.ToInt16(100 * (progress / totProgress));
+
+
+
+            }
+            GlobalObjects.Points.Clear();
+            dc.CleanUp();
+
+        }
+
         public static void UpdatePricesToTempTable()
         {
             AlsiDBDataContext dc = new AlsiDBDataContext();
@@ -84,13 +120,13 @@ namespace AlsiTrade_Backend
             decimal progress = 0;
             decimal totProgress = GlobalObjects.Points.Count;
 
-            foreach (PointData price in GlobalObjects.Points)
+            foreach (Price price in GlobalObjects.Points)
             {
-                int open = price.Open;
-                int high = price.High;
-                int low = price.Low;
-                int close = price.Close;
-                int volume = price.Volume;
+                int open = (int)price.Open;
+                int high = (int)price.High;
+                int low = (int)price.Low;
+                int close = (int)price.Close;
+                int volume = (int)price.Volume;
 
                 OHLC_Temp  c = new OHLC_Temp
                 {

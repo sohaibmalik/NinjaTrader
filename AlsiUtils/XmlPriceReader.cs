@@ -10,7 +10,7 @@ namespace AlsiUtils
     public class XmlPriceReader
     {
 
-        public static List<PointData> getPriceFromXML(FileInfo file, string InstrumentCode)
+        public static List<Price> getPriceFromXML(FileInfo file, string InstrumentCode)
         {
             List<DateTime> datum = new List<DateTime>();
             List<int> open = new List<int>();
@@ -18,7 +18,7 @@ namespace AlsiUtils
             List<int> low = new List<int>();
             List<int> close = new List<int>();
             List<int> volume = new List<int>();
-            List<PointData> p = new List<PointData>();
+            List<Price> p = new List<Price>();
 
             #region Messy
 
@@ -145,7 +145,7 @@ namespace AlsiUtils
 
             for (int x = 0; x < datum.Count; x++)
             {
-                var pp = new PointData
+                var pp = new Price
                 {
                     TimeStamp = datum[x],
                     Open = open[x],
@@ -169,13 +169,13 @@ namespace AlsiUtils
             decimal progress = 0;
             decimal totProgress = GlobalObjects.Points.Count;
 
-            foreach (PointData price in GlobalObjects.Points)
+            foreach (Price price in GlobalObjects.Points)
             {
-                int open = price.Open;
-                int high = price.High;
-                int low = price.Low;
-                int close = price.Close;
-                int volume = price.Volume;
+                int open = (int)price.Open;
+                int high = (int)price.High;
+                int low = (int)price.Low;
+                int close = (int)price.Close;
+                int volume = (int)price.Volume;
 
                 ImportMinute c = new ImportMinute
                 {

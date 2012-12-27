@@ -33,6 +33,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.settingsTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.tradeLogGroupBox = new System.Windows.Forms.GroupBox();
             this.tradelogOnlyTradesCheckBox = new System.Windows.Forms.CheckBox();
             this.loadTodayRadioButton = new System.Windows.Forms.RadioButton();
@@ -65,6 +66,9 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.exportToTextButton = new System.Windows.Forms.Button();
             this.statsGroupBox = new System.Windows.Forms.GroupBox();
+            this.statsListView = new System.Windows.Forms.ListView();
+            this.columnStat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.orderDetailGroupBox = new System.Windows.Forms.GroupBox();
             this.onlyTradesRadioButton = new System.Windows.Forms.RadioButton();
             this.fullTradesRadioButton = new System.Windows.Forms.RadioButton();
@@ -97,6 +101,7 @@
             this.columnReason = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnVol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnNote = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.historicalTradesTabPage = new System.Windows.Forms.TabPage();
             this.histListview = new BrightIdeasSoftware.ObjectListView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
@@ -105,9 +110,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.statsListView = new System.Windows.Forms.ListView();
-            this.columnStat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -170,6 +172,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.tradeLogGroupBox);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.riskGroupBox);
@@ -181,6 +184,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(240, 151);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 24;
+            this.button1.Text = "test";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tradeLogGroupBox
             // 
@@ -231,7 +244,7 @@
             // 
             // loadTradeLogNumericUpDown
             // 
-            this.loadTradeLogNumericUpDown.Location = new System.Drawing.Point(104, 22);
+            this.loadTradeLogNumericUpDown.Location = new System.Drawing.Point(153, 19);
             this.loadTradeLogNumericUpDown.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -486,10 +499,10 @@
             this.tabPage2.Controls.Add(this.timeframeGroupBox);
             this.tabPage2.Controls.Add(this.timespanGroupBox);
             this.tabPage2.Controls.Add(this.runHistCalcButton);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(346, 464);
+            this.tabPage2.Size = new System.Drawing.Size(346, 466);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -514,6 +527,30 @@
             this.statsGroupBox.TabIndex = 10;
             this.statsGroupBox.TabStop = false;
             this.statsGroupBox.Text = "Stats";
+            // 
+            // statsListView
+            // 
+            this.statsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnStat,
+            this.columnValue});
+            this.statsListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statsListView.FullRowSelect = true;
+            this.statsListView.GridLines = true;
+            this.statsListView.Location = new System.Drawing.Point(3, 19);
+            this.statsListView.Name = "statsListView";
+            this.statsListView.Size = new System.Drawing.Size(171, 274);
+            this.statsListView.TabIndex = 0;
+            this.statsListView.UseCompatibleStateImageBehavior = false;
+            this.statsListView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnStat
+            // 
+            this.columnStat.Text = "Statistic";
+            this.columnStat.Width = 100;
+            // 
+            // columnValue
+            // 
+            this.columnValue.Text = "Value";
             // 
             // orderDetailGroupBox
             // 
@@ -821,7 +858,8 @@
             this.columnBS,
             this.columnReason,
             this.columnPrice,
-            this.columnVol});
+            this.columnVol,
+            this.columnNote});
             this.liveTradeListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.liveTradeListView.FullRowSelect = true;
             this.liveTradeListView.GridLines = true;
@@ -857,6 +895,11 @@
             // 
             this.columnVol.Text = "Volume";
             this.columnVol.Width = 100;
+            // 
+            // columnNote
+            // 
+            this.columnNote.Text = "Details";
+            this.columnNote.Width = 200;
             // 
             // historicalTradesTabPage
             // 
@@ -935,30 +978,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(1142, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // statsListView
-            // 
-            this.statsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnStat,
-            this.columnValue});
-            this.statsListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.statsListView.FullRowSelect = true;
-            this.statsListView.GridLines = true;
-            this.statsListView.Location = new System.Drawing.Point(3, 19);
-            this.statsListView.Name = "statsListView";
-            this.statsListView.Size = new System.Drawing.Size(171, 274);
-            this.statsListView.TabIndex = 0;
-            this.statsListView.UseCompatibleStateImageBehavior = false;
-            this.statsListView.View = System.Windows.Forms.View.Details;
-            // 
-            // columnStat
-            // 
-            this.columnStat.Text = "Statistic";
-            this.columnStat.Width = 100;
-            // 
-            // columnValue
-            // 
-            this.columnValue.Text = "Value";
             // 
             // MainForm
             // 
@@ -1093,6 +1112,8 @@
         private System.Windows.Forms.ListView statsListView;
         private System.Windows.Forms.ColumnHeader columnStat;
         private System.Windows.Forms.ColumnHeader columnValue;
+        private System.Windows.Forms.ColumnHeader columnNote;
+        private System.Windows.Forms.Button button1;
         
     }
 }

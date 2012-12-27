@@ -26,6 +26,7 @@ namespace AlsiUtils.Strategies
             E1 = Factory_Indicator.createEMA(P.C_EMA, price);
 
             DateTime sd = E1[0].TimeStamp;
+            
             CutToSize(sd);
             TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].TimeStamp, CalcTriggers);           
             _strategy.Calculate();
@@ -173,6 +174,8 @@ namespace AlsiUtils.Strategies
                 {
                     trades.Add(t);
                 }
+              
+                //Debug.WriteLine("Trade : " + t.TimeStamp + "  " + t.BuyorSell + "  " + t.CurrentDirection + "  " + t.TradeVolume);
             }
 
             Clear();

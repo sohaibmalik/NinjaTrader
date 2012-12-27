@@ -34,9 +34,6 @@
     <Reference Include="MoreLinq">
       <HintPath>..\External Libraries\MoreLinq\MoreLinq.dll</HintPath>
     </Reference>
-    <Reference Include="Nist">
-      <HintPath>..\External Libraries\Nist.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
@@ -63,8 +60,6 @@
     <Compile Include="AppMonitor.cs" />
     <Compile Include="Data Objects\RegressionExt.cs" />
     <Compile Include="Data Objects\GlobalObjects.cs" />
-    <Compile Include="Data Objects\PointData.cs" />
-    <Compile Include="Data Objects\Tick.cs" />
     <Compile Include="Indicators\EMA.cs" />
     <Compile Include="Indicators\RegressionLine.cs" />
     <Compile Include="Indicators\SMA.cs" />
@@ -88,11 +83,7 @@
     <Compile Include="Strategies\Strategy_Bollinger.cs" />
     <Compile Include="Strategies\Strategy_SSPOP.cs" />
     <Compile Include="Strategies\TradeStrategy.cs" />
-    <Compile Include="Working Class\DEBUGClass.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Compile>
     <Compile Include="Working Class\Calc_Indicator.cs" />
-    <Compile Include="Working Class\Calc_Trading.cs" />
     <Compile Include="Data Objects\SummaryStats.cs" />
     <Compile Include="Working Class\DataBase.cs" />
     <Compile Include="Data Objects\LogData.cs" />
@@ -101,7 +92,6 @@
     <Compile Include="Indicators\BollingerBand.cs" />
     <Compile Include="Indicators\Indicator.cs" />
     <Compile Include="Indicators\Macd.cs" />
-    <Compile Include="Indicators\Point.cs" />
     <Compile Include="Indicators\Price.cs" />
     <Compile Include="Indicators\Rsi.cs" />
     <Compile Include="Indicators\SlowStoch.cs" />

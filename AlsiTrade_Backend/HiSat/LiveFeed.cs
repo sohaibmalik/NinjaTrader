@@ -1,20 +1,20 @@
 ﻿using System.Diagnostics;
 using HISAT_API;
-
+using AlsiUtils;
+using System;
 namespace AlsiTrade_Backend.HiSat
 {
 
     public class LiveFeed
     {
-        private bool _ConnectedToLiveFeed;
-        DataFeed datafeed;
-        bool connectedtoHISAT = false;
-        string CN;
-
+     
+        DataFeed datafeed;       
+        string _Instrument;
+      
         public LiveFeed(string InstrumentName)
         {
             datafeed = new DataFeed();
-            CN = InstrumentName;
+            _Instrument = InstrumentName;
             createHiSatEvents();
             Login();
 
@@ -34,31 +34,8 @@ namespace AlsiTrade_Backend.HiSat
         /// </summary>
         private void Login()
         {
-
             datafeed.LogOnToHisat("Johan", "Hisat");
-
-            int Timeout = 0;
-            while (!connectedtoHISAT)
-            {
-                Timeout++;
-                if (Timeout == 20) break;
-                System.Threading.Thread.Sleep(100);
-                Debug.WriteLine("Waiting to Connect -- Timeout = " + Timeout);
-            }
-
-            if (connectedtoHISAT)
-            {
-                Debug.WriteLine("Connected to Hisat");
-                //ddeStatusLabel.Text = "HiSat Connected";
-                // StartFeed(Properties.Settings.Default.HiSat_InstrumentName);
-               // startFeedToolStripMenuItem.Enabled = false;
-                // UpdateLog("Status", "Connected to HiSat Live Feed", Color.Blue, true);
-            }
-            else
-            {
-                Debug.WriteLine("Failed to  Connect to Hisat");
-                //  UpdateLog("Error", "Could not Connect to HiSAT", Color.Red, true);
-            }
+                     
         }
         /// <summary>
         /// Start Live Streaming once Logged In
@@ -73,25 +50,30 @@ namespace AlsiTrade_Backend.HiSat
         private void datafeed_StatusUpdate(object sender, DataFeed.HSEventArgs e)
         {
             Debug.WriteLine("STATUS UPDATE " + e.theString);
-            if (e.theString == "Logged on to server") _ConnectedToLiveFeed = true;
+            if (e.theString == "Logged on to server")
+            {              
+                StartFeed(_Instrument);
+            }
         }
 
         private void datafeed_onTrade(object sender, DataFeed.aTrade e)
         {
-            // DataBase.insertTicks(e.TradeTime, Convert.ToInt32(e.TradePrice));
+             DataBase.insertTicks(e.TradeTime, Convert.ToInt32(e.TradePrice));
+              //Debug.WriteLine(e.Instrument + "  " + e.TradePrice);
         }
 
         private void datafeed_onAsk(object sender, DataFeed.aAsk e)
         {
             // liveOfferLabel.Text = e.AskPrice.ToString();
             //liveVolOfferLabel.Text = e.AskVol.ToString();
-
+            //Debug.WriteLine(e.Instrument + "  " + e.AskPrice);
         }
 
         private void datafeed_onBid(object sender, DataFeed.aBid e)
         {
             //liveBidLabel.Text = e.BidPrice.ToString();
             //liveVolBidLabel.Text = e.BidVol.ToString();
+           // Debug.WriteLine(e.Instrument + "  " + e.BidPrice);
         }
 
         private void datafeed_onBidask(object sender, DataFeed.aBidAsk e)

@@ -23,15 +23,15 @@ namespace AlsiUtils
         public Color ForeColor { get; set; }
         public Color BackColor { get; set; }
         public string InstrumentName { get; set; }
-        public int TradeCount { get; set; }       
-        public AlsiUtils.Data_Objects.RegressionExt Extention {get;set;}
+        public int TradeCount { get; set; }
+        public AlsiUtils.Data_Objects.RegressionExt Extention { get; set; }
 
-     public Trade()
+        public Trade()
         {
             Extention = new Data_Objects.RegressionExt();
         }
         public enum BuySell
-        {          
+        {
             Buy,
             Sell,
             None,
@@ -67,7 +67,7 @@ namespace AlsiUtils
             EndOfDayCloseShort = 9,
             ContractExpires = 10
         }
-       
+
         public static string BuySellToString(BuySell BS)
         {
             if (BS == BuySell.Buy) return "Buy";
@@ -84,6 +84,14 @@ namespace AlsiUtils
             return BuySell.None;
         }
 
-     
+        public override string ToString()
+        {
+
+            string r = Reason.ToString();
+            if (this.Reason == 0) r = "";
+            string msg = "Trade Details:  " + r + "\n" + TimeStamp + "  " + BuyorSell + "  " + TradeVolume + " @" + TradedPrice + "\n";
+            return msg;
+        }
+
     }
 }

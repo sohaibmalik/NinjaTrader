@@ -89,6 +89,10 @@
       <Project>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</Project>
       <Name>AlsiUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Communicator\Communicator\Communicator.csproj">
+      <Project>{DADADE30-FDDF-4921-B96E-A8D0ECFFEB51}</Project>
+      <Name>Communicator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\External Libraries\ObjectListViewDemo\ObjectListView\ObjectListView2010.csproj">
       <Project>{18FEDA0C-D147-4286-B39A-01204808106A}</Project>
       <Name>ObjectListView2010</Name>

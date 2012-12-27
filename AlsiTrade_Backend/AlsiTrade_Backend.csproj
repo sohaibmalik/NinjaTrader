@@ -37,6 +37,9 @@
     <Reference Include="MoreLinq">
       <HintPath>..\External Libraries\MoreLinq\MoreLinq.dll</HintPath>
     </Reference>
+    <Reference Include="Nist, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\External Libraries\Nist.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
@@ -62,6 +65,10 @@
     <ProjectReference Include="..\AlsiUtils\AlsiUtils.csproj">
       <Project>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</Project>
       <Name>AlsiUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Communicator\Communicator\Communicator.csproj">
+      <Project>{DADADE30-FDDF-4921-B96E-A8D0ECFFEB51}</Project>
+      <Name>Communicator</Name>
     </ProjectReference>
     <ProjectReference Include="..\ExcelLink\ExcelLink\ExcelLink.csproj">
       <Project>{102678C8-C660-4FC3-89BE-B46D2F82C614}</Project>

@@ -23,7 +23,7 @@ namespace AlsiTrade_Backend
 
         public static List<Trade> RunEMAScalp(Parameter_EMA_Scalp Parameter, GlobalObjects.TimeInterval Interval, bool TradesOnly, DateTime Start, DateTime End, DataBase.dataTable Table)
         {
-            GlobalObjects.Prices = AlsiUtils.DataBase.readDataFromDataBase(Interval, Table, Start, End, false);
+            GlobalObjects.Prices = AlsiUtils.DataBase.readDataFromDataBase(Interval, Table, Start, End, false);            
             return AlsiUtils.Strategies.EMA_Scalp.EmaScalp(Parameter, GlobalObjects.Prices, TradesOnly);
         }
     }

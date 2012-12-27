@@ -50,7 +50,10 @@ namespace AlsiTrade_Backend
                 }
 
                 if (!_UpdatePending && _Now.Second > 50) _UpdatePending = true;
+                if (_Now.Hour == 17 && _Now.Minute == 29) EndofDayUpdate();
             }
+
+          
         }
 
         private void CheckForUpdate(int ten, int one)
@@ -84,7 +87,15 @@ namespace AlsiTrade_Backend
             }
         }
 
-
+        private void EndofDayUpdate()
+        {
+            _timer.Stop();
+            StartUpDateEvent e = new StartUpDateEvent();
+            e.Time = _Now;
+            e.Message = "End of Day Update";
+            e.Interval = _interval;
+            onStartUpdate(this, e);
+        }
 
 
         public delegate void StartUpdate(object sender, StartUpDateEvent e);

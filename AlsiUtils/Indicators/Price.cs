@@ -2,15 +2,17 @@
 
 namespace AlsiUtils
 {
-    public class Price : Point
+    public class Price
     {
-        private string _InstrumentCode;
 
-        public string InstrumentName
-        {
-            get { return _InstrumentCode; }
-            set { _InstrumentCode = value; }
-        }
+        public DateTime TimeStamp { get; set; }
+        public double Open { get; set; }
+        public double High { get; set; }
+        public double Low { get; set; }
+        public double Close { get; set; }
+        public double Volume { get; set; }
+        public string InstrumentName { get; set; }
+       
 
 
         public Price(DateTime datetime, double open, double high, double low, double close, string Instrument)
