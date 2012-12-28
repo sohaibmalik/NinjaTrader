@@ -2425,7 +2425,7 @@ namespace AlsiUtils
 		
 		private int _N;
 		
-		private System.Nullable<System.DateTime> _Time;
+		private System.DateTime _Time;
 		
 		private string _BuySell;
 		
@@ -2447,7 +2447,7 @@ namespace AlsiUtils
     partial void OnCreated();
     partial void OnNChanging(int value);
     partial void OnNChanged();
-    partial void OnTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnTimeChanging(System.DateTime value);
     partial void OnTimeChanged();
     partial void OnBuySellChanging(string value);
     partial void OnBuySellChanged();
@@ -2490,8 +2490,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Time", DbType="DateTime")]
-		public System.Nullable<System.DateTime> Time
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Time", DbType="DateTime NOT NULL")]
+		public System.DateTime Time
 		{
 			get
 			{

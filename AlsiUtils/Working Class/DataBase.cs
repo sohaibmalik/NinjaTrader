@@ -117,8 +117,7 @@ namespace AlsiUtils
 
         static public List<Price> readDataFromDataBase(GlobalObjects.TimeInterval T, dataTable TD, DateTime Start, DateTime End, bool reverseList)
         {
-            try
-            {
+          
                 List<Price> prices = new List<Price>();
 
                 AlsiDBDataContext dc = new AlsiDBDataContext();
@@ -175,24 +174,50 @@ namespace AlsiUtils
                 {
                     if (T == GlobalObjects.TimeInterval.Minute_2)
                     {
-                        var firstinDB = dc.OHLC_2_Minutes.AsEnumerable().First().Stamp;
-                        var lastinDB = dc.OHLC_2_Minutes.AsEnumerable().Last().Stamp;
-                        if (firstinDB > Start) dc.OHLC_2();
-                        if (lastinDB < End) dc.OHLC_2();
+                          var min2 = dc.OHLC_2_Minutes;
+                          if (min2.Count() == 0)
+                          {
+                              dc.OHLC_2();
+                          }
+                          else
+                          {
+                              var firstinDB = dc.OHLC_2_Minutes.AsEnumerable().First().Stamp;
+                              var lastinDB = dc.OHLC_2_Minutes.AsEnumerable().Last().Stamp;
+                              if (firstinDB > Start) dc.OHLC_2();
+                              if (lastinDB < End) dc.OHLC_2();
+                          }
                     }
+
                     if (T == GlobalObjects.TimeInterval.Minute_5)
                     {
-                        var firstinDB = dc.OHLC_5_Minutes.AsEnumerable().First().Stamp;
-                        var lastinDB = dc.OHLC_5_Minutes.AsEnumerable().Last().Stamp;
-                        if (firstinDB > Start) dc.OHLC_5();
-                        if (lastinDB < End) dc.OHLC_5();
+                        var min5 = dc.OHLC_5_Minutes;
+                        if (min5.Count() == 0)
+                        {
+                            dc.OHLC_5();
+                        }
+                        else
+                        {
+                            var firstinDB = min5.AsEnumerable().First().Stamp;
+                            var lastinDB = min5.AsEnumerable().Last().Stamp;
+                            if (firstinDB > Start) dc.OHLC_5();
+                            if (lastinDB < End) dc.OHLC_5();
+                        }
                     }
+
                     if (T == GlobalObjects.TimeInterval.Minute_10)
                     {
-                        var firstinDB = dc.OHLC_10_Minutes.AsEnumerable().First().Stamp;
-                        var lastinDB = dc.OHLC_10_Minutes.AsEnumerable().Last().Stamp;
-                        if (firstinDB > Start) dc.OHLC_10();
-                        if (lastinDB < End) dc.OHLC_10();
+                          var min10 = dc.OHLC_10_Minutes;
+                          if (min10.Count() == 0)
+                          {
+                              dc.OHLC_10();
+                          }
+                          else
+                          {
+                              var firstinDB = dc.OHLC_10_Minutes.AsEnumerable().First().Stamp;
+                              var lastinDB = dc.OHLC_10_Minutes.AsEnumerable().Last().Stamp;
+                              if (firstinDB > Start) dc.OHLC_10();
+                              if (lastinDB < End) dc.OHLC_10();
+                          }
                     }
                 }
 
@@ -266,12 +291,8 @@ namespace AlsiUtils
 
                 if (reverseList) prices.Reverse();
                 return prices;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("readDataFromDataBase   Database Busy : " + ex.Message);
-                return null;
-            }
+            
+          
         }
 
 

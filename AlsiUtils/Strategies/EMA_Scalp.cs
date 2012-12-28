@@ -28,59 +28,15 @@ namespace AlsiUtils.Strategies
             DateTime sd = E1[0].TimeStamp;
             
             CutToSize(sd);
-            TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].TimeStamp, CalcTriggers);           
+            TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].TimeStamp, CalcTriggers,CalcTriggers2 );           
             _strategy.Calculate();
             _T = _strategy.getStrategyList();
-
-
-
-            // for (int x = 0; x < _T.Count; x++) DP(x);
-
-            //if (true)//s.Total_Avg_PL >15 || s.Total_Avg_PL <-15)
-            //{
-
-            //    Debug.WriteLine(P.A_EMA1 + "  " + P.A_EMA2 + "  " + P.B_EMA1 + "  " + P.B_EMA2 + "   " + P.C_EMA + " tp:" + P.TakeProfit);
-            //    Debug.WriteLine("Trades " + s.TradeCount);
-            //    Debug.WriteLine("Total " + s.TotalProfit);
-            //    Debug.WriteLine("Avg " + s.Total_Avg_PL);
-            //    Debug.WriteLine("Win % " + s.Pct_Prof);
-            //    Debug.WriteLine("Loss % " + s.Pct_Loss);
-            //    Debug.WriteLine("EOF Close " + P.CloseEndofDay);
-            //    Debug.WriteLine("Period " + P.Period);
-            //    Debug.WriteLine("==========================================");
-
-                //SimDBDataContext dc = new SimDBDataContext();
-                //tbl5Min n = new tbl5Min
-                //{
-                //    Trades = (int)s.TradeCount,
-                //    TotalPL = (int)s.TotalProfit,
-                //    Win = s.Pct_Prof,
-                //    Loose = s.Pct_Loss,
-                //    AvgPL = s.Total_Avg_PL,
-                //    E_A1 = P.A_EMA1,
-                //    E_A2 = P.A_EMA2,
-                //    E_B1 = P.B_EMA1,
-                //    E_B2 = P.B_EMA2,
-                //    E_C = P.C_EMA,
-                //    CloseEndDay = P.CloseEndofDay.ToString(),
-
-                //};
-                // dc.tbl5Mins.InsertOnSubmit(n);
-                // dc.SubmitChanges();
-            //}
-
-
+            //for (int x = 0; x < _T.Count; x++) DP(x);
+                
 
             //_strategy.ClearList(); //FOR SIMULATOR
-
             return GetTradeData(tradeOnly); // REAL TRADING
-
             //Clear();//FOR SIMULATOR
-
-
-
-            //return s;
-
 
             return new List<Trade>();
 
@@ -127,14 +83,14 @@ namespace AlsiUtils.Strategies
             {
 
                 Debug.WriteLine(_T[x].TimeStamp
-                     + "," + _T[x].ActualTrade
+                     + "," + _T[x].ActualTrade 
                      + "," + _T[x].Price_Close
                      + ", E:" + Math.Round(E1[x].Ema, 2)
                      + "  A1:" + Math.Round(A_1[x].Ema, 2)
                      + "  A6:" + Math.Round(A_6[x].Ema, 2)
                      + "  B1:" + Math.Round(B_1[x].Ema, 2)
                      + "  B6:" + Math.Round(B_6[x].Ema, 2)
-                     + " Pos:" + _T[x].Position
+                     + " Pos:" + _T[x].TradeDirection 
                      + "  RunPL:," + _T[x].RunningProfit
                      + "," + _T[x].TotalProfit
                      + "," + _T[x].Reason
@@ -213,8 +169,18 @@ namespace AlsiUtils.Strategies
                 strategy[x].TradeTrigger = Trade.Trigger.OpenShort;
 
 
+          
+
         }
 
+        public static void CalcTriggers2(List<TradeStrategy> strategy, int x)
+        {
+            if (strategy[x].TradeDirection == Trade.Direction.Long && strategy[x].TradeTrigger == Trade.Trigger.OpenShort)
+                strategy[x].TradeTrigger = Trade.Trigger.ReverseShort;
+
+            if (strategy[x].TradeDirection == Trade.Direction.Short && strategy[x].TradeTrigger == Trade.Trigger.OpenLong)
+                strategy[x].TradeTrigger = Trade.Trigger.ReverseLong;
+        }
      
 
 

@@ -124,7 +124,7 @@
   <Table Name="dbo.TradeLog" Member="TradeLogs">
     <Type Name="TradeLog">
       <Column Name="N" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Time" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="BuySell" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
       <Column Name="Reason" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
       <Column Name="Price" Type="System.Int32" DbType="Int" CanBeNull="true" />

@@ -14,17 +14,18 @@ namespace AlsiUtils.Strategies
 
         public delegate void Triggers_Delegate(List<TradeStrategy> TradeStraterty, int Index);
         public static Triggers_Delegate _Trigger;
+        public static Triggers_Delegate _Trigger2;
 
-        
         public TradeStrategy()
         {
 
         }
-        public TradeStrategy(List<Price> Prices, Parameter_General parameter, DateTime startPeriod, Triggers_Delegate Triggers)
+        public TradeStrategy(List<Price> Prices, Parameter_General parameter, DateTime startPeriod, Triggers_Delegate Triggers, Triggers_Delegate Triggers2)
         {
             _p.StopLoss = parameter.StopLoss;
             _p.TakeProfit = parameter.TakeProfit;
             _Trigger = Triggers;
+            _Trigger2 = Triggers2;
             _p.CloseEndofDay = parameter.CloseEndofDay;
 
             foreach (Price s in Prices)
@@ -57,7 +58,7 @@ namespace AlsiUtils.Strategies
             Triggers();
 
             PositionAndDirection();
-            TradeSignals();
+            TradeSignals(false);
 
 
             CalcProfitLoss();
@@ -68,25 +69,12 @@ namespace AlsiUtils.Strategies
 
             Triggers();
             PositionAndDirection();
-            TradeSignals();
+            TradeSignals(false);
             CalcProfitLoss();
 
-            //  OverNightPosAnalysis();
-          
+            //Triggers2();
+            //TradeSignals(true);
 
-            //  for (int x = 5; x < 100;x++ ) Apply_2nd_AlgoLayer(x);
-
-            /*
-                        AddStopLossTriggers();
-                        Mark();
-                        ClearProf();
-                        Triggers();
-                        PositionAndDirection();
-                        TradeSignals();
-                        CalcProfitLoss();
-                        */
-
-           
         }
 
         public void ClearList()
@@ -116,6 +104,13 @@ namespace AlsiUtils.Strategies
                     _ST[x].TradeTrigger = Trade.Trigger.None;
                     _Trigger(_ST, x);
                 }
+        }
+
+        private void Triggers2()
+        {
+            if (_Trigger2 != null)
+                for (int x = 1; x < _ST.Count; x++) _Trigger2(_ST, x);
+
         }
 
         private static void PositionAndDirection()
@@ -204,7 +199,7 @@ namespace AlsiUtils.Strategies
 
             if (_ST[x - 1].TradeDirection == Trade.Direction.None)
             {
-                switch (_ST[x].TradeTrigger )
+                switch (_ST[x].TradeTrigger)
                 {
                     case Trade.Trigger.OpenLong:
                         _ST[x].TradeDirection = Trade.Direction.Long;
@@ -227,7 +222,7 @@ namespace AlsiUtils.Strategies
             #endregion
         }
 
-        private static void TradeSignals()
+        private static void TradeSignals(bool checkReverse)
         {
             for (int x = 1; x < _ST.Count; x++)
             {
@@ -265,6 +260,8 @@ namespace AlsiUtils.Strategies
                             _ST[x].ActualTrade = Trade.Trigger.CloseLong;
                             _ST[x].TradedPrice = _ST[x].Price_Close;
                             break;
+
+
 
                     }
                 }
@@ -347,8 +344,115 @@ namespace AlsiUtils.Strategies
                         }
                         #endregion
 
+
+                if (checkReverse)
+                {
+                    switch (_ST[x].TradeTrigger)
+                    {
+                        case Trade.Trigger.ReverseLong:
+                            _ST[x].ActualTrade = Trade.Trigger.ReverseLong;
+                            _ST[x].TradedPrice = _ST[x].Price_Close;
+                            break;
+
+                        case Trade.Trigger.ReverseShort:
+                            _ST[x].ActualTrade = Trade.Trigger.ReverseShort;
+                            _ST[x].TradedPrice = _ST[x].Price_Close;
+                            break;
+                    }
+                }
+
+
+
+
+
+
+
             }
         }
+
+        //private static void ReverseTradeSignals()
+        //{
+        //    for (int x = 1; x < _ST.Count; x++)
+        //    {
+        //        #region Closing Trades
+        //        if (_ST[x - 1].Position && _ST[x].Position && _ST[x - 1].TradeDirection == Trade.Direction.Long)
+        //        {
+        //            switch (_ST[x].TradeTrigger)
+        //            {
+        //                case Trade.Trigger.CloseLong:
+        //                    _ST[x].ActualTrade = Trade.Trigger.CloseLong;
+        //                    _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                    break;
+
+        //                case Trade.Trigger.CloseShort:
+        //                    _ST[x].ActualTrade = Trade.Trigger.CloseLong;
+        //                    _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                    break;
+
+        //                case Trade.Trigger.StopLoss:
+        //                    _ST[x].ActualTrade = Trade.Trigger.CloseLong;
+        //                    _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                    break;
+
+        //                case Trade.Trigger.TakeProfit:
+        //                    _ST[x].ActualTrade = Trade.Trigger.CloseLong;
+        //                    _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                    break;
+
+        //                case Trade.Trigger.EndOfDayCloseLong:
+        //                    _ST[x].ActualTrade = Trade.Trigger.CloseLong;
+        //                    _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                    break;
+
+        //                case Trade.Trigger.ContractExpires:
+        //                    _ST[x].ActualTrade = Trade.Trigger.CloseLong;
+        //                    _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                    break;
+
+        //            }
+        //        }
+        //        else
+        //            if (_ST[x - 1].Position && !_ST[x].Position && _ST[x - 1].TradeDirection == Trade.Direction.Short)
+        //            {
+        //                switch (_ST[x].TradeTrigger)
+        //                {
+        //                    case Trade.Trigger.CloseLong:
+        //                        _ST[x].ActualTrade = Trade.Trigger.CloseShort;
+        //                        _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                        break;
+
+        //                    case Trade.Trigger.CloseShort:
+        //                        _ST[x].ActualTrade = Trade.Trigger.CloseShort;
+        //                        _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                        break;
+
+        //                    case Trade.Trigger.StopLoss:
+        //                        _ST[x].ActualTrade = Trade.Trigger.CloseShort;
+        //                        _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                        break;
+
+        //                    case Trade.Trigger.TakeProfit:
+        //                        _ST[x].ActualTrade = Trade.Trigger.CloseShort;
+        //                        _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                        break;
+
+        //                    case Trade.Trigger.EndOfDayCloseShort:
+        //                        _ST[x].ActualTrade = Trade.Trigger.CloseShort;
+        //                        _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                        break;
+
+        //                    case Trade.Trigger.ContractExpires:
+        //                        _ST[x].ActualTrade = Trade.Trigger.CloseShort;
+        //                        _ST[x].TradedPrice = _ST[x].Price_Close;
+        //                        break;
+        //                }
+        //            }
+
+
+        //    }
+
+        //        #endregion
+        //}
 
         private static void CalcProfitLoss()
         {
@@ -448,11 +552,11 @@ namespace AlsiUtils.Strategies
             #endregion
 
         }
-               
 
-    
 
-    
+
+
+
 
         public static Trade.BuySell GetBuySell(Trade.Trigger trigger)
         {
@@ -464,7 +568,7 @@ namespace AlsiUtils.Strategies
 
                 case Trade.Trigger.CloseShort:
                     return Trade.BuySell.Buy;
-                    break;            
+                    break;
 
                 case Trade.Trigger.OpenLong:
                     return Trade.BuySell.Buy;
@@ -481,7 +585,7 @@ namespace AlsiUtils.Strategies
                 case Trade.Trigger.EndOfDayCloseShort:
                     return Trade.BuySell.Buy;
                     break;
-                 
+
             }
             return Trade.BuySell.None;
         }
@@ -501,10 +605,10 @@ namespace AlsiUtils.Strategies
         public double TotalProfit { get; set; }
         public double TradeCount { get; set; }
 
-     
-       
+
+
         public class Expansion
-        {           
+        {
             private static void Apply_2nd_AlgoLayer(int EMA)
             {
                 List<VariableIndicator> _st = new List<VariableIndicator>();
@@ -561,44 +665,85 @@ namespace AlsiUtils.Strategies
 
             }
 
-            public static List<Trade> ApplyRegressionFilter(int N,List<Trade> Trades)
+            public static List<Trade> ApplyRegressionFilter(int N, List<Trade> Trades)
             {
-                Trades = Statistics.RegressionAnalysis_OnPL(N,Trades);               
+                var CloseTradesOnly = new List<Trade>();
+                CloseTradesOnly = Statistics.RegressionAnalysis_OnPL(N, Trades);
 
-                for (int x = N + 1; x < Trades.Count(); x++)
-                {
-                    if (Trades[x - 2].Extention.Slope < Trades[x - 1].Extention.Slope) Trades[x].Extention.IsSlopeHigherThanPrevSlope = true;
-                    if (Trades[x - 1].Extention.Slope > 0) Trades[x].Extention.IsSlopeBiggerZero = true;
+                var OpenTradesOnly = new List<Trade>();
+                OpenTradesOnly = Trades.Where(z => z.Reason == Trade.Trigger.OpenShort || z.Reason == Trade.Trigger.OpenLong).ToList();
 
-                    Trades[x].Extention.OrderVol = 1;
-                    if (!Trades[x].Extention.IsSlopeBiggerZero && Trades[x].Extention.IsSlopeHigherThanPrevSlope)
-                        Trades[x].Extention.OrderVol = 2;
-                   
-                                         
-                    
-                 }
+                int O = OpenTradesOnly.Count;
+                int C = CloseTradesOnly.Count;
 
-                return Trades;
-            }
-         
-            public static List<Trade> MergeNewTrades(List<Trade>OriginalTrades,List<Trade>ModifiedTrades)
-            {
-                for (int x = 0; x < OriginalTrades.Count; x++)
+                if (O > C)
+                    for (int x = 1; x < C; x++) OpenTradesOnly[x + 1].Extention = CloseTradesOnly[x].Extention;
+                if (O == C)
+                    for (int x = 1; x < C; x++) OpenTradesOnly[x + 1].Extention = CloseTradesOnly[x + 1].Extention;
+
+                var AllOrders = new List<Trade>();
+                AllOrders = Trades.Where(z => z.Reason == Trade.Trigger.OpenShort || z.Reason == Trade.Trigger.OpenLong || z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong).ToList();
+
+                for (int x = 1; x < AllOrders.Count; x++)
                 {
 
-                    foreach (var t in ModifiedTrades)
+                    if (AllOrders[x].Reason == Trade.Trigger.OpenShort || AllOrders[x].Reason == Trade.Trigger.OpenLong)
                     {
-                        if (OriginalTrades[x].TimeStamp == t.TimeStamp)
-                        {
-                            OriginalTrades[x] = t;
-                            break;
-                        }
+
+                        if (AllOrders[x - 2].Extention.Slope < AllOrders[x].Extention.Slope && AllOrders[x].Extention.Slope < 0)
+                            AllOrders[x].Extention.OrderVol = 2;
                     }
+
+                    if (AllOrders[x].Reason == Trade.Trigger.CloseShort || AllOrders[x].Reason == Trade.Trigger.CloseLong)
+                    {
+                        // if (AllOrders[x - 1].Extention.OrderVol==2)AllOrders[x].Extention.OrderVol=1;
+                    }
+                    Debug.WriteLine(
+                        AllOrders[x].TimeStamp + "  " +
+                          AllOrders[x].Reason + "  " +
+                        AllOrders[x].Extention.Slope + "  " +
+                        AllOrders[x].Extention.OrderVol + "  " +
+                        ""
+                        //AllOrders[x].Extention.Difference
+                        );
+
 
                 }
 
-                    return OriginalTrades;
+
+
+
+                Debug.WriteLine("Wait");
+                return new List<Trade>();
+                return AllOrders;
+
             }
+
+            public static List<Trade> AdjustPositionEntries(List<Trade> OriginalTrades)
+            {
+                var tradeonlyClose = new List<Trade>();
+                tradeonlyClose = OriginalTrades.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong).ToList();
+
+                var tradeonlyOpen = new List<Trade>();
+                tradeonlyOpen = OriginalTrades.Where(z => z.Reason == Trade.Trigger.OpenShort || z.Reason == Trade.Trigger.OpenLong).ToList();
+
+
+                int O = tradeonlyOpen.Count;
+                int C = tradeonlyClose.Count;
+
+                if (O > C)
+                    for (int x = 1; x < C; x++) tradeonlyOpen[x + 1].Extention = tradeonlyClose[x].Extention;
+                if (O == C)
+                    for (int x = 1; x < C; x++) tradeonlyOpen[x + 1].Extention = tradeonlyClose[x + 1].Extention;
+
+                Debug.WriteLine("Wait");
+                return OriginalTrades;
+            }
+
+
+
+
+
         }
     }
 

@@ -55,7 +55,9 @@ namespace AlsiUtils
             TakeProfit = 7,
             EndOfDayCloseLong = 8,
             EndOfDayCloseShort = 9,
-            ContractExpires = 10
+            ContractExpires = 10,
+            ReverseLong=11,
+            ReverseShort=12,
         }
 
         public enum TradeReason

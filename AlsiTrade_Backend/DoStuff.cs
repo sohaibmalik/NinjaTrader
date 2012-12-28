@@ -12,17 +12,19 @@ using System.Data.SqlClient;
 using Nist;
 using Communicator;
 using System.ComponentModel;
-
+using AlsiUtils.Data_Objects;
+using AlsiUtils;
+using AlsiUtils.Strategies;
 namespace AlsiTrade_Backend
 {
-    
+
     public class DoStuff
     {
         private static BackgroundWorker BW;
 
         public static void ExportToText(List<Trade> Trades)
         {
-           
+
             SaveFileDialog fs = new SaveFileDialog();
             fs.ShowDialog();
             FileInfo f;
@@ -34,8 +36,8 @@ namespace AlsiTrade_Backend
             {
                 return;
             }
-            
-           
+
+
 
 
             StreamWriter sr = new StreamWriter(f.FullName);
@@ -55,12 +57,14 @@ namespace AlsiTrade_Backend
             }
             sr.Close();
             MessageBox.Show("Export Complete");
-        }             
+        }
 
-        public static void TickBulkCopy(string InstrumentName)
+        public static void TickBulkCopy(string InstrumentName,DateTime Start)
         {
+            DateTime _start = DateTime.Now.AddDays(-5);
+            DateTime UseThisDate = Start > _start ? _start : Start;
             AlsiDBDataContext dc = new AlsiDBDataContext();
-            var tickData = HistData.GetHistoricalTICK_FromWEB(DateTime.Now.AddDays(-5), DateTime.UtcNow.AddHours(2), InstrumentName);
+            var tickData = HistData.GetHistoricalTICK_FromWEB(UseThisDate , DateTime.UtcNow.AddHours(2), InstrumentName);
 
             DataTable RawTicks = new DataTable("TickData");
             RawTicks.Columns.Add("N", typeof(long));
@@ -87,14 +91,14 @@ namespace AlsiTrade_Backend
             dc.CleanUp();
 
             #endregion
-        }      
-        
+        }
+
         public static List<Price> convertTickToMinute(List<AlsiUtils.RawTick> TickData)
         {
             DateTime start = DateTime.Now;
 
             List<Price> minuteData = new List<Price>();
-           
+
             List<double> open = new List<double>();
             List<double> close = new List<double>();
             List<DateTime> minuteRawTime = new List<DateTime>();
@@ -223,6 +227,21 @@ namespace AlsiTrade_Backend
             return minuteData;
 
         }
+
+        public static Trade GetLastTrade(Parameter_EMA_Scalp Parameter, GlobalObjects.TimeInterval t)
+        {
+            var _Stats = new AlsiUtils.Statistics();
+            var dt = DataBase.dataTable.MasterMinute;
+
+            var _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(Parameter, t, true, DateTime.Now.AddMonths(-1), DateTime.Now.AddHours(12), dt);
+            var _trades = _Stats.CalcBasicTradeStats(_tempTradeList);
+            _trades.Reverse();
+
+            return _trades[0];
+        }
+
+
+
         /// <summary>
         /// Sync the Clock to Internet Time
         /// </summary>
@@ -245,9 +264,11 @@ namespace AlsiTrade_Backend
             return synced;
         }
 
+        #region Email
+
         private static Trade _EmailTrade;
         private static EmailMsg _Msg;
-        public static void SendEmail(Trade trade,EmailMsg Msg)
+        public static void SendEmail(Trade trade, EmailMsg Msg)
         {
             _Msg = Msg;
             _EmailTrade = trade;
@@ -261,10 +282,11 @@ namespace AlsiTrade_Backend
             SendMail();
         }
 
+        #endregion
         private static void SendMail()
         {
 
-        Gmail.SendEmail("pieterf33@gmail.com", _Msg.Title,_Msg.Body, null, "pietpiel27@gmail.com", "1rachelle", "Alsi Trade System", false);
+            Gmail.SendEmail("pieterf33@gmail.com", _Msg.Title, _Msg.Body, null, "pietpiel27@gmail.com", "1rachelle", "Alsi Trade System", false);
         }
 
     }

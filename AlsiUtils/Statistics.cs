@@ -264,7 +264,7 @@ namespace AlsiUtils
         public static List<Trade> RegressionAnalysis_OnPL(int N,List<Trade> Trades)
         {
             List<Indicators.VariableIndicator> V = new List<Indicators.VariableIndicator>();
-            var tradeonlyList=Trades.Where(z=>z.Reason==Trade.Trigger.CloseLong || z.Reason==Trade.Trigger.CloseShort);
+            var tradeonlyList=Trades.Where(z=>z.Reason==Trade.Trigger.CloseLong || z.Reason==Trade.Trigger.CloseShort);           
             foreach (var v in tradeonlyList)
             {
                 var varindicator = new Indicators.VariableIndicator()
@@ -288,13 +288,19 @@ namespace AlsiUtils
                     {                       
                         t.Extention.Regression  = e.Regression;                      
                         t.Extention.Slope  = e.Slope;
+                        t.Extention.OrderVol = 1;
                     }
 
                 }
 
             }
+
+           
+
+
+
             return tradeonlyList.ToList();
-          //  foreach (var t in tradeonlyList) Debug.WriteLine(t.TimeStamp + "," + t.TotalPL + "," + t.Variable_1 + "," + t.Variable_2);
+          
         }
                
 
@@ -360,10 +366,15 @@ namespace AlsiUtils
 
             };
 
-            StatsCalculatedEvent sc = new StatsCalculatedEvent();
-            sc.SumStats = s;
-            OnStatsCaculated(this, sc);
-
+            try
+            {
+                StatsCalculatedEvent sc = new StatsCalculatedEvent();
+                sc.SumStats = s;
+                OnStatsCaculated(this, sc);
+            }
+            catch
+            { 
+            }
             return Trades;
         }
 

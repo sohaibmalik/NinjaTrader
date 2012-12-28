@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using AlsiUtils.Data_Objects;
 using AlsiUtils;
-
+using AlsiTrade_Backend;
 namespace NinjaTest
 {
     public partial class Form3 : Form
@@ -97,11 +97,14 @@ namespace NinjaTest
 
 
 
-            DateTime s = new DateTime(2006, 01, 01);
-            DateTime e = new DateTime(2012, 12, 15);
+          //  DateTime s = new DateTime(2006, 01, 01);
+          //  DateTime e = new DateTime(2006, 12, 15);
+
+            DateTime s = new DateTime(2012, 10, 20);
+            DateTime e = new DateTime(2012, 12, 29);
 
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.AllHistory,
+            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute ,
                s, e, false);
             Debug.WriteLine("Start Date " + prices[0].TimeStamp);
 
@@ -130,9 +133,9 @@ namespace NinjaTest
 
                     Trades = S.CalcBasicTradeStats(Trades);
                     var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10,Trades);
-                    Trades = AlsiUtils.Strategies.TradeStrategy.Expansion.MergeNewTrades(Trades, NewTrades);
+                   // Trades= AlsiUtils.Strategies.TradeStrategy.Expansion.AdjustPositionEntries(Trades);
 
-                    PrintTradesonly(Trades);
+                    PrintTradesonly(NewTrades);
                 //}
             //}
         }
@@ -160,25 +163,29 @@ namespace NinjaTest
 
         private static void PrintTradesonly(List<Trade>Trades)
         {
-            DateTime s = new DateTime(2006, 01, 12);
-            DateTime e = new DateTime(2006, 02, 01);
+            DateTime s = new DateTime(2012, 1, 5);
+            DateTime e = new DateTime(2013, 12, 13);
 
             foreach (var t in Trades)
             {
                 if(t.TimeStamp>s && t.TimeStamp<e)
                 Debug.WriteLine(t.TimeStamp + "," 
                     + t.TradedPrice + "," 
-                    + t.TotalPL + "," 
-                    + t.Extention.Regression + "," 
+                    +t.Reason + ","
+                    +t.BuyorSell + ","
+                    + t.TotalPL + ","                    
                     + t.Extention.Slope + "," 
-                    + t.Extention.OrderVol
+                    + t.Extention.OrderVol+","
+                   
+
                     );
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            RunSingle();
+         
+
         }
 
         private void Form3_Load(object sender, EventArgs e)

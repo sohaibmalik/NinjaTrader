@@ -21,7 +21,7 @@ namespace FrontEnd
         MarketOrder marketOrder;
         GlobalObjects.TimeInterval _Interval;
         private Statistics _Stats = new Statistics();
-
+      
         private OLVColumn ColStamp;
         private OLVColumn ColReason;
         private OLVColumn ColBuySell;
@@ -56,8 +56,9 @@ namespace FrontEnd
             marketOrder.onOrderMatch += new MarketOrder.OrderMatch(marketOrder_onOrderMatch);
             _Stats.OnStatsCaculated += new Statistics.StatsCalculated(_Stats_OnStatsCaculated);
             feed = new AlsiTrade_Backend.HiSat.LiveFeed(Properties.Settings.Default.HISAT_INST);
-            BuildListViewColumns();
-            DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST);
+            BuildListViewColumns();         
+            p._LastTrade  = DoStuff.GetLastTrade(GetParameters(), _Interval);
+            DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST,p._LastTrade.TimeStamp);
         }
 
 
@@ -317,15 +318,16 @@ namespace FrontEnd
             histListview.AllColumns.Add(ColNotes);
 
 
+
             ColPosition.ImageGetter = rowObject => ((Trade)rowObject).Position ? "add" : "add";
 
         }
 
         private void UpdateTradeLog(Trade t, bool WritetoDB)
         {
-
-
-            ListViewItem lvi = new ListViewItem(DateTime.UtcNow.AddHours(2).ToString());
+            
+           string  time= WritetoDB? DateTime.UtcNow.AddHours(2).ToString():t.TimeStamp.ToString();
+            ListViewItem lvi = new ListViewItem(time);
             lvi.SubItems.Add(t.BuyorSell.ToString());
             lvi.SubItems.Add(t.Reason.ToString());
             lvi.SubItems.Add(t.TradedPrice.ToString());
@@ -393,14 +395,14 @@ namespace FrontEnd
                 if (onlyTrades)
                 {
                     tl = from x in dc.TradeLogs
-                         where x.Time.Value.Date == DateTime.Now.Date
+                         where x.Time == DateTime.Now.Date
                          where x.BuySell != "None"
                          select x;
                 }
                 else
                 {
                     tl = from x in dc.TradeLogs
-                         where x.Time.Value.Date == DateTime.Now.Date
+                         where x.Time == DateTime.Now.Date
                          select x;
                 }
             }
@@ -428,7 +430,7 @@ namespace FrontEnd
             {
                 Trade t = new Trade()
                 {
-                    TimeStamp = (DateTime)v.Time.Value,
+                    TimeStamp = v.Time,
                     TradeVolume = (int)v.Volume,
                     BuyorSell = Trade.BuySellFromString(v.BuySell),
                     IndicatorNotes = v.Notes,
@@ -719,6 +721,8 @@ namespace FrontEnd
         {
             p.GetPricesFromTick();
         }
+
+        
 
 
 

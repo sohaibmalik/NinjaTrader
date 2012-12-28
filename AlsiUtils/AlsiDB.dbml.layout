@@ -80,10 +80,10 @@
         <elementListCompartment Id="0403cd08-85fe-4299-91bc-317b64fb06ec" absoluteBounds="10.39, 7.085, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="fa7cdcc1-2ba7-4de1-95f1-750cc93c9902" absoluteBounds="3.625, 1, 2, 2.5401025390625">
+    <classShape Id="bfb1d569-f83b-48b2-afe8-5d8b247d38a7" absoluteBounds="4, 1.25, 2, 2.5401025390625">
       <DataClassMoniker Name="/AlsiDBDataContext/TradeLog" />
       <nestedChildShapes>
-        <elementListCompartment Id="b5de9343-a401-4917-a1a0-3a86d2f7b6d2" absoluteBounds="3.64, 1.46, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="27c9f70a-3168-470f-a53e-5aa4e7d5e6a6" absoluteBounds="4.015, 1.71, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

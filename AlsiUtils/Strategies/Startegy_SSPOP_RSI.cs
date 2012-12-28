@@ -42,7 +42,7 @@ namespace AlsiUtils.Strategies
             DateTime sd = getStartDate();
             //testDate();
             CutToSize(sd);
-            TradeStrategy _strategy = new TradeStrategy(price, Parameters, _SS[0].TimeStamp, CalcTriggers);
+            TradeStrategy _strategy = new TradeStrategy(price, Parameters, _SS[0].TimeStamp, CalcTriggers,null);
            
             _T = _strategy.getStrategyList();
             // for (int x = 0; x < _T.Count; x++) DP(x);

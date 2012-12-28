@@ -13,7 +13,7 @@ namespace AlsiUtils.Strategies
         {
             _p = Parameters;
             _SS = Factory_Indicator.createSlowStochastic(Parameters.Fast_K, Parameters.Slow_K, Parameters.Slow_D, price);
-            TradeStrategy _strategy = new TradeStrategy(price, Parameters, _SS[0].TimeStamp, CalcTriggers);
+            TradeStrategy _strategy = new TradeStrategy(price, Parameters, _SS[0].TimeStamp, CalcTriggers,null);
 
             _strategy.Calculate();
             _T = _strategy.getStrategyList();

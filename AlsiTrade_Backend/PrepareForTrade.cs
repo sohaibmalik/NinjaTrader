@@ -1,15 +1,16 @@
 ﻿using System;
-
-using System.Linq;
 using AlsiUtils.Data_Objects;
+using System.Linq;
+using AlsiUtils;
 using System.Diagnostics;
 
 namespace AlsiTrade_Backend
 {
-
+  
 
     public class PrepareForTrade
     {
+        public Trade _LastTrade;
         private GlobalObjects.TimeInterval _Interval;
         private AlsiUtils.AlsiDBDataContext dc;
 
@@ -21,7 +22,7 @@ namespace AlsiTrade_Backend
         public void GetPricesFromWeb(string ContractName)
         {
 
-            GlobalObjects.Points = HiSat.HistData.GetHistoricalMINUTE_FromWEB(DateTime.Now.AddDays(-5), DateTime.Now, (int)_Interval, ContractName);
+            GlobalObjects.Points = HiSat.HistData.GetHistoricalMINUTE_FromWEB(_LastTrade.TimeStamp.AddHours(-1), DateTime.Now, (int)_Interval, ContractName);
             VerifyPrices();
 
         }
