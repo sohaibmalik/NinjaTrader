@@ -95,5 +95,18 @@ namespace AlsiUtils
             return msg;
         }
 
+        public static List<Trade> TradesOnly(List<Trade> AllTrades)
+        {
+            var tradesonly = new List<Trade>();
+
+            foreach (var z in AllTrades)
+            {
+                if (z.Reason == Trigger.CloseLong || z.Reason == Trigger.CloseShort || z.Reason == Trigger.OpenLong || z.Reason == Trigger.OpenShort)
+                    tradesonly.Add(z);
+            }
+
+
+            return tradesonly;
+        }
     }
 }

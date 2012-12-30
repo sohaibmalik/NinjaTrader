@@ -97,14 +97,14 @@ namespace NinjaTest
 
 
 
-          //  DateTime s = new DateTime(2006, 01, 01);
-          //  DateTime e = new DateTime(2006, 12, 15);
+            //  DateTime s = new DateTime(2006, 01, 01);
+            //  DateTime e = new DateTime(2006, 12, 15);
 
             DateTime s = new DateTime(2012, 10, 20);
             DateTime e = new DateTime(2012, 12, 29);
 
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute ,
+            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute,
                s, e, false);
             Debug.WriteLine("Start Date " + prices[0].TimeStamp);
 
@@ -112,37 +112,37 @@ namespace NinjaTest
             //{
             //    for (int y = 50; y < 500; y+=50)
             //    {
-                    AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
-                    {
-                        A_EMA1 = 16,
-                        A_EMA2 = 17,
-                        B_EMA1 = 43,
-                        B_EMA2 = 45,
-                        C_EMA = 52,
-                        TakeProfit = 450,
-                        StopLoss = -300,
-                        CloseEndofDay = false,
-                        Period = prices.Count,
-                       
-                    };
-                    takep = E.TakeProfit;
-                    takel = E.StopLoss;
-                    AlsiUtils.Statistics S = new AlsiUtils.Statistics();            
-                    S.OnStatsCaculated += new AlsiUtils.Statistics.StatsCalculated(S_OnStatsCaculated);
-                    var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
+            AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
+            {
+                A_EMA1 = 16,
+                A_EMA2 = 17,
+                B_EMA1 = 43,
+                B_EMA2 = 45,
+                C_EMA = 52,
+                TakeProfit = 450,
+                StopLoss = -300,
+                CloseEndofDay = false,
+                Period = prices.Count,
 
-                    Trades = S.CalcBasicTradeStats(Trades);
-                    var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10,Trades);
-                   // Trades= AlsiUtils.Strategies.TradeStrategy.Expansion.AdjustPositionEntries(Trades);
+            };
+            takep = E.TakeProfit;
+            takel = E.StopLoss;
+            AlsiUtils.Statistics S = new AlsiUtils.Statistics();
+            S.OnStatsCaculated += new AlsiUtils.Statistics.StatsCalculated(S_OnStatsCaculated);
+            var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
 
-                    PrintTradesonly(NewTrades);
-                //}
+            Trades = S.CalcBasicTradeStats(Trades);
+            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, Trades);
+            // Trades= AlsiUtils.Strategies.TradeStrategy.Expansion.AdjustPositionEntries(Trades);
+
+            PrintTradesonly(NewTrades);
+            //}
             //}
         }
 
-      private  static double maxprof = 0;
-      private static int takep = 0;
-        private static int takel=0;
+        private static double maxprof = 0;
+        private static int takep = 0;
+        private static int takel = 0;
         static void S_OnStatsCaculated(object sender, AlsiUtils.Statistics.StatsCalculatedEvent e)
         {
             if (e.SumStats.TotalProfit > maxprof)
@@ -161,30 +161,65 @@ namespace NinjaTest
             }
         }
 
-        private static void PrintTradesonly(List<Trade>Trades)
+        private static void PrintTradesonly(List<Trade> Trades)
         {
             DateTime s = new DateTime(2012, 1, 5);
             DateTime e = new DateTime(2013, 12, 13);
 
             foreach (var t in Trades)
             {
-                if(t.TimeStamp>s && t.TimeStamp<e)
-                Debug.WriteLine(t.TimeStamp + "," 
-                    + t.TradedPrice + "," 
-                    +t.Reason + ","
-                    +t.BuyorSell + ","
-                    + t.TotalPL + ","                    
-                    + t.Extention.Slope + "," 
-                    + t.Extention.OrderVol+","
-                   
+                if (t.TimeStamp > s && t.TimeStamp < e)
+                    Debug.WriteLine(t.TimeStamp + ","
+                        + t.TradedPrice + ","
+                        + t.Reason + ","
+                        + t.BuyorSell + ","
+                        + t.TotalPL + ","
+                        + t.Extention.Slope + ","
+                        + t.Extention.OrderVol + ","
 
-                    );
+
+                        );
+            }
+        }
+
+        private static void PrintTradesonly(List<CompletedTrade> Trades)
+        {
+            DateTime s = new DateTime(2012, 1, 5);
+            DateTime e = new DateTime(2013, 12, 13);
+
+            foreach (var t in Trades)
+            {
+                var O = t.OpenTrade;
+                var C = t.CloseTrade;
+
+                if (O.TimeStamp > s && O.TimeStamp < e)
+                {
+                    Debug.WriteLine(
+                        O.TimeStamp + ","
+                        + O.TradedPrice + ","
+                        + O.Reason + ","
+                        + O.BuyorSell + ","
+                        + O.TotalPL + ","
+                        + O.Extention.Slope + ","
+                        + O.Extention.OrderVol + ","
+                        );
+
+                    Debug.WriteLine(
+                       C.TimeStamp + ","
+                       + C.TradedPrice + ","
+                       + C.Reason + ","
+                       + C.BuyorSell + ","
+                       + C.TotalPL + ","
+                       + C.Extention.Slope + ","
+                       + C.Extention.OrderVol + ","
+                       );
+                }
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-         
+
 
         }
 

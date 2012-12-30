@@ -665,13 +665,15 @@ namespace AlsiUtils.Strategies
 
             }
 
-            public static List<Trade> ApplyRegressionFilter(int N, List<Trade> Trades)
+            public static List<CompletedTrade> ApplyRegressionFilter(int N, List<Trade> Trades)
             {
                 var CloseTradesOnly = new List<Trade>();
                 CloseTradesOnly = Statistics.RegressionAnalysis_OnPL(N, Trades);
 
+
                 var OpenTradesOnly = new List<Trade>();
                 OpenTradesOnly = Trades.Where(z => z.Reason == Trade.Trigger.OpenShort || z.Reason == Trade.Trigger.OpenLong).ToList();
+
 
                 int O = OpenTradesOnly.Count;
                 int C = CloseTradesOnly.Count;
@@ -686,37 +688,21 @@ namespace AlsiUtils.Strategies
 
                 for (int x = 1; x < AllOrders.Count; x++)
                 {
-
                     if (AllOrders[x].Reason == Trade.Trigger.OpenShort || AllOrders[x].Reason == Trade.Trigger.OpenLong)
                     {
-
                         if (AllOrders[x - 2].Extention.Slope < AllOrders[x].Extention.Slope && AllOrders[x].Extention.Slope < 0)
                             AllOrders[x].Extention.OrderVol = 2;
                     }
 
-                    if (AllOrders[x].Reason == Trade.Trigger.CloseShort || AllOrders[x].Reason == Trade.Trigger.CloseLong)
-                    {
-                        // if (AllOrders[x - 1].Extention.OrderVol==2)AllOrders[x].Extention.OrderVol=1;
-                    }
-                    Debug.WriteLine(
-                        AllOrders[x].TimeStamp + "  " +
-                          AllOrders[x].Reason + "  " +
-                        AllOrders[x].Extention.Slope + "  " +
-                        AllOrders[x].Extention.OrderVol + "  " +
-                        ""
-                        //AllOrders[x].Extention.Difference
-                        );
-
-
+               
                 }
-
+                var CompleteList = CompletedTrade.CreateList(AllOrders);
 
 
 
                 Debug.WriteLine("Wait");
-                return new List<Trade>();
-                return AllOrders;
 
+                return CompleteList;
             }
 
             public static List<Trade> AdjustPositionEntries(List<Trade> OriginalTrades)
