@@ -72,7 +72,6 @@
       <DependentUpon>SimDB.dbml</DependentUpon>
     </Compile>
     <Compile Include="Statistics.cs" />
-    <Compile Include="Strategies\Copy of TradeStrategy_BAckup.cs" />
     <Compile Include="Strategies\EMA_Scalp.cs" />
     <Compile Include="Strategies\IndicatorExtentions\StochAroon.cs" />
     <Compile Include="Strategies\Parameters\Parameter_EMA_Scalp.cs" />

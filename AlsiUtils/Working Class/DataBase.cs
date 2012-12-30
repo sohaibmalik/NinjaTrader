@@ -14,13 +14,28 @@ namespace AlsiUtils
     {
         public static void SetConnectionString()
         {
+            
             //Laptop
-            // string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-
+            string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
             //PC
-            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            //css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
+        }
+
+        private static bool TestSqlConnection(string CCS)
+        {
+            bool alive = true;
+            try
+            {
+                AlsiDBDataContext dc = new AlsiDBDataContext();
+                dc.Connection.ConnectionString = CCS;
+                dc.Connection.Open();
+            }
+            catch
+            { alive = false; }
+            return alive;
         }
 
         #region AlsiTrade
@@ -47,7 +62,7 @@ namespace AlsiUtils
                     Time = TradeObject.TimeStamp,
                     BuySell = TradeObject.BuyorSell.ToString(),
                     Reason = TradeObject.Reason.ToString(),
-                    Notes=TradeObject.IndicatorNotes.ToString(),
+                    Notes = TradeObject.IndicatorNotes.ToString(),
                     Price = (int)TradeObject.TradedPrice,
                     Volume = TradeObject.TradeVolume,
                     ForeColor = TradeObject.ForeColor.ToKnownColor().ToString(),
@@ -117,182 +132,182 @@ namespace AlsiUtils
 
         static public List<Price> readDataFromDataBase(GlobalObjects.TimeInterval T, dataTable TD, DateTime Start, DateTime End, bool reverseList)
         {
-          
-                List<Price> prices = new List<Price>();
 
-                AlsiDBDataContext dc = new AlsiDBDataContext();
-               
+            List<Price> prices = new List<Price>();
 
-                if (TD == dataTable.Temp)
+            AlsiDBDataContext dc = new AlsiDBDataContext();
+
+
+            if (TD == dataTable.Temp)
+            {
+                var result = from q in dc.OHLC_Temps
+                             where q.Stamp > Start && q.Stamp < End
+                             select new { q.Stamp, q.O, q.H, q.L, q.C, };
+
+                foreach (var v in result)
                 {
-                    var result = from q in dc.OHLC_Temps
-                                 where q.Stamp > Start && q.Stamp < End
-                                 select new { q.Stamp, q.O, q.H, q.L, q.C, };
+                    Price p = new Price();
+                    p.Close = v.C;
+                    p.Open = v.O;
+                    p.High = v.H;
+                    p.Low = v.L;
+                    p.TimeStamp = v.Stamp;
+                    prices.Add(p);
 
-                    foreach (var v in result)
-                    {
-                        Price p = new Price();
-                        p.Close = v.C;
-                        p.Open = v.O;
-                        p.High = v.H;
-                        p.Low = v.L;
-                        p.TimeStamp = v.Stamp;
-                        prices.Add(p);
-
-                    }
-                    dc.Clean_OHLC_Temp();
-                    if (reverseList) prices.Reverse();
-                    return prices;
                 }
+                dc.Clean_OHLC_Temp();
+                if (reverseList) prices.Reverse();
+                return prices;
+            }
 
-                if (TD == dataTable.AllHistory)
+            if (TD == dataTable.AllHistory)
+            {
+                if (T == GlobalObjects.TimeInterval.Minute_2)
                 {
-                    if (T == GlobalObjects.TimeInterval.Minute_2)
+                    var firstinDB = dc.OHLC_2_Minutes.AsEnumerable().First().Stamp;
+                    var lastinDB = dc.OHLC_2_Minutes.AsEnumerable().Last().Stamp;
+                    if (firstinDB > Start) dc.OHLC_2_AllHistory();
+                    if (lastinDB > End) dc.OHLC_2_AllHistory();
+                }
+                if (T == GlobalObjects.TimeInterval.Minute_5)
+                {
+                    var firstinDB = dc.OHLC_5_Minutes.AsEnumerable().First().Stamp;
+                    var lastinDB = dc.OHLC_5_Minutes.AsEnumerable().Last().Stamp;
+                    if (firstinDB > Start) dc.OHLC_5_AllHistory();
+                    if (lastinDB < End) dc.OHLC_5_AllHistory();
+
+                }
+                if (T == GlobalObjects.TimeInterval.Minute_10)
+                {
+                    var firstinDB = dc.OHLC_10_Minutes.AsEnumerable().First().Stamp;
+                    var lastinDB = dc.OHLC_10_Minutes.AsEnumerable().Last().Stamp;
+                    if (firstinDB > Start) dc.OHLC_10_AllHistory();
+                    if (lastinDB < End) dc.OHLC_10_AllHistory();
+                }
+            }
+            if (TD == dataTable.MasterMinute)
+            {
+                if (T == GlobalObjects.TimeInterval.Minute_2)
+                {
+                    var min2 = dc.OHLC_2_Minutes;
+                    if (min2.Count() == 0)
+                    {
+                        dc.OHLC_2();
+                    }
+                    else
                     {
                         var firstinDB = dc.OHLC_2_Minutes.AsEnumerable().First().Stamp;
                         var lastinDB = dc.OHLC_2_Minutes.AsEnumerable().Last().Stamp;
-                        if (firstinDB > Start) dc.OHLC_2_AllHistory();
-                        if (lastinDB > End) dc.OHLC_2_AllHistory();
-                    }
-                    if (T == GlobalObjects.TimeInterval.Minute_5)
-                    {
-                        var firstinDB = dc.OHLC_5_Minutes.AsEnumerable().First().Stamp;
-                        var lastinDB = dc.OHLC_5_Minutes.AsEnumerable().Last().Stamp;
-                        if (firstinDB > Start) dc.OHLC_5_AllHistory();
-                        if (lastinDB < End) dc.OHLC_5_AllHistory();
-
-                    }
-                    if (T == GlobalObjects.TimeInterval.Minute_10)
-                    {
-                        var firstinDB = dc.OHLC_10_Minutes.AsEnumerable().First().Stamp;
-                        var lastinDB = dc.OHLC_10_Minutes.AsEnumerable().Last().Stamp;
-                        if (firstinDB > Start) dc.OHLC_10_AllHistory();
-                        if (lastinDB < End) dc.OHLC_10_AllHistory();
-                    }
-                }
-                if (TD == dataTable.MasterMinute)
-                {
-                    if (T == GlobalObjects.TimeInterval.Minute_2)
-                    {
-                          var min2 = dc.OHLC_2_Minutes;
-                          if (min2.Count() == 0)
-                          {
-                              dc.OHLC_2();
-                          }
-                          else
-                          {
-                              var firstinDB = dc.OHLC_2_Minutes.AsEnumerable().First().Stamp;
-                              var lastinDB = dc.OHLC_2_Minutes.AsEnumerable().Last().Stamp;
-                              if (firstinDB > Start) dc.OHLC_2();
-                              if (lastinDB < End) dc.OHLC_2();
-                          }
-                    }
-
-                    if (T == GlobalObjects.TimeInterval.Minute_5)
-                    {
-                        var min5 = dc.OHLC_5_Minutes;
-                        if (min5.Count() == 0)
-                        {
-                            dc.OHLC_5();
-                        }
-                        else
-                        {
-                            var firstinDB = min5.AsEnumerable().First().Stamp;
-                            var lastinDB = min5.AsEnumerable().Last().Stamp;
-                            if (firstinDB > Start) dc.OHLC_5();
-                            if (lastinDB < End) dc.OHLC_5();
-                        }
-                    }
-
-                    if (T == GlobalObjects.TimeInterval.Minute_10)
-                    {
-                          var min10 = dc.OHLC_10_Minutes;
-                          if (min10.Count() == 0)
-                          {
-                              dc.OHLC_10();
-                          }
-                          else
-                          {
-                              var firstinDB = dc.OHLC_10_Minutes.AsEnumerable().First().Stamp;
-                              var lastinDB = dc.OHLC_10_Minutes.AsEnumerable().Last().Stamp;
-                              if (firstinDB > Start) dc.OHLC_10();
-                              if (lastinDB < End) dc.OHLC_10();
-                          }
-                    }
-                }
-
-
-
-
-
-                if (T == GlobalObjects.TimeInterval.Minute_2)
-                {
-                    var result = from q in dc.OHLC_2_Minutes
-                                 where q.Stamp > Start && q.Stamp < End
-                                 select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
-
-                    foreach (var v in result)
-                    {
-                        Price p = new Price();
-                        p.Close = v.C;
-                        p.Open = v.O;
-                        p.High = v.H;
-                        p.Low = v.L;
-                        p.TimeStamp = v.Stamp;
-                        p.InstrumentName = v.Instrument;
-                        prices.Add(p);
-
+                        if (firstinDB > Start) dc.OHLC_2();
+                        if (lastinDB < End) dc.OHLC_2();
                     }
                 }
 
                 if (T == GlobalObjects.TimeInterval.Minute_5)
                 {
-                    var result = from q in dc.OHLC_5_Minutes
-                                 where q.Stamp > Start && q.Stamp < End
-                                 select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
-
-                    foreach (var v in result)
+                    var min5 = dc.OHLC_5_Minutes;
+                    if (min5.Count() == 0)
                     {
-                        Price p = new Price();
-                        p.Close = v.C;
-                        p.Open = v.O;
-                        p.High = v.H;
-                        p.Low = v.L;
-                        p.TimeStamp = v.Stamp;
-                        p.InstrumentName = v.Instrument;
-                        prices.Add(p);
-
+                        dc.OHLC_5();
+                    }
+                    else
+                    {
+                        var firstinDB = min5.AsEnumerable().First().Stamp;
+                        var lastinDB = min5.AsEnumerable().Last().Stamp;
+                        if (firstinDB > Start) dc.OHLC_5();
+                        if (lastinDB < End) dc.OHLC_5();
                     }
                 }
+
                 if (T == GlobalObjects.TimeInterval.Minute_10)
                 {
-                    var result = from q in dc.OHLC_10_Minutes
-                                 where q.Stamp > Start && q.Stamp < End
-                                 select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
-
-                    foreach (var v in result)
+                    var min10 = dc.OHLC_10_Minutes;
+                    if (min10.Count() == 0)
                     {
-                        Price p = new Price();
-                        p.Close = v.C;
-                        p.Open = v.O;
-                        p.High = v.H;
-                        p.Low = v.L;
-                        p.TimeStamp = v.Stamp;
-                        p.InstrumentName = v.Instrument;
-                        prices.Add(p);
-
+                        dc.OHLC_10();
+                    }
+                    else
+                    {
+                        var firstinDB = dc.OHLC_10_Minutes.AsEnumerable().First().Stamp;
+                        var lastinDB = dc.OHLC_10_Minutes.AsEnumerable().Last().Stamp;
+                        if (firstinDB > Start) dc.OHLC_10();
+                        if (lastinDB < End) dc.OHLC_10();
                     }
                 }
+            }
+
+
+
+
+
+            if (T == GlobalObjects.TimeInterval.Minute_2)
+            {
+                var result = from q in dc.OHLC_2_Minutes
+                             where q.Stamp > Start && q.Stamp < End
+                             select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
+
+                foreach (var v in result)
+                {
+                    Price p = new Price();
+                    p.Close = v.C;
+                    p.Open = v.O;
+                    p.High = v.H;
+                    p.Low = v.L;
+                    p.TimeStamp = v.Stamp;
+                    p.InstrumentName = v.Instrument;
+                    prices.Add(p);
+
+                }
+            }
+
+            if (T == GlobalObjects.TimeInterval.Minute_5)
+            {
+                var result = from q in dc.OHLC_5_Minutes
+                             where q.Stamp > Start && q.Stamp < End
+                             select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
+
+                foreach (var v in result)
+                {
+                    Price p = new Price();
+                    p.Close = v.C;
+                    p.Open = v.O;
+                    p.High = v.H;
+                    p.Low = v.L;
+                    p.TimeStamp = v.Stamp;
+                    p.InstrumentName = v.Instrument;
+                    prices.Add(p);
+
+                }
+            }
+            if (T == GlobalObjects.TimeInterval.Minute_10)
+            {
+                var result = from q in dc.OHLC_10_Minutes
+                             where q.Stamp > Start && q.Stamp < End
+                             select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
+
+                foreach (var v in result)
+                {
+                    Price p = new Price();
+                    p.Close = v.C;
+                    p.Open = v.O;
+                    p.High = v.H;
+                    p.Low = v.L;
+                    p.TimeStamp = v.Stamp;
+                    p.InstrumentName = v.Instrument;
+                    prices.Add(p);
+
+                }
+            }
 
 
 
 
 
 
-                if (reverseList) prices.Reverse();
-                return prices;
-            
-          
+            if (reverseList) prices.Reverse();
+            return prices;
+
+
         }
 
 
@@ -435,11 +450,11 @@ namespace AlsiUtils
 
 
 
-      
 
-       
 
-       
+
+
+
 
         /// <summary>
         /// Insert Ticks into RAwTICK Table
@@ -448,7 +463,7 @@ namespace AlsiUtils
         /// <param name="Price">Singe Price</param>
         static public void insertTicks(DateTime Stamp, int Price)
         {
-            AlsiDBDataContext dc = new AlsiDBDataContext();            
+            AlsiDBDataContext dc = new AlsiDBDataContext();
             int p = Price;
 
             RawTick c = new RawTick

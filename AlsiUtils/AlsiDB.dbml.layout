@@ -1,89 +1,89 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12.625, 11.75" name="AlsiDB">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12, 11.75" name="AlsiDB">
   <DataContextMoniker Name="/AlsiDBDataContext" />
   <nestedChildShapes>
-    <classShape Id="7348ab12-f7f6-4da4-baf9-4eb48afe5c9d" absoluteBounds="0.75, 0.75, 2, 2.1554996744791666">
+    <classShape Id="918347c4-4931-4781-846e-563dbbe8526d" absoluteBounds="0.75, 0.75, 2, 2.1554996744791666">
       <DataClassMoniker Name="/AlsiDBDataContext/AllHistoricMinute" />
       <nestedChildShapes>
-        <elementListCompartment Id="d1c1e171-7ad8-4fbd-9a96-8a1e55baeff5" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="6bbd86e2-e53c-4812-98a7-4ab53fafa38b" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="76d1c936-51f7-45f8-9150-369ae596650a" absoluteBounds="0.75, 4.75, 2, 2.1554996744791666">
-      <DataClassMoniker Name="/AlsiDBDataContext/ImportMinute" />
-      <nestedChildShapes>
-        <elementListCompartment Id="16756ca8-4a7c-4f04-8043-425a18dc329e" absoluteBounds="0.765, 5.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="0273c8d1-590f-4430-89f8-25de68dae407" absoluteBounds="3.75, 4.75, 2, 2.1554996744791666">
-      <DataClassMoniker Name="/AlsiDBDataContext/MasterMinute" />
-      <nestedChildShapes>
-        <elementListCompartment Id="b5464179-d4d9-4704-a9bf-e25f67d72e2a" absoluteBounds="3.765, 5.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="61b9a4b8-4279-4d6c-a0db-098152a1ac86" absoluteBounds="6.75, 0.75, 2, 1.9631982421875003">
-      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_10_Minute" />
-      <nestedChildShapes>
-        <elementListCompartment Id="297bc61c-e20a-4b03-9f52-fc314d6903e0" absoluteBounds="6.765, 1.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="ed5dd3ba-0acc-4e1c-b96f-335336173fb5" absoluteBounds="6.75, 3.75, 2, 1.9631982421875005">
-      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_2_Minute" />
-      <nestedChildShapes>
-        <elementListCompartment Id="4af4dae7-dbf1-4ab2-a487-624495913be7" absoluteBounds="6.765, 4.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="04101678-2dc3-4d6c-801c-65f2b0fd1f1d" absoluteBounds="6.75, 6.75, 2, 1.9631982421875005">
-      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_3_Minute" />
-      <nestedChildShapes>
-        <elementListCompartment Id="c248c515-8f36-4f5c-a02b-0555187d2191" absoluteBounds="6.765, 7.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="b418b816-f133-4ff5-bdd0-7308b1cbee54" absoluteBounds="0.75, 7.75, 2, 1.9631982421874996">
-      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_5_Minute" />
-      <nestedChildShapes>
-        <elementListCompartment Id="24399dda-ca35-4d5d-b05b-854fc6d3d5fe" absoluteBounds="0.765, 8.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="c8cf7247-73ba-4a93-98a8-844280026616" absoluteBounds="9.75, 0.75, 2, 1.7708968098958329">
-      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_Temp" />
-      <nestedChildShapes>
-        <elementListCompartment Id="832cf978-128a-41db-b96a-6e7c5b49e78b" absoluteBounds="9.765, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="283c304b-5fdd-44f5-9cee-4269888a5780" absoluteBounds="9.75, 3.75, 2, 1.193992513020834">
-      <DataClassMoniker Name="/AlsiDBDataContext/Raw_Import" />
-      <nestedChildShapes>
-        <elementListCompartment Id="c9f4ae81-d2ba-4768-8fe3-37dbf2c2ed10" absoluteBounds="9.765, 4.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="d01565ba-aba0-490f-b648-d1b211342fc8" absoluteBounds="3.75, 9.75, 2, 1.1939925130208344">
-      <DataClassMoniker Name="/AlsiDBDataContext/Raw_Import_Sorted" />
-      <nestedChildShapes>
-        <elementListCompartment Id="4dd1aba8-6596-43da-84e3-161d6edc6235" absoluteBounds="3.765, 10.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="7de16ccc-8c73-4b32-b45b-9e0d47a12a17" absoluteBounds="6.75, 9.75, 2, 1.7708968098958344">
-      <DataClassMoniker Name="/AlsiDBDataContext/TickMinute" />
-      <nestedChildShapes>
-        <elementListCompartment Id="e3d10ba0-01aa-46bb-9ba3-9f645d231655" absoluteBounds="6.765, 10.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="4810b528-0eb8-4b46-a6de-53aca90ce2c4" absoluteBounds="9.75, 8.75, 2, 2.1554996744791666">
-      <DataClassMoniker Name="/AlsiDBDataContext/TickTEMP" />
-      <nestedChildShapes>
-        <elementListCompartment Id="ec17575f-9baf-49b9-8b3d-7a47b957a478" absoluteBounds="9.765, 9.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="e48b5da4-c4dc-4bc0-bf2e-c0aa9aad9108" absoluteBounds="10.375, 6.625, 2, 1.3862939453125">
-      <DataClassMoniker Name="/AlsiDBDataContext/RawTick" />
-      <nestedChildShapes>
-        <elementListCompartment Id="0403cd08-85fe-4299-91bc-317b64fb06ec" absoluteBounds="10.39, 7.085, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="bfb1d569-f83b-48b2-afe8-5d8b247d38a7" absoluteBounds="4, 1.25, 2, 2.5401025390625">
+    <classShape Id="9b386d33-8e46-4117-b4d7-22ee329a10f4" absoluteBounds="3.75, 0.75, 2, 2.5401025390625005">
       <DataClassMoniker Name="/AlsiDBDataContext/TradeLog" />
       <nestedChildShapes>
-        <elementListCompartment Id="27c9f70a-3168-470f-a53e-5aa4e7d5e6a6" absoluteBounds="4.015, 1.71, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="a4d61ff6-ccee-4c47-a674-91ec2e121bd8" absoluteBounds="3.765, 1.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="dcbbc692-31db-44a0-962f-1d88b0e48a9c" absoluteBounds="0.75, 4.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/AlsiDBDataContext/ImportMinute" />
+      <nestedChildShapes>
+        <elementListCompartment Id="33030a19-4ca4-4f95-b4fa-897ab0f0323e" absoluteBounds="0.765, 5.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ed3ef68c-b35f-4a92-bd47-090cd03ccaab" absoluteBounds="3.75, 4.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/AlsiDBDataContext/MasterMinute" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f2f187ba-0f4f-4d80-b7e0-e6ae671fcb10" absoluteBounds="3.765, 5.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="befb0a65-e035-4009-aa5e-2aa90044f520" absoluteBounds="6.75, 0.75, 2, 1.9631982421875003">
+      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_10_Minute" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9c94a653-a27b-4d41-98aa-d8a0e5c36f55" absoluteBounds="6.765, 1.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f676ab52-ab84-43d6-a867-442c928d7866" absoluteBounds="6.75, 3.75, 2, 1.9631982421875005">
+      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_2_Minute" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bfca8c03-cefe-4c15-9af9-a7777ba4a782" absoluteBounds="6.765, 4.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ebd92b24-9592-40d2-8ac8-14d4ed403314" absoluteBounds="6.75, 6.75, 2, 1.9631982421875005">
+      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_3_Minute" />
+      <nestedChildShapes>
+        <elementListCompartment Id="64b18535-c5dc-4ce4-9967-af4d525f3018" absoluteBounds="6.765, 7.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="02af75d5-c7d8-4640-942b-396124bf5d54" absoluteBounds="0.75, 7.75, 2, 1.9631982421874996">
+      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_5_Minute" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6995419d-ea17-42ed-a857-45431673cef6" absoluteBounds="0.765, 8.21, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4ae91c31-329b-474b-86da-082d7d7b2e29" absoluteBounds="9.75, 0.75, 2, 1.7708968098958329">
+      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_Temp" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5206f5bc-b445-400c-9dc1-20f040ca6e71" absoluteBounds="9.765, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="efdefee7-c5b1-4cf6-ae68-899e742e21ff" absoluteBounds="9.75, 3.75, 2, 1.193992513020834">
+      <DataClassMoniker Name="/AlsiDBDataContext/Raw_Import" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5ef50437-7bc1-485b-a673-ce7f9c080e8d" absoluteBounds="9.765, 4.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5452ada1-2e0d-4fe5-9e20-b25379a4dbcb" absoluteBounds="3.75, 9.75, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/AlsiDBDataContext/Raw_Import_Sorted" />
+      <nestedChildShapes>
+        <elementListCompartment Id="954a27a8-eca7-4424-9ec0-59a19276ceb7" absoluteBounds="3.765, 10.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fe62fec0-5985-4ad2-98d5-6860e7f3e7c8" absoluteBounds="9.75, 5.75, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/AlsiDBDataContext/RawTick" />
+      <nestedChildShapes>
+        <elementListCompartment Id="79390213-3ec8-4300-b256-cd4ea35a7562" absoluteBounds="9.765, 6.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5204c4bc-7de0-4416-9e29-0fa362a7c80a" absoluteBounds="6.75, 9.75, 2, 1.7708968098958344">
+      <DataClassMoniker Name="/AlsiDBDataContext/TickMinute" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1c3de664-4835-4ec0-979e-26c68bb098a5" absoluteBounds="6.765, 10.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bbdc336f-4ca5-4f13-8688-9cc50eee70f3" absoluteBounds="9.75, 8.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/AlsiDBDataContext/TickTEMP" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b8293326-42a5-49fa-a0e7-719cc21d92c9" absoluteBounds="9.765, 9.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

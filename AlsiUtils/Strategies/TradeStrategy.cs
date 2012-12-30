@@ -667,64 +667,29 @@ namespace AlsiUtils.Strategies
 
             public static List<CompletedTrade> ApplyRegressionFilter(int N, List<Trade> Trades)
             {
-                var CloseTradesOnly = new List<Trade>();
-                CloseTradesOnly = Statistics.RegressionAnalysis_OnPL(N, Trades);
+                var CloseTradesOnly = Statistics.RegressionAnalysis_OnPL(N, Trades);
+                var CompTrades = Trade.TradesOnly(Trades);
+                var CompleteList = CompletedTrade.CreateList(CompTrades);
 
-
-                var OpenTradesOnly = new List<Trade>();
-                OpenTradesOnly = Trades.Where(z => z.Reason == Trade.Trigger.OpenShort || z.Reason == Trade.Trigger.OpenLong).ToList();
-
-
-                int O = OpenTradesOnly.Count;
-                int C = CloseTradesOnly.Count;
-
-                if (O > C)
-                    for (int x = 1; x < C; x++) OpenTradesOnly[x + 1].Extention = CloseTradesOnly[x].Extention;
-                if (O == C)
-                    for (int x = 1; x < C; x++) OpenTradesOnly[x + 1].Extention = CloseTradesOnly[x + 1].Extention;
-
-                var AllOrders = new List<Trade>();
-                AllOrders = Trades.Where(z => z.Reason == Trade.Trigger.OpenShort || z.Reason == Trade.Trigger.OpenLong || z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong).ToList();
-
-                for (int x = 1; x < AllOrders.Count; x++)
+                for (int x = 2; x < CompleteList.Count; x++) 
                 {
-                    if (AllOrders[x].Reason == Trade.Trigger.OpenShort || AllOrders[x].Reason == Trade.Trigger.OpenLong)
-                    {
-                        if (AllOrders[x - 2].Extention.Slope < AllOrders[x].Extention.Slope && AllOrders[x].Extention.Slope < 0)
-                            AllOrders[x].Extention.OrderVol = 2;
-                    }
-
-               
+                    if (CompleteList[x - 2].CloseTrade.Extention.Slope < CompleteList[x-1].CloseTrade.Extention.Slope
+                        && CompleteList[x-1].CloseTrade.Extention.Slope < 0)
+                        CompleteList[x].OpenTrade.Extention.OrderVol = 2;
                 }
-                var CompleteList = CompletedTrade.CreateList(AllOrders);
-
-
-
-                Debug.WriteLine("Wait");
-
+                foreach (var t in CompleteList)
+                {
+                    if (t.OpenTrade.Extention.OrderVol == 2) t.CloseTrade.Extention.OrderVol = 2;
+                    else
+                    {
+                        t.CloseTrade.Extention.OrderVol = 1;
+                        t.OpenTrade.Extention.OrderVol = 1;
+                    }                    
+                }
+                    
                 return CompleteList;
             }
 
-            public static List<Trade> AdjustPositionEntries(List<Trade> OriginalTrades)
-            {
-                var tradeonlyClose = new List<Trade>();
-                tradeonlyClose = OriginalTrades.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong).ToList();
-
-                var tradeonlyOpen = new List<Trade>();
-                tradeonlyOpen = OriginalTrades.Where(z => z.Reason == Trade.Trigger.OpenShort || z.Reason == Trade.Trigger.OpenLong).ToList();
-
-
-                int O = tradeonlyOpen.Count;
-                int C = tradeonlyClose.Count;
-
-                if (O > C)
-                    for (int x = 1; x < C; x++) tradeonlyOpen[x + 1].Extention = tradeonlyClose[x].Extention;
-                if (O == C)
-                    for (int x = 1; x < C; x++) tradeonlyOpen[x + 1].Extention = tradeonlyClose[x + 1].Extention;
-
-                Debug.WriteLine("Wait");
-                return OriginalTrades;
-            }
 
 
 
