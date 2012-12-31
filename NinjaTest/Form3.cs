@@ -100,7 +100,7 @@ namespace NinjaTest
             //  DateTime s = new DateTime(2006, 01, 01);
             //  DateTime e = new DateTime(2006, 12, 15);
 
-            DateTime s = new DateTime(2012, 10, 20);
+           DateTime s = new DateTime(2012, 1, 1);
             DateTime e = new DateTime(2012, 12, 29);
 
 
@@ -108,10 +108,9 @@ namespace NinjaTest
                s, e, false);
             Debug.WriteLine("Start Date " + prices[0].TimeStamp);
 
-            //for (int x = 50; x < 500; x+=50)
+            //for (int x = 2; x < 50; x++)
             //{
-            //    for (int y = 50; y < 500; y+=50)
-            //    {
+          
             AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
             {
                 A_EMA1 = 16,
@@ -133,10 +132,10 @@ namespace NinjaTest
 
             Trades = S.CalcBasicTradeStats(Trades);
             var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, Trades);
-            // Trades= AlsiUtils.Strategies.TradeStrategy.Expansion.AdjustPositionEntries(Trades);
+            NewTrades = S.CalcExpandedTradeStats(NewTrades);
 
             PrintTradesonly(NewTrades);
-            //}
+           
             //}
         }
 

@@ -26,5 +26,7 @@ namespace AlsiTrade_Backend
             GlobalObjects.Prices = AlsiUtils.DataBase.readDataFromDataBase(Interval, Table, Start, End, false);            
             return AlsiUtils.Strategies.EMA_Scalp.EmaScalp(Parameter, GlobalObjects.Prices, TradesOnly);
         }
+
+      
     }
 }

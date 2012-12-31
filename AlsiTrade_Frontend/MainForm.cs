@@ -32,6 +32,8 @@ namespace FrontEnd
         private OLVColumn ColCurrentPrice;
         private OLVColumn ColTotalProf;
         private OLVColumn ColInstrument;
+        private OLVColumn ColTradeVol;
+
         AlsiTrade_Backend.HiSat.LiveFeed feed;
 
         DateTime masterStart, masterEnd, allhistoStart, allhistoEnd;
@@ -242,6 +244,16 @@ namespace FrontEnd
                 Width = 70
             };
             histListview.AllColumns.Add(ColBuySell);
+
+           ColTradeVol  = new OLVColumn
+            {
+                Name = "cTradeVolume",
+                AspectName = "TradeVolume",
+                Text = "Volume",
+                IsVisible = true,
+                Width = 70
+            };
+           histListview.AllColumns.Add(ColTradeVol);
 
 
 
@@ -467,10 +479,16 @@ namespace FrontEnd
 
             _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, onlyTradesRadioButton.Checked, startDateTimePicker.Value, endDateTimePicker.Value.AddHours(5), dt);
             var _trades = _Stats.CalcBasicTradeStats(_tempTradeList);
-            _trades.Reverse();
+
+            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, _trades);
+            NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
+
+            var Final = CompletedTrade.CreateList(NewTrades);
+            
+            Final.Reverse();
             histListview.Items.Clear();
             histListview.RebuildColumns();
-            histListview.SetObjects(_trades);
+            histListview.SetObjects(Final);
             Cursor = Cursors.Default;
             dataTabControl.SelectedIndex = 1;
             exportToTextButton.Enabled = true;

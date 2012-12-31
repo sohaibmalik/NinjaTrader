@@ -378,6 +378,90 @@ namespace AlsiUtils
             return Trades;
         }
 
+        public List<CompletedTrade> CalcExpandedTradeStats(List<CompletedTrade> Trades)
+        {
+            double totalProfit = 0;
+            double tradeCount = Trades.Count;
+            double prof_count = 0;
+            double loss_count = 0;
+            double prof_sum = 0;
+            double loss_sum = 0;
+
+
+
+            foreach (var t in Trades)
+            {
+                t.OpenTrade.Extention.newTotalProfit = totalProfit;
+
+                if (t.CloseTrade.Reason == Trade.Trigger.CloseLong)
+                {
+                    double prof = (t.CloseTrade.TradedPrice - t.OpenTrade.TradedPrice) * t.OpenTrade.Extention.OrderVol;
+                    t.CloseTrade.Extention.newRunningProf = prof;
+                    totalProfit += prof;
+                    t.CloseTrade.Extention.newTotalProfit = totalProfit;
+                    if (prof > 0)
+                    {
+                        prof_sum += prof;
+                        prof_count++;
+                    }
+                    else
+                    {
+                        loss_sum += prof;
+                        loss_count++;
+                    }
+                }
+
+                if (t.CloseTrade.Reason == Trade.Trigger.CloseShort)
+                {
+                    double prof = (t.OpenTrade.TradedPrice - t.CloseTrade.TradedPrice) * t.OpenTrade.Extention.OrderVol;
+                    t.CloseTrade.Extention.newRunningProf = prof;
+                    totalProfit += prof;
+                    t.CloseTrade.Extention.newTotalProfit = totalProfit;
+                    if (prof > 0)
+                    {
+                        prof_sum += prof;
+                        prof_count++;
+                    }
+                    else
+                    {
+                        loss_sum += prof;
+                        loss_count++;
+                    }
+                }
+            }
+
+            decimal avg_pl = (decimal)Math.Round((totalProfit / tradeCount), 5);
+            decimal loss_pct = (decimal)Math.Round((loss_count / tradeCount) * 100, 2);
+            decimal prof_pct = (decimal)Math.Round((prof_count / tradeCount) * 100, 2);
+            decimal pl_ratio = (decimal)Math.Round((prof_sum / loss_sum), 2);
+            decimal avg_profit = (decimal)Math.Round((prof_count / prof_sum), 2);
+            decimal avg_loss = (decimal)Math.Round((loss_count / loss_sum), 2);
+
+            SummaryStats s = new SummaryStats()
+            {
+                TotalProfit = totalProfit,
+                TradeCount = tradeCount,
+                Total_Avg_PL = avg_pl,
+                Pct_Prof = prof_pct,
+                Pct_Loss = loss_pct,
+                Avg_Loss = avg_loss,
+                Avg_Prof = avg_profit,
+
+            };
+
+            try
+            {
+                StatsCalculatedEvent sc = new StatsCalculatedEvent();
+                sc.SumStats = s;
+                OnStatsCaculated(this, sc);
+            }
+            catch
+            {
+            }
+            return Trades;
+        }
+
+
         public static void OverNightPosAnalysis(List<Trade> Trades)
         {
             var overnightpos = from ovn in Trades

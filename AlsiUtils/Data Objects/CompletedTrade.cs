@@ -14,6 +14,11 @@ namespace AlsiUtils
             CloseTrade = new Trade();
         }
 
+        /// <summary>
+        /// COnvert List of Trades to List of Completed Trades
+        /// </summary>
+        /// <param name="TradesOnly"></param>
+        /// <returns></returns>
         public static List<CompletedTrade> CreateList(List<Trade> TradesOnly)
         {
             var CompList = new List<CompletedTrade>();
@@ -46,7 +51,31 @@ namespace AlsiUtils
             return CompList;
         }
 
+        /// <summary>
+        /// Convert Completed Trade List back to List of Trades
+        /// </summary>
+        /// <param name="CompletedTrades"></param>
+        /// <returns></returns>
+        public static List<Trade> CreateList(List<CompletedTrade> CompletedTrades)
+        {
+            List<Trade> tradeList = new List<Trade>(); 
+            foreach (var t in CompletedTrades)
+            {
+                t.OpenTrade.TradeVolume = t.OpenTrade.Extention.OrderVol;
+                t.CloseTrade.TradeVolume = t.CloseTrade.Extention.OrderVol;
 
+                t.OpenTrade.RunningProfit = t.OpenTrade.Extention.newRunningProf;
+                t.OpenTrade.TotalPL = t.OpenTrade.Extention.newTotalProfit;
+
+                t.CloseTrade.RunningProfit = t.CloseTrade.Extention.newRunningProf;
+                t.CloseTrade.TotalPL = t.CloseTrade.Extention.newTotalProfit;
+
+                tradeList.Add(t.OpenTrade);
+                tradeList.Add(t.CloseTrade);
+            }
+
+            return tradeList;
+        }
 
 
 
