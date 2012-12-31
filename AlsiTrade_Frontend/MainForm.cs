@@ -112,10 +112,10 @@ namespace FrontEnd
             Debug.WriteLine("Prices Synced : " + e.ReadyForTradeCalcs);
             if (e.ReadyForTradeCalcs)
             {
-                var trades = RunCalcs.RunEMAScalpLiveTrade(GetParameters(), _Interval);
-                var lt = trades.Last();
-                Debug.WriteLine(lt.Notes);
-                lt.TradeVolume = Properties.Settings.Default.VOL;
+                var trades = RunCalcs.RunEMAScalpLiveTrade(GetParameters(), _Interval);              
+                var lt = DoStuff.Apply2ndAlgoVolume(trades);
+                Debug.WriteLine("Last Order : " + lt.ToString());
+                lt.TradeVolume = lt.TradeVolume * Properties.Settings.Default.VOL;
                 lt.InstrumentName = Properties.Settings.Default.OTS_INST;
                 marketOrder.SendOrderToMarket(lt);
                 UpdateTradeLog(SetTradeLogColor(lt), true);
@@ -331,7 +331,8 @@ namespace FrontEnd
 
 
 
-            ColPosition.ImageGetter = rowObject => ((Trade)rowObject).Position ? "add" : "add";
+          
+            
 
         }
 
@@ -480,7 +481,7 @@ namespace FrontEnd
             _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, onlyTradesRadioButton.Checked, startDateTimePicker.Value, endDateTimePicker.Value.AddHours(5), dt);
             var _trades = _Stats.CalcBasicTradeStats(_tempTradeList);
 
-            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, _trades);
+            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _trades);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
 
             var Final = CompletedTrade.CreateList(NewTrades);

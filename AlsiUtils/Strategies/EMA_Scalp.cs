@@ -118,6 +118,7 @@ namespace AlsiUtils.Strategies
                     TradedPrice = _T[x].Price_Close,
                     Reason = _T[x].ActualTrade,
                     CurrentPrice = _T[x].Price_Close,
+                    TradeVolume=GetVolume(_T[x]),
                     IndicatorNotes = "A1:" + A_1[x].Ema + "  A2:" + A_6[x].Ema + "  B1:" + B_1[x].Ema + "  B2:" + B_6[x].Ema + "  C:" + E1[x].Ema
 
                 };
@@ -138,6 +139,12 @@ namespace AlsiUtils.Strategies
             return trades;
         }
 
+        private static int GetVolume(TradeStrategy T)
+        {
+            int vol = 0;
+            if (T.ActualTrade != Trade.Trigger.None) vol = 1;
+            return vol;
+        }
 
 
         public static void CalcTriggers(List<TradeStrategy> strategy, int x)
@@ -182,12 +189,6 @@ namespace AlsiUtils.Strategies
                 strategy[x].TradeTrigger = Trade.Trigger.ReverseLong;
         }
      
-
-
-
-      
-
-
 
     }
 }

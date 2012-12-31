@@ -47,6 +47,7 @@ namespace AlsiTrade_Backend
                     t.TimeStamp + ","
                    + t.Reason + ","
                    + t.BuyorSell + ","
+                   +t.TradeVolume +","
                    + t.CurrentDirection + ","
                    + t.CurrentPrice + ","
                    + t.Position + ","
@@ -59,12 +60,12 @@ namespace AlsiTrade_Backend
             MessageBox.Show("Export Complete");
         }
 
-        public static void TickBulkCopy(string InstrumentName,DateTime Start)
+        public static void TickBulkCopy(string InstrumentName, DateTime Start)
         {
             DateTime _start = DateTime.Now.AddDays(-5);
             DateTime UseThisDate = Start > _start ? _start : Start;
             AlsiDBDataContext dc = new AlsiDBDataContext();
-            var tickData = HistData.GetHistoricalTICK_FromWEB(UseThisDate , DateTime.UtcNow.AddHours(2), InstrumentName);
+            var tickData = HistData.GetHistoricalTICK_FromWEB(UseThisDate, DateTime.UtcNow.AddHours(2), InstrumentName);
 
             DataTable RawTicks = new DataTable("TickData");
             RawTicks.Columns.Add("N", typeof(long));
@@ -240,7 +241,16 @@ namespace AlsiTrade_Backend
             return _trades[0];
         }
 
+        public static Trade Apply2ndAlgoVolume(List<Trade> Trades)
+        {
+            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, Trades);            
+            var Algo2nd_LastOrder = CompletedTrade.CreateList(NewTrades).Last();
+            var CurrentTrade = Trades.Last();
+            if (Algo2nd_LastOrder.TimeStamp == CurrentTrade.TimeStamp)
+                CurrentTrade.TradeVolume = Algo2nd_LastOrder.TradeVolume;
 
+            return CurrentTrade;
+        }
 
         /// <summary>
         /// Sync the Clock to Internet Time
