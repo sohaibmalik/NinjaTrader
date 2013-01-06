@@ -95,6 +95,15 @@
       <Column Name="C" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
+  <Table Name="dbo.OHLC_Temp_2" Member="OHLC_Temp_2s">
+    <Type Name="OHLC_Temp_2">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
   <Table Name="dbo.Raw_Import" Member="Raw_Imports">
     <Type Name="Raw_Import">
       <Column Name="Stamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
@@ -140,6 +149,9 @@
   <Function Name="dbo.UpdateTick" Method="UpdateTick">
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.Clean_OHLC_Temp_2" Method="Clean_OHLC_Temp_2">
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.CleanLogs" Method="CleanLogs" />
   <Function Name="dbo.CleanTick" Method="CleanTick">
     <Return Type="System.Int32" />
@@ -150,10 +162,10 @@
   <Function Name="dbo.ClearImportTable" Method="ClearImportTable">
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.ClearTempTable" Method="ClearTempTable">
+  <Function Name="dbo.ImportRawTick" Method="ImportRawTick" />
+  <Function Name="dbo.MergeTemp" Method="MergeTemp">
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.ImportRawTick" Method="ImportRawTick" />
   <Function Name="dbo.OHLC_10" Method="OHLC_10">
     <Return Type="System.Int32" />
   </Function>

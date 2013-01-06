@@ -25,10 +25,12 @@ namespace AlsiUtils
         public string InstrumentName { get; set; }
         public int TradeCount { get; set; }
         public AlsiUtils.Data_Objects.RegressionExt Extention { get; set; }
+        public Price OHLC { get; set; }
 
         public Trade()
         {
             Extention = new Data_Objects.RegressionExt();
+            OHLC = new Price();
         }
         public enum BuySell
         {
@@ -91,7 +93,7 @@ namespace AlsiUtils
 
             string r = Reason.ToString();
             if (this.Reason == 0) r = "";
-            string msg = "Trade Details:  " + r + "\n" + TimeStamp + "  " + BuyorSell + "  " + TradeVolume + " @" + TradedPrice + "\n";
+            string msg = "Trade Details:  " + r + " \n" + TimeStamp + "  " + BuyorSell + "  " + TradeVolume + " @" + TradedPrice + "\n";
             return msg;
         }
 

@@ -15,7 +15,7 @@ namespace AlsiUtils
         }
 
         /// <summary>
-        /// COnvert List of Trades to List of Completed Trades
+        /// Convert List of Trades to List of Completed Trades
         /// </summary>
         /// <param name="TradesOnly"></param>
         /// <returns></returns>

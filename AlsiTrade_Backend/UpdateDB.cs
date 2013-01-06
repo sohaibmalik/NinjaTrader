@@ -5,6 +5,8 @@ using System.Text;
 using AlsiUtils;
 using AlsiUtils.Data_Objects;
 using System.Diagnostics;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace AlsiTrade_Backend
 {
@@ -17,14 +19,14 @@ namespace AlsiTrade_Backend
         /// <param name="CustomConnectionString">Custom Connection String, this will set Current Connection String</param>
         public static void FullHistoricUpdate_MasterMinute(string ContractName)
         {
-           
+
             AlsiDBDataContext dc = new AlsiDBDataContext();
 
-            DateTime Last = dc.MasterMinutes.AsEnumerable().Last().Stamp;         
-            DateTime Now = DateTime.UtcNow.AddHours(2);          
+            DateTime Last = dc.MasterMinutes.AsEnumerable().Last().Stamp;
+            DateTime Now = DateTime.UtcNow.AddHours(2);
             GlobalObjects.Points.Clear();
             GlobalObjects.Points = HiSat.HistData.GetHistoricalMINUTE_FromWEB(Last, Now, 1, ContractName);
-          
+
             UpdatePricesToImportMinute();
 
         }
@@ -33,124 +35,155 @@ namespace AlsiTrade_Backend
         {
             AlsiDBDataContext dc = new AlsiDBDataContext();
             dc.ClearImportTable();
-            decimal progress = 0;
-            decimal totProgress = GlobalObjects.Points.Count;
+            dc.Clean_OHLC_Temp();
+            DataTable MinData = new DataTable("MinData");
+            MinData.Columns.Add("Stamp", typeof(DateTime));
+            MinData.Columns.Add("O", typeof(int));
+            MinData.Columns.Add("L", typeof(int));
+            MinData.Columns.Add("H", typeof(int));
+            MinData.Columns.Add("C", typeof(int));
+            MinData.Columns.Add("V", typeof(int));
+            MinData.Columns.Add("Instrument", typeof(string));
 
-            foreach (Price price in GlobalObjects.Points)
-            {
-                int open = (int)price.Open;
-                int high = (int)price.High;
-                int low = (int)price.Low;
-                int close = (int)price.Close;
-                int volume = (int)price.Volume;
-
-                ImportMinute c = new ImportMinute
-                {
-                    Stamp = price.TimeStamp,
-                    O = open,
-                    H = high,
-                    L = low,
-                    C = close,
-                    V = volume,
-                    Instrument = price.InstrumentName
-                };
+            foreach (var p in GlobalObjects.Points) MinData.Rows.Add(p.TimeStamp, p.Open, p.High, p.Low, p.Close, p.Volume, p.InstrumentName);
 
 
-                dc.ImportMinutes.InsertOnSubmit(c);
-                dc.SubmitChanges();
-                progress++;
+            #region BulkCopy
 
-                int p = Convert.ToInt16(100 * (progress / totProgress));
+            DataSet minuteDataSet = new DataSet("minuteDataset");
+            minuteDataSet.Tables.Add(MinData);
+            SqlConnection myConnection = new SqlConnection(AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString);
+            myConnection.Open();
+            SqlBulkCopy bulkcopy = new SqlBulkCopy(myConnection);
+            bulkcopy.DestinationTableName = "ImportMinute";
+            bulkcopy.WriteToServer(MinData);
+            Debug.WriteLine("Tick Bulk Copy Complete");
+            MinData.Dispose();
+            myConnection.Close();
+
+            #endregion
 
 
-
-            }
-            GlobalObjects.Points.Clear();
             dc.UpadteImport();
             dc.CleanUp();
 
         }
 
-        public static void UpdatePricesToImportMinuteForTradeUpdate()
+        public static void MergeTempWithHisto(GlobalObjects.TimeInterval T)
         {
-            AlsiDBDataContext dc = new AlsiDBDataContext();
-            dc.ClearImportTable();
-            decimal progress = 0;
-            decimal totProgress = GlobalObjects.Points.Count;
 
-            foreach (Price price in GlobalObjects.Points)
+
+            var dc = new AlsiDBDataContext();
+            switch (T)
             {
-                int open = (int)price.Open;
-                int high = (int)price.High;
-                int low = (int)price.Low;
-                int close = (int)price.Close;
-                int volume = (int)price.Volume;
-
-                ImportMinute c = new ImportMinute
-                {
-                    Stamp = price.TimeStamp,
-                    O = open,
-                    H = high,
-                    L = low,
-                    C = close,
-                    V = volume,
-                    Instrument = price.InstrumentName
-                };
+                case (GlobalObjects.TimeInterval.Minute_5):
+                    //Must be 2000 prices in db for accurate calcs
+                    if (dc.OHLC_5_Minutes.Count() < 20100) throw new IndexOutOfRangeException();
+                    var last1000Prices = dc.OHLC_5_Minutes.Skip(Math.Max(0, dc.OHLC_5_Minutes.Count() - 20000)).Take(20000);
+                    dc.Clean_OHLC_Temp_2();
 
 
-                dc.ImportMinutes.InsertOnSubmit(c);
-                dc.SubmitChanges();
-                progress++;
+                    DataTable MinData = new DataTable("MinData");
+                    MinData.Columns.Add("Stamp", typeof(DateTime));
+                    MinData.Columns.Add("O", typeof(int));
+                    MinData.Columns.Add("L", typeof(int));
+                    MinData.Columns.Add("H", typeof(int));
+                    MinData.Columns.Add("C", typeof(int));
+                
 
-                int p = Convert.ToInt16(100 * (progress / totProgress));
+                    foreach (var p in last1000Prices) MinData.Rows.Add(p.Stamp, p.O, p.H, p.L, p.C);
 
 
+                    #region BulkCopy
 
+                    DataSet minuteDataSet = new DataSet("minuteDataset");
+                    minuteDataSet.Tables.Add(MinData);
+                    SqlConnection myConnection = new SqlConnection(AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString);
+                    myConnection.Open();
+                    SqlBulkCopy bulkcopy = new SqlBulkCopy(myConnection);
+                    bulkcopy.DestinationTableName = "OHLC_Temp_2";
+                    bulkcopy.WriteToServer(MinData);
+                    Debug.WriteLine("Tick Bulk Copy Complete");
+                    MinData.Dispose();
+                    myConnection.Close();
+
+                    #endregion
+
+                    dc.MergeTemp();
+
+                    break;
             }
-            GlobalObjects.Points.Clear();
-            dc.CleanUp();
 
+
+        }
+
+        public static void _1MinDataToImportMinute(List<Price> MinutePrices)
+        {
+            var dc = new AlsiUtils.AlsiDBDataContext();
+            dc.ClearImportTable();
+            dc.Clean_OHLC_Temp();
+            DataTable MinData = new DataTable("MinData");
+            MinData.Columns.Add("Stamp", typeof(DateTime));
+            MinData.Columns.Add("O", typeof(int));
+            MinData.Columns.Add("L", typeof(int));
+            MinData.Columns.Add("H", typeof(int));
+            MinData.Columns.Add("C", typeof(int));
+            MinData.Columns.Add("V", typeof(int));
+
+            foreach (var p in MinutePrices) MinData.Rows.Add(p.TimeStamp, p.Open, p.High, p.Low, p.Close, p.Volume);
+
+
+            #region BulkCopy
+
+            DataSet minuteDataSet = new DataSet("minuteDataset");
+            minuteDataSet.Tables.Add(MinData);
+            SqlConnection myConnection = new SqlConnection(AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString);
+            myConnection.Open();
+            SqlBulkCopy bulkcopy = new SqlBulkCopy(myConnection);
+            bulkcopy.DestinationTableName = "ImportMinute";
+            bulkcopy.WriteToServer(MinData);
+            Debug.WriteLine("Tick Bulk Copy Complete");
+            MinData.Dispose();
+            myConnection.Close();
+
+            #endregion
         }
 
         public static void UpdatePricesToTempTable()
         {
             AlsiDBDataContext dc = new AlsiDBDataContext();
             dc.Connection.ConnectionString = GlobalObjects.CustomConnectionString;
-            dc.ClearTempTable();
-            decimal progress = 0;
-            decimal totProgress = GlobalObjects.Points.Count;
+            dc.Clean_OHLC_Temp();
 
-            foreach (Price price in GlobalObjects.Points)
-            {
-                int open = (int)price.Open;
-                int high = (int)price.High;
-                int low = (int)price.Low;
-                int close = (int)price.Close;
-                int volume = (int)price.Volume;
+            DataTable MinData = new DataTable("MinData");
+            MinData.Columns.Add("Stamp", typeof(DateTime));
+            MinData.Columns.Add("O", typeof(int));
+            MinData.Columns.Add("L", typeof(int));
+            MinData.Columns.Add("H", typeof(int));
+            MinData.Columns.Add("C", typeof(int));
+            MinData.Columns.Add("V", typeof(int));
 
-                OHLC_Temp  c = new OHLC_Temp
-                {
-                    Stamp = price.TimeStamp,
-                    O = open,
-                    H = high,
-                    L = low,
-                    C = close,                  
-                };
+            foreach (var p in GlobalObjects.Points) MinData.Rows.Add(p.TimeStamp, p.Open, p.High, p.Low, p.Close, p.Volume);
 
+            #region BulkCopy
 
-                dc.OHLC_Temps.InsertOnSubmit(c);
-                dc.SubmitChanges();
-                progress++;
+            DataSet minuteDataSet = new DataSet("minuteDataset");
+            minuteDataSet.Tables.Add(MinData);
+            SqlConnection myConnection = new SqlConnection(AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString);
+            myConnection.Open();
+            SqlBulkCopy bulkcopy = new SqlBulkCopy(myConnection);
+            bulkcopy.DestinationTableName = "OHLC_Temp";
+            bulkcopy.WriteToServer(MinData);
+            Debug.WriteLine("Tick Bulk Copy Complete");
+            MinData.Dispose();
+            myConnection.Close();
 
-                int p = Convert.ToInt16(100 * (progress / totProgress));
-
-
-
-            }
-            GlobalObjects.Points.Clear();
-           
-            
+            #endregion
 
         }
+
+
+
     }
 }
+

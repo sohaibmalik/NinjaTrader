@@ -14,7 +14,7 @@ namespace AlsiUtils
     {
         public static void SetConnectionString()
         {
-            
+
             //Laptop
             //string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
             //PC
@@ -38,15 +38,7 @@ namespace AlsiUtils
             return alive;
         }
 
-        #region AlsiTrade
-
-
-
-
-
-
-
-
+    
 
 
         static public void InsertTradeLog(Trade TradeObject)
@@ -83,8 +75,6 @@ namespace AlsiUtils
 
 
         }
-
-
 
         static public List<Trade> GetTradeLogFromDatabase(int numberofLogs)
         {
@@ -128,7 +118,6 @@ namespace AlsiUtils
             }
 
         }
-
 
         static public List<Price> readDataFromDataBase(GlobalObjects.TimeInterval T, dataTable TD, DateTime Start, DateTime End, bool reverseList)
         {
@@ -310,8 +299,6 @@ namespace AlsiUtils
 
         }
 
-
-
         static public List<Price> readDataFromDataBase_1_MIN_MasterMinute(int numberOfPeriods, bool reverseList)
         {
             try
@@ -355,7 +342,6 @@ namespace AlsiUtils
                 return null;
             }
         }
-
 
         static public void get_10min_high_low_from_ticks(out double High, out double Low)
         {
@@ -442,10 +428,6 @@ namespace AlsiUtils
                 Low = 0;
             }
         }
-        #endregion
-
-
-        #region DataManager
 
 
 
@@ -453,14 +435,7 @@ namespace AlsiUtils
 
 
 
-
-
-
-        /// <summary>
-        /// Insert Ticks into RAwTICK Table
-        /// </summary>
-        /// <param name="Stamp">Single TimeStamp</param>
-        /// <param name="Price">Singe Price</param>
+       
         static public void insertTicks(DateTime Stamp, int Price)
         {
             AlsiDBDataContext dc = new AlsiDBDataContext();
@@ -479,36 +454,7 @@ namespace AlsiUtils
 
         }
 
-        static public void insertMinuteDataToMinteImport(List<Price> MinuteData)
-        {
-            AlsiDBDataContext dc = new AlsiDBDataContext();
-            dc.Connection.ConnectionString = AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString;
-            dc.ClearImportTable();
-            foreach (Price p in MinuteData)
-            {
-                ImportMinute i = new ImportMinute()
-                {
-                    Stamp = p.TimeStamp,
-                    O = (int)p.Open,
-                    H = (int)p.High,
-                    L = (int)p.Low,
-                    C = (int)p.Close,
-                    V = (int)p.Volume
-
-                };
-
-
-                dc.ImportMinutes.InsertOnSubmit(i);
-                dc.SubmitChanges();
-            }
-
-
-        }
-
-
-
-
-        #endregion
+  
 
 
         public enum dataTable

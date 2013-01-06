@@ -78,8 +78,6 @@ namespace AlsiUtils
             }
         }
 
-
-
         public static List<Trade> TradeList_Stats = new List<Trade>();
         public static List<SummaryStats> SummaryProfitLoss(List<Trade> Trades, Period Period)
         {
@@ -240,7 +238,6 @@ namespace AlsiUtils
 
         }
 
-
         public static void StandardDevOnPL(List<Trade> Trades)
         {
             var viList = new List<Indicators.VariableIndicator>();
@@ -261,16 +258,16 @@ namespace AlsiUtils
                 Debug.WriteLine(v.N + "," + v.SingleStdev + "," + v.CustomValue + "," + v.StdDev);
         }
 
-        public static List<Trade> RegressionAnalysis_OnPL(int N,List<Trade> Trades)
+        public static List<Trade> RegressionAnalysis_OnPL(int N, List<Trade> Trades)
         {
             List<Indicators.VariableIndicator> V = new List<Indicators.VariableIndicator>();
-            var tradeonlyList=Trades.Where(z=>z.Reason==Trade.Trigger.CloseLong || z.Reason==Trade.Trigger.CloseShort);           
+            var tradeonlyList = Trades.Where(z => z.Reason == Trade.Trigger.CloseLong || z.Reason == Trade.Trigger.CloseShort);
             foreach (var v in tradeonlyList)
             {
                 var varindicator = new Indicators.VariableIndicator()
                 {
-                    TimeStamp=v.TimeStamp,
-                    Value=v.TotalPL,
+                    TimeStamp = v.TimeStamp,
+                    Value = v.TotalPL,
 
                 };
 
@@ -278,16 +275,16 @@ namespace AlsiUtils
             }
             var reg = Factory_Indicator.createRegression(N, V);
 
-           // var avg= reg.Sum(z => z.Slope) / reg.Count;
-           // Debug.WriteLine(avg);
+            // var avg= reg.Sum(z => z.Slope) / reg.Count;
+            // Debug.WriteLine(avg);
             foreach (var t in tradeonlyList)
             {
                 foreach (var e in reg)
                 {
                     if (e.TimeStamp == t.TimeStamp)
-                    {                       
-                        t.Extention.Regression  = e.Regression;                      
-                        t.Extention.Slope  = e.Slope;
+                    {
+                        t.Extention.Regression = e.Regression;
+                        t.Extention.Slope = e.Slope;
                         t.Extention.OrderVol = 1;
                     }
 
@@ -295,14 +292,13 @@ namespace AlsiUtils
 
             }
 
-           
+
 
 
 
             return tradeonlyList.ToList();
-          
+
         }
-               
 
 
         public List<Trade> CalcBasicTradeStats(List<Trade> Trades)
@@ -373,7 +369,7 @@ namespace AlsiUtils
                 OnStatsCaculated(this, sc);
             }
             catch
-            { 
+            {
             }
             return Trades;
         }
@@ -531,6 +527,38 @@ namespace AlsiUtils
         public class StatsCalculatedEvent : EventArgs
         {
             public SummaryStats SumStats;
+        }
+
+
+        public static List<CompletedTrade> IntratradeToCandle(List<Trade> FullTradeList)
+        {
+            var TO = Trade.TradesOnly(FullTradeList);
+            var r = CompletedTrade.CreateList(TO);
+
+            foreach (var to in r)
+            {
+                var end = to.CloseTrade.TimeStamp;
+                if (to.CloseTrade.Reason == Trade.Trigger.None) end = DateTime.Now;
+
+                var pl = from x in FullTradeList
+                          where x.TimeStamp >= to.OpenTrade.TimeStamp && x.TimeStamp <= end
+                          select x.RunningProfit;
+
+                var minmax = new
+                {
+                    low = pl.Min(),
+                    high = pl.Max(),
+                    close=pl.Last(),
+                    fist=pl.Skip(1).First(),
+                };
+
+                to.CloseTrade.OHLC.Low = minmax.low;
+                to.CloseTrade.OHLC.High = minmax.high;
+                to.CloseTrade.OHLC.Close = minmax.close;
+                to.CloseTrade.OHLC.Open = minmax.fist;
+            }
+
+            return r;
         }
 
 

@@ -57,6 +57,9 @@ namespace AlsiUtils
     partial void InsertOHLC_Temp(OHLC_Temp instance);
     partial void UpdateOHLC_Temp(OHLC_Temp instance);
     partial void DeleteOHLC_Temp(OHLC_Temp instance);
+    partial void InsertOHLC_Temp_2(OHLC_Temp_2 instance);
+    partial void UpdateOHLC_Temp_2(OHLC_Temp_2 instance);
+    partial void DeleteOHLC_Temp_2(OHLC_Temp_2 instance);
     partial void InsertRawTick(RawTick instance);
     partial void UpdateRawTick(RawTick instance);
     partial void DeleteRawTick(RawTick instance);
@@ -170,6 +173,14 @@ namespace AlsiUtils
 			}
 		}
 		
+		public System.Data.Linq.Table<OHLC_Temp_2> OHLC_Temp_2s
+		{
+			get
+			{
+				return this.GetTable<OHLC_Temp_2>();
+			}
+		}
+		
 		public System.Data.Linq.Table<Raw_Import> Raw_Imports
 		{
 			get
@@ -224,6 +235,13 @@ namespace AlsiUtils
 			return ((int)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.Clean_OHLC_Temp_2")]
+		public int Clean_OHLC_Temp_2()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CleanLogs")]
 		public void CleanLogs()
 		{
@@ -251,17 +269,17 @@ namespace AlsiUtils
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ClearTempTable")]
-		public int ClearTempTable()
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ImportRawTick")]
 		public void ImportRawTick()
 		{
 			this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.MergeTemp")]
+		public int MergeTemp()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((int)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.OHLC_10")]
@@ -1982,6 +2000,164 @@ namespace AlsiUtils
     #endregion
 		
 		public OHLC_Temp()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Stamp", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		public System.DateTime Stamp
+		{
+			get
+			{
+				return this._Stamp;
+			}
+			set
+			{
+				if ((this._Stamp != value))
+				{
+					this.OnStampChanging(value);
+					this.SendPropertyChanging();
+					this._Stamp = value;
+					this.SendPropertyChanged("Stamp");
+					this.OnStampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
+		public int O
+		{
+			get
+			{
+				return this._O;
+			}
+			set
+			{
+				if ((this._O != value))
+				{
+					this.OnOChanging(value);
+					this.SendPropertyChanging();
+					this._O = value;
+					this.SendPropertyChanged("O");
+					this.OnOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
+		public int H
+		{
+			get
+			{
+				return this._H;
+			}
+			set
+			{
+				if ((this._H != value))
+				{
+					this.OnHChanging(value);
+					this.SendPropertyChanging();
+					this._H = value;
+					this.SendPropertyChanged("H");
+					this.OnHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
+		public int L
+		{
+			get
+			{
+				return this._L;
+			}
+			set
+			{
+				if ((this._L != value))
+				{
+					this.OnLChanging(value);
+					this.SendPropertyChanging();
+					this._L = value;
+					this.SendPropertyChanged("L");
+					this.OnLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
+		public int C
+		{
+			get
+			{
+				return this._C;
+			}
+			set
+			{
+				if ((this._C != value))
+				{
+					this.OnCChanging(value);
+					this.SendPropertyChanging();
+					this._C = value;
+					this.SendPropertyChanged("C");
+					this.OnCChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.OHLC_Temp_2")]
+	public partial class OHLC_Temp_2 : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.DateTime _Stamp;
+		
+		private int _O;
+		
+		private int _H;
+		
+		private int _L;
+		
+		private int _C;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnStampChanging(System.DateTime value);
+    partial void OnStampChanged();
+    partial void OnOChanging(int value);
+    partial void OnOChanged();
+    partial void OnHChanging(int value);
+    partial void OnHChanged();
+    partial void OnLChanging(int value);
+    partial void OnLChanged();
+    partial void OnCChanging(int value);
+    partial void OnCChanged();
+    #endregion
+		
+		public OHLC_Temp_2()
 		{
 			OnCreated();
 		}

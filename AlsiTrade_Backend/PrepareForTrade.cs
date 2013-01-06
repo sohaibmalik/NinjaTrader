@@ -12,17 +12,18 @@ namespace AlsiTrade_Backend
     {
         public Trade _LastTrade;
         private GlobalObjects.TimeInterval _Interval;
-        private AlsiUtils.AlsiDBDataContext dc;
-
-        public PrepareForTrade(GlobalObjects.TimeInterval Interval)
+     
+        string _ContractName;
+        public PrepareForTrade(GlobalObjects.TimeInterval Interval, string ContractName)
         {
             _Interval = Interval;
+            _ContractName = ContractName;
         }
 
-        public void GetPricesFromWeb(string ContractName)
+        public void GetPricesFromWeb()
         {
 
-            GlobalObjects.Points = HiSat.HistData.GetHistoricalMINUTE_FromWEB(_LastTrade.TimeStamp.AddHours(-1), DateTime.Now, (int)_Interval, ContractName);
+            GlobalObjects.Points = HiSat.HistData.GetHistoricalMINUTE_FromWEB(_LastTrade.TimeStamp.AddDays(-10), DateTime.Now, (int)_Interval, _ContractName);
             VerifyPrices();
 
         }
@@ -46,31 +47,24 @@ namespace AlsiTrade_Backend
             }
         }
 
-        private void SkipVerifyPrices()
-        {
-          
-                AlsiTrade_Backend.UpdateDB.UpdatePricesToImportMinuteForTradeUpdate();               
-                PricesSyncedEvent p = new PricesSyncedEvent();
-                p.ReadyForTradeCalcs = true;
-                onPriceSync(this, p);
-         
-        }
+     
 
 
         public void GetPricesFromTick()
         {
-            dc = new AlsiUtils.AlsiDBDataContext();
-            GlobalObjects.Points = DoStuff.convertTickToMinute(dc.RawTicks.ToList());
-            var pd = GlobalObjects.Points.Last();
-           // foreach (var pp in GlobalObjects.Prices)          
-            //Debug.WriteLine(pd.TimeStamp + "  " + pd.Open + "  " + pd.High + "  " + pd.Low + "  " + pd.Close);
+            DoStuff.GetDataFromTick.DoYourThing(_ContractName);
             TickDataToXMinData();
-            SkipVerifyPrices();
+
+            PricesSyncedEvent p = new PricesSyncedEvent();
+            p.ReadyForTradeCalcs = true;
+            onPriceSync(this, p);    
         }
+
 
         private void TickDataToXMinData()
         {
-            switch(_Interval )
+            AlsiUtils.AlsiDBDataContext dc = new AlsiDBDataContext();
+            switch (_Interval)
             {
                 case GlobalObjects.TimeInterval.Minute_2:
                     break;
@@ -82,6 +76,22 @@ namespace AlsiTrade_Backend
                 case GlobalObjects.TimeInterval.Minute_10:
                     break;
             }
+
+            GlobalObjects.Points.Clear();
+            foreach (var p in dc.OHLC_Temps)
+            {
+                var P = new Price()
+                {
+                    TimeStamp=p.Stamp,
+                    Open=p.O,
+                    High=p.H,
+                    Low=p.L,
+                    Close=p.C,
+                    InstrumentName=_ContractName,                    
+                };
+                GlobalObjects.Points.Add(P);
+            }
+
 
         }
 

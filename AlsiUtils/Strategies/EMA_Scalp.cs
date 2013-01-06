@@ -119,7 +119,7 @@ namespace AlsiUtils.Strategies
                     Reason = _T[x].ActualTrade,
                     CurrentPrice = _T[x].Price_Close,
                     TradeVolume=GetVolume(_T[x]),
-                    IndicatorNotes = "A1:" + A_1[x].Ema + "  A2:" + A_6[x].Ema + "  B1:" + B_1[x].Ema + "  B2:" + B_6[x].Ema + "  C:" + E1[x].Ema
+                    IndicatorNotes = "A1:" + Math.Round(A_1[x].Ema,2) + "  A2:" + Math.Round(A_6[x].Ema,2) + "  B1:" + Math.Round(B_1[x].Ema,2) + "  B2:" + Math.Round(B_6[x].Ema,2) + "  C:" + Math.Round(E1[x].Ema,2)
 
                 };
 

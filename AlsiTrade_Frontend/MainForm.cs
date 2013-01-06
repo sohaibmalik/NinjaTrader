@@ -50,7 +50,7 @@ namespace FrontEnd
             AlsiUtils.DataBase.SetConnectionString();
             PopulateControls();
             U5 = new UpdateTimer(_Interval);
-            p = new PrepareForTrade(_Interval);
+            p = new PrepareForTrade(_Interval, Properties.Settings.Default.HISAT_INST);
             marketOrder = new MarketOrder();
             p.onPriceSync += new PrepareForTrade.PricesSynced(p_onPriceSync);
             U5.onStartUpdate += new UpdateTimer.StartUpdate(U5_onStartUpdate);
@@ -71,7 +71,7 @@ namespace FrontEnd
             EmailMsg msg = new EmailMsg();
             msg.Title = "Order Matched";
             msg.Body =  e.Trade.ToString();
-            DoStuff.SendEmail(e.Trade, msg);
+            DoStuff.Email.SendEmail(e.Trade, msg);
            
 
         }
@@ -84,7 +84,7 @@ namespace FrontEnd
                 EmailMsg msg = new EmailMsg();
                 msg.Title = "New Trade";
                 msg.Body = "an Order was generated and sucessfully send to Excel \n" + e.Trade.ToString();
-                DoStuff.SendEmail(e.Trade, msg);
+                DoStuff.Email .SendEmail(e.Trade, msg);
                
             }
             else
@@ -93,7 +93,7 @@ namespace FrontEnd
                 EmailMsg msg = new EmailMsg();
                 msg.Title = "Trade input Failed";
                 msg.Body = "an Order was generated but could not be send to Excel. \n" + e.Trade.ToString();
-                DoStuff.SendEmail(e.Trade,msg);
+                DoStuff.Email.SendEmail(e.Trade,msg);
             }
 
         }
@@ -101,7 +101,7 @@ namespace FrontEnd
         void U5_onStartUpdate(object sender, UpdateTimer.StartUpDateEvent e)
         {
             Debug.WriteLine(e.Message + "  " + e.Interval);
-            p.GetPricesFromWeb(Properties.Settings.Default.HISAT_INST);
+            p.GetPricesFromWeb();
             //p.GetPricesFromTick();
 
         }
@@ -132,7 +132,7 @@ namespace FrontEnd
                 {
                     Debug.WriteLine(timeout);
                     System.Threading.Thread.Sleep(1000);
-                    p.GetPricesFromWeb(Properties.Settings.Default.HISAT_INST);
+                    p.GetPricesFromWeb();
                 }
             }
 
@@ -343,7 +343,7 @@ namespace FrontEnd
             ListViewItem lvi = new ListViewItem(time);
             lvi.SubItems.Add(t.BuyorSell.ToString());
             lvi.SubItems.Add(t.Reason.ToString());
-            lvi.SubItems.Add(t.TradedPrice.ToString());
+            lvi.SubItems.Add(t.CurrentPrice.ToString());
             lvi.SubItems.Add(t.TradeVolume.ToString());
             lvi.SubItems.Add(t.IndicatorNotes.ToString());
             lvi.ForeColor = t.ForeColor;
@@ -738,7 +738,8 @@ namespace FrontEnd
 
         private void button1_Click(object sender, EventArgs e)
         {
-            p.GetPricesFromTick();
+            p.GetPricesFromWeb();
+          //  p.GetPricesFromTick();
         }
 
         
