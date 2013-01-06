@@ -21,6 +21,7 @@ namespace FrontEnd
         MarketOrder marketOrder;
         GlobalObjects.TimeInterval _Interval;
         private Statistics _Stats = new Statistics();
+        WebServiceUpdate service;
       
         private OLVColumn ColStamp;
         private OLVColumn ColReason;
@@ -61,6 +62,7 @@ namespace FrontEnd
             BuildListViewColumns();         
             p._LastTrade  = DoStuff.GetLastTrade(GetParameters(), _Interval);
             DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST,p._LastTrade.TimeStamp);
+            service = new WebServiceUpdate();
         }
 
 
@@ -740,6 +742,11 @@ namespace FrontEnd
         {
             p.GetPricesFromWeb();
           //  p.GetPricesFromTick();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            service.ReportStatus();
         }
 
         

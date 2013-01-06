@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Timers;
 using AlsiUtils.Data_Objects;
+using System.Diagnostics;
 namespace AlsiTrade_Backend
 {
 
@@ -10,9 +11,12 @@ namespace AlsiTrade_Backend
     {
         private BackgroundWorker _Bw;
         private Timer _timer = new Timer();
+        private Timer _UpdateStatus = new Timer();
         private GlobalObjects.TimeInterval _interval;
         private DateTime _Now;
         private bool _UpdatePending;
+        private WebServiceUpdate service;
+       
 
         private DateTime _marketOpen = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 8, 31, 00);
         private DateTime _marketClose = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 29, 59);
@@ -24,7 +28,16 @@ namespace AlsiTrade_Backend
             _interval = interval;
             _timer.Interval = 500;
             _timer.Elapsed += new ElapsedEventHandler(_timer_Elapsed);
+            _UpdateStatus.Elapsed += new ElapsedEventHandler(_UpdateStatus_Elapsed);
+            _UpdateStatus.Interval = 5000;
+            _UpdateStatus.Start();
             if (_Businessday) _timer.Start();
+            service = new WebServiceUpdate();
+        }
+
+        void _UpdateStatus_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            service.ReportStatus();
         }
 
         private bool CheckBusinessDay()
@@ -53,8 +66,14 @@ namespace AlsiTrade_Backend
                 if (_Now.Hour == 17 && _Now.Minute == 29) EndofDayUpdate();
             }
 
+        
+          
+
+            
           
         }
+
+
 
         private void CheckForUpdate(int ten, int one)
         {

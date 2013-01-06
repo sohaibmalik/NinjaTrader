@@ -15,6 +15,14 @@ namespace NotifierWebService
     public class Boodskap
     {
         public DateTime TimeStamp { get; set; }
-        public string Message { get; set; }
+        public Messages Message { get; set; }
+        public string Message_Custom { get; set; }
+
+        public enum Messages
+        {
+            isAlive = 0,
+            isDead = 1,
+            Startup=2,
+        }
     }
 }

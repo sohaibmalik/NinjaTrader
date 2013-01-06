@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Services;
 using ExcelLink;
+using System.Diagnostics;
 namespace NotifierWebService
 {
     /// <summary>
@@ -26,21 +27,22 @@ namespace NotifierWebService
         [WebMethod]
         public void InsertMessage(Boodskap message)
         {
-            TradeUpdate.Messages.Add(message);
+            TradeUpdate.Messages.Add(message);         
+            Debug.WriteLine(message.TimeStamp+ "  " +message.Message);
         }
 
         [WebMethod]
         public Boodskap getLastMessage()
         {
-            if (TradeUpdate.Messages.Count == 0) return new Boodskap { Message = "None Found", TimeStamp = DateTime.Now };
-            return TradeUpdate.Messages.FindLast(z => z.Message != null);
+            if (TradeUpdate.Messages.Count == 0) return new Boodskap { Message = Boodskap.Messages.isDead, TimeStamp = DateTime.UtcNow.AddHours(2) };
+            return TradeUpdate.Messages.FindLast(z => z.Message_Custom != null);
         }
         [WebMethod]
         public List<Boodskap> GetAllMessages()
         {
             var mesges = TradeUpdate.Messages;
             if (mesges == null)
-                mesges.Add(new Boodskap() { Message = "Startup Msg", TimeStamp = DateTime.Now });            
+                mesges.Add(new Boodskap() { Message=Boodskap.Messages.Startup, TimeStamp = DateTime.UtcNow.AddHours(2) });            
                 return mesges;
         }
 
