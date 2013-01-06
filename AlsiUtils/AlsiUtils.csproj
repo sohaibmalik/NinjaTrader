@@ -83,6 +83,11 @@
     <Compile Include="Strategies\Strategy_Bollinger.cs" />
     <Compile Include="Strategies\Strategy_SSPOP.cs" />
     <Compile Include="Strategies\TradeStrategy.cs" />
+    <Compile Include="WebDb.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebDb.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Working Class\Calc_Indicator.cs" />
     <Compile Include="Data Objects\SummaryStats.cs" />
     <Compile Include="Working Class\DataBase.cs" />
@@ -121,6 +126,11 @@
       <LastGenOutput>SimDB.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
+    <None Include="WebDb.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>WebDb.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -133,6 +143,11 @@
   <ItemGroup>
     <None Include="SimDB.dbml.layout">
       <DependentUpon>SimDB.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WebDb.dbml.layout">
+      <DependentUpon>WebDb.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="AlsiTrade_Backend_AlsiWebService_AlsiNotifyService" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://localhost:4979/AlsiNotifyService.asmx</Value>
+      <Value Profile="(Default)">http://alsitm.com/AlsiNotifyService.asmx</Value>
     </Setting>
   </Settings>
 </SettingsFile>

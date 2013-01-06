@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
-  <publishProfile publishUrl="ftp://ftp.alsitm.com" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="AlsitmTemp" publishMethod="FTP" replaceMatchingFiles="True" userName="alsitm72_ftp" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAN2JjNcT9hE68MCcxsdkVAQAAAAACAAAAAAAQZgAAAAEAACAAAAD3bIPg+TW1pQtp7a3Bi4OaMfnVBO7v2RzG55em7aTEbgAAAAAOgAAAAAIAACAAAACOdXSAWDlDQ+jh3iovMF+oLkym+tX5N7EOSJNkonnjGSAAAABXNpUFqrwqRECU0MikQ/lTykK/flAhQKg9wCxiukH9WkAAAACDCC4W8pmnHgOBCpbYFFMALrtNL6jclCLGSnFwyUxnG74AGyClPVLASlip97r0arTXqLcFWA7kA2jGiqOWdk4z" SelectedForPublish="True">
-    <file relUrl="bin/NotifierWebService.dll" publishTime="12/12/2012 17:43:11" />
-    <file relUrl="bin/NotifierWebService.pdb" publishTime="12/12/2012 17:43:11" />
-    <file relUrl="AlsiNotifyService.asmx" publishTime="12/11/2012 10:16:11" />
-    <file relUrl="Web.config" publishTime="12/11/2012 21:19:04" />
+  <publishProfile publishUrl="C:\Users\Alsi\Dropbox\Alsi Trade App\WebService" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="AlsitmTemp" publishMethod="FileSystem" replaceMatchingFiles="False" userName="pieter1_ftp" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAmIPVwe6tvUS1a3h/j+X3zAAAAAACAAAAAAAQZgAAAAEAACAAAAB/c+dlLRfW0lgphKU+hRnNHVp2LUFY7SgBK6aUtfWiKQAAAAAOgAAAAAIAACAAAABQqVrIXvR+MHxm3aRNqrCIqxq/EHIQ5vCOq6DGaDlZyCAAAADIQC+1YZ4ysTSeYlxhEh0fXDhPHC+SB1l5pYXNF6WFtEAAAAAx3J3/DGVWsZEZ9+vezlYqqV91oDJGNkaQDrsL7QCXXoO4m2r96sI9pzhIe7FrV/TqhwCgvSZ8eNIpEelSnS3n" SelectedForPublish="True">
+    <file relUrl="bin/NotifierWebService.dll" publishTime="01/06/2013 18:18:29" />
+    <file relUrl="bin/NotifierWebService.pdb" publishTime="01/06/2013 18:18:29" />
+    <file relUrl="AlsiNotifyService.asmx" publishTime="11/28/2012 20:38:47" />
+    <file relUrl="Web.config" publishTime="01/06/2013 19:42:23" />
   </publishProfile>
 </publishData>

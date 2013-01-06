@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AlsiUtils;
 using ExcelLink;
-using System.Diagnostics;
 
 namespace AlsiTrade_Backend
 {
     public class MarketOrder
     {
-        ExcelOrder e  = new ExcelOrder();
+        ExcelOrder e = new ExcelOrder();
         public MarketOrder()
         {
-            
+
             e.onMatch += new OrderMatched(e_onMatch);
         }
 

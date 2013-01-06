@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationRevision>10</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -93,11 +93,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="Web References\AlsiWebService_T\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Notify.resx">
       <DependentUpon>Notify.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,32 +117,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Web References\AlsiWebService\AlsiNotifyService.wsdl" />
     <None Include="Web References\AlsiWebService\Boodskap.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\AlsiWebService\Command.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\AlsiWebService\xlTradeOrder.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService_T\Boodskap1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService_T\Command1.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService\AlsiNotifyService.wsdl" />
     <None Include="Web References\AlsiWebService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Web References\AlsiWebService_T\AlsiNotifyService.wsdl" />
-    <None Include="Web References\AlsiWebService_T\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Web References\AlsiWebService_T\xlTradeOrder1.datasource">
+    <None Include="Web References\AlsiWebService\xlTradeOrder.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
   </ItemGroup>
@@ -175,27 +156,13 @@
     <None Include="Resources\alert3.wav" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://localhost:4979/AlsiNotifyService.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\AlsiWebService_T\</RelPath>
-      <UpdateFromURL>http://localhost:4979/AlsiNotifyService.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>NotifierClientApp_localhost_AlsiNotifyService</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="http://www.alsitm.com/AlsiNotifyService.asmx">
+    <WebReferenceUrl Include="http://alsitm.com/AlsiNotifyService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\AlsiWebService\</RelPath>
-      <UpdateFromURL>http://www.alsitm.com/AlsiNotifyService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://alsitm.com/AlsiNotifyService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -208,7 +175,7 @@
     <None Include="Web References\AlsiWebService\AlsiNotifyService.disco" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Web References\AlsiWebService_T\AlsiNotifyService.disco" />
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

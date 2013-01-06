@@ -60,6 +60,7 @@
         <s:restriction base="s:string">
           <s:enumeration value="isAlive" />
           <s:enumeration value="isDead" />
+          <s:enumeration value="Startup" />
         </s:restriction>
       </s:simpleType>
       <s:element name="InsertMessageResponse">
@@ -411,10 +412,10 @@
   </wsdl:binding>
   <wsdl:service name="AlsiNotifyService">
     <wsdl:port name="AlsiNotifyServiceSoap" binding="tns:AlsiNotifyServiceSoap">
-      <soap:address location="http://localhost:4979/AlsiNotifyService.asmx" />
+      <soap:address location="http://alsitm.com/AlsiNotifyService.asmx" />
     </wsdl:port>
     <wsdl:port name="AlsiNotifyServiceSoap12" binding="tns:AlsiNotifyServiceSoap12">
-      <soap12:address location="http://localhost:4979/AlsiNotifyService.asmx" />
+      <soap12:address location="http://alsitm.com/AlsiNotifyService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

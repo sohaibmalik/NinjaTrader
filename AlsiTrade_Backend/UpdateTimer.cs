@@ -15,7 +15,7 @@ namespace AlsiTrade_Backend
         private GlobalObjects.TimeInterval _interval;
         private DateTime _Now;
         private bool _UpdatePending;
-        private WebServiceUpdate service;
+        private WebUpdate service;
        
 
         private DateTime _marketOpen = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 8, 31, 00);
@@ -32,7 +32,7 @@ namespace AlsiTrade_Backend
             _UpdateStatus.Interval = 5000;
             _UpdateStatus.Start();
             if (_Businessday) _timer.Start();
-            service = new WebServiceUpdate();
+            service = new WebUpdate();
         }
 
         void _UpdateStatus_Elapsed(object sender, ElapsedEventArgs e)

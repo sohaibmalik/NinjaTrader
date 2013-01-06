@@ -21,7 +21,7 @@ namespace NotifierWebService
         [WebMethod]
         public void InsertNewOrder(xlTradeOrder Order)
         {
-            TradeUpdate.Orders.Add(Order);
+            TradeUpdate.Orders.Add(Order);         
         }
 
         [WebMethod]

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 using AlsiTrade_Backend;
 using AlsiUtils;
-using AlsiTrade_Backend.HiSat;
 using AlsiUtils.Data_Objects;
 using AlsiUtils.Strategies;
 using BrightIdeasSoftware;
@@ -21,8 +20,8 @@ namespace FrontEnd
         MarketOrder marketOrder;
         GlobalObjects.TimeInterval _Interval;
         private Statistics _Stats = new Statistics();
-        WebServiceUpdate service;
-      
+        WebUpdate service;
+
         private OLVColumn ColStamp;
         private OLVColumn ColReason;
         private OLVColumn ColBuySell;
@@ -58,46 +57,42 @@ namespace FrontEnd
             marketOrder.onOrderSend += new MarketOrder.OrderSend(marketOrder_onOrderSend);
             marketOrder.onOrderMatch += new MarketOrder.OrderMatch(marketOrder_onOrderMatch);
             _Stats.OnStatsCaculated += new Statistics.StatsCalculated(_Stats_OnStatsCaculated);
-            feed = new AlsiTrade_Backend.HiSat.LiveFeed(Properties.Settings.Default.HISAT_INST);
-            BuildListViewColumns();         
-            p._LastTrade  = DoStuff.GetLastTrade(GetParameters(), _Interval);
-            DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST,p._LastTrade.TimeStamp);
-            service = new WebServiceUpdate();
+             feed = new AlsiTrade_Backend.HiSat.LiveFeed(Properties.Settings.Default.HISAT_INST);
+            BuildListViewColumns();
+            p._LastTrade = DoStuff.GetLastTrade(GetParameters(), _Interval);
+            DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST, p._LastTrade.TimeStamp);
+            service = new WebUpdate();
         }
 
 
 
         void marketOrder_onOrderMatch(object sender, MarketOrder.OrderMatchEvent e)
         {
-
             EmailMsg msg = new EmailMsg();
             msg.Title = "Order Matched";
-            msg.Body =  e.Trade.ToString();
+            msg.Body = e.Trade.ToString();
             DoStuff.Email.SendEmail(e.Trade, msg);
-           
-
+            WebUpdate.SendOrder(e.Trade, true);
         }
 
         void marketOrder_onOrderSend(object sender, MarketOrder.OrderSendEvent e)
         {
             if (e.Success)
             {
-               
                 EmailMsg msg = new EmailMsg();
                 msg.Title = "New Trade";
                 msg.Body = "an Order was generated and sucessfully send to Excel \n" + e.Trade.ToString();
-                DoStuff.Email .SendEmail(e.Trade, msg);
-               
+                DoStuff.Email.SendEmail(e.Trade, msg);
+                WebUpdate.SendOrder(e.Trade, false);
+                WebUpdate.SendOrderToWebDB(e.Trade);
             }
             else
             {
-                      
                 EmailMsg msg = new EmailMsg();
                 msg.Title = "Trade input Failed";
                 msg.Body = "an Order was generated but could not be send to Excel. \n" + e.Trade.ToString();
-                DoStuff.Email.SendEmail(e.Trade,msg);
+                DoStuff.Email.SendEmail(e.Trade, msg);
             }
-
         }
 
         void U5_onStartUpdate(object sender, UpdateTimer.StartUpDateEvent e)
@@ -114,7 +109,7 @@ namespace FrontEnd
             Debug.WriteLine("Prices Synced : " + e.ReadyForTradeCalcs);
             if (e.ReadyForTradeCalcs)
             {
-                var trades = RunCalcs.RunEMAScalpLiveTrade(GetParameters(), _Interval);              
+                var trades = RunCalcs.RunEMAScalpLiveTrade(GetParameters(), _Interval);
                 var lt = DoStuff.Apply2ndAlgoVolume(trades);
                 Debug.WriteLine("Last Order : " + lt.ToString());
                 lt.TradeVolume = lt.TradeVolume * Properties.Settings.Default.VOL;
@@ -247,15 +242,15 @@ namespace FrontEnd
             };
             histListview.AllColumns.Add(ColBuySell);
 
-           ColTradeVol  = new OLVColumn
-            {
-                Name = "cTradeVolume",
-                AspectName = "TradeVolume",
-                Text = "Volume",
-                IsVisible = true,
-                Width = 70
-            };
-           histListview.AllColumns.Add(ColTradeVol);
+            ColTradeVol = new OLVColumn
+             {
+                 Name = "cTradeVolume",
+                 AspectName = "TradeVolume",
+                 Text = "Volume",
+                 IsVisible = true,
+                 Width = 70
+             };
+            histListview.AllColumns.Add(ColTradeVol);
 
 
 
@@ -333,15 +328,15 @@ namespace FrontEnd
 
 
 
-          
-            
+
+
 
         }
 
         private void UpdateTradeLog(Trade t, bool WritetoDB)
         {
-            
-           string  time= WritetoDB? DateTime.UtcNow.AddHours(2).ToString():t.TimeStamp.ToString();
+
+            string time = WritetoDB ? DateTime.UtcNow.AddHours(2).ToString() : t.TimeStamp.ToString();
             ListViewItem lvi = new ListViewItem(time);
             lvi.SubItems.Add(t.BuyorSell.ToString());
             lvi.SubItems.Add(t.Reason.ToString());
@@ -487,7 +482,7 @@ namespace FrontEnd
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
 
             var Final = CompletedTrade.CreateList(NewTrades);
-            
+
             Final.Reverse();
             histListview.Items.Clear();
             histListview.RebuildColumns();
@@ -741,15 +736,14 @@ namespace FrontEnd
         private void button1_Click(object sender, EventArgs e)
         {
             p.GetPricesFromWeb();
-          //  p.GetPricesFromTick();
+            //  p.GetPricesFromTick();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            service.ReportStatus();
-        }
+      
 
         
+
+
 
 
 

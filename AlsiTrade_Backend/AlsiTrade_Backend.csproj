@@ -74,7 +74,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="WebServiceUpdate.cs" />
+    <Compile Include="WebUpdate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AlsiUtils\AlsiUtils.csproj">
@@ -118,10 +118,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://localhost:4979/AlsiNotifyService.asmx">
+    <WebReferenceUrl Include="http://alsitm.com/AlsiNotifyService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\AlsiWebService\</RelPath>
-      <UpdateFromURL>http://localhost:4979/AlsiNotifyService.asmx</UpdateFromURL>
+      <UpdateFromURL>http://alsitm.com/AlsiNotifyService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

@@ -13,10 +13,8 @@ namespace NotifierClientApp
     {
         AlsiWebService.AlsiNotifyService service = new AlsiWebService.AlsiNotifyService();
         AlsiWebService.xlTradeOrder lastOrder;
-        private bool _updateApp1;
-        private bool _updateApp2;
-        private DateTime _app1LastUpdate = DateTime.Now.AddDays(-1);
-        private DateTime _app2LastUpdate = DateTime.Now.AddDays(-1);
+        private bool _updateApp1;       
+        private DateTime _app1LastUpdate = DateTime.Now.AddDays(-1);        
         private int _OrderUpdate, _StatusUpdate, _StatusDelay;
         private delegate void StatusFail(AlsiWebService.Boodskap boodskap);
         private StatusFail onStatusFail;
@@ -143,7 +141,6 @@ namespace NotifierClientApp
             StatusUpdateTimer.Interval = _StatusUpdate;
             StatusUpdateTimer.Start();
             statusLabel1.Text = "AlsiTrade";
-            statusLabel2.Text = "DataManager";
 
 
         }
@@ -164,7 +161,7 @@ namespace NotifierClientApp
             {
                 var o = service.getLastOrder();
                 if (o != null) updateFromWeb(o);
-                //Debug.WriteLine("Checked");
+                Debug.WriteLine("rrrrrrr" + o.Contract);
             }
             catch (Exception ex)
             {
@@ -173,7 +170,7 @@ namespace NotifierClientApp
         }
 
         private int alsiTradeFailedCount = 0;
-        private int dataManageFailedCount = 0;
+
         void statusFailed(App app, string Mesg)
         {
 
@@ -182,14 +179,8 @@ namespace NotifierClientApp
                 alsiTradeFailedCount++;
                 Debug.WriteLine(app + " Failed  " + alsiTradeFailedCount);
             }
-            if (app == App.DataManage)
-            {
-                dataManageFailedCount++;
-                Debug.WriteLine(app + " Failed  " + dataManageFailedCount);
-            }
 
             if (alsiTradeFailedCount > 10) balloonNotify(App.AlsiTrade, "Failed to update !");
-            if (dataManageFailedCount > 10) balloonNotify(App.DataManage, "Failed to update !");
 
 
         }
@@ -204,12 +195,7 @@ namespace NotifierClientApp
                 Title = "Alsi Trade";
             }
 
-            if (app == App.DataManage)
-            {
-                Title = "DataManager";
-            }
-
-           // (new SoundPlayer(Properties.Resources.alert3)).Play();
+            // (new SoundPlayer(Properties.Resources.alert3)).Play();
             ni.Visible = true;
             ni.Icon = Properties.Resources.alert;
             ni.ShowBalloonTip(1000, Title, Msg, ToolTipIcon.Info);
@@ -218,8 +204,7 @@ namespace NotifierClientApp
 
         void ni_BalloonTipClicked(object sender, EventArgs e)
         {
-            _alertAcknowledged = DateTime.UtcNow.AddHours(2);
-            dataManageFailedCount = 0;
+            _alertAcknowledged = DateTime.UtcNow.AddHours(2);         
             alsiTradeFailedCount = 0;
             ni.Visible = false;
 
@@ -241,7 +226,7 @@ namespace NotifierClientApp
         enum App
         {
             AlsiTrade = 1,
-            DataManage = 2,
+
         }
 
         private void app1Statustimer_Tick(object sender, EventArgs e)
@@ -269,17 +254,7 @@ namespace NotifierClientApp
                 statusLabel1.BackColor = Color.LightGreen;
                 alsiTradeFailedCount = 0;
             }
-
-            if (!_updateApp2)
-            {
-                statusFailed(App.DataManage, "Failed");
-                statusLabel2.BackColor = Color.Red;
-            }
-            else
-            {
-                statusLabel2.BackColor = Color.LightGreen;
-                dataManageFailedCount = 0;
-            }
+                    
         }
 
 
@@ -294,38 +269,23 @@ namespace NotifierClientApp
             catch (Exception ex)
             {
                 ordersListView.BackColor = Color.Red;
-                _updateApp1 = false;
-                _updateApp2 = false;
+                _updateApp1 = false;              
                 service = new AlsiWebService.AlsiNotifyService();
             }
         }
 
         private void getAppUpdate()
         {
-
-            var n = DateTime.Now;
+            var n = DateTime.UtcNow.AddHours(2);
             var b = service.getLastMessage();
-            if (b.Message == "AlsiTrade") _app1LastUpdate = b.TimeStamp;
-            if (b.Message == "DataManager") _app2LastUpdate = b.TimeStamp;
-
+            if (b.Message == AlsiWebService.Messages.isAlive) _app1LastUpdate = b.TimeStamp;          
             Debug.WriteLine("Appupdate" + b.TimeStamp + "  " + b.Message);
-
-            var check1 = _app1LastUpdate.AddSeconds(Properties.Settings.Default.StatusDelayInt);
-            var check2 = _app2LastUpdate.AddSeconds(Properties.Settings.Default.StatusDelayInt);
+            var check1 = _app1LastUpdate.AddSeconds(Properties.Settings.Default.StatusDelayInt);          
 
             if (check1 > n)
                 _updateApp1 = true;
             else
                 _updateApp1 = false;
-
-
-            if (check2 > n)
-                _updateApp2 = true;
-
-            else
-                _updateApp2 = false;
-
-
 
         }
 

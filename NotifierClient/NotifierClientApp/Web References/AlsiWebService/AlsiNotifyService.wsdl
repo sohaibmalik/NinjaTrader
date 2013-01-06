@@ -52,9 +52,17 @@
       <s:complexType name="Boodskap">
         <s:sequence>
           <s:element minOccurs="1" maxOccurs="1" name="TimeStamp" type="s:dateTime" />
-          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Message" type="tns:Messages" />
+          <s:element minOccurs="0" maxOccurs="1" name="Message_Custom" type="s:string" />
         </s:sequence>
       </s:complexType>
+      <s:simpleType name="Messages">
+        <s:restriction base="s:string">
+          <s:enumeration value="isAlive" />
+          <s:enumeration value="isDead" />
+          <s:enumeration value="Startup" />
+        </s:restriction>
+      </s:simpleType>
       <s:element name="InsertMessageResponse">
         <s:complexType />
       </s:element>
@@ -68,6 +76,21 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="GetAllMessages">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetAllMessagesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllMessagesResult" type="tns:ArrayOfBoodskap" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfBoodskap">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Boodskap" nillable="true" type="tns:Boodskap" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="getLastOrder">
         <s:complexType />
       </s:element>
@@ -145,6 +168,12 @@
   <wsdl:message name="getLastMessageSoapOut">
     <wsdl:part name="parameters" element="tns:getLastMessageResponse" />
   </wsdl:message>
+  <wsdl:message name="GetAllMessagesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllMessages" />
+  </wsdl:message>
+  <wsdl:message name="GetAllMessagesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllMessagesResponse" />
+  </wsdl:message>
   <wsdl:message name="getLastOrderSoapIn">
     <wsdl:part name="parameters" element="tns:getLastOrder" />
   </wsdl:message>
@@ -187,6 +216,10 @@
     <wsdl:operation name="getLastMessage">
       <wsdl:input message="tns:getLastMessageSoapIn" />
       <wsdl:output message="tns:getLastMessageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessages">
+      <wsdl:input message="tns:GetAllMessagesSoapIn" />
+      <wsdl:output message="tns:GetAllMessagesSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="getLastOrder">
       <wsdl:input message="tns:getLastOrderSoapIn" />
@@ -231,6 +264,15 @@
     </wsdl:operation>
     <wsdl:operation name="getLastMessage">
       <soap:operation soapAction="http://tempuri.org/getLastMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllMessages">
+      <soap:operation soapAction="http://tempuri.org/GetAllMessages" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -313,6 +355,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetAllMessages">
+      <soap12:operation soapAction="http://tempuri.org/GetAllMessages" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getLastOrder">
       <soap12:operation soapAction="http://tempuri.org/getLastOrder" style="document" />
       <wsdl:input>
@@ -361,10 +412,10 @@
   </wsdl:binding>
   <wsdl:service name="AlsiNotifyService">
     <wsdl:port name="AlsiNotifyServiceSoap" binding="tns:AlsiNotifyServiceSoap">
-      <soap:address location="http://www.alsitm.com/AlsiNotifyService.asmx" />
+      <soap:address location="http://alsitm.com/AlsiNotifyService.asmx" />
     </wsdl:port>
     <wsdl:port name="AlsiNotifyServiceSoap12" binding="tns:AlsiNotifyServiceSoap12">
-      <soap12:address location="http://www.alsitm.com/AlsiNotifyService.asmx" />
+      <soap12:address location="http://alsitm.com/AlsiNotifyService.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
