@@ -10,17 +10,17 @@ public partial class _Default : System.Web.UI.Page
 
     AlsiService.AlsiNotifyService service = new AlsiService.AlsiNotifyService();
     //localhost.AlsiNotifyService service = new localhost.AlsiNotifyService();
-   
+
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+
     }
 
-   
+
     protected void Button1_Click(object sender, EventArgs e)
     {
-        if(pswTextBox.Text.Length>0)
-       service.SendCommand(AlsiService.Command.RestartPC);
+        if (pswTextBox.Text.Length > 0)
+            service.SendCommand(AlsiService.Command.RestartPC);
     }
     protected void Button2_Click(object sender, EventArgs e)
     {
@@ -29,7 +29,7 @@ public partial class _Default : System.Web.UI.Page
         alsiTradeLabel.BackColor = Color.Black;
         alsiTradeLabel.ForeColor = Color.Orange;
         dataManagerLabel.BackColor = Color.Black;
-        dataManagerLabel.ForeColor  = Color.Orange;
+        dataManagerLabel.ForeColor = Color.Orange;
         dataManagerLabel.Text = "Not Running";
         alsiTradeLabel.Text = "Not Running";
 
@@ -50,12 +50,14 @@ public partial class _Default : System.Web.UI.Page
                     dataManagerLabel.ForeColor = Color.LightGreen;
             }
         }
-       
 
-       
+
+
+
     }
+}
+
 
 
 
    
-}

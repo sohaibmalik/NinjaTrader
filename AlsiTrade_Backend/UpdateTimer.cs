@@ -116,7 +116,7 @@ namespace AlsiTrade_Backend
             onStartUpdate(this, e);
         }
 
-
+        public event StartUpdate onStartUpdate;
         public delegate void StartUpdate(object sender, StartUpDateEvent e);
         public class StartUpDateEvent : EventArgs
         {
@@ -125,7 +125,7 @@ namespace AlsiTrade_Backend
             public string Message;
 
         }
-        public event StartUpdate onStartUpdate;
+        
 
     }
 }

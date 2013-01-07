@@ -110,7 +110,7 @@ namespace AlsiTrade_Backend
                     #endregion
 
                     dc.MergeTemp();
-
+                    Debug.WriteLine("Merged Data");
                     break;
             }
 
@@ -161,9 +161,9 @@ namespace AlsiTrade_Backend
             MinData.Columns.Add("L", typeof(int));
             MinData.Columns.Add("H", typeof(int));
             MinData.Columns.Add("C", typeof(int));
-            MinData.Columns.Add("V", typeof(int));
+          
 
-            foreach (var p in GlobalObjects.Points) MinData.Rows.Add(p.TimeStamp, p.Open, p.High, p.Low, p.Close, p.Volume);
+            foreach (var p in GlobalObjects.Points) MinData.Rows.Add(p.TimeStamp, p.Open, p.High, p.Low, p.Close);
 
             #region BulkCopy
 

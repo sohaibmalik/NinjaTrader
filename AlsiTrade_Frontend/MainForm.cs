@@ -37,18 +37,29 @@ namespace FrontEnd
         AlsiTrade_Backend.HiSat.LiveFeed feed;
 
         DateTime masterStart, masterEnd, allhistoStart, allhistoEnd;
+
+
+
         public MainForm()
         {
             InitializeComponent();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
-        {
+        {          
+            var start = new LoadingStartupEvent();
+            start.Progress = 10;
+            onStartupLoad(this, start);           
+            
             CheckForIllegalCrossThreadCalls = false;
             Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
             _Interval = GlobalObjects.TimeInterval.Minute_5;
             AlsiUtils.DataBase.SetConnectionString();
             PopulateControls();
+
+            start.Progress = 20;
+            onStartupLoad(this, start); 
+  
             U5 = new UpdateTimer(_Interval);
             p = new PrepareForTrade(_Interval, Properties.Settings.Default.HISAT_INST);
             marketOrder = new MarketOrder();
@@ -57,11 +68,33 @@ namespace FrontEnd
             marketOrder.onOrderSend += new MarketOrder.OrderSend(marketOrder_onOrderSend);
             marketOrder.onOrderMatch += new MarketOrder.OrderMatch(marketOrder_onOrderMatch);
             _Stats.OnStatsCaculated += new Statistics.StatsCalculated(_Stats_OnStatsCaculated);
-             feed = new AlsiTrade_Backend.HiSat.LiveFeed(Properties.Settings.Default.HISAT_INST);
+
+            start.Progress = 30;
+            onStartupLoad(this, start);   
+
+            feed = new AlsiTrade_Backend.HiSat.LiveFeed(Properties.Settings.Default.HISAT_INST);
+
+            start.Progress = 60;
+            onStartupLoad(this, start);   
+
+
             BuildListViewColumns();
+
+            start.Progress = 70;
+            onStartupLoad(this, start);    
+
+
             p._LastTrade = DoStuff.GetLastTrade(GetParameters(), _Interval);
+
+            start.Progress = 80;
+            onStartupLoad(this, start);   
+
+
             DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST, p._LastTrade.TimeStamp);
             service = new WebUpdate();
+
+            start.Progress = 100;
+            onStartupLoad(this, start);   
         }
 
 
@@ -739,13 +772,16 @@ namespace FrontEnd
             //  p.GetPricesFromTick();
         }
 
-      
-
-        
 
 
 
 
+        public event LoadingStartup onStartupLoad;
+        public delegate void LoadingStartup(object sender, LoadingStartupEvent e);
+        public class LoadingStartupEvent : EventArgs
+        {
+            public int Progress { get; set; }
+        }
 
     }
 }
