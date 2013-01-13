@@ -30,12 +30,12 @@ namespace AlsiUtils
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void Inserttbl2Min(tbl2Min instance);
-    partial void Updatetbl2Min(tbl2Min instance);
-    partial void Deletetbl2Min(tbl2Min instance);
     partial void Inserttbl5Min(tbl5Min instance);
     partial void Updatetbl5Min(tbl5Min instance);
     partial void Deletetbl5Min(tbl5Min instance);
+    partial void Inserttbl2Min(tbl2Min instance);
+    partial void Updatetbl2Min(tbl2Min instance);
+    partial void Deletetbl2Min(tbl2Min instance);
     #endregion
 		
 		public SimDBDataContext() : 
@@ -68,14 +68,6 @@ namespace AlsiUtils
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<tbl2Min> tbl2Mins
-		{
-			get
-			{
-				return this.GetTable<tbl2Min>();
-			}
-		}
-		
 		public System.Data.Linq.Table<tbl5Min> tbl5Mins
 		{
 			get
@@ -83,10 +75,18 @@ namespace AlsiUtils
 				return this.GetTable<tbl5Min>();
 			}
 		}
+		
+		public System.Data.Linq.Table<tbl2Min> tbl2Mins
+		{
+			get
+			{
+				return this.GetTable<tbl2Min>();
+			}
+		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tbl2Min")]
-	public partial class tbl2Min : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tbl5Min")]
+	public partial class tbl5Min : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -149,7 +149,7 @@ namespace AlsiUtils
     partial void OnCloseEndDayChanged();
     #endregion
 		
-		public tbl2Min()
+		public tbl5Min()
 		{
 			OnCreated();
 		}
@@ -435,8 +435,8 @@ namespace AlsiUtils
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tbl5Min")]
-	public partial class tbl5Min : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tbl2Min")]
+	public partial class tbl2Min : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -499,7 +499,7 @@ namespace AlsiUtils
     partial void OnCloseEndDayChanged();
     #endregion
 		
-		public tbl5Min()
+		public tbl2Min()
 		{
 			OnCreated();
 		}

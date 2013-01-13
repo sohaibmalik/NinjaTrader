@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="emaSim" Class="SimDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=PIETER-PC;Initial Catalog=emaSim;Integrated Security=True" SettingsObjectName="AlsiUtils.Properties.Settings" SettingsPropertyName="emaSimConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.tbl2Min" Member="tbl2Mins">
-    <Type Name="tbl2Min">
+  <Table Name="dbo.tbl5Min" Member="tbl5Mins">
+    <Type Name="tbl5Min">
       <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Trades" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="TotalPL" Type="System.Int32" DbType="Int" CanBeNull="true" />
@@ -17,8 +17,8 @@
       <Column Name="CloseEndDay" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.tbl5Min" Member="tbl5Mins">
-    <Type Name="tbl5Min">
+  <Table Name="dbo.tbl2Min" Member="tbl2Mins">
+    <Type Name="tbl2Min">
       <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Trades" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="TotalPL" Type="System.Int32" DbType="Int" CanBeNull="true" />

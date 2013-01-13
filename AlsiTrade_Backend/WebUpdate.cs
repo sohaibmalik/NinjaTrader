@@ -58,6 +58,7 @@ namespace AlsiTrade_Backend
                 Price=(int)trade.TradedPrice,
                 Reason=trade.Reason.ToString(),
                 Volume=trade.TradeVolume,
+               
             };
             dc.WebTradeLogs.InsertOnSubmit(wtl);
             dc.SubmitChanges();

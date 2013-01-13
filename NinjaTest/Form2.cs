@@ -146,6 +146,11 @@ namespace NinjaTest
             MessageBox.Show("DONE");
         }
 
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
+
 
 
     }

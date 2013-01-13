@@ -2,16 +2,16 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="SimDB">
   <DataContextMoniker Name="/SimDBDataContext" />
   <nestedChildShapes>
-    <classShape Id="81635b72-8bc6-49f7-8917-2c8dc18ab72a" absoluteBounds="3.75, 1.875, 2, 3.3093082682291666">
-      <DataClassMoniker Name="/SimDBDataContext/tbl2Min" />
-      <nestedChildShapes>
-        <elementListCompartment Id="990d814e-d2ee-44cb-9f2c-30962fb54768" absoluteBounds="3.765, 2.335, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="fbfe1885-9ebc-43a1-b99a-9cbd6d63079d" absoluteBounds="1.375, 1.625, 2, 3.3093082682291666">
       <DataClassMoniker Name="/SimDBDataContext/tbl5Min" />
       <nestedChildShapes>
         <elementListCompartment Id="8675d82b-0d15-4273-9c89-dff5e3725592" absoluteBounds="1.3900000000000001, 2.085, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1ef46bdb-87cb-4cc9-9ed3-1af953e6102a" absoluteBounds="5.375, 2.25, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/SimDBDataContext/tbl2Min" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3597a07d-3a16-42e0-8667-7b2decacdcde" absoluteBounds="5.39, 2.71, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

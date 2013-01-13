@@ -17,6 +17,7 @@ namespace NotifierWebService
 
     public class AlsiNotifyService : System.Web.Services.WebService
     {
+      
 
         [WebMethod]
         public void InsertNewOrder(xlTradeOrder Order)

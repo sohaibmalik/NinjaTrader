@@ -104,8 +104,9 @@ namespace FrontEnd
             EmailMsg msg = new EmailMsg();
             msg.Title = "Order Matched";
             msg.Body = e.Trade.ToString();
-            DoStuff.Email.SendEmail(e.Trade, msg);
             WebUpdate.SendOrder(e.Trade, true);
+            DoStuff.Email.SendEmail(e.Trade, msg);
+           
         }
 
         void marketOrder_onOrderSend(object sender, MarketOrder.OrderSendEvent e)
@@ -143,8 +144,14 @@ namespace FrontEnd
             if (e.ReadyForTradeCalcs)
             {
                 var trades = RunCalcs.RunEMAScalpLiveTrade(GetParameters(), _Interval);
+                //foreach (var t in trades.Where(z => z.TimeStamp > DateTime.Now.AddDays(-10)))
+                //{
+                //    Debug.WriteLine(t.TimeStamp + "  reason " + t.Reason + " " + t.TradedPrice);
+                //}
                 var lt = DoStuff.Apply2ndAlgoVolume(trades);
                 Debug.WriteLine("Last Order : " + lt.ToString());
+              
+
                 lt.TradeVolume = lt.TradeVolume * Properties.Settings.Default.VOL;
                 lt.InstrumentName = Properties.Settings.Default.OTS_INST;
                 marketOrder.SendOrderToMarket(lt);
@@ -480,7 +487,7 @@ namespace FrontEnd
                     CurrentPrice = (double)v.Price,
                     ForeColor = Color.FromName(v.ForeColor),
                     BackColor = Color.FromName(v.BackColor),
-
+                    Reason=GetTradeReasonFromString(v.Reason),
                 };
                 UpdateTradeLog(t, false);
             }
@@ -488,7 +495,31 @@ namespace FrontEnd
             Cursor = Cursors.Default;
         }
 
+        private Trade.Trigger GetTradeReasonFromString(string Reason)
+        {
+        switch(Reason)
+        {
+            case "OpenLong":
+                return Trade.Trigger.OpenLong;
+                break;
 
+            case "CloseLong":
+                return Trade.Trigger.CloseLong;
+                break;
+
+            case "OpenShort":
+                return Trade.Trigger.OpenShort;
+                break;
+
+            case "CloseShort":
+                return Trade.Trigger.CloseShort;
+                break;
+
+            default:
+                return Trade.Trigger.None;
+        }
+
+        }
 
         private List<Trade> _tempTradeList = new List<Trade>();
         private void runHistCalcButton_Click(object sender, EventArgs e)

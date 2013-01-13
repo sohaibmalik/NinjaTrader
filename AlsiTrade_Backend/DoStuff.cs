@@ -32,7 +32,7 @@ namespace AlsiTrade_Backend
                 var TickData = dc.RawTicks.ToList().Where(z => z.Stamp >= webMinData.Last().TimeStamp).ToList();
                 foreach (var v in convertTickToMinute(TickData))
                     if (v.TimeStamp > lastData) webMinData.Add(v);
-                
+
                 UpdateDB._1MinDataToImportMinute(webMinData);
             }
 
@@ -174,7 +174,7 @@ namespace AlsiTrade_Backend
                 return minuteData;
 
             }
-            
+
 
         }
 
@@ -266,13 +266,25 @@ namespace AlsiTrade_Backend
 
         public static Trade Apply2ndAlgoVolume(List<Trade> Trades)
         {
-            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, Trades);
-            var Algo2nd_LastOrder = CompletedTrade.CreateList(NewTrades).Last();
-            var CurrentTrade = Trades.Last();
-            if (Algo2nd_LastOrder.TimeStamp == CurrentTrade.TimeStamp)
-                CurrentTrade.TradeVolume = Algo2nd_LastOrder.TradeVolume;
+            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, Trades);          
+            var last = Trades.Last();
+            var a2l = NewTrades.Last();//Algo2nd_LastOrder
 
-            return CurrentTrade;
+            //var CurrentTrade = Trades.Last();
+            //foreach (var t in NewTrades.Where(z => z.CloseTrade.TimeStamp > DateTime.Now.AddDays(-10)))
+            //{
+            //    Debug.WriteLine("Open " + t.OpenTrade.TimeStamp + "  reason " + t.OpenTrade.Reason  + "  " + t.OpenTrade.TradedPrice);
+            //    Debug.WriteLine("Close " + t.CloseTrade.TimeStamp + "  reason " + t.CloseTrade.Reason + "  " + t.CloseTrade.TradedPrice);
+            //    Debug.WriteLine("--------------------------------------------------------------------------");
+            //}
+            //foreach (var t in CompletedTrade.CreateList(NewTrades).Where(z => z.TimeStamp > DateTime.Now.AddDays(-10)))
+            //{
+            //    Debug.WriteLine(t.TimeStamp + "  reason " + t.Reason + " " + t.TradedPrice );
+            //}
+            
+            if (a2l.OpenTrade.TimeStamp == last.TimeStamp) return a2l.OpenTrade;
+            if (a2l.CloseTrade.TimeStamp == last.TimeStamp) return a2l.CloseTrade;
+            return last;
         }
 
         public class Email

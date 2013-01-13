@@ -5,8 +5,9 @@ namespace AlsiUtils
 {
     public class CompletedTrade
     {
-        public Trade OpenTrade { get; set; }
+       
         public Trade CloseTrade { get; set; }
+        public Trade OpenTrade { get; set; }
 
         public CompletedTrade()
         {

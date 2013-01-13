@@ -24,8 +24,7 @@ namespace AlsiUtils.Strategies
 
 
         private static void DP(int x)
-        {
-           
+        {           
             if(_T[x].TimeStamp.Month == 9 && _T[x].TimeStamp.Day >18)
             {
                 //if(_T[x].ActualTrade!=TradeStrategy.Trigger.None)
@@ -35,7 +34,6 @@ namespace AlsiUtils.Strategies
 
         public static void CalcTriggers(List<TradeStrategy> strategy, int x)
         {
-
 
             if (_SS[x - 1].D < _p.Open_80 && _SS[x].D > _p.Open_80)
                 strategy[x].TradeTrigger = Trade.Trigger.OpenLong;
@@ -47,10 +45,7 @@ namespace AlsiUtils.Strategies
                 strategy[x].TradeTrigger = Trade.Trigger.OpenShort;
 
             if (_SS[x - 1].D < _p.Close_20 && _SS[x].D > _p.Close_20)
-                strategy[x].TradeTrigger = Trade.Trigger.CloseShort;
-
-
-
+                strategy[x].TradeTrigger = Trade.Trigger.CloseShort;            
 
         }
 

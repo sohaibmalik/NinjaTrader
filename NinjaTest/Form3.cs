@@ -10,283 +10,80 @@ using System.Diagnostics;
 using AlsiUtils.Data_Objects;
 using AlsiUtils;
 using AlsiTrade_Backend;
+using System.Threading;
 namespace NinjaTest
 {
     public partial class Form3 : Form
     {
+        Luanch luanch;
+        EmaSettings ema;
         public Form3()
         {
             InitializeComponent();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            RunMultiple();
-
+            CheckForIllegalCrossThreadCalls = false;
 
         }
-
-        private static void RunMultiple()
+        
+        public void UpdatePos(string pos)
         {
+            positionLabel.Text = pos;
 
-            //Laptop
-            //string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-
-            //PC
-            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
-
-            DateTime s = new DateTime(2012, 01, 02);
-            DateTime end = new DateTime(2012, 12, 15);
-
-
-
-
-            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute,
-               s, end, false);
-            Debug.WriteLine("Start Date " + prices[0].TimeStamp);
-
-            for (int x = 21; x <= 24; x++)
-            {
-                for (int y = 8; y <= 28; y++)
-                {
-
-                    for (int a = 27; a <= 50; a++)
-                    {
-
-                        for (int b = 8; b <= 50; b++)
-                        {
-
-                            for (int z = 20; z <= 70; z++)
-                            {
-
-                                if (x < y && y < a && a < b && b < z)
-                                {
-                                    AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
-                                    {
-                                        A_EMA1 = x,
-                                        A_EMA2 = y,
-                                        B_EMA1 = a,
-                                        B_EMA2 = b,
-                                        C_EMA = z,
-                                        TakeProfit = 250,
-                                        StopLoss = -250,
-                                        CloseEndofDay = false,
-                                        Period = 2012,
-                                    };
-
-
-                                    AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
         }
-
-
-
-        private static void RunSingle()
+        public void UpdateDisplay(string msg)
         {
-            //Laptop
-            // string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-            //PC
-            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
-
-
-
-            //  DateTime s = new DateTime(2006, 01, 01);
-            //  DateTime e = new DateTime(2006, 12, 15);
-
-           DateTime s = new DateTime(2012, 1, 1);
-            DateTime e = new DateTime(2013, 12, 29);
-
-
-            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute,
-               s, e, false);
-            Debug.WriteLine("Start Date " + prices[0].TimeStamp);
-
-            //for (int x = 2; x < 50; x++)
-            //{
-          
-            AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
-            {
-                A_EMA1 = 16,
-                A_EMA2 = 17,
-                B_EMA1 = 43,
-                B_EMA2 = 45,
-                C_EMA = 52,
-                TakeProfit = 450,
-                StopLoss = -300,
-                CloseEndofDay = false,
-                Period = prices.Count,
-
-            };
-            takep = E.TakeProfit;
-            takel = E.StopLoss;
-            AlsiUtils.Statistics S = new AlsiUtils.Statistics();
-            S.OnStatsCaculated += new AlsiUtils.Statistics.StatsCalculated(S_OnStatsCaculated);
-            var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
-
-            Trades = S.CalcBasicTradeStats(Trades);
-            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, Trades);
-            NewTrades = S.CalcExpandedTradeStats(NewTrades);
-
-            PrintTradesonly(NewTrades);
+            richTextBox1.AppendText(msg);
            
-            //}
         }
 
-
-
-        private static double maxprof = 0;
-        private static int takep = 0;
-        private static int takel = 0;
-        static void S_OnStatsCaculated(object sender, AlsiUtils.Statistics.StatsCalculatedEvent e)
+        private void Form3_Load(object sender, EventArgs e)
         {
-            if (e.SumStats.TotalProfit > maxprof)
-            {
-                maxprof = e.SumStats.TotalProfit;
-
-
-                Debug.WriteLine("============STATS==============");
-                Debug.WriteLine("Total PL " + e.SumStats.TotalProfit);
-                Debug.WriteLine("# Trades " + e.SumStats.TradeCount);
-                Debug.WriteLine("Tot Avg PL " + e.SumStats.Total_Avg_PL);
-                Debug.WriteLine("Prof % " + e.SumStats.Pct_Prof);
-                Debug.WriteLine("Loss % " + e.SumStats.Pct_Loss);
-                Debug.WriteLine("Take P " + takep);
-                Debug.WriteLine("Take L " + takel);
-            }
-        }
-
-        private static void PrintTradesonly(List<Trade> Trades)
-        {
-            DateTime s = new DateTime(2012, 1, 1);
-            DateTime e = new DateTime(2013, 12, 13);
-
-            foreach (var t in Trades)
-            {
-                if (t.TimeStamp > s && t.TimeStamp < e)
-                    Debug.WriteLine(t.TimeStamp + ","
-                        + t.TradedPrice + ","
-                        + t.Reason + ","
-                        + t.BuyorSell + ","
-                        //+ t.TotalPL + ","
-                       // + t.Extention.Slope + ","
-                       // + t.Extention.OrderVol + ","
-                       //+t.RunningProfit+","
-                       +t.OHLC.Open + "," 
-                       +t.OHLC.High+","
-                       +t.OHLC.Low +","
-                       +t.OHLC.Close 
-                        );
-            }
-        }
-
-        private static void PrintTradesonly(List<CompletedTrade> Trades)
-        {
-            DateTime s = new DateTime(2012, 1, 5);
-            DateTime e = new DateTime(2013, 12, 13);
-
-            foreach (var t in Trades)
-            {
-                var O = t.OpenTrade;
-                var C = t.CloseTrade;
-
-                if (O.TimeStamp > s && O.TimeStamp < e)
-                {
-                    Debug.WriteLine(
-                        O.TimeStamp + ","
-                        + O.TradedPrice + ","
-                        + O.Reason + ","
-                        + O.BuyorSell + ","
-                        + O.TotalPL + ","
-                        + O.Extention.Slope + ","
-                        + O.Extention.OrderVol + ","
-                        );
-
-                    Debug.WriteLine(
-                       C.TimeStamp + ","
-                       + C.TradedPrice + ","
-                       + C.Reason + ","
-                       + C.BuyorSell + ","
-                       + C.TotalPL + ","
-                       + C.Extention.Slope + ","
-                       + C.Extention.OrderVol + ","
-                       );
-                }
-            }
+            richTextBox1.BackColor = Color.Black;
+            richTextBox1.ForeColor = Color.LightGreen;
+            richTextBox1.Refresh();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
-
-        }
-
-        private void TradeToCandle()
-        {
-            //Laptop
-            // string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-            //PC
-            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
-
-
-
-            //  DateTime s = new DateTime(2006, 01, 01);
-            //  DateTime e = new DateTime(2006, 12, 15);
-
-            DateTime s = new DateTime(2012, 1, 1);
-            DateTime e = new DateTime(2013, 12, 29);
-
-
-            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute,
-               s, e, false);
-            Debug.WriteLine("Start Date " + prices[0].TimeStamp);
-
-            //for (int x = 2; x < 50; x++)
-            //{
-
-            AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
+            button2.Enabled = false;
+             ema = new EmaSettings()
             {
-                A_EMA1 = 16,
-                A_EMA2 = 17,
-                B_EMA1 = 43,
-                B_EMA2 = 45,
-                C_EMA = 52,
-                TakeProfit = 450,
-                StopLoss = -300,
-                CloseEndofDay = false,
-                Period = prices.Count,
+                A1_start=(int)A1Start.Value,
+                A1_end = (int)A1End.Value,
+
+                A2_start = (int)A1Start.Value,
+                A2_end = (int)A1End.Value,
+
+                B1_start = (int)B1Start.Value,
+                B1_end = (int)B1End.Value,
+
+                B2_start = (int)B2Start.Value,
+                B2_end = (int)B2End.Value,
+
+                C1_start = (int)C1Start.Value,
+                C1_end = (int)C1End.Value,
+              
 
             };
-            takep = E.TakeProfit;
-            takel = E.StopLoss;
-            AlsiUtils.Statistics S = new AlsiUtils.Statistics();
-            S.OnStatsCaculated += new AlsiUtils.Statistics.StatsCalculated(S_OnStatsCaculated);
-            var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
-            Trades = S.CalcBasicTradeStats(Trades);
-
-            var rr=  Statistics.IntratradeToCandle(Trades);
-            var RR = CompletedTrade.CreateList(rr);
 
 
 
-            PrintTradesonly(RR);
+            backgroundWorker1.RunWorkerAsync();
+       
+
         }
 
-
-        private void Form3_Load(object sender, EventArgs e)
-        {           
-            //RunSingle();
-            TradeToCandle();
-            Close();
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            luanch = new Luanch(this, ema);
+            luanch.RunMultiple();
         }
 
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            button2.BackColor = Color.Green;
+        }
+
+       
 
     }
 

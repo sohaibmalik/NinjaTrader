@@ -34,9 +34,9 @@ namespace AlsiUtils.Strategies
             //for (int x = 0; x < _T.Count; x++) DP(x);
                 
 
-            //_strategy.ClearList(); //FOR SIMULATOR
+           // _strategy.ClearList(); //FOR SIMULATOR
             return GetTradeData(tradeOnly); // REAL TRADING
-            //Clear();//FOR SIMULATOR
+          //  Clear();//FOR SIMULATOR
 
             return new List<Trade>();
 
@@ -132,7 +132,7 @@ namespace AlsiUtils.Strategies
                     trades.Add(t);
                 }
               
-                //Debug.WriteLine("Trade : " + t.TimeStamp + "  " + t.BuyorSell + "  " + t.CurrentDirection + "  " + t.TradeVolume);
+               // Debug.WriteLine(t.TimeStamp + "," + t.BuyorSell + "," + t.CurrentDirection + "," + _T[x].TradeTrigger + ","  + _T[x].ActualTrade  + "," + _T[x].TradedPrice );
             }
 
             Clear();
