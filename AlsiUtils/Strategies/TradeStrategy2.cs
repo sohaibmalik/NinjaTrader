@@ -6,12 +6,13 @@ using AlsiUtils.Indicators;
 
 namespace AlsiUtils.Strategies
 {
-    public class TradeStrategy2 : Indicator
+    public class TradeStrategy2 : Indicator,ICloneable
     {
 
         private static List<TradeStrategy2> _O = new List<TradeStrategy2>();
         private static List<TradeStrategy2> _C = new List<TradeStrategy2>();
         private static List<TradeStrategy2> _ocA = new List<TradeStrategy2>();
+        private static List<TradeStrategy2> _ocB = new List<TradeStrategy2>();
         private static bool[] _Position_a;
         private static List<Price> _Prices;
         private DateTime _Start;
@@ -20,6 +21,14 @@ namespace AlsiUtils.Strategies
         public delegate void Triggers_Delegate(List<TradeStrategy2> TradeStraterty, int Index);
         public static Triggers_Delegate _TriggersOpen;
         public static Triggers_Delegate _TriggersClose;
+
+
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
 
         public TradeStrategy2()
         {
@@ -42,6 +51,7 @@ namespace AlsiUtils.Strategies
 
         public void Calculate()
         {
+            //1st phase
             Prepare();
             OpenCloseTriggers();
             Positions();
@@ -49,6 +59,11 @@ namespace AlsiUtils.Strategies
             Directions();
             Directions_Triggers_adjust_a();
             Directoins_ajust_b();
+
+
+            //2nd phase
+            Create_B_List();
+            RunningProfits_StopLoss_TakeProfit();
 
 
             for (int x = 1; x < _O.Count; x++) Print(x);
@@ -216,10 +231,23 @@ namespace AlsiUtils.Strategies
                 _ocA[x].TradeDirection = _ocA[x - 1].TradeDirection;
                 if (_ocA[x].TradeTrigger == Trade.Trigger.OpenLong || _ocA[x].TradeTrigger == Trade.Trigger.ReverseLong) _ocA[x].TradeDirection = Trade.Direction.Long;
                 if (_ocA[x].TradeTrigger == Trade.Trigger.OpenShort || _ocA[x].TradeTrigger == Trade.Trigger.ReverseShort) _ocA[x].TradeDirection = Trade.Direction.Short;
+                if (_ocA[x].TradeTrigger == Trade.Trigger.CloseLong || _ocA[x].TradeTrigger == Trade.Trigger.CloseShort) _ocA[x].TradeDirection = Trade.Direction.None;
             }
         }
 
+        private void Create_B_List()
+        {
+            foreach (var a in _ocA)
+            {               
+                TradeStrategy2 b = (TradeStrategy2)a.Clone();
+                _ocB.Add(b);
+            }
+        }
 
+        private void RunningProfits_StopLoss_TakeProfit()
+        {
+            
+        }
 
 
 
@@ -376,5 +404,7 @@ namespace AlsiUtils.Strategies
             //}
 
         }
+
+       
     }
 }
