@@ -152,7 +152,9 @@
   <Function Name="dbo.Clean_OHLC_Temp_2" Method="Clean_OHLC_Temp_2">
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.CleanLogs" Method="CleanLogs" />
+  <Function Name="dbo.CleanLogs" Method="CleanLogs" IsComposable="true">
+    <Return Type="object" />
+  </Function>
   <Function Name="dbo.CleanTick" Method="CleanTick">
     <Return Type="System.Int32" />
   </Function>
@@ -162,7 +164,9 @@
   <Function Name="dbo.ClearImportTable" Method="ClearImportTable">
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.ImportRawTick" Method="ImportRawTick" />
+  <Function Name="dbo.ImportRawTick" Method="ImportRawTick" IsComposable="true">
+    <Return Type="object" />
+  </Function>
   <Function Name="dbo.MergeTemp" Method="MergeTemp">
     <Return Type="System.Int32" />
   </Function>

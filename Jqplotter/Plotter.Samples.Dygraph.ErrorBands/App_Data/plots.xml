@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * File: plots.xml
+ * Author: Akram El Assas
+-->
+
+<plots>
+  <plot id="1" dataUrl="App_Data/plot1.xml" thumbnailUrl="Images/plot1.png" title="Empty plot" ylabel="" />
+  <plot id="2" dataUrl="App_Data/plot2.xml" thumbnailUrl="Images/plot2.png" title="Daily Temperatures in New York"
+        ylabel="Temperature (F)" />
+  <plot id="3" dataUrl="App_Data/plot3.xml" thumbnailUrl="Images/plot3.png" title="Daily Temperatures in San Francisco"
+        ylabel="Temperature (F)" />
+  <plot id="4" dataUrl="App_Data/plot4.xml" thumbnailUrl="Images/plot4.png"
+        title="Daily Temperatures in New York vs. San Francisco" ylabel="Temperature (F)" />
+</plots>

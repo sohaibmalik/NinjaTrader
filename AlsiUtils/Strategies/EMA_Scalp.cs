@@ -28,7 +28,7 @@ namespace AlsiUtils.Strategies
             DateTime sd = E1[0].TimeStamp;
             
             CutToSize(sd);
-            TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].TimeStamp, CalcTriggers,CalcTriggers2 );           
+            TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].TimeStamp, CalcTriggers,CalcTriggers2 );            
             _strategy.Calculate();
             _T = _strategy.getStrategyList();
             //for (int x = 0; x < _T.Count; x++) DP(x);

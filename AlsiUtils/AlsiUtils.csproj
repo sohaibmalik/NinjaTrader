@@ -72,6 +72,7 @@
       <DependentUpon>SimDB.dbml</DependentUpon>
     </Compile>
     <Compile Include="Statistics.cs" />
+    <Compile Include="Strategies\EmaSalp2.cs" />
     <Compile Include="Strategies\EMA_Scalp.cs" />
     <Compile Include="Strategies\IndicatorExtentions\StochAroon.cs" />
     <Compile Include="Strategies\Parameters\Parameter_EMA_Scalp.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Strategies\Strategy_Bollinger.cs" />
     <Compile Include="Strategies\Strategy_SSPOP.cs" />
     <Compile Include="Strategies\TradeStrategy.cs" />
+    <Compile Include="Strategies\TradeStrategy2.cs" />
     <Compile Include="WebDb.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

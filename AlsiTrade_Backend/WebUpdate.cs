@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AlsiUtils;
+using System.Diagnostics;
+
 
 namespace AlsiTrade_Backend
 {
@@ -44,6 +46,41 @@ namespace AlsiTrade_Backend
             s.InsertNewOrder(o);
         }
 
+        public static void SyncOnlineDbTradeHistory(List<Trade> TradeOnly)
+        {
+            var dc = new AlsiUtils.WebDbDataContext();
+
+            DateTime? lastWeb = new DateTime(1990,01,01);
+            if (dc.TradeHistories.Count() > 0)
+            {
+                lastWeb = dc.TradeHistories.Max(z => z.TimeStamp);
+            }
+
+            var dellist = dc.TradeHistories.Where(z => z.TimeStamp >= lastWeb);
+            dc.TradeHistories.DeleteAllOnSubmit(dellist);
+            dc.SubmitChanges();
+
+            var synclist = TradeOnly.Where(z => z.TimeStamp >= lastWeb);
+
+            foreach (var t in synclist)
+            {
+                var th = new TradeHistory()
+                {
+                    TimeStamp=t.TimeStamp,
+                    BuySell=t.BuyorSell.ToString(),
+                    Reason=t.Reason.ToString(),
+                    Price=(int)t.TradedPrice,
+                    Volume=t.TradeVolume,
+                    Trade_Profit=(int)t.RunningProfit
+                };
+
+                dc.TradeHistories.InsertOnSubmit(th);
+                Debug.WriteLine(th.TimeStamp + "  " + th.Volume);
+            }
+
+
+            dc.SubmitChanges();
+        }
        
         public static void SendOrderToWebDB(Trade trade)
         {

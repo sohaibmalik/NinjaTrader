@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Plotter.Testing.Dygraph.Benchmark</title>
+    <meta name="Author" content="Akram El Assas" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9" />
+    <!--[if lt IE 9]><script  type="text/javascript" src="_excanvas.js"></script><![endif]-->
+    <script type="text/javascript" src="_dygraph-combined.js"> </script>
+    <script type="text/javascript">
+    //<![CDATA[
+        function go() {
+            var pointsInput = document.getElementById('points');
+            var repetitionsInput = document.getElementById('repetitions');
+            var msgDiv = document.getElementById('msg');
+            var graphDiv = document.getElementById('graph');
+            var points = parseInt(pointsInput.value);
+            var repetitions = parseInt(repetitionsInput.value);
+            msgDiv.innerHTML = 'Drawing...';
+            var options = {};
+            var curve = getCurves(points);
+            var elapsedMilliseconds = 0;
+            var graph = null;
+            for (var i = 0; i < repetitions; i++) {
+                if (graph != null) graph.destroy();
+                var start = new Date();
+                graph = new Dygraph(graphDiv, curve, options);
+                var end = new Date();
+                elapsedMilliseconds += (end - start);
+            }
+            elapsedMilliseconds /= repetitions;
+            msgDiv.innerHTML = 'done in ' + elapsedMilliseconds + ' milliseconds';
+        }
+
+        function getCurves(points) {
+            var curve = [];
+            for (var i = 0; i < points; i++) {
+                curve.push([new Date(i * 1000), Math.pow(Math.random() - Math.random(), 7)]);
+            }
+            return curve;
+        }
+        //]]>
+    </script>
+</head>
+<body>
+    Number of points:
+    <input type="text" id="points" value="100" />
+    Repetitions
+    <input type="text" id="repetitions" value="1" />
+    <input type="button" id="go" value="Go" onclick="javascript:go();" />
+    <div id="graph" style="height: 320px; width: 800px;">
+    </div>
+    <br />
+    <br />
+    <div id="msg">
+    </div>
+</body>
+</html>

@@ -526,6 +526,7 @@ namespace FrontEnd
         {
             Cursor = Cursors.WaitCursor;
             exportToTextButton.Enabled = false;
+            synchWebTradesButton.Enabled = false;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_1;
             if (_2minRadioButton.Checked) t = GlobalObjects.TimeInterval.Minute_2;
             if (_5minRadioButton.Checked) t = GlobalObjects.TimeInterval.Minute_5;
@@ -554,6 +555,7 @@ namespace FrontEnd
             Cursor = Cursors.Default;
             dataTabControl.SelectedIndex = 1;
             exportToTextButton.Enabled = true;
+            synchWebTradesButton.Enabled = true;
         }
 
         private void loadTradeLogButton_Click(object sender, EventArgs e)
@@ -813,6 +815,16 @@ namespace FrontEnd
         {
             public int Progress { get; set; }
         }
+
+        private void synchWebTradesButton_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            var trades = _tempTradeList.Where(z => z.BuyorSell != Trade.BuySell.None).ToList();
+            AlsiTrade_Backend.WebUpdate.SyncOnlineDbTradeHistory(trades);
+            Cursor = Cursors.Default;
+        }
+
+     
 
     }
 }

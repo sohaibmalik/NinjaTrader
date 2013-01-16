@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * File: plot1.xml
+ * Author: Akram El Assas
+-->
+<plot id="1">
+  <curves />
+  <description>
+    <![CDATA[
+		 Empty plot.
+		]]>
+  </description>
+</plot>

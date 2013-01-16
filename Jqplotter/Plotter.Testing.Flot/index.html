@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>Plotter.Testing.Flot</title>
+        <meta name="Author" content="Akram El Assas" />
+        <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7; IE=EmulateIE9" />
+        <!--[if lt IE 9]><script  type="text/javascript" src="_excanvas.js"></script><![endif]-->
+        <script src="_jquery-1.6.2.min.js" type="text/javascript"> </script>
+        <script src="_jquery.flot.js" type="text/javascript"></script>
+        <script type="text/javascript">
+        //<![CDATA[
+            jQuery(document).ready(function() {
+                $.plot($('#Flot'), [{ label: "Europe (EU27)", data: [[new Date("1/1/1999 12:00:00 AM"), 3], [new Date("1/1/2000 12:00:00 AM"), 3.90000009536743], [new Date("1/1/2001 12:00:00 AM"), 2], [new Date("1/1/2002 12:00:00 AM"), 1.20000004768372], [new Date("1/1/2003 12:00:00 AM"), 1.29999995231628], [new Date("1/1/2004 12:00:00 AM"), 2.5], [new Date("1/1/2005 12:00:00 AM"), 2], [new Date("1/1/2006 12:00:00 AM"), 3.09999990463257], [new Date("1/1/2007 12:00:00 AM"), 2.90000009536743], [new Date("1/1/2008 12:00:00 AM"), 0.899999976158142]]}], 
+                { xaxis: { mode: "time", timeformat: "%y/%m/%d %H:%M:%S %P" } });
+            });
+        //]]>
+    </script>
+    </head>
+    <body>
+        <div id="Flot" style="height: 300px; margin: 20px; width: 790px;">
+        </div>
+    </body>
+</html>

@@ -64,6 +64,7 @@
             this.emaB2TextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.synchWebTradesButton = new System.Windows.Forms.Button();
             this.exportToTextButton = new System.Windows.Forms.Button();
             this.statsGroupBox = new System.Windows.Forms.GroupBox();
             this.statsListView = new System.Windows.Forms.ListView();
@@ -493,19 +494,31 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.synchWebTradesButton);
             this.tabPage2.Controls.Add(this.exportToTextButton);
             this.tabPage2.Controls.Add(this.statsGroupBox);
             this.tabPage2.Controls.Add(this.orderDetailGroupBox);
             this.tabPage2.Controls.Add(this.timeframeGroupBox);
             this.tabPage2.Controls.Add(this.timespanGroupBox);
             this.tabPage2.Controls.Add(this.runHistCalcButton);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(346, 466);
+            this.tabPage2.Size = new System.Drawing.Size(346, 464);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // synchWebTradesButton
+            // 
+            this.synchWebTradesButton.Enabled = false;
+            this.synchWebTradesButton.Location = new System.Drawing.Point(9, 402);
+            this.synchWebTradesButton.Name = "synchWebTradesButton";
+            this.synchWebTradesButton.Size = new System.Drawing.Size(75, 23);
+            this.synchWebTradesButton.TabIndex = 12;
+            this.synchWebTradesButton.Text = "Synch Web";
+            this.synchWebTradesButton.UseVisualStyleBackColor = true;
+            this.synchWebTradesButton.Click += new System.EventHandler(this.synchWebTradesButton_Click);
             // 
             // exportToTextButton
             // 
@@ -1114,6 +1127,7 @@
         private System.Windows.Forms.ColumnHeader columnValue;
         private System.Windows.Forms.ColumnHeader columnNote;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button synchWebTradesButton;
         
     }
 }

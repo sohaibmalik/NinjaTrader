@@ -31,13 +31,19 @@ namespace NinjaTest
             E = new AlsiUtils.Strategies.Parameter_EMA_Scalp();
           ema=emaSett ;
         }
+
+        public Luanch()
+        {
+           
+         
+        }
         
         void S_OnStatsCaculated(object sender, Statistics.StatsCalculatedEvent e)
         {
             string position = E.A_EMA1 + "-" + E.A_EMA2 + "     " + E.B_EMA1 + "-" + E.B_EMA2 + "      " + E.C_EMA + "\n" + e.SumStats.Total_Avg_PL;
             form.UpdatePos(position);
 
-            if (e.SumStats.Total_Avg_PL>15 || e.SumStats.Total_Avg_PL<-15)//(e.SumStats.TotalProfit > maxprof)
+            if (false)//(e.SumStats.Total_Avg_PL>15 || e.SumStats.Total_Avg_PL<-15)//(e.SumStats.TotalProfit > maxprof)
             {
                 //maxprof = e.SumStats.TotalProfit;
                 StringBuilder stat = new StringBuilder("");
@@ -80,12 +86,12 @@ namespace NinjaTest
                     CloseEndDay = "False",
 
                 };
-                  dc.tbl2Mins.InsertOnSubmit(tbl);
-                   dc.SubmitChanges();
+                  //dc.tbl2Mins.InsertOnSubmit(tbl);
+                 //  dc.SubmitChanges();
             }
         }
 
-        private void RunSingle()
+        public void RunSingle()
         {
             //Laptop
             // string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
@@ -130,9 +136,61 @@ namespace NinjaTest
             var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, Trades);
             NewTrades = S.CalcExpandedTradeStats(NewTrades);
 
-            PrintTradesonly(NewTrades);
+           // PrintTradesonly(NewTrades);
 
-            //}
+           
+        }
+
+        public void RunSingleNEW()
+        {
+            //Laptop
+            // string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            //PC
+            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
+
+            //  DateTime s = new DateTime(2006, 01, 01);
+            //  DateTime e = new DateTime(2006, 12, 15);
+
+            DateTime s = new DateTime(2012, 12, 30);
+            DateTime e = new DateTime(2013, 12, 29);
+
+
+            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_2, AlsiUtils.DataBase.dataTable.MasterMinute,
+               s, e, false);
+            Debug.WriteLine("Start Date " + prices[0].TimeStamp);
+
+            //for (int x = 2; x < 50; x++)
+            //{
+
+            AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
+            {
+                A_EMA1 = 16,
+                A_EMA2 = 17,
+                B_EMA1 = 43,
+                B_EMA2 = 45,
+                C_EMA = 52,
+                TakeProfit = 450,
+                StopLoss = -300,
+                CloseEndofDay = false,
+                Period = prices.Count,
+
+            };
+
+            AlsiUtils.Strategies.EmaSalp2.EmaScalp(E, prices, false);
+            ////takep = E.TakeProfit;
+            ////takel = E.StopLoss;
+            //AlsiUtils.Statistics S = new AlsiUtils.Statistics();
+            //S.OnStatsCaculated += new AlsiUtils.Statistics.StatsCalculated(S_OnStatsCaculated);
+            //var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
+
+            //Trades = S.CalcBasicTradeStats(Trades);
+            //var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, Trades);
+            //NewTrades = S.CalcExpandedTradeStats(NewTrades);
+
+            //// PrintTradesonly(NewTrades);
+
+
         }
 
         public void RunMultiple()

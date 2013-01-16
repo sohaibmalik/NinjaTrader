@@ -242,10 +242,10 @@ namespace AlsiUtils
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CleanLogs")]
-		public void CleanLogs()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CleanLogs", IsComposable=true)]
+		public object CleanLogs()
 		{
-			this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((object)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod()))).ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CleanTick")]
@@ -269,10 +269,10 @@ namespace AlsiUtils
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ImportRawTick")]
-		public void ImportRawTick()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ImportRawTick", IsComposable=true)]
+		public object ImportRawTick()
 		{
-			this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((object)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod()))).ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.MergeTemp")]
