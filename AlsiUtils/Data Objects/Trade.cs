@@ -48,18 +48,26 @@ namespace AlsiUtils
 
         public enum Trigger
         {
-            OpenLong = 1,
-            CloseLong = 2,
-            OpenShort = 3,
-            CloseShort = 4,
-            None = 5,
-            StopLoss = 6,
-            TakeProfit = 7,
-            EndOfDayCloseLong = 8,
-            EndOfDayCloseShort = 9,
-            ContractExpires = 10,
-            ReverseLong=11,
-            ReverseShort=12,
+            None,
+            Open,
+            Close,
+            OpenLong ,
+            CloseLong ,
+            OpenShort ,
+            CloseShort,            
+            StopLoss,
+            StopLossLong,
+            StopLossShort,
+            TakeProfit ,
+            TakeProfitLong,
+            TakeProfitShort,
+            EndOfDayClose,
+            EndOfDayCloseLong,
+            EndOfDayCloseShort,
+            ContractExpires ,
+            Reverse,
+            ReverseLong,
+            ReverseShort,
         }
 
         public enum TradeReason

@@ -6,13 +6,16 @@ using AlsiUtils.Indicators;
 
 namespace AlsiUtils.Strategies
 {
-    public class TradeStrategy2 : Indicator,ICloneable
+    public class TradeStrategy2 : Indicator, ICloneable
     {
 
         private static List<TradeStrategy2> _O = new List<TradeStrategy2>();
         private static List<TradeStrategy2> _C = new List<TradeStrategy2>();
         private static List<TradeStrategy2> _ocA = new List<TradeStrategy2>();
         private static List<TradeStrategy2> _ocB = new List<TradeStrategy2>();
+        private static List<TradeStrategy2> _ocC = new List<TradeStrategy2>();
+        private static List<TradeStrategy2> _ocD = new List<TradeStrategy2>();
+
         private static bool[] _Position_a;
         private static List<Price> _Prices;
         private DateTime _Start;
@@ -28,8 +31,7 @@ namespace AlsiUtils.Strategies
         {
             return this.MemberwiseClone();
         }
-
-
+        
         public TradeStrategy2()
         {
 
@@ -44,31 +46,59 @@ namespace AlsiUtils.Strategies
             _Prices = Prices;
             _Start = Start;
 
+        }
 
 
+        public List<TradeStrategy2> getStrategyList()
+        {
+            return _ocD;
         }
 
 
         public void Calculate()
         {
-            //1st phase
+            Debug.WriteLine(GC.GetTotalMemory(true));
+
+            #region Phase 1
+
             Prepare();
             OpenCloseTriggers();
             Positions();
-            Triggers_Merge_1();
+            Triggers_Merge_and_Create_A_List();
             Directions();
             Directions_Triggers_adjust_a();
-            Directoins_ajust_b();
-
-
-            //2nd phase
+            Directions_ajust_b();
+            ClearListToFreeMemory(_O);
+            ClearListToFreeMemory(_C);
             Create_B_List();
-            RunningProfits_StopLoss_TakeProfit();
+            ClearListToFreeMemory(_ocA);
+            RunningProfits();
+            MarkTrades_A();
+            #endregion
+
+            #region Phase 2 - Stoploss & TakeProfit                      
+
+            Create_C_List();
+            ClearListToFreeMemory(_ocB);
+            StopLoss_and_TakeProfit_Triggers();
+            Directions_Triggers_adjust_b();
+            Mark_Actual_Trades();
+            Create_D_List();
+            ClearListToFreeMemory(_ocC);
+            
+            #endregion
+
+           
 
 
-            for (int x = 1; x < _O.Count; x++) Print(x);
+
+            //var List = _ocD;
+
+            //for (int x = 1; x < List.Count; x++) Print(List, x);
 
         }
+
+        #region Phase 1
 
         private void Prepare()
         {
@@ -114,6 +144,7 @@ namespace AlsiUtils.Strategies
 
             _Position_a = new bool[_O.Count];
 
+
             _O[0].Position = false;
             _O[0].TradeDirection = Trade.Direction.None;
             _O[0].TradeTrigger = Trade.Trigger.None;
@@ -144,12 +175,10 @@ namespace AlsiUtils.Strategies
                 _Position_a[x] = _Position_a[x - 1];
                 if (_C[x].TradeTrigger != Trade.Trigger.None) _Position_a[x] = false;
                 if (_O[x].TradeTrigger != Trade.Trigger.None) _Position_a[x] = true;
-
-
             }
         }
 
-        private void Triggers_Merge_1()
+        private void Triggers_Merge_and_Create_A_List()
         {
             for (int x = 1; x < _O.Count; x++)
             {
@@ -165,6 +194,9 @@ namespace AlsiUtils.Strategies
                     if (_O[x].TradeTrigger == Trade.Trigger.OpenShort) trigger = Trade.Trigger.ReverseShort;
                 }
 
+              
+
+
                 var s = _ocA[x];
                 s.Position = _Position_a[x];
                 s.TradeTrigger = trigger;
@@ -174,101 +206,263 @@ namespace AlsiUtils.Strategies
 
         private void Directions()
         {
-            for (int x = 1; x < _O.Count; x++)
+            var A = _ocA;
+            for (int x = 1; x < A.Count; x++)
             {
 
-                _ocA[x].TradeDirection = _ocA[x - 1].TradeDirection;
+                A[x].TradeDirection = A[x - 1].TradeDirection;
 
-                if (_ocA[x].TradeTrigger == Trade.Trigger.OpenLong ||
-                    _ocA[x].TradeTrigger == Trade.Trigger.ReverseLong)
-                    _ocA[x].TradeDirection = Trade.Direction.Long;
+                if (A[x].TradeTrigger == Trade.Trigger.OpenLong ||
+                    A[x].TradeTrigger == Trade.Trigger.ReverseLong)
+                    A[x].TradeDirection = Trade.Direction.Long;
 
-                if (_ocA[x].TradeTrigger == Trade.Trigger.OpenShort ||
-                   _ocA[x].TradeTrigger == Trade.Trigger.ReverseShort)
-                    _ocA[x].TradeDirection = Trade.Direction.Short;
+                if (A[x].TradeTrigger == Trade.Trigger.OpenShort ||
+                   A[x].TradeTrigger == Trade.Trigger.ReverseShort)
+                    A[x].TradeDirection = Trade.Direction.Short;
 
-                if (_ocA[x].Position == false) _ocA[x].TradeDirection = Trade.Direction.None;
+                if (A[x].Position == false) A[x].TradeDirection = Trade.Direction.None;
 
             }
         }
 
         private void Directions_Triggers_adjust_a()
         {
-            for (int x = 1; x < _O.Count; x++)
+            var A = _ocA;
+            for (int x = 1; x < A.Count; x++)
             {
-                if (_ocA[x - 1].TradeDirection == Trade.Direction.Long && (_ocA[x].TradeTrigger == Trade.Trigger.OpenShort || _ocA[x].TradeTrigger == Trade.Trigger.CloseShort))
+
+
+                if (A[x - 1].TradeDirection == Trade.Direction.Long && (A[x].TradeTrigger == Trade.Trigger.OpenShort || A[x].TradeTrigger == Trade.Trigger.CloseShort))
                 {
-                    _ocA[x].TradeTrigger = Trade.Trigger.None;
-                    _ocA[x].TradeDirection = Trade.Direction.Long;
+                    A[x].TradeTrigger = Trade.Trigger.None;
+                    A[x].TradeDirection = Trade.Direction.Long;
                 }
 
-                if (_ocA[x - 1].TradeDirection == Trade.Direction.Short && (_ocA[x].TradeTrigger == Trade.Trigger.OpenLong || _ocA[x].TradeTrigger == Trade.Trigger.CloseLong))
+                if (A[x - 1].TradeDirection == Trade.Direction.Short && (A[x].TradeTrigger == Trade.Trigger.OpenLong || A[x].TradeTrigger == Trade.Trigger.CloseLong))
                 {
-                    _ocA[x].TradeTrigger = Trade.Trigger.None;
-                    _ocA[x].TradeDirection = Trade.Direction.Short;
+                    A[x].TradeTrigger = Trade.Trigger.None;
+                    A[x].TradeDirection = Trade.Direction.Short;
                 }
 
 
-                if (_ocA[x - 1].TradeDirection == Trade.Direction.Long && _ocA[x].TradeTrigger == Trade.Trigger.OpenLong) _ocA[x].TradeTrigger = Trade.Trigger.None;
-                if (_ocA[x - 1].TradeDirection == Trade.Direction.Short && _ocA[x].TradeTrigger == Trade.Trigger.OpenShort) _ocA[x].TradeTrigger = Trade.Trigger.None;
-                if (_ocA[x - 1].TradeDirection == Trade.Direction.Long && _ocA[x].TradeTrigger == Trade.Trigger.ReverseLong) _ocA[x].TradeTrigger = Trade.Trigger.None;
-                if (_ocA[x - 1].TradeDirection == Trade.Direction.Short && _ocA[x].TradeTrigger == Trade.Trigger.ReverseShort) _ocA[x].TradeTrigger = Trade.Trigger.None;
+                if (A[x - 1].TradeDirection == Trade.Direction.Long && A[x].TradeTrigger == Trade.Trigger.OpenLong) A[x].TradeTrigger = Trade.Trigger.None;
+                if (A[x - 1].TradeDirection == Trade.Direction.Short && A[x].TradeTrigger == Trade.Trigger.OpenShort) A[x].TradeTrigger = Trade.Trigger.None;
+                if (A[x - 1].TradeDirection == Trade.Direction.Long && A[x].TradeTrigger == Trade.Trigger.ReverseLong) A[x].TradeTrigger = Trade.Trigger.None;
+                if (A[x - 1].TradeDirection == Trade.Direction.Short && A[x].TradeTrigger == Trade.Trigger.ReverseShort) A[x].TradeTrigger = Trade.Trigger.None;
 
-                if ((_ocA[x - 1].TradeTrigger == Trade.Trigger.CloseShort || _ocA[x - 1].TradeTrigger == Trade.Trigger.CloseLong) &&
-                    (_ocA[x].TradeTrigger == Trade.Trigger.ReverseShort || _ocA[x].TradeTrigger == Trade.Trigger.ReverseLong)
-                    ) _ocA[x].TradeTrigger = _O[x].TradeTrigger;
+                if ((A[x - 1].TradeTrigger == Trade.Trigger.CloseShort || A[x - 1].TradeTrigger == Trade.Trigger.CloseLong) &&
+                    (A[x].TradeTrigger == Trade.Trigger.ReverseShort || A[x].TradeTrigger == Trade.Trigger.ReverseLong)
+                    ) A[x].TradeTrigger = _O[x].TradeTrigger;
 
-                if (_ocA[x - 1].TradeDirection == Trade.Direction.None && (_ocA[x].TradeTrigger == Trade.Trigger.CloseShort || _ocA[x].TradeTrigger == Trade.Trigger.CloseLong))
-                    _ocA[x].TradeTrigger = Trade.Trigger.None;
+                if (A[x - 1].TradeDirection == Trade.Direction.None && (A[x].TradeTrigger == Trade.Trigger.ReverseShort || A[x].TradeTrigger == Trade.Trigger.ReverseLong))
+                    A[x].TradeTrigger = _O[x].TradeTrigger;
+
+
+
+                if (A[x - 1].TradeDirection == Trade.Direction.None && (A[x].TradeTrigger == Trade.Trigger.CloseShort || A[x].TradeTrigger == Trade.Trigger.CloseLong))
+                    A[x].TradeTrigger = Trade.Trigger.None;
+
+
+
             }
         }
 
-        private void Directoins_ajust_b()
+        private void Directions_ajust_b()
         {
-            for (int x = 1; x < _O.Count; x++)
+            var A = _ocA;
+            for (int x = 1; x < A.Count; x++)
             {
-                _ocA[x].TradeDirection = Trade.Direction.None;
-                _ocA[x].TradeDirection = _ocA[x - 1].TradeDirection;
-                if (_ocA[x].TradeTrigger == Trade.Trigger.OpenLong || _ocA[x].TradeTrigger == Trade.Trigger.ReverseLong) _ocA[x].TradeDirection = Trade.Direction.Long;
-                if (_ocA[x].TradeTrigger == Trade.Trigger.OpenShort || _ocA[x].TradeTrigger == Trade.Trigger.ReverseShort) _ocA[x].TradeDirection = Trade.Direction.Short;
-                if (_ocA[x].TradeTrigger == Trade.Trigger.CloseLong || _ocA[x].TradeTrigger == Trade.Trigger.CloseShort) _ocA[x].TradeDirection = Trade.Direction.None;
+                A[x].TradeDirection = Trade.Direction.None;
+                A[x].TradeDirection = A[x - 1].TradeDirection;
+                               
+                
+                if (A[x].TradeTrigger == Trade.Trigger.OpenLong || A[x].TradeTrigger == Trade.Trigger.ReverseLong) A[x].TradeDirection = Trade.Direction.Long;
+                if (A[x].TradeTrigger == Trade.Trigger.OpenShort || A[x].TradeTrigger == Trade.Trigger.ReverseShort) A[x].TradeDirection = Trade.Direction.Short;
+                if (A[x].TradeTrigger == Trade.Trigger.CloseLong || A[x].TradeTrigger == Trade.Trigger.CloseShort) A[x].TradeDirection = Trade.Direction.None;
+
+
+                if (A[x].TradeTrigger == Trade.Trigger.EndOfDayClose && A[x].TradeDirection == Trade.Direction.Long)
+                {
+                    A[x].TradeTrigger = Trade.Trigger.EndOfDayCloseLong;
+                    A[x].TradeDirection = Trade.Direction.None;
+                }
+                if (A[x].TradeTrigger == Trade.Trigger.EndOfDayClose && A[x].TradeDirection == Trade.Direction.Short)
+                {
+                    A[x].TradeTrigger = Trade.Trigger.EndOfDayCloseShort;
+                    A[x].TradeDirection = Trade.Direction.None;
+                }
+
+              
+              
+              
+
             }
         }
 
         private void Create_B_List()
         {
             foreach (var a in _ocA)
-            {               
+            {
                 TradeStrategy2 b = (TradeStrategy2)a.Clone();
                 _ocB.Add(b);
             }
         }
 
-        private void RunningProfits_StopLoss_TakeProfit()
+        private void RunningProfits()
         {
-            
+
+            var B = _ocB;
+            for (int x = 1; x < B.Count; x++)
+            {
+                B[x].TradedPrice = B[x - 1].TradedPrice;
+                if (B[x].TradeTrigger != Trade.Trigger.None) B[x].TradedPrice = B[x].Price_Close;
+
+                if (B[x].TradeDirection == Trade.Direction.Long) B[x].RunningProfit = B[x].Price_Close - B[x].TradedPrice;
+                if (B[x].TradeDirection == Trade.Direction.Short) B[x].RunningProfit = B[x].TradedPrice - B[x].Price_Close;
+
+                if (B[x].TradeTrigger == Trade.Trigger.CloseLong || B[x].TradeTrigger == Trade.Trigger.ReverseShort || B[x].TradeTrigger == Trade.Trigger.EndOfDayCloseLong)
+                    B[x].RunningProfit = B[x].TradedPrice - B[x - 1].TradedPrice;
+
+                if (B[x].TradeTrigger == Trade.Trigger.CloseShort || B[x].TradeTrigger == Trade.Trigger.ReverseLong || B[x].TradeTrigger == Trade.Trigger.EndOfDayCloseShort)
+                    B[x].RunningProfit = B[x - 1].TradedPrice - B[x].TradedPrice;
+
+            }
+        }
+
+        private void MarkTrades_A()
+        {
+            var B = _ocB;
+            for (int x = 1; x < B.Count; x++)
+            {
+                B[x].TradeTriggerGeneral = Trade.Trigger.None;
+                if (B[x].TradeTrigger == Trade.Trigger.OpenLong || B[x].TradeTrigger == Trade.Trigger.OpenShort) B[x].TradeTriggerGeneral = Trade.Trigger.Open;
+                if (B[x].TradeTrigger == Trade.Trigger.CloseLong || B[x].TradeTrigger == Trade.Trigger.CloseShort) B[x].TradeTriggerGeneral = Trade.Trigger.Close;
+                if (B[x].TradeTrigger == Trade.Trigger.ReverseLong || B[x].TradeTrigger == Trade.Trigger.ReverseShort) B[x].TradeTriggerGeneral = Trade.Trigger.Reverse;
+                if (B[x].TradeTrigger == Trade.Trigger.EndOfDayCloseLong || B[x].TradeTrigger == Trade.Trigger.EndOfDayCloseShort || B[x].TradeTrigger == Trade.Trigger.EndOfDayClose) B[x].TradeTriggerGeneral = Trade.Trigger.EndOfDayClose;
+            }
+        }
+
+        #endregion
+
+        #region Phase 2 - Stoploss & TakeProfit
+
+        private void Create_C_List()
+        {
+            foreach (var a in _ocB)
+            {
+                TradeStrategy2 b = (TradeStrategy2)a.Clone();
+                _ocC.Add(b);
+            }
+        }
+
+        private void StopLoss_and_TakeProfit_Triggers()
+        {
+            var C = _ocC;
+            for (int x = 1; x < C.Count; x++)
+            {
+
+                //Take Profit
+                if (C[x].RunningProfit > _p.TakeProfit)
+                    if (C[x].TradeTrigger == Trade.Trigger.None)
+                    {
+                        {
+                            C[x].TradedPrice = C[x].Price_Close;
+                            C[x].TradeTriggerGeneral = Trade.Trigger.TakeProfit;
+                            if (C[x].TradeDirection == Trade.Direction.Long) C[x].TradeTrigger = Trade.Trigger.TakeProfitLong;
+                            if (C[x].TradeDirection == Trade.Direction.Short) C[x].TradeTrigger = Trade.Trigger.TakeProfitShort;
+                        }
+                    }
+
+                //Stoploss
+                if (C[x].RunningProfit < _p.StopLoss)
+                {
+                    if (C[x].TradeTrigger == Trade.Trigger.None)
+                    {
+                        C[x].TradedPrice = C[x].Price_Close;
+                        C[x].TradeTriggerGeneral = Trade.Trigger.StopLoss;
+                        if (C[x].TradeDirection == Trade.Direction.Long) C[x].TradeTrigger = Trade.Trigger.StopLossLong;
+                        if (C[x].TradeDirection == Trade.Direction.Short) C[x].TradeTrigger = Trade.Trigger.StopLossShort;
+                    }
+                }
+            }
+        }
+
+        private void Directions_Triggers_adjust_b()
+        {
+            var C = _ocC;
+           //  var L = C;
+
+            bool stopOrtake = false;
+            for (int x = 1; x < C.Count; x++)
+            {
+
+                if (C[x].TradeTriggerGeneral == Trade.Trigger.Open) stopOrtake = false;
+                if ((stopOrtake) && (C[x].TradeTriggerGeneral == Trade.Trigger.TakeProfit || C[x].TradeTriggerGeneral == Trade.Trigger.StopLoss))
+                    C[x].TradeTrigger = Trade.Trigger.None;
+                if ((!stopOrtake) && (C[x].TradeTriggerGeneral == Trade.Trigger.TakeProfit || C[x].TradeTriggerGeneral == Trade.Trigger.StopLoss))
+                    stopOrtake = true;
+
+                if ((C[x].TradeTriggerGeneral == Trade.Trigger.Close || C[x].TradeTriggerGeneral == Trade.Trigger.Reverse ||
+                    C[x].TradeTriggerGeneral == Trade.Trigger.EndOfDayClose) && stopOrtake) C[x].TradeTrigger = Trade.Trigger.None;
+               //  Debug.WriteLine(L[x].TimeStamp + "  " + L[x].TradeTrigger + "   " + L[x].Price_Close + "  " + L[x].RunningProfit + "   " + L[x].TradeDirection + "   " + L[x].Position + "  *******  " + L[x].TradeTriggerGeneral + "   " + stopOrtake);
+            }
+
+
+        }
+
+        private void Mark_Actual_Trades()
+        {
+              var C = _ocC;
+        
+            bool stopOrtake = false;
+            for (int x = 1; x < C.Count; x++)
+            {
+                if (C[x].TradeTrigger == Trade.Trigger.OpenLong) C[x].ActualTrade = Trade.Trigger.OpenLong;
+                if (C[x].TradeTrigger == Trade.Trigger.OpenShort) C[x].ActualTrade = Trade.Trigger.OpenShort;
+                if (C[x].TradeTrigger == Trade.Trigger.ReverseLong) C[x].ActualTrade = Trade.Trigger.ReverseLong;
+                if (C[x].TradeTrigger == Trade.Trigger.ReverseShort) C[x].ActualTrade = Trade.Trigger.ReverseShort;
+
+                if (C[x].TradeTrigger == Trade.Trigger.CloseLong ||
+                    C[x].TradeTrigger == Trade.Trigger.EndOfDayCloseLong||
+                    C[x].TradeTrigger==Trade.Trigger.TakeProfitLong  ||
+                   C[x].TradeTrigger == Trade.Trigger.StopLossLong
+                    ) C[x].ActualTrade = Trade.Trigger.CloseLong;
+
+                if (C[x].TradeTrigger == Trade.Trigger.CloseShort ||
+                   C[x].TradeTrigger == Trade.Trigger.EndOfDayCloseShort ||
+                   C[x].TradeTrigger == Trade.Trigger.TakeProfitShort ||
+                  C[x].TradeTrigger == Trade.Trigger.StopLossShort
+                   ) C[x].ActualTrade = Trade.Trigger.CloseShort;
+               
+            }
+        }
+
+        private void Create_D_List()
+        {
+            foreach (var a in _ocC)
+            {
+                TradeStrategy2 b = (TradeStrategy2)a.Clone();
+                _ocD.Add(b);
+            }
+        }
+
+        #endregion
+
+
+        private void ClearListToFreeMemory(List<TradeStrategy2> List)
+        {
+            List.Clear();
         }
 
 
-
-
-
-
-
-
-
-        private void Print(int x)
+        private void Print(List<TradeStrategy2> L, int x)
         {
-            //if(_ocA[x].TradeTrigger!=Trade.Trigger.None )
-            Debug.WriteLine(_O[x].TimeStamp + " " + _O[x].TradeTrigger + "  " + _C[x].TradeTrigger + "  " + _ocA[x].TradeTrigger + "  " + _ocA[x].TradeDirection);
-        }
-
-
-
-
-
-
-
+            var A = _O;
+             if (L[x].ActualTrade  != Trade.Trigger.None)
+             Debug.WriteLine(L[x].TimeStamp + "  " + L[x].TradeTrigger + "   " + L[x].Price_Close + "  " + L[x].RunningProfit + "   " + L[x].TradeDirection + "   " + L[x].Position + "  *******  " + L[x].ActualTrade  
+            //  + A[x].TradeTrigger + "   " + A[x].Price_Close + "  " + A[x].RunningProfit + "   " + A[x].TradeDirection + "   " + A[x].Position);
+               );
+        }       
 
 
         public static Trade.BuySell GetBuySell(Trade.Trigger trigger)
@@ -306,105 +500,109 @@ namespace AlsiUtils.Strategies
         public bool Position { get; set; }
         public Trade.Direction TradeDirection { get; set; }
         public Trade.Trigger TradeTrigger { get; set; }
+        public Trade.Trigger TradeTriggerGeneral { get; set; }
+
+        /// <summary>
+        /// Should only be Open/Close Long/Short ReverseLong/ReverseShort
+        /// </summary>
         public Trade.Trigger ActualTrade { get; set; }
         public Trade.TradeReason Reason { get; set; }
+
         public double RunningProfit { get; set; }
         public string InstrumentName { get; set; }
-
         public double TradedPrice { get; set; }
-        public bool markedObjectA { get; set; }
-        public bool markedObjectB { get; set; }
 
         public double TotalProfit { get; set; }
         public double TradeCount { get; set; }
 
 
 
-        public class Expansion
-        {
-            //private static void Apply_2nd_AlgoLayer(int EMA)
-            //{
-            //    List<VariableIndicator> _st = new List<VariableIndicator>();
-            //    foreach (var t in _ST)
-            //    {
-            //        if (t.TotalProfit != 0)
-            //        {
-            //            VariableIndicator v = new VariableIndicator()
-            //            {
-            //                TimeStamp = t.TimeStamp,
-            //                Value = t.TotalProfit,
-            //            };
-            //            _st.Add(v);
-            //        }
-            //    }
+        //public class Expansion
+        //{
+        //    List<TradeStrategy2> _ST = _ocD;
+        //    private static void Apply_2nd_AlgoLayer(int EMA)
+        //    {
+        //        List<VariableIndicator> _st = new List<VariableIndicator>();
+        //        foreach (var t in _ST)
+        //        {
+        //            if (t.TotalProfit != 0)
+        //            {
+        //                VariableIndicator v = new VariableIndicator()
+        //                {
+        //                    TimeStamp = t.TimeStamp,
+        //                    Value = t.TotalProfit,
+        //                };
+        //                _st.Add(v);
+        //            }
+        //        }
 
-            //    var ema = Factory_Indicator.createEMA(EMA, _st);
-            //    double newprof = ema[0].CustomValue;
-            //    TradeStrategy2 mt = null;
-            //    bool cantradeA = false;
-            //    bool cantradeB = false;
-            //    bool closepos = false;
-            //    bool first = true;
-            //    int count = 0;
-            //    foreach (var v in ema)
-            //    {
-            //        count++;
-            //        // if (count > 30) break;          
+        //        var ema = Factory_Indicator.createEMA(EMA, _st);
+        //        double newprof = ema[0].CustomValue;
+        //        TradeStrategy2 mt = null;
+        //        bool cantradeA = false;
+        //        bool cantradeB = false;
+        //        bool closepos = false;
+        //        bool first = true;
+        //        int count = 0;
+        //        foreach (var v in ema)
+        //        {
+        //            count++;
+        //            // if (count > 30) break;          
 
-            //        if (first) ;
-            //        mt = _ST.Where(z => z.TimeStamp == v.TimeStamp).First();
+        //            if (first) ;
+        //            mt = _ST.Where(z => z.TimeStamp == v.TimeStamp).First();
 
-            //        if (!first) closepos = (mt.ActualTrade == Trade.Trigger.CloseShort || mt.ActualTrade == Trade.Trigger.CloseLong);
-            //        if (closepos && cantradeA) cantradeB = true;
-            //        else
-            //            cantradeB = false;
+        //            if (!first) closepos = (mt.ActualTrade == Trade.Trigger.CloseShort || mt.ActualTrade == Trade.Trigger.CloseLong);
+        //            if (closepos && cantradeA) cantradeB = true;
+        //            else
+        //                cantradeB = false;
 
-            //        cantradeA = (v.CustomValue > v.Ema);
+        //            cantradeA = (v.CustomValue > v.Ema);
 
-            //        if (!first && closepos && cantradeB) newprof += mt.RunningProfit;
+        //            if (!first && closepos && cantradeB) newprof += mt.RunningProfit;
 
-            //        //Debug.WriteLine(((cantradeA) ? "**" : "") + ((cantradeB) ? "**" : "") + v.Timestamp + " " + v.CustomValue + " " + v.Ema +
-            //        //    " TradeA :" + cantradeA + "  TradeB :" + cantradeB + " Prof " + newprof +
-            //        //    "   " + ((!first && mt != null) ? mt.ActualTrade.ToString() : ""));
-
-
-
-            //        first = false;
-            //    }
-
-            //    Debug.WriteLine(EMA + "  " + newprof);
-            //    Debug.WriteLine("----------------------------------------------");
+        //            //Debug.WriteLine(((cantradeA) ? "**" : "") + ((cantradeB) ? "**" : "") + v.Timestamp + " " + v.CustomValue + " " + v.Ema +
+        //            //    " TradeA :" + cantradeA + "  TradeB :" + cantradeB + " Prof " + newprof +
+        //            //    "   " + ((!first && mt != null) ? mt.ActualTrade.ToString() : ""));
 
 
-            //}
 
-            //public static List<CompletedTrade> ApplyRegressionFilter(int N, List<Trade> Trades)
-            //{
-            //    var CloseTradesOnly = Statistics.RegressionAnalysis_OnPL(N, Trades);
-            //    var CompTrades = Trade.TradesOnly(Trades);
-            //    var CompleteList = CompletedTrade.CreateList(CompTrades);
+        //            first = false;
+        //        }
 
-            //    for (int x = 2; x < CompleteList.Count; x++)
-            //    {
-            //        if (CompleteList[x - 2].CloseTrade.Extention.Slope < CompleteList[x - 1].CloseTrade.Extention.Slope
-            //            && CompleteList[x - 1].CloseTrade.Extention.Slope < 0)
-            //            CompleteList[x].OpenTrade.Extention.OrderVol = 2;
-            //    }
-            //    foreach (var t in CompleteList)
-            //    {
-            //        if (t.OpenTrade.Extention.OrderVol == 2) t.CloseTrade.Extention.OrderVol = 2;
-            //        else
-            //        {
-            //            t.CloseTrade.Extention.OrderVol = 1;
-            //            t.OpenTrade.Extention.OrderVol = 1;
-            //        }
-            //    }
+        //        Debug.WriteLine(EMA + "  " + newprof);
+        //        Debug.WriteLine("----------------------------------------------");
 
-            //    return CompleteList;
-            //}
 
-        }
+        //    }
 
-       
+        //    public static List<CompletedTrade> ApplyRegressionFilter(int N, List<Trade> Trades)
+        //    {
+        //        var CloseTradesOnly = Statistics.RegressionAnalysis_OnPL(N, Trades);
+        //        var CompTrades = Trade.TradesOnly(Trades);
+        //        var CompleteList = CompletedTrade.CreateList(CompTrades);
+
+        //        for (int x = 2; x < CompleteList.Count; x++)
+        //        {
+        //            if (CompleteList[x - 2].CloseTrade.Extention.Slope < CompleteList[x - 1].CloseTrade.Extention.Slope
+        //                && CompleteList[x - 1].CloseTrade.Extention.Slope < 0)
+        //                CompleteList[x].OpenTrade.Extention.OrderVol = 2;
+        //        }
+        //        foreach (var t in CompleteList)
+        //        {
+        //            if (t.OpenTrade.Extention.OrderVol == 2) t.CloseTrade.Extention.OrderVol = 2;
+        //            else
+        //            {
+        //                t.CloseTrade.Extention.OrderVol = 1;
+        //                t.OpenTrade.Extention.OrderVol = 1;
+        //            }
+        //        }
+
+        //        return CompleteList;
+        //    }
+
+        //}
+
+
     }
 }

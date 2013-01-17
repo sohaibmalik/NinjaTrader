@@ -152,8 +152,8 @@ namespace NinjaTest
             //  DateTime s = new DateTime(2006, 01, 01);
             //  DateTime e = new DateTime(2006, 12, 15);
 
-            DateTime s = new DateTime(2012, 12, 30);
-            DateTime e = new DateTime(2013, 12, 29);
+            DateTime s = new DateTime(2012, 12, 15);
+            DateTime e = new DateTime(2013, 09, 29);
 
 
             var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_2, AlsiUtils.DataBase.dataTable.MasterMinute,
