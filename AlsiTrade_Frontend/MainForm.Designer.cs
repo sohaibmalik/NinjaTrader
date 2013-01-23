@@ -227,6 +227,7 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(67, 23);
             this.comboBox2.TabIndex = 28;
+            this.comboBox2.Visible = false;
             // 
             // comboBox1
             // 
@@ -236,6 +237,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(92, 23);
             this.comboBox1.TabIndex = 27;
+            this.comboBox1.Visible = false;
             // 
             // button2
             // 
@@ -246,6 +248,7 @@
             this.button2.TabIndex = 26;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // liveStartGroupBox
@@ -275,6 +278,7 @@
             this.button1.TabIndex = 24;
             this.button1.Text = "test";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tradeLogGroupBox

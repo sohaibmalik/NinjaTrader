@@ -12,11 +12,17 @@ namespace AlsiUtils
 
     public class DataBase
     {
+        public static void SetConnectionString(string ConnectionString)
+        {
+            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = ConnectionString;
+        }
+
+
         public static void SetConnectionString()
         {
 
             //Laptop
-           // string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            // string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
             //PC
             string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
@@ -24,7 +30,7 @@ namespace AlsiUtils
 
         }
 
-        private static bool TestSqlConnection(string CCS)
+        public static bool TestSqlConnection(string CCS)
         {
             bool alive = true;
             try
@@ -38,7 +44,7 @@ namespace AlsiUtils
             return alive;
         }
 
-    
+
 
 
         static public void InsertTradeLog(Trade TradeObject)
@@ -435,7 +441,7 @@ namespace AlsiUtils
 
 
 
-       
+
         static public void insertTicks(DateTime Stamp, int Price)
         {
             AlsiDBDataContext dc = new AlsiDBDataContext();
@@ -454,7 +460,7 @@ namespace AlsiUtils
 
         }
 
-  
+
 
 
         public enum dataTable

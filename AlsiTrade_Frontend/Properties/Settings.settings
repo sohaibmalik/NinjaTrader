@@ -35,5 +35,8 @@
     <Setting Name="Live_Start_Date" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)">2012-01-01</Value>
     </Setting>
+    <Setting Name="ConnectionString" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
