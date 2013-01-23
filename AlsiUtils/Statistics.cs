@@ -301,7 +301,7 @@ namespace AlsiUtils
         }
 
 
-        public List<Trade> CalcBasicTradeStats(List<Trade> Trades)
+        public List<Trade> CalcBasicTradeStats_old(List<Trade> Trades)
         {
 
             double totalProfit = 0;
@@ -336,6 +336,76 @@ namespace AlsiUtils
                     }
 
 
+                    Trades[x].TotalPL = totalProfit;
+                    Trades[x].TradeCount = (int)tradeCount;
+                }
+
+                if (Trades[x].Reason == Trade.Trigger.OpenLong || Trades[x].Reason == Trade.Trigger.OpenShort) Trades[x].TotalPL = totalProfit;
+            }
+
+            decimal avg_pl = (decimal)Math.Round((totalProfit / tradeCount), 5);
+            decimal loss_pct = (decimal)Math.Round((loss_count / tradeCount) * 100, 2);
+            decimal prof_pct = (decimal)Math.Round((prof_count / tradeCount) * 100, 2);
+            decimal pl_ratio = (decimal)Math.Round((prof_sum / loss_sum), 2);
+            decimal avg_profit = (decimal)Math.Round((prof_count / prof_sum), 2);
+            decimal avg_loss = (decimal)Math.Round((loss_count / loss_sum), 2);
+
+            SummaryStats s = new SummaryStats()
+            {
+                TotalProfit = totalProfit,
+                TradeCount = tradeCount,
+                Total_Avg_PL = avg_pl,
+                Pct_Prof = prof_pct,
+                Pct_Loss = loss_pct,
+                Avg_Loss = avg_loss,
+                Avg_Prof = avg_profit,
+
+            };
+
+            try
+            {
+                StatsCalculatedEvent sc = new StatsCalculatedEvent();
+                sc.SumStats = s;
+                OnStatsCaculated(this, sc);
+            }
+            catch
+            {
+            }
+            return Trades;
+        }
+
+        public List<Trade> CalcBasicTradeStats(List<Trade> Trades)
+        {
+
+            double totalProfit = 0;
+            double tradeCount = 0;
+            double prof_count = 0;
+            double loss_count = 0;
+            double prof_sum = 0;
+            double loss_sum = 0;
+
+
+            for (int x = 1; x < Trades.Count; x++)
+            {
+                
+                   if(Trades[x].TradeTriggerGeneral==Trade.Trigger.Close)
+
+                {
+                    totalProfit += Trades[x].RunningProfit;
+                    tradeCount++;
+
+                    if (Trades[x].RunningProfit <= 0)
+                    {
+                        loss_count++;
+                        loss_sum += Trades[x].RunningProfit;
+                    }
+
+                    if (Trades[x].RunningProfit > 0)
+                    {
+                        prof_count++;
+                        prof_sum += Trades[x].RunningProfit;
+                    }
+                    
                     Trades[x].TotalPL = totalProfit;
                     Trades[x].TradeCount = (int)tradeCount;
                 }

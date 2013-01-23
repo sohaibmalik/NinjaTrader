@@ -30,9 +30,15 @@ namespace NotifierWebService
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
+    partial void InsertTradeHistory(TradeHistory instance);
+    partial void UpdateTradeHistory(TradeHistory instance);
+    partial void DeleteTradeHistory(TradeHistory instance);
     partial void InsertTradeLog(TradeLog instance);
     partial void UpdateTradeLog(TradeLog instance);
     partial void DeleteTradeLog(TradeLog instance);
+    partial void InsertEmailList(EmailList instance);
+    partial void UpdateEmailList(EmailList instance);
+    partial void DeleteEmailList(EmailList instance);
     #endregion
 		
 		public OnlineDbDataContext() : 
@@ -65,11 +71,233 @@ namespace NotifierWebService
 			OnCreated();
 		}
 		
+		public System.Data.Linq.Table<TradeHistory> TradeHistories
+		{
+			get
+			{
+				return this.GetTable<TradeHistory>();
+			}
+		}
+		
 		public System.Data.Linq.Table<TradeLog> TradeLogs
 		{
 			get
 			{
 				return this.GetTable<TradeLog>();
+			}
+		}
+		
+		public System.Data.Linq.Table<EmailList> EmailLists
+		{
+			get
+			{
+				return this.GetTable<EmailList>();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Pieter.TradeHistory")]
+	public partial class TradeHistory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _n;
+		
+		private System.Nullable<System.DateTime> _TimeStamp;
+		
+		private string _BuySell;
+		
+		private string _Reason;
+		
+		private System.Nullable<int> _Price;
+		
+		private System.Nullable<int> _Volume;
+		
+		private System.Nullable<int> _Trade_Profit;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnnChanging(int value);
+    partial void OnnChanged();
+    partial void OnTimeStampChanging(System.Nullable<System.DateTime> value);
+    partial void OnTimeStampChanged();
+    partial void OnBuySellChanging(string value);
+    partial void OnBuySellChanged();
+    partial void OnReasonChanging(string value);
+    partial void OnReasonChanged();
+    partial void OnPriceChanging(System.Nullable<int> value);
+    partial void OnPriceChanged();
+    partial void OnVolumeChanging(System.Nullable<int> value);
+    partial void OnVolumeChanged();
+    partial void OnTrade_ProfitChanging(System.Nullable<int> value);
+    partial void OnTrade_ProfitChanged();
+    #endregion
+		
+		public TradeHistory()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_n", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int n
+		{
+			get
+			{
+				return this._n;
+			}
+			set
+			{
+				if ((this._n != value))
+				{
+					this.OnnChanging(value);
+					this.SendPropertyChanging();
+					this._n = value;
+					this.SendPropertyChanged("n");
+					this.OnnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeStamp", DbType="DateTime")]
+		public System.Nullable<System.DateTime> TimeStamp
+		{
+			get
+			{
+				return this._TimeStamp;
+			}
+			set
+			{
+				if ((this._TimeStamp != value))
+				{
+					this.OnTimeStampChanging(value);
+					this.SendPropertyChanging();
+					this._TimeStamp = value;
+					this.SendPropertyChanged("TimeStamp");
+					this.OnTimeStampChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BuySell", DbType="VarChar(4)")]
+		public string BuySell
+		{
+			get
+			{
+				return this._BuySell;
+			}
+			set
+			{
+				if ((this._BuySell != value))
+				{
+					this.OnBuySellChanging(value);
+					this.SendPropertyChanging();
+					this._BuySell = value;
+					this.SendPropertyChanged("BuySell");
+					this.OnBuySellChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reason", DbType="VarChar(50)")]
+		public string Reason
+		{
+			get
+			{
+				return this._Reason;
+			}
+			set
+			{
+				if ((this._Reason != value))
+				{
+					this.OnReasonChanging(value);
+					this.SendPropertyChanging();
+					this._Reason = value;
+					this.SendPropertyChanged("Reason");
+					this.OnReasonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Int")]
+		public System.Nullable<int> Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this.OnPriceChanging(value);
+					this.SendPropertyChanging();
+					this._Price = value;
+					this.SendPropertyChanged("Price");
+					this.OnPriceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="Int")]
+		public System.Nullable<int> Volume
+		{
+			get
+			{
+				return this._Volume;
+			}
+			set
+			{
+				if ((this._Volume != value))
+				{
+					this.OnVolumeChanging(value);
+					this.SendPropertyChanging();
+					this._Volume = value;
+					this.SendPropertyChanged("Volume");
+					this.OnVolumeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Trade_Profit", DbType="Int")]
+		public System.Nullable<int> Trade_Profit
+		{
+			get
+			{
+				return this._Trade_Profit;
+			}
+			set
+			{
+				if ((this._Trade_Profit != value))
+				{
+					this.OnTrade_ProfitChanging(value);
+					this.SendPropertyChanging();
+					this._Trade_Profit = value;
+					this.SendPropertyChanged("Trade_Profit");
+					this.OnTrade_ProfitChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -303,6 +531,116 @@ namespace NotifierWebService
 					this._BackColor = value;
 					this.SendPropertyChanged("BackColor");
 					this.OnBackColorChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Pieter.EmailList")]
+	public partial class EmailList : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Name;
+		
+		private string _Email;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    #endregion
+		
+		public EmailList()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
 				}
 			}
 		}

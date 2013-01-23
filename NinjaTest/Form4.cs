@@ -6,12 +6,13 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace NinjaTest
 {
     public partial class Form4 : Form
     {
-        private Luanch l = new Luanch();
+        private LuanchScalp l = new LuanchScalp();
         public Form4()
         {
             InitializeComponent();
@@ -21,6 +22,16 @@ namespace NinjaTest
         {
             l.RunSingleNEW();
             Close();
+        }
+
+        public void UpdatePos(string msg)
+        {
+            Debug.WriteLine(msg);
+        }
+
+        public void UpdateDisplay(string msg)
+        {
+            Debug.WriteLine(msg);
         }
     }
 }

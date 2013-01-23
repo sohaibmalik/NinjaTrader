@@ -19,8 +19,8 @@ public partial class _Default : System.Web.UI.Page
 
     protected void Button1_Click(object sender, EventArgs e)
     {
-        if (pswTextBox.Text.Length > 0)
-            service.SendCommand(AlsiService.Command.RestartPC);
+        if (pswTextBox.Text.Length > 0) ;
+           // service.SendCommand(AlsiService.Command.RestartPC);
     }
     protected void Button2_Click(object sender, EventArgs e)
     {
@@ -35,14 +35,15 @@ public partial class _Default : System.Web.UI.Page
 
         foreach (var m in mesg)
         {
-            if (m.Message == "AlsiTrade")
+            
+            if (m.Message_Custom == "AlsiTrade")
             {
                 alsiTradeLabel.Text = "Alsi Trade : " + m.TimeStamp.ToShortTimeString();
                 if (m.TimeStamp < DateTime.Now.AddMinutes(-2)) alsiTradeLabel.ForeColor = Color.Red;
                 else
                     alsiTradeLabel.ForeColor = Color.LightGreen;
             }
-            if (m.Message == "DataManager")
+            if (m.Message_Custom == "DataManager")
             {
                 dataManagerLabel.Text = "DataManager :  " + m.TimeStamp.ToShortTimeString();
                 if (m.TimeStamp < DateTime.Now.AddMinutes(-2)) dataManagerLabel.ForeColor = Color.Red;

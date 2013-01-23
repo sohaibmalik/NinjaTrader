@@ -32,5 +32,8 @@
     <Setting Name="OTS_INST" Type="System.String" Scope="User">
       <Value Profile="(Default)">FHD20 ALSI </Value>
     </Setting>
+    <Setting Name="Live_Start_Date" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2012-01-01</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

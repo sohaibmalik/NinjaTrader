@@ -37,7 +37,7 @@ namespace AlsiTrade_Backend
 
         void _UpdateStatus_Elapsed(object sender, ElapsedEventArgs e)
         {
-            service.ReportStatus();
+          service.ReportStatus();
         }
 
         private bool CheckBusinessDay()

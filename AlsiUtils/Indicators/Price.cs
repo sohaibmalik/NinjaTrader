@@ -2,7 +2,7 @@
 
 namespace AlsiUtils
 {
-    public class Price
+    public class Price:ICloneable
     {
 
         public DateTime TimeStamp { get; set; }
@@ -32,5 +32,12 @@ namespace AlsiUtils
 
 
 
+
+
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

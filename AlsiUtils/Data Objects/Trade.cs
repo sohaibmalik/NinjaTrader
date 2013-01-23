@@ -10,7 +10,9 @@ namespace AlsiUtils
     {
         public double TradedPrice { get; set; }
         public DateTime TimeStamp { get; set; }
+        public Trigger TradeTrigger { get; set; }
         public Trigger Reason { get; set; }
+        public Trade.Trigger TradeTriggerGeneral { get; set; }
         public int TradeVolume { get; set; }
         public BuySell BuyorSell { get; set; }
         public string Notes { get; set; }
@@ -26,7 +28,7 @@ namespace AlsiUtils
         public int TradeCount { get; set; }
         public AlsiUtils.Data_Objects.RegressionExt Extention { get; set; }
         public Price OHLC { get; set; }
-
+        public string xlRef { get; set; }
         public Trade()
         {
             Extention = new Data_Objects.RegressionExt();
@@ -46,6 +48,7 @@ namespace AlsiUtils
             None = 3,
         }
 
+     
         public enum Trigger
         {
             None,

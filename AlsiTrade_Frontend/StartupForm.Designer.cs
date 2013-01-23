@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartupForm));
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
@@ -45,6 +46,7 @@
             this.ClientSize = new System.Drawing.Size(355, 61);
             this.ControlBox = false;
             this.Controls.Add(this.progressBar1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "StartupForm";
             this.Text = "Loading...";
             this.Load += new System.EventHandler(this.StartupForm_Load);

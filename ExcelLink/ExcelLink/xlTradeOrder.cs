@@ -26,8 +26,14 @@ namespace ExcelLink
        public string Type { get; set; }
        public string Exchange { get; set; }
        public string Dealer { get; set; }
+       public string Reference { get; set; }
 
-    
+       public void GetReference()
+       {
+           Reference=BS.ToString()+Price.ToString()+DateTime.Now.Day.ToString();
+       }
+
+
        public enum orderStatus
        {
            Ready=1,

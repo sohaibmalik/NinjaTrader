@@ -12,14 +12,14 @@ namespace AlsiTrade_Backend
     public class RunCalcs
     {
 
-        public static List<Trade> RunEMAScalpLiveTrade(Parameter_EMA_Scalp Parameter, GlobalObjects.TimeInterval Interval)
+        public static List<Trade> RunEMAScalpLiveTrade(Parameter_EMA_Scalp Parameter,DateTime StartDate, GlobalObjects.TimeInterval Interval)
         {
-            DateTime s = DateTime.Now.AddDays(-300);
+          //  DateTime START = new DateTime(2012,06,02);//NB must be set periodically           
             DateTime e = DateTime.UtcNow.AddHours(5);
             UpdateDB.MergeTempWithHisto(Interval);
-            GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(Interval, AlsiUtils.DataBase.dataTable.Temp, s, e, false);
+            GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(Interval, AlsiUtils.DataBase.dataTable.Temp, StartDate, e, false);
             var sp = GlobalObjects.Points.First();
-            var l = GlobalObjects.Points.Last();
+            var l = GlobalObjects.Points.Last();            
             return AlsiUtils.Strategies.EMA_Scalp.EmaScalp(Parameter, GlobalObjects.Points, false);
 
         }

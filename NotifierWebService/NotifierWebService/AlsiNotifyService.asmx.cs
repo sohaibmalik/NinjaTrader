@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Web.Services;
 using ExcelLink;
 using System.Diagnostics;
+using System.Linq;
+using Communicator;
+
 namespace NotifierWebService
 {
     /// <summary>
@@ -51,7 +54,7 @@ namespace NotifierWebService
         [WebMethod]
         public xlTradeOrder getLastOrder()
         {
-            if (TradeUpdate.Orders.Count == 0) return null;
+            if (TradeUpdate.Orders.Count == 0) return null;          
             return TradeUpdate.Orders.FindLast(z => z.Contract != null);
         }
 
@@ -88,7 +91,11 @@ namespace NotifierWebService
         }
 
 
-
+        [WebMethod]
+        public void SendEmail(Communicator.EmailMsg Msg,bool AdminMail)
+        {
+            
+        }
 
     }
 }

@@ -2,16 +2,22 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="WebDb">
   <DataContextMoniker Name="/WebDbDataContext" />
   <nestedChildShapes>
-    <classShape Id="9875bebc-03ac-4430-b923-3c0a5561a823" absoluteBounds="1.875, 1.5, 2, 2.5401025390625">
-      <DataClassMoniker Name="/WebDbDataContext/WebTradeLog" />
+    <classShape Id="ae8aa87c-556b-4f89-8d9f-110f299725a5" absoluteBounds="0.75, 0.75, 2, 1.3862939453125">
+      <DataClassMoniker Name="/WebDbDataContext/EmailList" />
       <nestedChildShapes>
-        <elementListCompartment Id="11efb0c8-4970-4461-8af2-63965e7e1e09" absoluteBounds="1.8900000000000001, 1.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="06322226-0af8-486a-9b4c-26c4bb6bcb87" absoluteBounds="0.765, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="03578469-4364-423f-b0dc-5f941c104a66" absoluteBounds="6, 2.75, 2, 2.1554996744791666">
+    <classShape Id="9331ae8b-b1c0-4517-a05d-514a33e3ec67" absoluteBounds="0.75, 4.75, 2, 2.1554996744791666">
       <DataClassMoniker Name="/WebDbDataContext/TradeHistory" />
       <nestedChildShapes>
-        <elementListCompartment Id="15440f77-2a9c-403e-841a-ebf765b3c8cf" absoluteBounds="6.015, 3.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="1aae8e3a-c446-4bdc-ab9e-29f910a18b5f" absoluteBounds="0.765, 5.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d8fa4b2c-9984-4e7e-9071-42bb1595f767" absoluteBounds="4.75, 2.25, 2, 2.7324039713541666">
+      <DataClassMoniker Name="/WebDbDataContext/WebTradeLog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6f1a423f-f289-4549-b6d7-3b0c442d2d55" absoluteBounds="4.765, 2.71, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

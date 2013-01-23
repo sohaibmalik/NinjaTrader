@@ -1,9 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
-  <publishProfile publishUrl="C:\Users\Alsi\Dropbox\Alsi Trade App\WebService" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="AlsitmTemp" publishMethod="FileSystem" replaceMatchingFiles="False" userName="pieter1_ftp" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAmIPVwe6tvUS1a3h/j+X3zAAAAAACAAAAAAAQZgAAAAEAACAAAAB/c+dlLRfW0lgphKU+hRnNHVp2LUFY7SgBK6aUtfWiKQAAAAAOgAAAAAIAACAAAABQqVrIXvR+MHxm3aRNqrCIqxq/EHIQ5vCOq6DGaDlZyCAAAADIQC+1YZ4ysTSeYlxhEh0fXDhPHC+SB1l5pYXNF6WFtEAAAAAx3J3/DGVWsZEZ9+vezlYqqV91oDJGNkaQDrsL7QCXXoO4m2r96sI9pzhIe7FrV/TqhwCgvSZ8eNIpEelSnS3n" SelectedForPublish="True">
-    <file relUrl="bin/NotifierWebService.dll" publishTime="01/06/2013 18:18:29" />
-    <file relUrl="bin/NotifierWebService.pdb" publishTime="01/06/2013 18:18:29" />
-    <file relUrl="AlsiNotifyService.asmx" publishTime="11/28/2012 20:38:47" />
-    <file relUrl="Web.config" publishTime="01/06/2013 19:42:23" />
+  <publishProfile publishUrl="C:\Users\Pieter\Dropbox\Alsi Trade App\WebService" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="AlsitmTemp" publishMethod="FileSystem" replaceMatchingFiles="False" userName="pieter1_ftp" savePWD="True" userPWD="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAmIPVwe6tvUS1a3h/j+X3zAAAAAACAAAAAAAQZgAAAAEAACAAAAB/c+dlLRfW0lgphKU+hRnNHVp2LUFY7SgBK6aUtfWiKQAAAAAOgAAAAAIAACAAAABQqVrIXvR+MHxm3aRNqrCIqxq/EHIQ5vCOq6DGaDlZyCAAAADIQC+1YZ4ysTSeYlxhEh0fXDhPHC+SB1l5pYXNF6WFtEAAAAAx3J3/DGVWsZEZ9+vezlYqqV91oDJGNkaQDrsL7QCXXoO4m2r96sI9pzhIe7FrV/TqhwCgvSZ8eNIpEelSnS3n" SelectedForPublish="True">
+    <file relUrl="bin/NotifierWebService.dll" publishTime="01/18/2013 16:57:37" />
+    <file relUrl="bin/Communicator.xml" publishTime="01/18/2013 16:34:29" />
+    <file relUrl="AlsiNotifyService.asmx" publishTime="12/31/2012 13:21:30" />
+    <file relUrl="Web.config" publishTime="01/18/2013 17:12:01" />
+    <file relUrl="bin/Communicator.pdb" publishTime="01/18/2013 16:34:29" />
+    <file relUrl="bin/Communicator.dll" publishTime="01/18/2013 16:34:29" />
+    <file relUrl="bin/NotifierWebService.pdb" publishTime="01/18/2013 16:57:37" />
+    <file relUrl="bin/OpenPop.dll" publishTime="12/31/2012 13:21:30" />
   </publishProfile>
 </publishData>

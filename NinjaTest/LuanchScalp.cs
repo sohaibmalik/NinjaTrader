@@ -13,7 +13,7 @@ using AlsiTrade_Backend;
 
 namespace NinjaTest
 {
-    public class Luanch
+    public class LuanchScalp
     {
         private static Form3 form;
         private AlsiUtils.Statistics S;
@@ -21,18 +21,18 @@ namespace NinjaTest
         private static int takep = 0;
         private static int takel = 0;
         private static EmaSettings ema;
-        private AlsiUtils.Strategies.Parameter_EMA_Scalp E;
+        private AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp();
         
-        public Luanch(Form3 form4,EmaSettings emaSett)
+        public LuanchScalp(Form3 form3,EmaSettings emaSett)
         {
-            form = form4;
+            form = form3;
             S = new AlsiUtils.Statistics();
             S.OnStatsCaculated += new Statistics.StatsCalculated(S_OnStatsCaculated);
             E = new AlsiUtils.Strategies.Parameter_EMA_Scalp();
           ema=emaSett ;
         }
 
-        public Luanch()
+        public LuanchScalp()
         {
            
          
@@ -43,7 +43,7 @@ namespace NinjaTest
             string position = E.A_EMA1 + "-" + E.A_EMA2 + "     " + E.B_EMA1 + "-" + E.B_EMA2 + "      " + E.C_EMA + "\n" + e.SumStats.Total_Avg_PL;
             form.UpdatePos(position);
 
-            if (false)//(e.SumStats.Total_Avg_PL>15 || e.SumStats.Total_Avg_PL<-15)//(e.SumStats.TotalProfit > maxprof)
+            if (e.SumStats.Total_Avg_PL>10 || e.SumStats.Total_Avg_PL<-10)//(e.SumStats.TotalProfit > maxprof)
             {
                 //maxprof = e.SumStats.TotalProfit;
                 StringBuilder stat = new StringBuilder("");
@@ -83,11 +83,11 @@ namespace NinjaTest
                     E_B2 = E.B_EMA2,
                     E_C = E.C_EMA,
                     Period = 2012,
-                    CloseEndDay = "False",
+                    CloseEndDay = "True",
 
                 };
-                  //dc.tbl2Mins.InsertOnSubmit(tbl);
-                 //  dc.SubmitChanges();
+                  dc.tbl2Mins.InsertOnSubmit(tbl);
+                  dc.SubmitChanges();
             }
         }
 
@@ -132,7 +132,7 @@ namespace NinjaTest
             S.OnStatsCaculated += new AlsiUtils.Statistics.StatsCalculated(S_OnStatsCaculated);
             var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
 
-            Trades = S.CalcBasicTradeStats(Trades);
+            Trades = S.CalcBasicTradeStats_old(Trades);
             var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, Trades);
             NewTrades = S.CalcExpandedTradeStats(NewTrades);
 
@@ -152,11 +152,12 @@ namespace NinjaTest
             //  DateTime s = new DateTime(2006, 01, 01);
             //  DateTime e = new DateTime(2006, 12, 15);
 
-            DateTime s = new DateTime(2012, 12, 15);
+            DateTime s = new DateTime(2011, 12, 15);
             DateTime e = new DateTime(2013, 09, 29);
 
+          
 
-            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_2, AlsiUtils.DataBase.dataTable.MasterMinute,
+            var prices = AlsiUtils.DataBase.readDataFromDataBase(GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute,
                s, e, false);
             Debug.WriteLine("Start Date " + prices[0].TimeStamp);
 
@@ -165,30 +166,28 @@ namespace NinjaTest
 
             AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
             {
-                A_EMA1 = 16,
-                A_EMA2 = 17,
-                B_EMA1 = 43,
-                B_EMA2 = 45,
-                C_EMA = 52,
-                TakeProfit = 450,
-                StopLoss = -300,
-                CloseEndofDay = false,
+                A_EMA1 = 18,
+                A_EMA2 = 19,
+                B_EMA1 = 25,
+                B_EMA2 = 26,
+                C_EMA = 32,
+                TakeProfit = 25,
+                StopLoss = -25,
+                CloseEndofDay = true,
                 Period = prices.Count,
-
             };
 
-            AlsiUtils.Strategies.EmaSalp2.EmaScalp(E, prices, false);
-            ////takep = E.TakeProfit;
-            ////takel = E.StopLoss;
-            //AlsiUtils.Statistics S = new AlsiUtils.Statistics();
-            //S.OnStatsCaculated += new AlsiUtils.Statistics.StatsCalculated(S_OnStatsCaculated);
+           var Trades =AlsiUtils.Strategies.EmaSalp2.EmaScalp(E, prices, false);
+           S = new AlsiUtils.Statistics();
+           S.OnStatsCaculated += new AlsiUtils.Statistics.StatsCalculated(S_OnStatsCaculated);
+           
             //var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
 
-            //Trades = S.CalcBasicTradeStats(Trades);
-            //var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, Trades);
-            //NewTrades = S.CalcExpandedTradeStats(NewTrades);
+            Trades = S.CalcBasicTradeStats(Trades);
+           // var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(10, Trades);
+           // NewTrades = S.CalcExpandedTradeStats(NewTrades);
 
-            //// PrintTradesonly(NewTrades);
+            // PrintTradesonly(Trades);
 
 
         }
@@ -236,15 +235,17 @@ namespace NinjaTest
                                         B_EMA1 = a,
                                         B_EMA2 = b,
                                         C_EMA = z,
-                                        TakeProfit = 250,
-                                        StopLoss = -250,
-                                        CloseEndofDay = false,
+                                        TakeProfit = 1000,
+                                        StopLoss = -1000,
+                                        CloseEndofDay = true,
                                         Period = 2012,
                                     };
 
 
-                                    var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
+                                   // var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
+                                    var Trades = AlsiUtils.Strategies.EmaSalp2.EmaScalp(E, prices, false);
                                     if (Trades.Count != 0) S.CalcBasicTradeStats(Trades);
+                                    //if (Trades.Count != 0) S.CalcBasicTradeStats_old(Trades);
 
                                 }
                             }
@@ -298,7 +299,7 @@ namespace NinjaTest
             AlsiUtils.Statistics S = new AlsiUtils.Statistics();
             S.OnStatsCaculated += new AlsiUtils.Statistics.StatsCalculated(S_OnStatsCaculated);
             var Trades = AlsiUtils.Strategies.EMA_Scalp.EmaScalp(E, prices, false);
-            Trades = S.CalcBasicTradeStats(Trades);
+            Trades = S.CalcBasicTradeStats_old(Trades);
 
             var rr = Statistics.IntratradeToCandle(Trades);
             var RR = CompletedTrade.CreateList(rr);

@@ -85,6 +85,9 @@
     <Compile Include="Strategies\Strategy_SSPOP.cs" />
     <Compile Include="Strategies\TradeStrategy.cs" />
     <Compile Include="Strategies\TradeStrategy2.cs" />
+    <Compile Include="WebDb.cs">
+      <DependentUpon>WebDb.dbml</DependentUpon>
+    </Compile>
     <Compile Include="WebDb.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -33,6 +33,11 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.settingsTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button2 = new System.Windows.Forms.Button();
+            this.liveStartGroupBox = new System.Windows.Forms.GroupBox();
+            this.liveStartTimePicker = new System.Windows.Forms.DateTimePicker();
             this.button1 = new System.Windows.Forms.Button();
             this.tradeLogGroupBox = new System.Windows.Forms.GroupBox();
             this.tradelogOnlyTradesCheckBox = new System.Windows.Forms.CheckBox();
@@ -94,6 +99,22 @@
             this.TableMastrMinRadioButton = new System.Windows.Forms.RadioButton();
             this.LoadDBPrices = new System.Windows.Forms.Button();
             this.VieDBNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.userPictureBox = new System.Windows.Forms.PictureBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.emailListBox = new System.Windows.Forms.ListBox();
+            this.emailTextBox = new System.Windows.Forms.TextBox();
+            this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.removeEmailButton = new System.Windows.Forms.Button();
+            this.addEmailButton = new System.Windows.Forms.Button();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.clearTradeHistoryWebCheckBox = new System.Windows.Forms.CheckBox();
+            this.clearDbButton = new System.Windows.Forms.Button();
+            this.clearTradeLogWebCheckBox = new System.Windows.Forms.CheckBox();
+            this.clearTradeLogLocalCheckBox = new System.Windows.Forms.CheckBox();
+            this.clearEmailListCheckBox = new System.Windows.Forms.CheckBox();
             this.dataTabControl = new System.Windows.Forms.TabControl();
             this.liveTradesTabPage = new System.Windows.Forms.TabPage();
             this.liveTradeListView = new System.Windows.Forms.ListView();
@@ -117,6 +138,7 @@
             this.splitContainer1.SuspendLayout();
             this.settingsTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.liveStartGroupBox.SuspendLayout();
             this.tradeLogGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTradeLogNumericUpDown)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -130,6 +152,11 @@
             this.tabPage4.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VieDBNumericUpDown)).BeginInit();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.userPictureBox)).BeginInit();
+            this.tabPage6.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.dataTabControl.SuspendLayout();
             this.liveTradesTabPage.SuspendLayout();
             this.historicalTradesTabPage.SuspendLayout();
@@ -163,6 +190,8 @@
             this.settingsTabControl.Controls.Add(this.tabPage1);
             this.settingsTabControl.Controls.Add(this.tabPage2);
             this.settingsTabControl.Controls.Add(this.tabPage4);
+            this.settingsTabControl.Controls.Add(this.tabPage5);
+            this.settingsTabControl.Controls.Add(this.tabPage6);
             this.settingsTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.settingsTabControl.Location = new System.Drawing.Point(0, 0);
             this.settingsTabControl.Name = "settingsTabControl";
@@ -173,6 +202,10 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.comboBox2);
+            this.tabPage1.Controls.Add(this.comboBox1);
+            this.tabPage1.Controls.Add(this.button2);
+            this.tabPage1.Controls.Add(this.liveStartGroupBox);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.tradeLogGroupBox);
             this.tabPage1.Controls.Add(this.groupBox1);
@@ -186,14 +219,62 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // comboBox2
+            // 
+            this.comboBox2.BackColor = System.Drawing.Color.LimeGreen;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(259, 275);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(67, 23);
+            this.comboBox2.TabIndex = 28;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.BackColor = System.Drawing.Color.LimeGreen;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(234, 246);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(92, 23);
+            this.comboBox1.TabIndex = 27;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.LimeGreen;
+            this.button2.Location = new System.Drawing.Point(251, 216);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 26;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // liveStartGroupBox
+            // 
+            this.liveStartGroupBox.Controls.Add(this.liveStartTimePicker);
+            this.liveStartGroupBox.Location = new System.Drawing.Point(113, 129);
+            this.liveStartGroupBox.Name = "liveStartGroupBox";
+            this.liveStartGroupBox.Size = new System.Drawing.Size(213, 54);
+            this.liveStartGroupBox.TabIndex = 25;
+            this.liveStartGroupBox.TabStop = false;
+            this.liveStartGroupBox.Text = "Live Start Point";
+            // 
+            // liveStartTimePicker
+            // 
+            this.liveStartTimePicker.Location = new System.Drawing.Point(6, 19);
+            this.liveStartTimePicker.Name = "liveStartTimePicker";
+            this.liveStartTimePicker.Size = new System.Drawing.Size(200, 23);
+            this.liveStartTimePicker.TabIndex = 0;
+            this.liveStartTimePicker.ValueChanged += new System.EventHandler(this.liveStartTimePicker_ValueChanged);
+            // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.Color.LimeGreen;
             this.button1.Location = new System.Drawing.Point(251, 26);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 24;
             this.button1.Text = "test";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // tradeLogGroupBox
@@ -501,10 +582,10 @@
             this.tabPage2.Controls.Add(this.timeframeGroupBox);
             this.tabPage2.Controls.Add(this.timespanGroupBox);
             this.tabPage2.Controls.Add(this.runHistCalcButton);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(346, 464);
+            this.tabPage2.Size = new System.Drawing.Size(346, 466);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -571,7 +652,7 @@
             this.orderDetailGroupBox.Controls.Add(this.fullTradesRadioButton);
             this.orderDetailGroupBox.Location = new System.Drawing.Point(9, 264);
             this.orderDetailGroupBox.Name = "orderDetailGroupBox";
-            this.orderDetailGroupBox.Size = new System.Drawing.Size(129, 74);
+            this.orderDetailGroupBox.Size = new System.Drawing.Size(139, 74);
             this.orderDetailGroupBox.TabIndex = 9;
             this.orderDetailGroupBox.TabStop = false;
             this.orderDetailGroupBox.Text = "Detail";
@@ -585,6 +666,7 @@
             this.onlyTradesRadioButton.TabIndex = 1;
             this.onlyTradesRadioButton.Text = "Trades Only";
             this.onlyTradesRadioButton.UseVisualStyleBackColor = true;
+            this.onlyTradesRadioButton.CheckedChanged += new System.EventHandler(this.onlyTradesRadioButton_CheckedChanged);
             // 
             // fullTradesRadioButton
             // 
@@ -597,6 +679,7 @@
             this.fullTradesRadioButton.TabStop = true;
             this.fullTradesRadioButton.Text = "Full Details";
             this.fullTradesRadioButton.UseVisualStyleBackColor = true;
+            this.fullTradesRadioButton.CheckedChanged += new System.EventHandler(this.fullTradesRadioButton_CheckedChanged);
             // 
             // timeframeGroupBox
             // 
@@ -605,7 +688,7 @@
             this.timeframeGroupBox.Controls.Add(this._2minRadioButton);
             this.timeframeGroupBox.Location = new System.Drawing.Point(8, 154);
             this.timeframeGroupBox.Name = "timeframeGroupBox";
-            this.timeframeGroupBox.Size = new System.Drawing.Size(130, 103);
+            this.timeframeGroupBox.Size = new System.Drawing.Size(140, 103);
             this.timeframeGroupBox.TabIndex = 8;
             this.timeframeGroupBox.TabStop = false;
             this.timeframeGroupBox.Text = "Timeframe";
@@ -840,6 +923,172 @@
             0,
             0});
             // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.pictureBox1);
+            this.tabPage5.Controls.Add(this.userPictureBox);
+            this.tabPage5.Controls.Add(this.label13);
+            this.tabPage5.Controls.Add(this.emailListBox);
+            this.tabPage5.Controls.Add(this.emailTextBox);
+            this.tabPage5.Controls.Add(this.nameTextBox);
+            this.tabPage5.Controls.Add(this.removeEmailButton);
+            this.tabPage5.Controls.Add(this.addEmailButton);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(346, 466);
+            this.tabPage5.TabIndex = 3;
+            this.tabPage5.Text = "tabPage5";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(6, 228);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 8;
+            this.pictureBox1.TabStop = false;
+            // 
+            // userPictureBox
+            // 
+            this.userPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("userPictureBox.Image")));
+            this.userPictureBox.Location = new System.Drawing.Point(6, 197);
+            this.userPictureBox.Name = "userPictureBox";
+            this.userPictureBox.Size = new System.Drawing.Size(25, 25);
+            this.userPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.userPictureBox.TabIndex = 7;
+            this.userPictureBox.TabStop = false;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(34, 33);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(57, 15);
+            this.label13.TabIndex = 6;
+            this.label13.Text = "Email List";
+            // 
+            // emailListBox
+            // 
+            this.emailListBox.FormattingEnabled = true;
+            this.emailListBox.ItemHeight = 15;
+            this.emailListBox.Location = new System.Drawing.Point(34, 52);
+            this.emailListBox.Name = "emailListBox";
+            this.emailListBox.Size = new System.Drawing.Size(156, 139);
+            this.emailListBox.TabIndex = 5;
+            this.emailListBox.SelectedValueChanged += new System.EventHandler(this.emailListBox_SelectedValueChanged);
+            // 
+            // emailTextBox
+            // 
+            this.emailTextBox.Location = new System.Drawing.Point(34, 226);
+            this.emailTextBox.Name = "emailTextBox";
+            this.emailTextBox.Size = new System.Drawing.Size(156, 23);
+            this.emailTextBox.TabIndex = 4;
+            // 
+            // nameTextBox
+            // 
+            this.nameTextBox.Location = new System.Drawing.Point(34, 197);
+            this.nameTextBox.Name = "nameTextBox";
+            this.nameTextBox.Size = new System.Drawing.Size(156, 23);
+            this.nameTextBox.TabIndex = 3;
+            // 
+            // removeEmailButton
+            // 
+            this.removeEmailButton.Location = new System.Drawing.Point(196, 52);
+            this.removeEmailButton.Name = "removeEmailButton";
+            this.removeEmailButton.Size = new System.Drawing.Size(27, 23);
+            this.removeEmailButton.TabIndex = 1;
+            this.removeEmailButton.Text = "-";
+            this.removeEmailButton.UseVisualStyleBackColor = true;
+            this.removeEmailButton.Click += new System.EventHandler(this.removeEmailButton_Click);
+            // 
+            // addEmailButton
+            // 
+            this.addEmailButton.Location = new System.Drawing.Point(195, 226);
+            this.addEmailButton.Name = "addEmailButton";
+            this.addEmailButton.Size = new System.Drawing.Size(28, 23);
+            this.addEmailButton.TabIndex = 0;
+            this.addEmailButton.Text = "+";
+            this.addEmailButton.UseVisualStyleBackColor = true;
+            this.addEmailButton.Click += new System.EventHandler(this.addEmailButton_Click);
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.groupBox3);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(346, 466);
+            this.tabPage6.TabIndex = 4;
+            this.tabPage6.Text = "tabPage6";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.clearTradeHistoryWebCheckBox);
+            this.groupBox3.Controls.Add(this.clearDbButton);
+            this.groupBox3.Controls.Add(this.clearTradeLogWebCheckBox);
+            this.groupBox3.Controls.Add(this.clearTradeLogLocalCheckBox);
+            this.groupBox3.Controls.Add(this.clearEmailListCheckBox);
+            this.groupBox3.Location = new System.Drawing.Point(8, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(200, 195);
+            this.groupBox3.TabIndex = 1;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Clear Lists";
+            // 
+            // clearTradeHistoryWebCheckBox
+            // 
+            this.clearTradeHistoryWebCheckBox.AutoSize = true;
+            this.clearTradeHistoryWebCheckBox.Location = new System.Drawing.Point(6, 116);
+            this.clearTradeHistoryWebCheckBox.Name = "clearTradeHistoryWebCheckBox";
+            this.clearTradeHistoryWebCheckBox.Size = new System.Drawing.Size(118, 17);
+            this.clearTradeHistoryWebCheckBox.TabIndex = 3;
+            this.clearTradeHistoryWebCheckBox.Text = "TradeHistory - Web";
+            this.clearTradeHistoryWebCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // clearDbButton
+            // 
+            this.clearDbButton.Location = new System.Drawing.Point(8, 166);
+            this.clearDbButton.Name = "clearDbButton";
+            this.clearDbButton.Size = new System.Drawing.Size(75, 23);
+            this.clearDbButton.TabIndex = 0;
+            this.clearDbButton.Text = "Clear";
+            this.clearDbButton.UseVisualStyleBackColor = true;
+            this.clearDbButton.Click += new System.EventHandler(this.clearDbButton_Click);
+            // 
+            // clearTradeLogWebCheckBox
+            // 
+            this.clearTradeLogWebCheckBox.AutoSize = true;
+            this.clearTradeLogWebCheckBox.Location = new System.Drawing.Point(7, 91);
+            this.clearTradeLogWebCheckBox.Name = "clearTradeLogWebCheckBox";
+            this.clearTradeLogWebCheckBox.Size = new System.Drawing.Size(100, 17);
+            this.clearTradeLogWebCheckBox.TabIndex = 2;
+            this.clearTradeLogWebCheckBox.Text = "Tradelog - Web";
+            this.clearTradeLogWebCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // clearTradeLogLocalCheckBox
+            // 
+            this.clearTradeLogLocalCheckBox.AutoSize = true;
+            this.clearTradeLogLocalCheckBox.Location = new System.Drawing.Point(7, 65);
+            this.clearTradeLogLocalCheckBox.Name = "clearTradeLogLocalCheckBox";
+            this.clearTradeLogLocalCheckBox.Size = new System.Drawing.Size(103, 17);
+            this.clearTradeLogLocalCheckBox.TabIndex = 1;
+            this.clearTradeLogLocalCheckBox.Text = "Tradelog - Local";
+            this.clearTradeLogLocalCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // clearEmailListCheckBox
+            // 
+            this.clearEmailListCheckBox.AutoSize = true;
+            this.clearEmailListCheckBox.Location = new System.Drawing.Point(7, 40);
+            this.clearEmailListCheckBox.Name = "clearEmailListCheckBox";
+            this.clearEmailListCheckBox.Size = new System.Drawing.Size(70, 17);
+            this.clearEmailListCheckBox.TabIndex = 0;
+            this.clearEmailListCheckBox.Text = "Email List";
+            this.clearEmailListCheckBox.UseVisualStyleBackColor = true;
+            // 
             // dataTabControl
             // 
             this.dataTabControl.Controls.Add(this.liveTradesTabPage);
@@ -1001,9 +1250,11 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Trade Terminal";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -1011,6 +1262,7 @@
             this.splitContainer1.ResumeLayout(false);
             this.settingsTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.liveStartGroupBox.ResumeLayout(false);
             this.tradeLogGroupBox.ResumeLayout(false);
             this.tradeLogGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTradeLogNumericUpDown)).EndInit();
@@ -1032,6 +1284,13 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VieDBNumericUpDown)).EndInit();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.userPictureBox)).EndInit();
+            this.tabPage6.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.dataTabControl.ResumeLayout(false);
             this.liveTradesTabPage.ResumeLayout(false);
             this.historicalTradesTabPage.ResumeLayout(false);
@@ -1128,6 +1387,27 @@
         private System.Windows.Forms.ColumnHeader columnNote;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button synchWebTradesButton;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ListBox emailListBox;
+        private System.Windows.Forms.TextBox emailTextBox;
+        private System.Windows.Forms.TextBox nameTextBox;
+        private System.Windows.Forms.Button removeEmailButton;
+        private System.Windows.Forms.Button addEmailButton;
+        private System.Windows.Forms.GroupBox liveStartGroupBox;
+        private System.Windows.Forms.DateTimePicker liveStartTimePicker;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox clearEmailListCheckBox;
+        private System.Windows.Forms.Button clearDbButton;
+        private System.Windows.Forms.CheckBox clearTradeLogWebCheckBox;
+        private System.Windows.Forms.CheckBox clearTradeLogLocalCheckBox;
+        private System.Windows.Forms.CheckBox clearTradeHistoryWebCheckBox;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox userPictureBox;
         
     }
 }

@@ -33,6 +33,8 @@
         <br />
         <br />
         <a href="ChartForm.aspx">ChartForm.aspx</a><br />
+        <a href="Trades.aspx">Trades.aspx</a><br />
+        <br />
         <br />
         <br />
         <br />

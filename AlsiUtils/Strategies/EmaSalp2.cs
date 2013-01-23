@@ -109,9 +109,11 @@ namespace AlsiUtils.Strategies
                     TimeStamp = _T[x].TimeStamp,
                     TotalPL = _T[x].TotalProfit,
                     TradedPrice = _T[x].Price_Close,
-                    Reason = _T[x].TradeTrigger,
+                    Reason = _T[x].TradeTrigger ,
+                    TradeTrigger=_T[x].ActualTrade,
+                    TradeTriggerGeneral=_T[x].TradeTriggerGeneral,
                     CurrentPrice = _T[x].Price_Close,
-                    TradeVolume = GetVolume(_T[x]),
+                    TradeVolume = GetVolume(_T[x]),                    
                     IndicatorNotes = "A1:" + Math.Round(A_1[x].Ema, 2) + "  A2:" + Math.Round(A_6[x].Ema, 2) + "  B1:" + Math.Round(B_1[x].Ema, 2) + "  B2:" + Math.Round(B_6[x].Ema, 2) + "  C:" + Math.Round(E1[x].Ema, 2)
 
                 };
@@ -159,7 +161,6 @@ namespace AlsiUtils.Strategies
 
           
         }
-
 
         public static void CalcTriggersOpen(List<TradeStrategy2> strategy, int x)
         {

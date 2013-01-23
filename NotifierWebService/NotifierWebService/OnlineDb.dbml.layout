@@ -2,10 +2,22 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="OnlineDb">
   <DataContextMoniker Name="/OnlineDbDataContext" />
   <nestedChildShapes>
-    <classShape Id="a948eef0-0317-48d0-93b6-430c7a8edb91" absoluteBounds="0.625, 0.75, 2, 2.5401025390625">
+    <classShape Id="7d0b38dc-30de-4401-a70b-53da41275f65" absoluteBounds="0.75, 0.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/OnlineDbDataContext/TradeHistory" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d7604e08-eb9e-4938-8522-301c0458c336" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2da0d1ca-3834-41a5-9f21-6ce99f432314" absoluteBounds="3.75, 0.75, 2, 2.5401025390625005">
       <DataClassMoniker Name="/OnlineDbDataContext/TradeLog" />
       <nestedChildShapes>
-        <elementListCompartment Id="1488aaa5-3ffd-4426-9960-4ac6b26ddb84" absoluteBounds="0.64000000000000012, 1.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="b85e3009-4f30-4ab2-b4c9-a50e9220ccfe" absoluteBounds="3.765, 1.21, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="92d1e735-3c61-4d5b-a5e7-9e2777686ccf" absoluteBounds="0.75, 4.75, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/OnlineDbDataContext/EmailList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="91e01870-3fc0-48c5-a0d2-8300cb9ce846" absoluteBounds="0.765, 5.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

@@ -1,5 +1,6 @@
 ﻿using System.Windows.Forms;
 using AlsiUtils.Strategies;
+using System;
 
 
 namespace NinjaTest
@@ -25,7 +26,11 @@ namespace NinjaTest
 
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
-        //    var prices = AlsiUtils.DataBase.readDataFromDataBase_10_MIN_MasterMinute(10000, false);
+
+            DateTime s = new DateTime(2012, 12, 1);
+            DateTime e = new DateTime(2013, 12, 29);
+
+            var prices = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.Data_Objects.GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute, s, e, false);
 
             AlsiUtils.Strategies.Parameter_SS_RSI p = new AlsiUtils.Strategies.Parameter_SS_RSI();
             p.Close_20 = 15;
@@ -68,8 +73,8 @@ namespace NinjaTest
                                         p.RSI_CloseLong = cL;
                                         p.RSI_CloseShort = cS;
                                       //  Db(Startegy_SSPOP_RSI.SsPopStrategy(p, prices), p);
-
-
+                                        AlsiUtils.Strategies.Startegy_SSPOP_RSI.SsPopStrategy(p, prices);
+                                        Close();
                                     }
                                 }
                             }
@@ -134,10 +139,7 @@ namespace NinjaTest
 
         }
 
-        private void Form1_Load(object sender, System.EventArgs e)
-        {
-
-        }
+       
 
 
 
@@ -157,10 +159,18 @@ namespace NinjaTest
             BW.RunWorkerAsync();
         }
 
-        private void button1_Click(object sender, System.EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-
+            maStart.Value = 10;
+            maEnd.Value = 20;
+            rsiStart.Value = 8;
+            rsiEnd.Value = 12;
+            ma2Start.Value = 12;
+            ma2End.Value = 15;
+            BW.RunWorkerAsync();
         }
+
+       
 
 
 

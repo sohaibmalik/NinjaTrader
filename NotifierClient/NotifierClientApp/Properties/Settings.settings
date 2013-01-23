@@ -14,5 +14,8 @@
     <Setting Name="NotifierClientApp_AlsiWebService_AlsiNotifyService" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://alsitm.com/AlsiNotifyService.asmx</Value>
     </Setting>
+    <Setting Name="NotifierClientApp_AlsiWebService_L_AlsiNotifyService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://localhost:4979/AlsiNotifyService.asmx</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

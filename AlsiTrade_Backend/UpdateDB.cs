@@ -182,7 +182,13 @@ namespace AlsiTrade_Backend
 
         }
 
-
+        public static void ClearTradeLog()
+        {
+            var dc = new AlsiDBDataContext();
+            var delAll = dc.TradeLogs;
+            dc.TradeLogs.DeleteAllOnSubmit(delAll);
+            dc.SubmitChanges();
+        }
 
     }
 }

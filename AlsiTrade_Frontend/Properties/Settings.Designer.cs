@@ -142,5 +142,17 @@ namespace FrontEnd.Properties {
                 this["OTS_INST"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2012-01-01")]
+        public global::System.DateTime Live_Start_Date {
+            get {
+                return ((global::System.DateTime)(this["Live_Start_Date"]));
+            }
+            set {
+                this["Live_Start_Date"] = value;
+            }
+        }
     }
 }

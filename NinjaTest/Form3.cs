@@ -15,7 +15,7 @@ namespace NinjaTest
 {
     public partial class Form3 : Form
     {
-        Luanch luanch;
+        LuanchScalp luanch;
         EmaSettings ema;
         public Form3()
         {
@@ -74,8 +74,9 @@ namespace NinjaTest
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            luanch = new Luanch(this, ema);
+            luanch = new LuanchScalp(this, ema);
             luanch.RunMultiple();
+            //luanch.RunSingleNEW();
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)

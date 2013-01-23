@@ -30,6 +30,9 @@ namespace NotifierClientApp
 
         private void updateFromWeb(AlsiWebService.xlTradeOrder order)
         {
+            Debug.WriteLine("-------------------------------------------------------");
+            Debug.WriteLine(order.Timestamp + "  " + order.Price + "  " + order.Status);
+            Debug.WriteLine("-------------------------------------------------------");
             ListViewItem lvi = new ListViewItem(order.Timestamp.ToLongTimeString());
             lvi.Tag = order;
             lvi.SubItems.Add(order.Contract);
@@ -92,16 +95,14 @@ namespace NotifierClientApp
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.DarkOrange;
                     if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "New Order!");
-                    //Debug.WriteLine(_alertAcknowledged.TimeOfDay + " ACKNOWLEDGE");
-                    //Debug.WriteLine(ordertime.TimeOfDay + " ORDER");
+                
                 }
                 if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed)
                 {
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.LightGreen;
                     if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "Order Matched!");
-                    // Debug.WriteLine(_alertAcknowledged.TimeOfDay + " ----ACKNOWLEDGE");
-                    // Debug.WriteLine(ordertime.TimeOfDay + " ----ORDER");
+                   
                 }
             }
 
@@ -113,8 +114,10 @@ namespace NotifierClientApp
             {
                 var allOrders = service.getAllOrders();
                 ordersListView.Items.Clear();
-                if (allOrders.Count() > 0)
-                    foreach (var o in allOrders) updateFromWeb(o);
+                foreach (var v in allOrders)
+                    if (allOrders.Count() > 0)
+                        foreach (var o in allOrders) updateFromWeb(o);
+             
             }
             catch (Exception ex)
             {
@@ -122,6 +125,7 @@ namespace NotifierClientApp
             }
 
         }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             _StatusUpdate = Properties.Settings.Default.StatusUpdateInt;
@@ -159,9 +163,9 @@ namespace NotifierClientApp
         {
             try
             {
-                var o = service.getLastOrder();
+                var o = service.getLastOrder();              
                 if (o != null) updateFromWeb(o);
-                Debug.WriteLine("rrrrrrr" + o.Contract);
+              
             }
             catch (Exception ex)
             {
@@ -279,7 +283,7 @@ namespace NotifierClientApp
             var n = DateTime.UtcNow.AddHours(2);
             var b = service.getLastMessage();
             if (b.Message == AlsiWebService.Messages.isAlive) _app1LastUpdate = b.TimeStamp;          
-            Debug.WriteLine("Appupdate" + b.TimeStamp + "  " + b.Message);
+            Debug.WriteLine("Appupdate " + b.TimeStamp + "  " + b.Message);
             var check1 = _app1LastUpdate.AddSeconds(Properties.Settings.Default.StatusDelayInt);          
 
             if (check1 > n)

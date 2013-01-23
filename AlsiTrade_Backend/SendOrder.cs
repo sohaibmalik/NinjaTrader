@@ -60,6 +60,8 @@ namespace AlsiTrade_Backend
                 TradedPrice = et.Price,
                 TradeVolume = et.Volume,
                 BuyorSell = et.BS,
+                InstrumentName=et.Contract,
+                xlRef=et.Reference,
 
             };
             OrderMatchEvent ome = new OrderMatchEvent();

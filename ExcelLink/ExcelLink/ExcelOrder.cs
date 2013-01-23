@@ -80,6 +80,7 @@ namespace ExcelLink
             Order.Volume = (int)xlSheet.Cells[lastUsedRow, 3].Value;
             Order.Price = (long)xlSheet.Cells[lastUsedRow, 4].Value;
             Order.Status = StringToOrder(xlSheet.Cells[lastUsedRow, 12].Value);
+            Order.GetReference();
             return Order;
         }
 
@@ -102,6 +103,7 @@ namespace ExcelLink
                 order.Volume = (int)xlSheet.Cells[x, 3].Value;
                 order.Price = (long)xlSheet.Cells[x, 4].Value;
                 order.Status = StringToOrder(xlSheet.Cells[x, 12].Value);
+                order.GetReference();
                 Orders.Add(order);
 
             }
@@ -133,7 +135,7 @@ namespace ExcelLink
             {
                 OrderMatchEventArgs match = new OrderMatchEventArgs();
                 _lastOrderMatched = true;                
-                match.Order = _lastOrder;                
+                match.Order = _lastOrder;              
                 onMatch(this, match);
                 _timer.Stop();
                 

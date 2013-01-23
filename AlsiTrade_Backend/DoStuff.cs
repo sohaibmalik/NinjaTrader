@@ -14,6 +14,7 @@ using Communicator;
 using System.ComponentModel;
 using AlsiUtils.Data_Objects;
 using AlsiUtils.Strategies;
+
 namespace AlsiTrade_Backend
 {
 
@@ -22,18 +23,70 @@ namespace AlsiTrade_Backend
         public class GetDataFromTick
         {
 
-            public static void DoYourThing(string Instrument)
+            public static void DoYourThing_absoluut(string Instrument)
             {
                 var webMinData = HiSat.HistData.GetHistoricalMINUTE_FromWEB(DateTime.Now.AddDays(-10), DateTime.Now, 1, Instrument);
-                webMinData.Remove(webMinData.Last());
+                var webMinDataOriginal = new List<Price>();
+                foreach (var t in webMinData)
+                {
+                    Price p = (Price)t.Clone();
+                    webMinDataOriginal.Add(p);
+                }
+
+                //get last price from web
+                var L = webMinData.Last();
+                Debug.WriteLine("Remove LAST Price from WebData" + L.TimeStamp + "   " + L.Close);
+
+
+                //remove last price if there was a trade since update started
+                Price pt = (Price)L.Clone();
+                pt.Close = 33333;
+                pt.TimeStamp = pt.TimeStamp.AddMinutes(1);
+                webMinData.Add(pt);
+
+
+                //check price
+                if (GetTimestampForPrice(webMinData.Last()))
+                    webMinData.Remove(L); 
+
+
+
+                var l = webMinData.Last();
+                Debug.WriteLine("New LAST Price from WebData " + l.TimeStamp + "   " + l.Close);
+
+                var Loriginal = webMinDataOriginal.Last();
+                Debug.WriteLine("New LAST Price from Original " + Loriginal.TimeStamp + "   " + Loriginal.Close);
+
+
+
                 var dc = new AlsiUtils.AlsiDBDataContext();
-                var lastData = webMinData.Last().TimeStamp;
-                Debug.WriteLine(lastData);
                 var TickData = dc.RawTicks.ToList().Where(z => z.Stamp >= webMinData.Last().TimeStamp).ToList();
+
+
                 foreach (var v in convertTickToMinute(TickData))
-                    if (v.TimeStamp > lastData) webMinData.Add(v);
+                    if (v.TimeStamp > l.TimeStamp)
+                    {
+                        // webMinData.Add(v);
+                        // Debug.WriteLine("Adding New Price " + v.TimeStamp + "   " + l.Close);
+                    }
 
                 UpdateDB._1MinDataToImportMinute(webMinData);
+            }
+
+            public static List<Trade> DoYourThing(string Instrument,Parameter_EMA_Scalp Param,DateTime StartPeriod)
+            {              
+                Statistics _Stats = new Statistics();
+                GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
+                DataBase.dataTable dt = DataBase.dataTable.MasterMinute;
+                var _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(Param, t, false, StartPeriod, DateTime.Now.AddHours(5), dt);
+                var _trades = _Stats.CalcBasicTradeStats_old(_tempTradeList);
+                return _trades;                          
+            }
+
+            private static bool GetTimestampForPrice(Price price)
+            {
+                if (price.TimeStamp >= DateTime.Now.AddSeconds(-DateTime.Now.Second)) return true;
+                return false;
             }
 
             private static List<Price> convertTickToMinute(List<RawTick> TickData)
@@ -178,7 +231,21 @@ namespace AlsiTrade_Backend
 
         }
 
+        public static DateTime GetAlgoTime()
+        {
+            var dt = DateTime.UtcNow.AddHours(2);
+            int _5min = (dt.Minute) % 5;
+            int _1min = dt.Minute % 10;
+            var _temin = dt.AddMinutes(-_1min).AddSeconds(-dt.Second);
 
+            int m = 0;
+            if (_5min == 0) m = dt.Minute - 5;
+            else
+                m = dt.Minute - 5 - _5min;
+
+            dt = dt.AddMinutes(-dt.Minute).AddMinutes(m).AddSeconds(-dt.Second);
+            return dt;
+        }
 
         public static void ExportToText(List<Trade> Trades)
         {
@@ -258,7 +325,7 @@ namespace AlsiTrade_Backend
             var dt = DataBase.dataTable.MasterMinute;
 
             var _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(Parameter, t, true, DateTime.Now.AddMonths(-1), DateTime.Now.AddHours(12), dt);
-            var _trades = _Stats.CalcBasicTradeStats(_tempTradeList);
+            var _trades = _Stats.CalcBasicTradeStats_old(_tempTradeList);
             _trades.Reverse();
 
             return _trades[0];
@@ -266,22 +333,19 @@ namespace AlsiTrade_Backend
 
         public static Trade Apply2ndAlgoVolume(List<Trade> Trades)
         {
-            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, Trades);          
+            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, Trades);
             var last = Trades.Last();
             var a2l = NewTrades.Last();//Algo2nd_LastOrder
 
-            //var CurrentTrade = Trades.Last();
-            //foreach (var t in NewTrades.Where(z => z.CloseTrade.TimeStamp > DateTime.Now.AddDays(-10)))
-            //{
-            //    Debug.WriteLine("Open " + t.OpenTrade.TimeStamp + "  reason " + t.OpenTrade.Reason  + "  " + t.OpenTrade.TradedPrice);
-            //    Debug.WriteLine("Close " + t.CloseTrade.TimeStamp + "  reason " + t.CloseTrade.Reason + "  " + t.CloseTrade.TradedPrice);
-            //    Debug.WriteLine("--------------------------------------------------------------------------");
-            //}
-            //foreach (var t in CompletedTrade.CreateList(NewTrades).Where(z => z.TimeStamp > DateTime.Now.AddDays(-10)))
-            //{
-            //    Debug.WriteLine(t.TimeStamp + "  reason " + t.Reason + " " + t.TradedPrice );
-            //}
-            
+            var CurrentTrade = Trades.Last();
+            foreach (var t in NewTrades.Where(z => z.CloseTrade.TimeStamp > DateTime.Now.AddDays(-10)))
+            {
+                Debug.WriteLine("Open " + t.OpenTrade.TimeStamp + "  reason " + t.OpenTrade.Reason + "  " + t.OpenTrade.TradedPrice);
+                Debug.WriteLine("Close " + t.CloseTrade.TimeStamp + "  reason " + t.CloseTrade.Reason + "  " + t.CloseTrade.TradedPrice);
+                Debug.WriteLine("--------------------------------------------------------------------------");
+            }
+
+
             if (a2l.OpenTrade.TimeStamp == last.TimeStamp) return a2l.OpenTrade;
             if (a2l.CloseTrade.TimeStamp == last.TimeStamp) return a2l.CloseTrade;
             return last;
@@ -289,13 +353,17 @@ namespace AlsiTrade_Backend
 
         public class Email
         {
+
             private static Trade _EmailTrade;
             private static EmailMsg _Msg;
             private static BackgroundWorker BW;
-            public static void SendEmail(Trade trade, EmailMsg Msg)
+            private static bool _Admin;
+
+            public static void SendEmail(Trade trade, EmailMsg Msg, bool AdminEmail)
             {
                 _Msg = Msg;
                 _EmailTrade = trade;
+                _Admin = AdminEmail;
                 BW = new BackgroundWorker();
                 BW.DoWork += new DoWorkEventHandler(BW_DoWork);
                 BW.RunWorkerAsync();
@@ -303,14 +371,19 @@ namespace AlsiTrade_Backend
 
             static void BW_DoWork(object sender, DoWorkEventArgs e)
             {
-                SendMail();
+                var dc = new WebDbDataContext();
+
+                List<string> emails = dc.EmailLists.Select(z => z.Email).ToList();
+
+                if (_Admin) Communicator.Gmail.SendEmail(emails[0], _Msg.Title, _Msg.Body, null, "pietpiel27@gmail.com", "1rachelle", "Alsi Trade System", false);
+                else
+                    Communicator.Gmail.SendEmail(emails, _Msg.Title, _Msg.Body, null, "pietpiel27@gmail.com", "1rachelle", "Alsi Trade System", false);
             }
 
 
-            private static void SendMail()
-            {
-                Gmail.SendEmail("pieterf33@gmail.com", _Msg.Title, _Msg.Body, null, "pietpiel27@gmail.com", "1rachelle", "Alsi Trade System", false);
-            }
+
+
+
         }
 
 

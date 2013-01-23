@@ -46,11 +46,11 @@ namespace FrontEnd
         }
 
         private void MainForm_Load(object sender, EventArgs e)
-        {          
+        {
             var start = new LoadingStartupEvent();
             start.Progress = 10;
-            onStartupLoad(this, start);           
-            
+            onStartupLoad(this, start);
+
             CheckForIllegalCrossThreadCalls = false;
             Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
             _Interval = GlobalObjects.TimeInterval.Minute_5;
@@ -58,10 +58,10 @@ namespace FrontEnd
             PopulateControls();
 
             start.Progress = 20;
-            onStartupLoad(this, start); 
-  
+            onStartupLoad(this, start);
+
             U5 = new UpdateTimer(_Interval);
-            p = new PrepareForTrade(_Interval, Properties.Settings.Default.HISAT_INST);
+            p = new PrepareForTrade(_Interval, Properties.Settings.Default.HISAT_INST, GetParameters(), Properties.Settings.Default.Live_Start_Date);
             marketOrder = new MarketOrder();
             p.onPriceSync += new PrepareForTrade.PricesSynced(p_onPriceSync);
             U5.onStartUpdate += new UpdateTimer.StartUpdate(U5_onStartUpdate);
@@ -70,31 +70,44 @@ namespace FrontEnd
             _Stats.OnStatsCaculated += new Statistics.StatsCalculated(_Stats_OnStatsCaculated);
 
             start.Progress = 30;
-            onStartupLoad(this, start);   
+            onStartupLoad(this, start);
 
-            feed = new AlsiTrade_Backend.HiSat.LiveFeed(Properties.Settings.Default.HISAT_INST);
+         // feed = new AlsiTrade_Backend.HiSat.LiveFeed(Properties.Settings.Default.HISAT_INST);
 
             start.Progress = 60;
-            onStartupLoad(this, start);   
+            onStartupLoad(this, start);
 
 
             BuildListViewColumns();
 
             start.Progress = 70;
-            onStartupLoad(this, start);    
+            onStartupLoad(this, start);
 
 
             p._LastTrade = DoStuff.GetLastTrade(GetParameters(), _Interval);
 
             start.Progress = 80;
-            onStartupLoad(this, start);   
+            onStartupLoad(this, start);
 
 
-            DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST, p._LastTrade.TimeStamp);
+         //   DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST, p._LastTrade.TimeStamp);
+            Debug.WriteLine("LAST TRADE : " + p._LastTrade.TimeStamp + "   " + p._LastTrade);
             service = new WebUpdate();
 
             start.Progress = 100;
-            onStartupLoad(this, start);   
+            onStartupLoad(this, start);
+
+
+            //test
+            comboBox1.Items.Add(Trade.Trigger.None);
+            comboBox1.Items.Add(Trade.Trigger.OpenLong);
+            comboBox1.Items.Add(Trade.Trigger.OpenShort);
+            comboBox1.Items.Add(Trade.Trigger.CloseLong);
+            comboBox1.Items.Add(Trade.Trigger.CloseShort);
+
+            comboBox2.Items.Add(Trade.BuySell.None);
+            comboBox2.Items.Add(Trade.BuySell.Buy);
+            comboBox2.Items.Add(Trade.BuySell.Sell);
         }
 
 
@@ -105,8 +118,9 @@ namespace FrontEnd
             msg.Title = "Order Matched";
             msg.Body = e.Trade.ToString();
             WebUpdate.SendOrder(e.Trade, true);
-            DoStuff.Email.SendEmail(e.Trade, msg);
-           
+            DoStuff.Email.SendEmail(e.Trade, msg, true);
+            WebUpdate.SendOrderToWebDB(e.Trade);
+
         }
 
         void marketOrder_onOrderSend(object sender, MarketOrder.OrderSendEvent e)
@@ -115,8 +129,8 @@ namespace FrontEnd
             {
                 EmailMsg msg = new EmailMsg();
                 msg.Title = "New Trade";
-                msg.Body = "an Order was generated and sucessfully send to Excel \n" + e.Trade.ToString();
-                DoStuff.Email.SendEmail(e.Trade, msg);
+                msg.Body = "an Order was generated and sucessfully send to the Market \n" + e.Trade.ToString();
+                DoStuff.Email.SendEmail(e.Trade, msg, false);
                 WebUpdate.SendOrder(e.Trade, false);
                 WebUpdate.SendOrderToWebDB(e.Trade);
             }
@@ -125,15 +139,15 @@ namespace FrontEnd
                 EmailMsg msg = new EmailMsg();
                 msg.Title = "Trade input Failed";
                 msg.Body = "an Order was generated but could not be send to Excel. \n" + e.Trade.ToString();
-                DoStuff.Email.SendEmail(e.Trade, msg);
+                DoStuff.Email.SendEmail(e.Trade, msg, true);
             }
         }
 
         void U5_onStartUpdate(object sender, UpdateTimer.StartUpDateEvent e)
         {
             Debug.WriteLine(e.Message + "  " + e.Interval);
-            p.GetPricesFromWeb();
-            //p.GetPricesFromTick();
+            //  p.GetPricesFromWeb();
+            p.GetPricesFromTick();
 
         }
 
@@ -143,19 +157,40 @@ namespace FrontEnd
             Debug.WriteLine("Prices Synced : " + e.ReadyForTradeCalcs);
             if (e.ReadyForTradeCalcs)
             {
-                var trades = RunCalcs.RunEMAScalpLiveTrade(GetParameters(), _Interval);
-                //foreach (var t in trades.Where(z => z.TimeStamp > DateTime.Now.AddDays(-10)))
-                //{
-                //    Debug.WriteLine(t.TimeStamp + "  reason " + t.Reason + " " + t.TradedPrice);
-                //}
-                var lt = DoStuff.Apply2ndAlgoVolume(trades);
-                Debug.WriteLine("Last Order : " + lt.ToString());
-              
+                var trades = DoStuff.GetDataFromTick.DoYourThing(Properties.Settings.Default.HISAT_INST, GetParameters(), Properties.Settings.Default.Live_Start_Date);
+                var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, trades);
+                NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
+                var Final = CompletedTrade.CreateList(NewTrades);
 
-                lt.TradeVolume = lt.TradeVolume * Properties.Settings.Default.VOL;
-                lt.InstrumentName = Properties.Settings.Default.OTS_INST;
-                marketOrder.SendOrderToMarket(lt);
-                UpdateTradeLog(SetTradeLogColor(lt), true);
+
+                foreach (var t in trades.Where(z => z.TimeStamp > DateTime.Now.AddDays(-5)))
+                {
+                    Debug.WriteLine(t.InstrumentName + "   " + t.TimeStamp + "  reason " + t.Reason + " " + t.TradedPrice + "  " + t.IndicatorNotes + "  " + t.CurrentDirection);
+                }
+                Debug.WriteLine("##############################################################");
+                Debug.WriteLine("##############################################################");
+                foreach (var ct in Final.Where(z => z.TimeStamp > DateTime.Now.AddDays(-5)))
+                {
+                    Debug.WriteLine(ct.InstrumentName + "  " + ct.TimeStamp + "  reason " + ct.Reason + " " + ct.TradedPrice + "  " + ct.IndicatorNotes + "  " + ct.CurrentDirection + " Vol " + ct.TradeVolume);
+                }
+
+                
+               
+                var algotime = DoStuff.GetAlgoTime();
+                var check = trades.Any(z => z.TimeStamp.Hour >= algotime.Hour && z.TimeStamp.Minute >= algotime.Minute && z.TimeStamp.Date == algotime.Date);
+                if (!check && timeout < 5)
+                {
+                    timeout++;
+                    p.GetPricesFromTick();                   
+                    return;
+                }
+                var currentOrder = trades.Where(z => z.TimeStamp.Hour>=algotime.Hour && z.TimeStamp.Minute>=algotime.Minute && z.TimeStamp.Date==algotime.Date ).First();
+
+                currentOrder.TradeVolume = Final.Last().TradeVolume * Properties.Settings.Default.VOL;
+                currentOrder.InstrumentName = Properties.Settings.Default.OTS_INST;
+                Debug.WriteLine("Sending " + currentOrder);
+                marketOrder.SendOrderToMarket(currentOrder);
+                UpdateTradeLog(SetTradeLogColor(currentOrder), true);
             }
             else
             {
@@ -187,7 +222,7 @@ namespace FrontEnd
         }
 
 
-        private Parameter_EMA_Scalp GetParameters()
+        public static Parameter_EMA_Scalp GetParameters()
         {
             AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
             {
@@ -221,6 +256,7 @@ namespace FrontEnd
             endDateTimePicker.Value = DateTime.Now;
             startDateTimePicker.Value = DateTime.Now.AddDays(-50);
             endDateTimePicker.MaxDate = DateTime.Now;
+            liveStartTimePicker.Value = Properties.Settings.Default.Live_Start_Date;
         }
 
         private void PopulateStatBox(SummaryStats Stats)
@@ -419,10 +455,9 @@ namespace FrontEnd
                     t.ForeColor = Color.Red;
                     t.BackColor = Color.White;
                     break;
-
-
+                    
                 case Trade.Trigger.CloseShort:
-                    ForeColor = Color.Red;
+                    t.ForeColor = Color.Red;
                     t.BackColor = Color.WhiteSmoke;
                     break;
 
@@ -487,7 +522,7 @@ namespace FrontEnd
                     CurrentPrice = (double)v.Price,
                     ForeColor = Color.FromName(v.ForeColor),
                     BackColor = Color.FromName(v.BackColor),
-                    Reason=GetTradeReasonFromString(v.Reason),
+                    Reason = GetTradeReasonFromString(v.Reason),
                 };
                 UpdateTradeLog(t, false);
             }
@@ -497,33 +532,41 @@ namespace FrontEnd
 
         private Trade.Trigger GetTradeReasonFromString(string Reason)
         {
-        switch(Reason)
-        {
-            case "OpenLong":
-                return Trade.Trigger.OpenLong;
-                break;
+            switch (Reason)
+            {
+                case "OpenLong":
+                    return Trade.Trigger.OpenLong;
+                    break;
 
-            case "CloseLong":
-                return Trade.Trigger.CloseLong;
-                break;
+                case "CloseLong":
+                    return Trade.Trigger.CloseLong;
+                    break;
 
-            case "OpenShort":
-                return Trade.Trigger.OpenShort;
-                break;
+                case "OpenShort":
+                    return Trade.Trigger.OpenShort;
+                    break;
 
-            case "CloseShort":
-                return Trade.Trigger.CloseShort;
-                break;
+                case "CloseShort":
+                    return Trade.Trigger.CloseShort;
+                    break;
 
-            default:
-                return Trade.Trigger.None;
+                default:
+                    return Trade.Trigger.None;
+            }
+
         }
 
-        }
-
-        private List<Trade> _tempTradeList = new List<Trade>();
+        private List<Trade> _FullTradeList = new List<Trade>();
+        private List<Trade> _TradeOnlyList = new List<Trade>();
         private void runHistCalcButton_Click(object sender, EventArgs e)
         {
+            RunHisroticTrades();
+        }
+
+        private bool isListReversed = false;
+        private void RunHisroticTrades()
+        {
+            isListReversed = false;
             Cursor = Cursors.WaitCursor;
             exportToTextButton.Enabled = false;
             synchWebTradesButton.Enabled = false;
@@ -540,18 +583,28 @@ namespace FrontEnd
             else
             { dt = DataBase.dataTable.AllHistory; }
 
-            _tempTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, onlyTradesRadioButton.Checked, startDateTimePicker.Value, endDateTimePicker.Value.AddHours(5), dt);
-            var _trades = _Stats.CalcBasicTradeStats(_tempTradeList);
+            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, onlyTradesRadioButton.Checked, startDateTimePicker.Value, endDateTimePicker.Value.AddHours(5), dt);
+            _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
 
-            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _trades);
+            var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
+           _TradeOnlyList = CompletedTrade.CreateList(NewTrades);
 
-            var Final = CompletedTrade.CreateList(NewTrades);
 
-            Final.Reverse();
+            var MList = new List<Trade>();
+            if (!onlyTradesRadioButton.Checked) MList = _FullTradeList;
+            else
+                MList = _TradeOnlyList;
+
+            if (!isListReversed)
+            {
+                _TradeOnlyList.Reverse();
+                _FullTradeList.Reverse();
+                isListReversed = true;                
+            }
             histListview.Items.Clear();
             histListview.RebuildColumns();
-            histListview.SetObjects(Final);
+            histListview.SetObjects(MList);
             Cursor = Cursors.Default;
             dataTabControl.SelectedIndex = 1;
             exportToTextButton.Enabled = true;
@@ -682,6 +735,7 @@ namespace FrontEnd
         private void settingsTabControl_Selected(object sender, TabControlEventArgs e)
         {
             if (e.TabPageIndex == 2) dataTabControl.SelectedIndex = 2;
+            if (e.TabPageIndex == 3) PopulateEmailTab();
         }
 
         private void UpdateAllHistoPrices_Click(object sender, EventArgs e)
@@ -795,16 +849,15 @@ namespace FrontEnd
         private void exportToTextButton_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            DoStuff.ExportToText(_tempTradeList);
+            DoStuff.ExportToText(_FullTradeList);
             Cursor = Cursors.Default;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            p.GetPricesFromWeb();
-            //  p.GetPricesFromTick();
+            //p.GetPricesFromWeb();
+            p.GetPricesFromTick();
         }
-
 
 
 
@@ -819,12 +872,176 @@ namespace FrontEnd
         private void synchWebTradesButton_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            var trades = _tempTradeList.Where(z => z.BuyorSell != Trade.BuySell.None).ToList();
+            var trades = _FullTradeList.Where(z => z.BuyorSell != Trade.BuySell.None).ToList();
             AlsiTrade_Backend.WebUpdate.SyncOnlineDbTradeHistory(trades);
             Cursor = Cursors.Default;
         }
 
-     
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        #region Email setup
+        private void PopulateEmailTab()
+        {
+            emailListBox.Items.Clear();
+            foreach (var v in WebUpdate._EmailList) emailListBox.Items.Add(v);
+        }
+
+        private void emailListBox_SelectedValueChanged(object sender, EventArgs e)
+        {
+            var email = (EmailList)emailListBox.SelectedItem;
+            emailTextBox.Text = email.Email;
+            nameTextBox.Text = email.Name;
+
+        }
+
+        private void addEmailButton_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            var dc = new WebDbDataContext();
+            if (!dc.EmailLists.Any(z => z.Email == emailTextBox.Text.Trim()))
+            {
+                var contat = new EmailList()
+                {
+                    Name = nameTextBox.Text,
+                    Email = emailTextBox.Text,
+                };
+                dc.EmailLists.InsertOnSubmit(contat);
+                dc.SubmitChanges();
+                WebUpdate.GetEmailList();
+                PopulateEmailTab();
+                emailTextBox.Clear();
+                nameTextBox.Clear();
+                addEmailButton.Enabled = true;
+            }
+            else
+            {
+                MessageBox.Show("Email Already Exist");
+            }
+            Cursor = Cursors.Default;
+        }
+
+
+
+        private void removeEmailButton_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            var dc = new WebDbDataContext();
+            var email = (EmailList)emailListBox.SelectedItem;
+            dc.EmailLists.DeleteOnSubmit(dc.EmailLists.Where(z => z.ID == email.ID).First());
+            dc.SubmitChanges();
+            WebUpdate.GetEmailList();
+            PopulateEmailTab();
+            Cursor = Cursors.Default;
+        }
+
+
+        #endregion
+
+        private void liveStartTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Live_Start_Date = liveStartTimePicker.Value;
+            Properties.Settings.Default.Save();
+        }
+
+        private void fullTradesRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            histListview.Items.Clear();
+            histListview.RebuildColumns();
+            histListview.SetObjects(_FullTradeList);
+            Cursor = Cursors.Default;
+            dataTabControl.SelectedIndex = 1;
+            exportToTextButton.Enabled = true;
+            synchWebTradesButton.Enabled = true;
+            Cursor=Cursors.Default;
+        }
+
+        private void onlyTradesRadioButton_CheckedChanged(object sender, EventArgs e)        
+        {
+            Cursor = Cursors.WaitCursor;
+            histListview.Items.Clear();
+            histListview.RebuildColumns();
+            histListview.SetObjects(_TradeOnlyList);
+            Cursor = Cursors.Default;
+            dataTabControl.SelectedIndex = 1;
+            exportToTextButton.Enabled = true;
+            synchWebTradesButton.Enabled = true;
+            Cursor = Cursors.Default;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var currentOrder = p._LastTrade;
+            currentOrder.BuyorSell = (Trade.BuySell)comboBox2.SelectedItem;
+            currentOrder.Reason = (Trade.Trigger)comboBox1.SelectedItem;
+
+            marketOrder.SendOrderToMarket(currentOrder);
+            UpdateTradeLog(SetTradeLogColor(currentOrder), true);
+        }
+
+        private void clearDbButton_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            clearDbButton.Enabled = false;
+
+            if (clearEmailListCheckBox.Checked)
+            {
+                clearEmailListCheckBox.ForeColor = Color.Red;
+                Refresh();
+                WebUpdate.ClearEmailList();
+                clearEmailListCheckBox.ForeColor = Color.Green;
+                Refresh();
+            }
+
+            if (clearTradeLogLocalCheckBox.Checked)
+            {
+                clearTradeLogLocalCheckBox.ForeColor = Color.Red;
+                Refresh();
+                UpdateDB.ClearTradeLog();
+                clearTradeLogLocalCheckBox.ForeColor = Color.Green;
+                Refresh();
+            }
+
+            if (clearTradeLogWebCheckBox.Checked)
+            {
+                clearTradeLogWebCheckBox.ForeColor = Color.Red;
+                Refresh();
+                WebUpdate.ClearTradeLog();
+                clearTradeLogWebCheckBox.ForeColor = Color.Green;
+                Refresh();
+            }
+
+            if (clearTradeHistoryWebCheckBox.Checked)
+            {
+                clearTradeHistoryWebCheckBox.ForeColor = Color.Red;
+                Refresh();
+                WebUpdate.ClearTadeHistory();
+                clearTradeHistoryWebCheckBox.ForeColor = Color.Green;
+                Refresh();
+            }
+
+            clearTradeHistoryWebCheckBox.Checked = false;
+            clearTradeLogWebCheckBox.Checked = false;
+            clearTradeLogLocalCheckBox.Checked = false;
+            clearEmailListCheckBox.Checked = false;
+            
+
+            clearTradeHistoryWebCheckBox.ForeColor = Color.Black;
+            clearTradeLogWebCheckBox.ForeColor = Color.Black;
+            clearTradeLogLocalCheckBox.ForeColor = Color.Black;
+            clearEmailListCheckBox.ForeColor = Color.Black;
+            clearDbButton.Enabled = true;
+            Cursor = Cursors.Default;
+        }
+
+      
+       
+
+        
+
 
     }
 }

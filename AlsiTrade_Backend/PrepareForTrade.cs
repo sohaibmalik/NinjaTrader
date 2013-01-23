@@ -3,21 +3,24 @@ using AlsiUtils.Data_Objects;
 using System.Linq;
 using AlsiUtils;
 using System.Diagnostics;
-
+using AlsiUtils.Strategies;
 namespace AlsiTrade_Backend
 {
-  
+
 
     public class PrepareForTrade
     {
         public Trade _LastTrade;
         private GlobalObjects.TimeInterval _Interval;
-     
+        private DateTime _Start;
         string _ContractName;
-        public PrepareForTrade(GlobalObjects.TimeInterval Interval, string ContractName)
+        private Parameter_EMA_Scalp _Param;
+        public PrepareForTrade(GlobalObjects.TimeInterval Interval, string ContractName, Parameter_EMA_Scalp Parameter, DateTime StartPeriod)
         {
             _Interval = Interval;
             _ContractName = ContractName;
+            _Start = StartPeriod;
+            _Param = Parameter;
         }
 
         public void GetPricesFromWeb()
@@ -47,17 +50,15 @@ namespace AlsiTrade_Backend
             }
         }
 
-     
+
 
 
         public void GetPricesFromTick()
         {
-            DoStuff.GetDataFromTick.DoYourThing(_ContractName);
-            TickDataToXMinData();
-
+            AlsiTrade_Backend.UpdateDB.FullHistoricUpdate_MasterMinute(_ContractName);
             PricesSyncedEvent p = new PricesSyncedEvent();
             p.ReadyForTradeCalcs = true;
-            onPriceSync(this, p);    
+            onPriceSync(this, p);
         }
 
 
@@ -82,12 +83,12 @@ namespace AlsiTrade_Backend
             {
                 var P = new Price()
                 {
-                    TimeStamp=p.Stamp,
-                    Open=p.O,
-                    High=p.H,
-                    Low=p.L,
-                    Close=p.C,
-                    InstrumentName=_ContractName,                    
+                    TimeStamp = p.Stamp,
+                    Open = p.O,
+                    High = p.H,
+                    Low = p.L,
+                    Close = p.C,
+                    InstrumentName = _ContractName,
                 };
                 GlobalObjects.Points.Add(P);
             }
