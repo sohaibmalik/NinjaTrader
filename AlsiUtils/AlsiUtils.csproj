@@ -93,6 +93,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WebDb.dbml</DependentUpon>
     </Compile>
+    <Compile Include="WebSettings.cs" />
     <Compile Include="Working Class\Calc_Indicator.cs" />
     <Compile Include="Data Objects\SummaryStats.cs" />
     <Compile Include="Working Class\DataBase.cs" />

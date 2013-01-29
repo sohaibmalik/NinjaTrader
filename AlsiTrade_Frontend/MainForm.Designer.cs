@@ -33,6 +33,10 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.settingsTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tradeModeGroupBox = new System.Windows.Forms.GroupBox();
+            this.tradeModeAGGRESSIVERadioButton = new System.Windows.Forms.RadioButton();
+            this.tradeModeHITRadioButton = new System.Windows.Forms.RadioButton();
+            this.tradeModeNORMALRadioButton = new System.Windows.Forms.RadioButton();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -132,12 +136,15 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.spreadNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.settingsTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tradeModeGroupBox.SuspendLayout();
             this.liveStartGroupBox.SuspendLayout();
             this.tradeLogGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTradeLogNumericUpDown)).BeginInit();
@@ -164,6 +171,7 @@
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DBPricesGridView)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spreadNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -202,6 +210,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.tradeModeGroupBox);
             this.tabPage1.Controls.Add(this.comboBox2);
             this.tabPage1.Controls.Add(this.comboBox1);
             this.tabPage1.Controls.Add(this.button2);
@@ -219,13 +228,63 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tradeModeGroupBox
+            // 
+            this.tradeModeGroupBox.Controls.Add(this.label14);
+            this.tradeModeGroupBox.Controls.Add(this.spreadNumericUpDown);
+            this.tradeModeGroupBox.Controls.Add(this.tradeModeAGGRESSIVERadioButton);
+            this.tradeModeGroupBox.Controls.Add(this.tradeModeHITRadioButton);
+            this.tradeModeGroupBox.Controls.Add(this.tradeModeNORMALRadioButton);
+            this.tradeModeGroupBox.Location = new System.Drawing.Point(183, 289);
+            this.tradeModeGroupBox.Name = "tradeModeGroupBox";
+            this.tradeModeGroupBox.Size = new System.Drawing.Size(157, 161);
+            this.tradeModeGroupBox.TabIndex = 29;
+            this.tradeModeGroupBox.TabStop = false;
+            this.tradeModeGroupBox.Text = "Trade Mode";
+            // 
+            // tradeModeAGGRESSIVERadioButton
+            // 
+            this.tradeModeAGGRESSIVERadioButton.AutoSize = true;
+            this.tradeModeAGGRESSIVERadioButton.Location = new System.Drawing.Point(16, 74);
+            this.tradeModeAGGRESSIVERadioButton.Name = "tradeModeAGGRESSIVERadioButton";
+            this.tradeModeAGGRESSIVERadioButton.Size = new System.Drawing.Size(82, 19);
+            this.tradeModeAGGRESSIVERadioButton.TabIndex = 2;
+            this.tradeModeAGGRESSIVERadioButton.TabStop = true;
+            this.tradeModeAGGRESSIVERadioButton.Text = "Aggressive";
+            this.tradeModeAGGRESSIVERadioButton.UseVisualStyleBackColor = true;
+            this.tradeModeAGGRESSIVERadioButton.CheckedChanged += new System.EventHandler(this.tradeModeAGGRESSIVERadioButton_CheckedChanged);
+            // 
+            // tradeModeHITRadioButton
+            // 
+            this.tradeModeHITRadioButton.AutoSize = true;
+            this.tradeModeHITRadioButton.Location = new System.Drawing.Point(16, 48);
+            this.tradeModeHITRadioButton.Name = "tradeModeHITRadioButton";
+            this.tradeModeHITRadioButton.Size = new System.Drawing.Size(41, 19);
+            this.tradeModeHITRadioButton.TabIndex = 1;
+            this.tradeModeHITRadioButton.TabStop = true;
+            this.tradeModeHITRadioButton.Text = "Hit";
+            this.tradeModeHITRadioButton.UseVisualStyleBackColor = true;
+            this.tradeModeHITRadioButton.CheckedChanged += new System.EventHandler(this.tradeModeHITRadioButton_CheckedChanged);
+            // 
+            // tradeModeNORMALRadioButton
+            // 
+            this.tradeModeNORMALRadioButton.AutoSize = true;
+            this.tradeModeNORMALRadioButton.Location = new System.Drawing.Point(16, 22);
+            this.tradeModeNORMALRadioButton.Name = "tradeModeNORMALRadioButton";
+            this.tradeModeNORMALRadioButton.Size = new System.Drawing.Size(65, 19);
+            this.tradeModeNORMALRadioButton.TabIndex = 0;
+            this.tradeModeNORMALRadioButton.TabStop = true;
+            this.tradeModeNORMALRadioButton.Text = "Normal";
+            this.tradeModeNORMALRadioButton.UseVisualStyleBackColor = true;
+            this.tradeModeNORMALRadioButton.CheckedChanged += new System.EventHandler(this.tradeModeNORMALRadioButton_CheckedChanged);
+            // 
             // comboBox2
             // 
             this.comboBox2.BackColor = System.Drawing.Color.LimeGreen;
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(259, 275);
+            this.comboBox2.Location = new System.Drawing.Point(266, 113);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(67, 23);
+            this.comboBox2.Size = new System.Drawing.Size(60, 23);
             this.comboBox2.TabIndex = 28;
             this.comboBox2.Visible = false;
             // 
@@ -233,18 +292,18 @@
             // 
             this.comboBox1.BackColor = System.Drawing.Color.LimeGreen;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(234, 246);
+            this.comboBox1.Location = new System.Drawing.Point(241, 84);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(92, 23);
+            this.comboBox1.Size = new System.Drawing.Size(85, 23);
             this.comboBox1.TabIndex = 27;
             this.comboBox1.Visible = false;
             // 
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.LimeGreen;
-            this.button2.Location = new System.Drawing.Point(251, 216);
+            this.button2.Location = new System.Drawing.Point(258, 54);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(68, 23);
             this.button2.TabIndex = 26;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = false;
@@ -290,7 +349,7 @@
             this.tradeLogGroupBox.Controls.Add(this.loadTradeLogButton);
             this.tradeLogGroupBox.Location = new System.Drawing.Point(9, 289);
             this.tradeLogGroupBox.Name = "tradeLogGroupBox";
-            this.tradeLogGroupBox.Size = new System.Drawing.Size(236, 161);
+            this.tradeLogGroupBox.Size = new System.Drawing.Size(167, 161);
             this.tradeLogGroupBox.TabIndex = 23;
             this.tradeLogGroupBox.TabStop = false;
             this.tradeLogGroupBox.Text = "Log";
@@ -330,7 +389,7 @@
             // 
             // loadTradeLogNumericUpDown
             // 
-            this.loadTradeLogNumericUpDown.Location = new System.Drawing.Point(153, 19);
+            this.loadTradeLogNumericUpDown.Location = new System.Drawing.Point(90, 132);
             this.loadTradeLogNumericUpDown.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -1186,7 +1245,7 @@
             this.histListview.GroupImageList = this.imageList;
             this.histListview.Location = new System.Drawing.Point(3, 3);
             this.histListview.Name = "histListview";
-            this.histListview.Size = new System.Drawing.Size(769, 458);
+            this.histListview.Size = new System.Drawing.Size(769, 460);
             this.histListview.SmallImageList = this.imageList;
             this.histListview.TabIndex = 0;
             this.histListview.UseCompatibleStateImageBehavior = false;
@@ -1218,7 +1277,7 @@
             this.DBPricesGridView.Location = new System.Drawing.Point(3, 3);
             this.DBPricesGridView.Name = "DBPricesGridView";
             this.DBPricesGridView.ReadOnly = true;
-            this.DBPricesGridView.Size = new System.Drawing.Size(769, 458);
+            this.DBPricesGridView.Size = new System.Drawing.Size(769, 460);
             this.DBPricesGridView.TabIndex = 0;
             // 
             // statusStrip1
@@ -1245,6 +1304,29 @@
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // spreadNumericUpDown
+            // 
+            this.spreadNumericUpDown.Enabled = false;
+            this.spreadNumericUpDown.Location = new System.Drawing.Point(16, 99);
+            this.spreadNumericUpDown.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.spreadNumericUpDown.Name = "spreadNumericUpDown";
+            this.spreadNumericUpDown.Size = new System.Drawing.Size(46, 23);
+            this.spreadNumericUpDown.TabIndex = 3;
+            this.spreadNumericUpDown.ValueChanged += new System.EventHandler(this.spreadNumericUpDown_ValueChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(65, 101);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(23, 15);
+            this.label14.TabIndex = 4;
+            this.label14.Text = "pts";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1266,6 +1348,8 @@
             this.splitContainer1.ResumeLayout(false);
             this.settingsTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tradeModeGroupBox.ResumeLayout(false);
+            this.tradeModeGroupBox.PerformLayout();
             this.liveStartGroupBox.ResumeLayout(false);
             this.tradeLogGroupBox.ResumeLayout(false);
             this.tradeLogGroupBox.PerformLayout();
@@ -1303,6 +1387,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.DBPricesGridView)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spreadNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1311,9 +1396,6 @@
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TabControl dataTabControl;
-        private System.Windows.Forms.TabPage liveTradesTabPage;
-        private System.Windows.Forms.TabPage historicalTradesTabPage;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.TabControl settingsTabControl;
@@ -1358,12 +1440,6 @@
         private System.Windows.Forms.RadioButton onlyTradesRadioButton;
         private System.Windows.Forms.RadioButton fullTradesRadioButton;
         private System.Windows.Forms.GroupBox statsGroupBox;
-        private System.Windows.Forms.ListView liveTradeListView;
-        private System.Windows.Forms.ColumnHeader columnDate;
-        private System.Windows.Forms.ColumnHeader columnBS;
-        private System.Windows.Forms.ColumnHeader columnReason;
-        private System.Windows.Forms.ColumnHeader columnPrice;
-        private System.Windows.Forms.ColumnHeader columnVol;
         private System.Windows.Forms.GroupBox tradeLogGroupBox;
         private System.Windows.Forms.CheckBox tradelogOnlyTradesCheckBox;
         private System.Windows.Forms.RadioButton loadTodayRadioButton;
@@ -1372,23 +1448,19 @@
         private System.Windows.Forms.Button loadTradeLogButton;
         private System.Windows.Forms.Button fullHistoUpdateButton;
         private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RadioButton TableAllHistMinRadioButton;
         private System.Windows.Forms.RadioButton TableMastrMinRadioButton;
         private System.Windows.Forms.Button LoadDBPrices;
         private System.Windows.Forms.NumericUpDown VieDBNumericUpDown;
-        private System.Windows.Forms.DataGridView DBPricesGridView;
         private System.Windows.Forms.Label dbPriceCountLabel;
         private System.Windows.Forms.Button UpdateAllHistoPrices;
         private System.Windows.Forms.ToolStripStatusLabel runningMinuteTooltripLabel;
         private System.Windows.Forms.ImageList imageList;
-        private BrightIdeasSoftware.ObjectListView histListview;
         private System.Windows.Forms.Button exportToTextButton;
         private System.Windows.Forms.ListView statsListView;
         private System.Windows.Forms.ColumnHeader columnStat;
         private System.Windows.Forms.ColumnHeader columnValue;
-        private System.Windows.Forms.ColumnHeader columnNote;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button synchWebTradesButton;
         private System.Windows.Forms.TabPage tabPage5;
@@ -1412,6 +1484,25 @@
         private System.Windows.Forms.CheckBox clearTradeHistoryWebCheckBox;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox userPictureBox;
+        private System.Windows.Forms.TabControl dataTabControl;
+        private System.Windows.Forms.TabPage liveTradesTabPage;
+        private System.Windows.Forms.ListView liveTradeListView;
+        private System.Windows.Forms.ColumnHeader columnDate;
+        private System.Windows.Forms.ColumnHeader columnBS;
+        private System.Windows.Forms.ColumnHeader columnReason;
+        private System.Windows.Forms.ColumnHeader columnPrice;
+        private System.Windows.Forms.ColumnHeader columnVol;
+        private System.Windows.Forms.ColumnHeader columnNote;
+        private System.Windows.Forms.TabPage historicalTradesTabPage;
+        private BrightIdeasSoftware.ObjectListView histListview;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.DataGridView DBPricesGridView;
+        private System.Windows.Forms.GroupBox tradeModeGroupBox;
+        private System.Windows.Forms.RadioButton tradeModeAGGRESSIVERadioButton;
+        private System.Windows.Forms.RadioButton tradeModeHITRadioButton;
+        private System.Windows.Forms.RadioButton tradeModeNORMALRadioButton;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.NumericUpDown spreadNumericUpDown;
         
     }
 }

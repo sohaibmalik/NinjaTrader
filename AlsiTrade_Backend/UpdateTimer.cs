@@ -89,6 +89,7 @@ namespace AlsiTrade_Backend
                         e.Time = _Now;
                         e.Message = "TWO Minute Update";
                         e.Interval = _interval;
+                        e.EndOfDay = false;
                         onStartUpdate(this, e);
 
                     }
@@ -111,7 +112,8 @@ namespace AlsiTrade_Backend
             _timer.Stop();
             StartUpDateEvent e = new StartUpDateEvent();
             e.Time = _Now;
-            e.Message = "End of Day Update";
+            e.Message = "EndDay";
+            e.EndOfDay = true;
             e.Interval = _interval;
             onStartUpdate(this, e);
         }
@@ -123,7 +125,7 @@ namespace AlsiTrade_Backend
             public DateTime Time;
             public GlobalObjects.TimeInterval Interval;
             public string Message;
-
+            public bool EndOfDay;
         }
         
 

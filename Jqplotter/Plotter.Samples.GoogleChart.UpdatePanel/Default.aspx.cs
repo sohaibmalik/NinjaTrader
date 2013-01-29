@@ -33,7 +33,7 @@ namespace Plotter.Samples.GoogleChart.UpdatePanel
             //
             // Build a random curve
             //
-            Curve curve = CurveHelper.GetRandomCurve(100);
+            Curve curve = CurveHelper.GetRandomCurveWithErrorBands(1000);
 
             //
             // Plot our random curve

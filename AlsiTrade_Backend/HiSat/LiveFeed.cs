@@ -34,8 +34,7 @@ namespace AlsiTrade_Backend.HiSat
         /// </summary>
         private void Login()
         {
-            datafeed.LogOnToHisat("Johan", "Hisat");
-                     
+            datafeed.LogOnToHisat("Johan", "Hisat");                     
         }
         /// <summary>
         /// Start Live Streaming once Logged In
@@ -58,31 +57,25 @@ namespace AlsiTrade_Backend.HiSat
 
         private void datafeed_onTrade(object sender, DataFeed.aTrade e)
         {
-             DataBase.insertTicks(e.TradeTime, Convert.ToInt32(e.TradePrice));
-              //Debug.WriteLine(e.Instrument + "  " + e.TradePrice);
+            // DataBase.insertTicks(e.TradeTime, Convert.ToInt32(e.TradePrice));  
+            LivePrice.Last = (double)e.TradePrice;
+            
         }
 
         private void datafeed_onAsk(object sender, DataFeed.aAsk e)
         {
-            // liveOfferLabel.Text = e.AskPrice.ToString();
-            //liveVolOfferLabel.Text = e.AskVol.ToString();
-            //Debug.WriteLine(e.Instrument + "  " + e.AskPrice);
+            LivePrice.Offer = (double)e.AskPrice;          
         }
 
         private void datafeed_onBid(object sender, DataFeed.aBid e)
         {
-            //liveBidLabel.Text = e.BidPrice.ToString();
-            //liveVolBidLabel.Text = e.BidVol.ToString();
-           // Debug.WriteLine(e.Instrument + "  " + e.BidPrice);
+            LivePrice.Bid = (double)e.BidPrice;          
         }
 
         private void datafeed_onBidask(object sender, DataFeed.aBidAsk e)
         {
-            //liveBidLabel.Text = e.BidPrice.ToString();
-            //liveVolBidLabel.Text = e.BidVol.ToString();
-            //liveOfferLabel.Text = e.AskPrice.ToString();
-            //liveVolOfferLabel.Text = e.AskVol.ToString();
-
+            LivePrice.Bid = (double)e.BidPrice;
+            LivePrice.Offer = (double)e.AskPrice;            
         }
     }
 }

@@ -32,4 +32,30 @@
       <Column Name="Matched" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
+  <Table Name="Pieter.Settings" Member="Settings">
+    <Type Name="Setting">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Setting_Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ValueString" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ValueNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ValueDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="Pieter.IndicatorSettings" Member="IndicatorSettings">
+    <Type Name="IndicatorSetting">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="A1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="A2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="B1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="B2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="C1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="C2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="D1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="E1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="E2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>

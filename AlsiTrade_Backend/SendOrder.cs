@@ -17,11 +17,12 @@ namespace AlsiTrade_Backend
         {
             if (trade.BuyorSell != Trade.BuySell.None)
             {
+                double price = adjustPriceToStrategy(trade);
 
                 ExcelLink.xlTradeOrder o = new xlTradeOrder()
                 {
                     BS = trade.BuyorSell,
-                    Price = trade.CurrentPrice,
+                    Price = price,
                     Volume = trade.TradeVolume,
                     Contract = trade.InstrumentName,
 
@@ -49,7 +50,28 @@ namespace AlsiTrade_Backend
             }
         }
 
+        private double adjustPriceToStrategy(Trade trade)
+        {
+            double last = trade.CurrentPrice;
+            double bid = HiSat.LivePrice.Bid;
+            double offer = HiSat.LivePrice.Offer;
+            double spread = WebSettings.TradeApproach.Spread;
 
+            if (trade.BuyorSell == Trade.BuySell.Buy)
+            {
+                if (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Hit) return offer;
+                if (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Aggressive) return last + spread;
+            }
+
+
+            if (trade.BuyorSell == Trade.BuySell.Sell)
+            {
+                if (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Hit) return bid;
+                if (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Aggressive) return last - spread;
+            }
+
+            return last;
+        }
 
         void e_onMatch(object sender, OrderMatchEventArgs e)
         {
@@ -60,8 +82,8 @@ namespace AlsiTrade_Backend
                 TradedPrice = et.Price,
                 TradeVolume = et.Volume,
                 BuyorSell = et.BS,
-                InstrumentName=et.Contract,
-                xlRef=et.Reference,
+                InstrumentName = et.Contract,
+                xlRef = et.Reference,
 
             };
             OrderMatchEvent ome = new OrderMatchEvent();

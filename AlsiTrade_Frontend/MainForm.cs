@@ -10,6 +10,7 @@ using AlsiUtils.Data_Objects;
 using AlsiUtils.Strategies;
 using BrightIdeasSoftware;
 using Communicator;
+
 namespace FrontEnd
 {
 
@@ -54,14 +55,16 @@ namespace FrontEnd
             CheckForIllegalCrossThreadCalls = false;
             Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
             _Interval = GlobalObjects.TimeInterval.Minute_5;
-            AlsiUtils.DataBase.SetConnectionString();
+
+            start.Progress = 10;
+            onStartupLoad(this, start);
             PopulateControls();
 
             start.Progress = 20;
             onStartupLoad(this, start);
 
             U5 = new UpdateTimer(_Interval);
-            p = new PrepareForTrade(_Interval, Properties.Settings.Default.HISAT_INST, GetParameters(), Properties.Settings.Default.Live_Start_Date);
+            p = new PrepareForTrade(_Interval, WebSettings.General.HISAT_INST, GetParameters(), WebSettings.General.LIVE_START_DATE);
             marketOrder = new MarketOrder();
             p.onPriceSync += new PrepareForTrade.PricesSynced(p_onPriceSync);
             U5.onStartUpdate += new UpdateTimer.StartUpdate(U5_onStartUpdate);
@@ -72,11 +75,10 @@ namespace FrontEnd
             start.Progress = 30;
             onStartupLoad(this, start);
 
-         // feed = new AlsiTrade_Backend.HiSat.LiveFeed(Properties.Settings.Default.HISAT_INST);
+            feed = new AlsiTrade_Backend.HiSat.LiveFeed(WebSettings.General.HISAT_INST);
 
             start.Progress = 60;
             onStartupLoad(this, start);
-
 
             BuildListViewColumns();
 
@@ -90,7 +92,7 @@ namespace FrontEnd
             onStartupLoad(this, start);
 
 
-         //   DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST, p._LastTrade.TimeStamp);
+            //   DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST, p._LastTrade.TimeStamp);
             Debug.WriteLine("LAST TRADE : " + p._LastTrade.TimeStamp + "   " + p._LastTrade);
             service = new WebUpdate();
 
@@ -129,7 +131,8 @@ namespace FrontEnd
             {
                 EmailMsg msg = new EmailMsg();
                 msg.Title = "New Trade";
-                msg.Body = "an Order was generated and sucessfully send to the Market \n" + e.Trade.ToString();
+                msg.Body = "an Order was generated and sucessfully send to the Market. \n" + e.Trade.ToString() +
+                  "go to " + @"http://www.alsitm.com/Trades.aspx" + " to view trade history";
                 DoStuff.Email.SendEmail(e.Trade, msg, false);
                 WebUpdate.SendOrder(e.Trade, false);
                 WebUpdate.SendOrderToWebDB(e.Trade);
@@ -146,7 +149,7 @@ namespace FrontEnd
         void U5_onStartUpdate(object sender, UpdateTimer.StartUpDateEvent e)
         {
             Debug.WriteLine(e.Message + "  " + e.Interval);
-            //  p.GetPricesFromWeb();
+            AlsiTrade_Backend.HiSat.LivePrice.EndOfDay = e.EndOfDay;
             p.GetPricesFromTick();
 
         }
@@ -157,11 +160,10 @@ namespace FrontEnd
             Debug.WriteLine("Prices Synced : " + e.ReadyForTradeCalcs);
             if (e.ReadyForTradeCalcs)
             {
-                var trades = DoStuff.GetDataFromTick.DoYourThing(Properties.Settings.Default.HISAT_INST, GetParameters(), Properties.Settings.Default.Live_Start_Date);
+                var trades = DoStuff.GetDataFromTick.DoYourThing(WebSettings.General.HISAT_INST, GetParameters(), WebSettings.General.LIVE_START_DATE);
                 var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, trades);
                 NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
                 var Final = CompletedTrade.CreateList(NewTrades);
-
 
                 foreach (var t in trades.Where(z => z.TimeStamp > DateTime.Now.AddDays(-5)))
                 {
@@ -173,21 +175,24 @@ namespace FrontEnd
                 {
                     Debug.WriteLine(ct.InstrumentName + "  " + ct.TimeStamp + "  reason " + ct.Reason + " " + ct.TradedPrice + "  " + ct.IndicatorNotes + "  " + ct.CurrentDirection + " Vol " + ct.TradeVolume);
                 }
-
                 
-               
                 var algotime = DoStuff.GetAlgoTime();
                 var check = trades.Any(z => z.TimeStamp.Hour >= algotime.Hour && z.TimeStamp.Minute >= algotime.Minute && z.TimeStamp.Date == algotime.Date);
                 if (!check && timeout < 5)
                 {
                     timeout++;
-                    p.GetPricesFromTick();                   
+                    Debug.WriteLine("Update Failed...Trying Again");
+                    p.GetPricesFromTick();
                     return;
                 }
-                var currentOrder = trades.Where(z => z.TimeStamp.Hour>=algotime.Hour && z.TimeStamp.Minute>=algotime.Minute && z.TimeStamp.Date==algotime.Date ).First();
+                Trade currentOrder;
+                if (!AlsiTrade_Backend.HiSat.LivePrice.EndOfDay)
+                    currentOrder = trades.Where(z => z.TimeStamp.Hour >= algotime.Hour && z.TimeStamp.Minute >= algotime.Minute && z.TimeStamp.Date == algotime.Date).First();
+                else
+                    currentOrder = trades.Last();
 
-                currentOrder.TradeVolume = Final.Last().TradeVolume * Properties.Settings.Default.VOL;
-                currentOrder.InstrumentName = Properties.Settings.Default.OTS_INST;
+                currentOrder.TradeVolume = Final.Last().TradeVolume * WebSettings.General.VOL;
+                currentOrder.InstrumentName = WebSettings.General.OTS_INST;
                 Debug.WriteLine("Sending " + currentOrder);
                 marketOrder.SendOrderToMarket(currentOrder);
                 UpdateTradeLog(SetTradeLogColor(currentOrder), true);
@@ -226,13 +231,13 @@ namespace FrontEnd
         {
             AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
             {
-                A_EMA1 = Properties.Settings.Default.A1,
-                A_EMA2 = Properties.Settings.Default.A2,
-                B_EMA1 = Properties.Settings.Default.B1,
-                B_EMA2 = Properties.Settings.Default.B2,
-                C_EMA = Properties.Settings.Default.C,
-                TakeProfit = Properties.Settings.Default.PROF,
-                StopLoss = Properties.Settings.Default.STOP,
+                A_EMA1 = WebSettings.Indicators.EmaScalp.A1,
+                A_EMA2 = WebSettings.Indicators.EmaScalp.A2,
+                B_EMA1 = WebSettings.Indicators.EmaScalp.B1,
+                B_EMA2 = WebSettings.Indicators.EmaScalp.B2,
+                C_EMA = WebSettings.Indicators.EmaScalp.C1,
+                TakeProfit = WebSettings.General.TAKE_PROFIT,
+                StopLoss = WebSettings.General.STOPLOSS,
                 CloseEndofDay = false,
                 //Period = GlobalObjects.Prices.Count,
             };
@@ -242,21 +247,31 @@ namespace FrontEnd
 
         private void PopulateControls()
         {
-            emaA1TextBox.Text = Properties.Settings.Default.A1.ToString();
-            emaA2TextBox.Text = Properties.Settings.Default.A2.ToString();
-            emaB1TextBox.Text = Properties.Settings.Default.B1.ToString();
-            emaB2TextBox.Text = Properties.Settings.Default.B2.ToString();
-            emaCTextBox.Text = Properties.Settings.Default.C.ToString();
-            stopLossTextBox.Text = Properties.Settings.Default.STOP.ToString();
-            takeProfTextBox.Text = Properties.Settings.Default.PROF.ToString();
-            tradeVolTextBox.Text = Properties.Settings.Default.VOL.ToString();
-            hiSatInstrumentTextBox.Text = Properties.Settings.Default.HISAT_INST;
-            otsInstrumentTextBox.Text = Properties.Settings.Default.OTS_INST;
+            emaA1TextBox.Text = WebSettings.Indicators.EmaScalp.A1.ToString();
+            emaA2TextBox.Text = WebSettings.Indicators.EmaScalp.A2.ToString();
+            emaB1TextBox.Text = WebSettings.Indicators.EmaScalp.B1.ToString();
+            emaB2TextBox.Text = WebSettings.Indicators.EmaScalp.B2.ToString();
+            emaCTextBox.Text = WebSettings.Indicators.EmaScalp.C1.ToString();
+            
+            stopLossTextBox.Text = WebSettings.General.STOPLOSS.ToString();
+            takeProfTextBox.Text = WebSettings.General.TAKE_PROFIT.ToString();
+            tradeVolTextBox.Text = WebSettings.General.VOL.ToString();
+            hiSatInstrumentTextBox.Text = WebSettings.General.HISAT_INST;
+            otsInstrumentTextBox.Text = WebSettings.General.OTS_INST;
+
             runningMinuteTooltripLabel.Text = _Interval.ToString().Replace("_", " ");
             endDateTimePicker.Value = DateTime.Now;
             startDateTimePicker.Value = DateTime.Now.AddDays(-50);
             endDateTimePicker.MaxDate = DateTime.Now;
-            liveStartTimePicker.Value = Properties.Settings.Default.Live_Start_Date;
+            liveStartTimePicker.Value = WebSettings.General.LIVE_START_DATE;
+            
+
+
+            //TradeMode
+            tradeModeNORMALRadioButton.Checked = (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Normal);
+            tradeModeHITRadioButton.Checked = (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Hit);
+            tradeModeAGGRESSIVERadioButton.Checked = (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Aggressive);
+            spreadNumericUpDown.Value = (decimal)WebSettings.TradeApproach.Spread;
         }
 
         private void PopulateStatBox(SummaryStats Stats)
@@ -425,6 +440,10 @@ namespace FrontEnd
 
 
             if (WritetoDB) DataBase.InsertTradeLog(t);
+            var Bid = AlsiTrade_Backend.HiSat.LivePrice.Bid;
+            var Offer = AlsiTrade_Backend.HiSat.LivePrice.Offer;
+            var Last = AlsiTrade_Backend.HiSat.LivePrice.Last;
+
 
 
 
@@ -455,7 +474,7 @@ namespace FrontEnd
                     t.ForeColor = Color.Red;
                     t.BackColor = Color.White;
                     break;
-                    
+
                 case Trade.Trigger.CloseShort:
                     t.ForeColor = Color.Red;
                     t.BackColor = Color.WhiteSmoke;
@@ -588,7 +607,7 @@ namespace FrontEnd
 
             var NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
-           _TradeOnlyList = CompletedTrade.CreateList(NewTrades);
+            _TradeOnlyList = CompletedTrade.CreateList(NewTrades);
 
 
             var MList = new List<Trade>();
@@ -600,7 +619,7 @@ namespace FrontEnd
             {
                 _TradeOnlyList.Reverse();
                 _FullTradeList.Reverse();
-                isListReversed = true;                
+                isListReversed = true;
             }
             histListview.Items.Clear();
             histListview.RebuildColumns();
@@ -627,8 +646,9 @@ namespace FrontEnd
             int em = 0;
             if (int.TryParse(emaA1TextBox.Text, out em))
             {
-                Properties.Settings.Default.A1 = em;
-                Properties.Settings.Default.Save();
+                Cursor = Cursors.WaitCursor;
+                WebSettings.Indicators.EmaScalp.A1 = em;
+                Cursor = Cursors.Default;
             }
 
         }
@@ -638,8 +658,9 @@ namespace FrontEnd
             int em = 0;
             if (int.TryParse(emaA2TextBox.Text, out em))
             {
-                Properties.Settings.Default.A2 = em;
-                Properties.Settings.Default.Save();
+                Cursor = Cursors.WaitCursor;
+                WebSettings.Indicators.EmaScalp.A2 = em;
+                Cursor = Cursors.Default;
             }
         }
 
@@ -648,8 +669,9 @@ namespace FrontEnd
             int em = 0;
             if (int.TryParse(emaB1TextBox.Text, out em))
             {
-                Properties.Settings.Default.B1 = em;
-                Properties.Settings.Default.Save();
+                Cursor = Cursors.WaitCursor;
+                WebSettings.Indicators.EmaScalp.B1 = em;
+                Cursor = Cursors.Default;
             }
         }
 
@@ -658,8 +680,9 @@ namespace FrontEnd
             int em = 0;
             if (int.TryParse(emaB2TextBox.Text, out em))
             {
-                Properties.Settings.Default.B2 = em;
-                Properties.Settings.Default.Save();
+                Cursor = Cursors.WaitCursor;
+                WebSettings.Indicators.EmaScalp.B2 = em;
+                Cursor = Cursors.Default;
             }
         }
 
@@ -668,8 +691,9 @@ namespace FrontEnd
             int em = 0;
             if (int.TryParse(emaCTextBox.Text, out em))
             {
-                Properties.Settings.Default.C = em;
-                Properties.Settings.Default.Save();
+                Cursor = Cursors.WaitCursor;
+                WebSettings.Indicators.EmaScalp.C1 = em;
+                Cursor = Cursors.Default;
             }
         }
 
@@ -677,7 +701,7 @@ namespace FrontEnd
         {
             masterStart = new DateTime();
             Cursor = Cursors.WaitCursor;
-            AlsiTrade_Backend.UpdateDB.FullHistoricUpdate_MasterMinute(Properties.Settings.Default.HISAT_INST);
+            AlsiTrade_Backend.UpdateDB.FullHistoricUpdate_MasterMinute(WebSettings.General.HISAT_INST);
             Cursor = Cursors.Default;
         }
 
@@ -750,44 +774,49 @@ namespace FrontEnd
 
         private void tradeVolTextBox_TextChanged(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             int em = 0;
             if (int.TryParse(tradeVolTextBox.Text, out em))
             {
-                Properties.Settings.Default.VOL = em;
-                Properties.Settings.Default.Save();
+                WebSettings.General.VOL = em;              
             }
+            Cursor = Cursors.Default;
         }
 
         private void takeProfTextBox_TextChanged(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             int em = 0;
             if (int.TryParse(takeProfTextBox.Text, out em))
             {
-                Properties.Settings.Default.PROF = em;
-                Properties.Settings.Default.Save();
+                WebSettings.General.TAKE_PROFIT = em;               
             }
+            Cursor = Cursors.Default;
         }
 
         private void stopLossTextBox_TextChanged(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             int em = 0;
             if (int.TryParse(stopLossTextBox.Text, out em))
             {
-                Properties.Settings.Default.STOP = em;
-                Properties.Settings.Default.Save();
+                WebSettings.General.STOPLOSS = em;              
             }
+            Cursor = Cursors.Default;
         }
 
         private void hiSatInstrumentTextBox_TextChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.HISAT_INST = hiSatInstrumentTextBox.Text;
-            Properties.Settings.Default.Save();
+            Cursor = Cursors.WaitCursor;
+            WebSettings.General.HISAT_INST = hiSatInstrumentTextBox.Text;
+            Cursor = Cursors.Default;
         }
 
         private void otsInstrumentTextBox_TextChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.OTS_INST = otsInstrumentTextBox.Text;
-            Properties.Settings.Default.Save();
+            Cursor = Cursors.WaitCursor;
+            WebSettings.General.OTS_INST = otsInstrumentTextBox.Text;
+            Cursor = Cursors.Default;
         }
 
         private void recentRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -860,8 +889,6 @@ namespace FrontEnd
         }
 
 
-
-
         public event LoadingStartup onStartupLoad;
         public delegate void LoadingStartup(object sender, LoadingStartupEvent e);
         public class LoadingStartupEvent : EventArgs
@@ -879,6 +906,7 @@ namespace FrontEnd
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            UpdateDB.FullHistoricUpdate_MasterMinute(WebSettings.General.HISAT_INST);
             Environment.Exit(0);
         }
 
@@ -942,8 +970,9 @@ namespace FrontEnd
 
         private void liveStartTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            Properties.Settings.Default.Live_Start_Date = liveStartTimePicker.Value;
-            Properties.Settings.Default.Save();
+            Cursor = Cursors.WaitCursor;
+            WebSettings.General.LIVE_START_DATE = liveStartTimePicker.Value;
+            Cursor = Cursors.Default;
         }
 
         private void fullTradesRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -956,10 +985,10 @@ namespace FrontEnd
             dataTabControl.SelectedIndex = 1;
             exportToTextButton.Enabled = true;
             synchWebTradesButton.Enabled = true;
-            Cursor=Cursors.Default;
+            Cursor = Cursors.Default;
         }
 
-        private void onlyTradesRadioButton_CheckedChanged(object sender, EventArgs e)        
+        private void onlyTradesRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
             histListview.Items.Clear();
@@ -1027,7 +1056,7 @@ namespace FrontEnd
             clearTradeLogWebCheckBox.Checked = false;
             clearTradeLogLocalCheckBox.Checked = false;
             clearEmailListCheckBox.Checked = false;
-            
+
 
             clearTradeHistoryWebCheckBox.ForeColor = Color.Black;
             clearTradeLogWebCheckBox.ForeColor = Color.Black;
@@ -1037,10 +1066,50 @@ namespace FrontEnd
             Cursor = Cursors.Default;
         }
 
-      
-       
+        private void tradeModeNORMALRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tradeModeNORMALRadioButton.Checked)
+            {
+                Cursor = Cursors.WaitCursor;
+                WebSettings.TradeApproach.Mode = WebSettings.TradeApproach.TradeMode.Normal;
+                Cursor = Cursors.Default;
+            }
+            spreadNumericUpDown.Enabled = false;
+        }
 
-        
+        private void tradeModeHITRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tradeModeHITRadioButton.Checked)
+            {
+                Cursor = Cursors.WaitCursor;
+                WebSettings.TradeApproach.Mode = WebSettings.TradeApproach.TradeMode.Hit;
+                Cursor = Cursors.Default;
+            }
+            spreadNumericUpDown.Enabled = false;
+        }
+
+        private void tradeModeAGGRESSIVERadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tradeModeAGGRESSIVERadioButton.Checked)
+            {
+                Cursor = Cursors.WaitCursor;
+                WebSettings.TradeApproach.Mode = WebSettings.TradeApproach.TradeMode.Aggressive;
+                spreadNumericUpDown.Enabled = true;
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void spreadNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            WebSettings.TradeApproach.Spread = (double)spreadNumericUpDown.Value;
+            Cursor = Cursors.Default;
+        }
+
+
+
+
+
 
 
     }

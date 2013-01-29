@@ -228,7 +228,7 @@ namespace AlsiTrade_Backend
 
             }
 
-
+            
         }
 
         public static DateTime GetAlgoTime()
@@ -350,6 +350,7 @@ namespace AlsiTrade_Backend
             if (a2l.CloseTrade.TimeStamp == last.TimeStamp) return a2l.CloseTrade;
             return last;
         }
+            
 
         public class Email
         {
