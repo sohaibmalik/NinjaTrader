@@ -28,11 +28,18 @@ namespace AlsiUtils
         public int TradeCount { get; set; }
         public AlsiUtils.Data_Objects.RegressionExt Extention { get; set; }
         public Price OHLC { get; set; }
+
+        //ExcelOrders
         public string xlRef { get; set; }
+        public bool xlMatched { get; set; }
+        
+
+
         public Trade()
         {
             Extention = new Data_Objects.RegressionExt();
             OHLC = new Price();
+           
         }
         public enum BuySell
         {
@@ -125,5 +132,7 @@ namespace AlsiUtils
 
             return tradesonly;
         }
+
+       
     }
 }

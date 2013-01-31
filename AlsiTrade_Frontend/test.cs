@@ -10,44 +10,54 @@ using AlsiTrade_Backend;
 using Communicator;
 using AlsiUtils;
 using System.Diagnostics;
+using ExcelLink;
 
 namespace FrontEnd
 {
     public partial class test : Form
     {
+        private ExcelLink.ExcelOrder E = new ExcelOrder();
+
         public test()
         {
             InitializeComponent();
+            E.onMatch += new OrderMatched(E_onMatch);
+        }
+
+        void E_onMatch(object sender, OrderMatchEventArgs e)
+        {
+            listBox1.Items.Add(e.LastOrder.Price + "  " + e.LastOrder.Reference + "   " + e.LastOrder.Status);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var d = GetAlgoTime();
-            Debug.WriteLine(d);
-           
+            E.Connect();
+            foreach (var t in E.ReadAllInputOrders())
+            {
+                listBoxINSERT.Items.Add(t.Price + "  " + t.Reference);
+            }
+            E.Disconnect();
         }
 
         private void test_Load(object sender, EventArgs e)
         {
-            var d = GetAlgoTime();
-            Debug.WriteLine(d);
+         
+            ExcelLink.xlTradeOrder xl;
+           var Es= E.GetMatchedOrders(out xl);
+          
         }
 
-        public static DateTime GetAlgoTime()
+        private void button2_Click(object sender, EventArgs e)
         {
-            var dt = DateTime.UtcNow.AddHours(2);
-            int _5min = (dt.Minute) % 5;
-            int _1min = dt.Minute % 10;
-            var _temin = dt.AddMinutes(-_1min).AddSeconds(-dt.Second);
-
-            int m = 0;
-            if (_5min == 0) m = dt.Minute - 5;
-            else
-                m = dt.Minute - 5 - _5min;
-
-            dt = dt.AddMinutes(-dt.Minute).AddMinutes(m).AddSeconds(-dt.Second);
-            return dt;
+            E.Connect();
+            foreach (var t in E.ReadAllMatchedOrders())
+            {
+                listBoxMATCHED.Items.Add(t.Price + "  " + t.Reference);
+            }
+            E.Disconnect();
         }
+
+      
         
     }
 }

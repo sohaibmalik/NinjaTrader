@@ -33,7 +33,11 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.settingsTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.saveSettingsButton = new System.Windows.Forms.Button();
+            this.saveSettingsImageList = new System.Windows.Forms.ImageList(this.components);
             this.tradeModeGroupBox = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.spreadNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.tradeModeAGGRESSIVERadioButton = new System.Windows.Forms.RadioButton();
             this.tradeModeHITRadioButton = new System.Windows.Forms.RadioButton();
             this.tradeModeNORMALRadioButton = new System.Windows.Forms.RadioButton();
@@ -104,10 +108,14 @@
             this.LoadDBPrices = new System.Windows.Forms.Button();
             this.VieDBNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.emailListView = new System.Windows.Forms.ListView();
+            this.columnActive = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnEmail = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.userPictureBox = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.emailListBox = new System.Windows.Forms.ListBox();
             this.emailTextBox = new System.Windows.Forms.TextBox();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.removeEmailButton = new System.Windows.Forms.Button();
@@ -130,14 +138,11 @@
             this.columnNote = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.historicalTradesTabPage = new System.Windows.Forms.TabPage();
             this.histListview = new BrightIdeasSoftware.ObjectListView();
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.DBPricesGridView = new System.Windows.Forms.DataGridView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.spreadNumericUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label14 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -145,6 +150,7 @@
             this.settingsTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tradeModeGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spreadNumericUpDown)).BeginInit();
             this.liveStartGroupBox.SuspendLayout();
             this.tradeLogGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.loadTradeLogNumericUpDown)).BeginInit();
@@ -171,7 +177,6 @@
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DBPricesGridView)).BeginInit();
             this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spreadNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -210,6 +215,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.saveSettingsButton);
             this.tabPage1.Controls.Add(this.tradeModeGroupBox);
             this.tabPage1.Controls.Add(this.comboBox2);
             this.tabPage1.Controls.Add(this.comboBox1);
@@ -228,6 +234,26 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // saveSettingsButton
+            // 
+            this.saveSettingsButton.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.saveSettingsButton.ImageIndex = 2;
+            this.saveSettingsButton.ImageList = this.saveSettingsImageList;
+            this.saveSettingsButton.Location = new System.Drawing.Point(266, 208);
+            this.saveSettingsButton.Name = "saveSettingsButton";
+            this.saveSettingsButton.Size = new System.Drawing.Size(60, 60);
+            this.saveSettingsButton.TabIndex = 30;
+            this.saveSettingsButton.UseVisualStyleBackColor = true;
+            this.saveSettingsButton.Click += new System.EventHandler(this.saveSettingsButton_Click);
+            // 
+            // saveSettingsImageList
+            // 
+            this.saveSettingsImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("saveSettingsImageList.ImageStream")));
+            this.saveSettingsImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.saveSettingsImageList.Images.SetKeyName(0, "saved");
+            this.saveSettingsImageList.Images.SetKeyName(1, "changed");
+            this.saveSettingsImageList.Images.SetKeyName(2, "saveonly");
+            // 
             // tradeModeGroupBox
             // 
             this.tradeModeGroupBox.Controls.Add(this.label14);
@@ -242,12 +268,35 @@
             this.tradeModeGroupBox.TabStop = false;
             this.tradeModeGroupBox.Text = "Trade Mode";
             // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(65, 101);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(23, 15);
+            this.label14.TabIndex = 4;
+            this.label14.Text = "pts";
+            // 
+            // spreadNumericUpDown
+            // 
+            this.spreadNumericUpDown.Enabled = false;
+            this.spreadNumericUpDown.Location = new System.Drawing.Point(16, 99);
+            this.spreadNumericUpDown.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.spreadNumericUpDown.Name = "spreadNumericUpDown";
+            this.spreadNumericUpDown.Size = new System.Drawing.Size(46, 23);
+            this.spreadNumericUpDown.TabIndex = 3;
+            this.spreadNumericUpDown.ValueChanged += new System.EventHandler(this.spreadNumericUpDown_ValueChanged);
+            // 
             // tradeModeAGGRESSIVERadioButton
             // 
             this.tradeModeAGGRESSIVERadioButton.AutoSize = true;
             this.tradeModeAGGRESSIVERadioButton.Location = new System.Drawing.Point(16, 74);
             this.tradeModeAGGRESSIVERadioButton.Name = "tradeModeAGGRESSIVERadioButton";
-            this.tradeModeAGGRESSIVERadioButton.Size = new System.Drawing.Size(82, 19);
+            this.tradeModeAGGRESSIVERadioButton.Size = new System.Drawing.Size(77, 17);
             this.tradeModeAGGRESSIVERadioButton.TabIndex = 2;
             this.tradeModeAGGRESSIVERadioButton.TabStop = true;
             this.tradeModeAGGRESSIVERadioButton.Text = "Aggressive";
@@ -259,7 +308,7 @@
             this.tradeModeHITRadioButton.AutoSize = true;
             this.tradeModeHITRadioButton.Location = new System.Drawing.Point(16, 48);
             this.tradeModeHITRadioButton.Name = "tradeModeHITRadioButton";
-            this.tradeModeHITRadioButton.Size = new System.Drawing.Size(41, 19);
+            this.tradeModeHITRadioButton.Size = new System.Drawing.Size(38, 17);
             this.tradeModeHITRadioButton.TabIndex = 1;
             this.tradeModeHITRadioButton.TabStop = true;
             this.tradeModeHITRadioButton.Text = "Hit";
@@ -271,7 +320,7 @@
             this.tradeModeNORMALRadioButton.AutoSize = true;
             this.tradeModeNORMALRadioButton.Location = new System.Drawing.Point(16, 22);
             this.tradeModeNORMALRadioButton.Name = "tradeModeNORMALRadioButton";
-            this.tradeModeNORMALRadioButton.Size = new System.Drawing.Size(65, 19);
+            this.tradeModeNORMALRadioButton.Size = new System.Drawing.Size(58, 17);
             this.tradeModeNORMALRadioButton.TabIndex = 0;
             this.tradeModeNORMALRadioButton.TabStop = true;
             this.tradeModeNORMALRadioButton.Text = "Normal";
@@ -988,10 +1037,10 @@
             // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.emailListView);
             this.tabPage5.Controls.Add(this.pictureBox1);
             this.tabPage5.Controls.Add(this.userPictureBox);
             this.tabPage5.Controls.Add(this.label13);
-            this.tabPage5.Controls.Add(this.emailListBox);
             this.tabPage5.Controls.Add(this.emailTextBox);
             this.tabPage5.Controls.Add(this.nameTextBox);
             this.tabPage5.Controls.Add(this.removeEmailButton);
@@ -1004,10 +1053,51 @@
             this.tabPage5.Text = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // emailListView
+            // 
+            this.emailListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnActive,
+            this.columnName,
+            this.columnEmail});
+            this.emailListView.FullRowSelect = true;
+            this.emailListView.Location = new System.Drawing.Point(6, 23);
+            this.emailListView.MultiSelect = false;
+            this.emailListView.Name = "emailListView";
+            this.emailListView.Size = new System.Drawing.Size(299, 377);
+            this.emailListView.SmallImageList = this.imageList;
+            this.emailListView.TabIndex = 9;
+            this.emailListView.UseCompatibleStateImageBehavior = false;
+            this.emailListView.View = System.Windows.Forms.View.Details;
+            this.emailListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.emailListView_ItemSelectionChanged);
+            this.emailListView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.emailListView_MouseDoubleClick);
+            // 
+            // columnActive
+            // 
+            this.columnActive.Text = "";
+            this.columnActive.Width = 28;
+            // 
+            // columnName
+            // 
+            this.columnName.Text = "Name";
+            this.columnName.Width = 100;
+            // 
+            // columnEmail
+            // 
+            this.columnEmail.Text = "Email";
+            this.columnEmail.Width = 160;
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "blue");
+            this.imageList.Images.SetKeyName(1, "true");
+            this.imageList.Images.SetKeyName(2, "false");
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(6, 228);
+            this.pictureBox1.Location = new System.Drawing.Point(9, 437);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(25, 25);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1017,7 +1107,7 @@
             // userPictureBox
             // 
             this.userPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("userPictureBox.Image")));
-            this.userPictureBox.Location = new System.Drawing.Point(6, 197);
+            this.userPictureBox.Location = new System.Drawing.Point(9, 406);
             this.userPictureBox.Name = "userPictureBox";
             this.userPictureBox.Size = new System.Drawing.Size(25, 25);
             this.userPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1027,39 +1117,29 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(34, 33);
+            this.label13.Location = new System.Drawing.Point(32, 4);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(57, 15);
             this.label13.TabIndex = 6;
             this.label13.Text = "Email List";
             // 
-            // emailListBox
-            // 
-            this.emailListBox.FormattingEnabled = true;
-            this.emailListBox.ItemHeight = 15;
-            this.emailListBox.Location = new System.Drawing.Point(34, 52);
-            this.emailListBox.Name = "emailListBox";
-            this.emailListBox.Size = new System.Drawing.Size(156, 139);
-            this.emailListBox.TabIndex = 5;
-            this.emailListBox.SelectedValueChanged += new System.EventHandler(this.emailListBox_SelectedValueChanged);
-            // 
             // emailTextBox
             // 
-            this.emailTextBox.Location = new System.Drawing.Point(34, 226);
+            this.emailTextBox.Location = new System.Drawing.Point(37, 435);
             this.emailTextBox.Name = "emailTextBox";
             this.emailTextBox.Size = new System.Drawing.Size(156, 23);
             this.emailTextBox.TabIndex = 4;
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(34, 197);
+            this.nameTextBox.Location = new System.Drawing.Point(37, 406);
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(156, 23);
             this.nameTextBox.TabIndex = 3;
             // 
             // removeEmailButton
             // 
-            this.removeEmailButton.Location = new System.Drawing.Point(196, 52);
+            this.removeEmailButton.Location = new System.Drawing.Point(311, 23);
             this.removeEmailButton.Name = "removeEmailButton";
             this.removeEmailButton.Size = new System.Drawing.Size(27, 23);
             this.removeEmailButton.TabIndex = 1;
@@ -1069,7 +1149,7 @@
             // 
             // addEmailButton
             // 
-            this.addEmailButton.Location = new System.Drawing.Point(195, 226);
+            this.addEmailButton.Location = new System.Drawing.Point(198, 435);
             this.addEmailButton.Name = "addEmailButton";
             this.addEmailButton.Size = new System.Drawing.Size(28, 23);
             this.addEmailButton.TabIndex = 0;
@@ -1251,12 +1331,6 @@
             this.histListview.UseCompatibleStateImageBehavior = false;
             this.histListview.View = System.Windows.Forms.View.Details;
             // 
-            // imageList
-            // 
-            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
-            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "blue");
-            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.DBPricesGridView);
@@ -1304,29 +1378,6 @@
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // spreadNumericUpDown
-            // 
-            this.spreadNumericUpDown.Enabled = false;
-            this.spreadNumericUpDown.Location = new System.Drawing.Point(16, 99);
-            this.spreadNumericUpDown.Maximum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.spreadNumericUpDown.Name = "spreadNumericUpDown";
-            this.spreadNumericUpDown.Size = new System.Drawing.Size(46, 23);
-            this.spreadNumericUpDown.TabIndex = 3;
-            this.spreadNumericUpDown.ValueChanged += new System.EventHandler(this.spreadNumericUpDown_ValueChanged);
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(65, 101);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(23, 15);
-            this.label14.TabIndex = 4;
-            this.label14.Text = "pts";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1350,6 +1401,7 @@
             this.tabPage1.ResumeLayout(false);
             this.tradeModeGroupBox.ResumeLayout(false);
             this.tradeModeGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spreadNumericUpDown)).EndInit();
             this.liveStartGroupBox.ResumeLayout(false);
             this.tradeLogGroupBox.ResumeLayout(false);
             this.tradeLogGroupBox.PerformLayout();
@@ -1387,7 +1439,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.DBPricesGridView)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spreadNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1465,7 +1516,6 @@
         private System.Windows.Forms.Button synchWebTradesButton;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ListBox emailListBox;
         private System.Windows.Forms.TextBox emailTextBox;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Button removeEmailButton;
@@ -1503,6 +1553,12 @@
         private System.Windows.Forms.RadioButton tradeModeNORMALRadioButton;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.NumericUpDown spreadNumericUpDown;
+        private System.Windows.Forms.ListView emailListView;
+        private System.Windows.Forms.ColumnHeader columnActive;
+        private System.Windows.Forms.ColumnHeader columnName;
+        private System.Windows.Forms.ColumnHeader columnEmail;
+        private System.Windows.Forms.Button saveSettingsButton;
+        private System.Windows.Forms.ImageList saveSettingsImageList;
         
     }
 }

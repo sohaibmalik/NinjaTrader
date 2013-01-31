@@ -14,7 +14,7 @@ namespace AlsiTrade_Backend
     {
         private static AlsiWebService.AlsiNotifyService service;
         public static List<EmailList> _EmailList = new List<EmailList>();
-        private static string _lastExlRef;
+        
         public WebUpdate()
         {
             service = new AlsiWebService.AlsiNotifyService();
@@ -26,6 +26,38 @@ namespace AlsiTrade_Backend
         {
             var dc = new WebDbDataContext();
             _EmailList = dc.EmailLists.OrderBy(z => z.ID).ToList();
+        }
+
+        public static void CheckUncheckEmailListUser(int UserID)
+        {
+            var dc = new WebDbDataContext();
+            var user = dc.EmailLists.Where(z => z.ID == UserID).First();
+            user.Active = !user.Active;
+            dc.SubmitChanges();
+            GetEmailList();
+        }
+
+        public static void DeleteUserFromEmailList(int UserID)
+        {
+            var dc = new WebDbDataContext();
+            var user = dc.EmailLists.Where(z => z.ID == UserID).First();
+            dc.EmailLists.DeleteOnSubmit(user);
+            dc.SubmitChanges();
+            GetEmailList();
+        }
+
+        public static bool InsertNewUsertoEmailList(EmailList user)
+        {
+               var dc = new WebDbDataContext();
+               var insert = (!dc.EmailLists.Any(z => z.Email == user.Email));
+            if(insert)
+            {
+                user.Active = true;
+                dc.EmailLists.InsertOnSubmit(user);
+                dc.SubmitChanges();
+                GetEmailList();
+            }
+            return insert;
         }
 
         public void ReportStatus()
@@ -99,23 +131,41 @@ namespace AlsiTrade_Backend
             string bs = "none";
             if (trade.BuyorSell == Trade.BuySell.Buy) bs = "Buy";
             if (trade.BuyorSell == Trade.BuySell.Sell) bs = "Sell";
+            if (!CheckDbCount(dc,trade)) return;
 
-            bool isfromExcel = false;
-            bool matched=false;
-            if (trade.xlRef == null)
+            if (!trade.xlMatched)
             {
-                _lastExlRef = bs.ToString() + trade.TradedPrice.ToString() + DateTime.Now.Day.ToString();
-                isfromExcel = false;
+                WebTradeLog wtl = new WebTradeLog()
+                {
+                    Time = trade.TimeStamp,
+                    BuySell = trade.BuyorSell.ToString(),
+                    Price = (int)trade.TradedPrice,
+                    Reason = trade.Reason.ToString(),
+                    Volume = trade.TradeVolume,
+                    Matched = 0,
+                    Ref = trade.xlRef
+                };
+                dc.WebTradeLogs.InsertOnSubmit(wtl);
+                dc.SubmitChanges();
             }
-            else                            
-                isfromExcel = true;
+            else
+            {
+                int c = dc.WebTradeLogs.Count();
+                var last = dc.WebTradeLogs.Skip(c - 1).Take(1).Single();
+                last.Ref = trade.xlRef;
+                last.Matched = (int)trade.TradedPrice;
+                dc.SubmitChanges();
+            }
+           
+        }
 
-            if (isfromExcel) if (_lastExlRef == trade.xlRef) matched = true;
+
+        private static  bool CheckDbCount(WebDbDataContext dc,Trade trade)
+        {
             int c = dc.WebTradeLogs.Count();
-            WebTradeLog last = new WebTradeLog();
             if (c > 0)
             {
-                last = dc.WebTradeLogs.Skip(c - 1).Take(1).Single();
+                //var  last = dc.WebTradeLogs.Skip(c - 10).Take(10);
             }
             else
             {//create new if db is empty
@@ -126,34 +176,14 @@ namespace AlsiTrade_Backend
                     Price = (int)trade.TradedPrice,
                     Reason = trade.Reason.ToString(),
                     Volume = trade.TradeVolume,
-                    Matched = false,
+                    Matched = (int)trade.TradedPrice,
                 };
                 dc.WebTradeLogs.InsertOnSubmit(wtl);
                 dc.SubmitChanges();
-                return;
+                return false;
             }
-
-            if (!matched)
-            {
-                WebTradeLog wtl = new WebTradeLog()
-                 {
-                     Time = trade.TimeStamp,
-                     BuySell = trade.BuyorSell.ToString(),
-                     Price = (int)trade.TradedPrice,
-                     Reason = trade.Reason.ToString(),
-                     Volume = trade.TradeVolume,
-                     Matched = false,
-                 };
-                dc.WebTradeLogs.InsertOnSubmit(wtl);
-                dc.SubmitChanges();
-            }
-            else
-            {
-                last.Matched = true;
-                dc.SubmitChanges();
-            }
+            return true;
         }
-
 
         #region Clear Lists
 

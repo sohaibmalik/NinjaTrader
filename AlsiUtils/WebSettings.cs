@@ -7,6 +7,20 @@ namespace AlsiUtils
 {
     public class WebSettings
     {
+        public static bool _settingChanged;
+        private static System.Data.Linq.Table<Setting> Settings;
+        private static System.Data.Linq.Table<IndicatorSetting> IndicatorSettings;
+        public static WebDbDataContext DC = new WebDbDataContext();
+        public static void GetSettings()
+        {
+            Settings = DC.Settings;
+            IndicatorSettings = DC.IndicatorSettings;
+        }
+
+        public static void SaveSettings()
+        {
+            DC.SubmitChanges();
+        }
         public class TradeApproach
         {
             private static TradeMode _Mode;
@@ -21,6 +35,7 @@ namespace AlsiUtils
                 {
                     _Mode = value;
                     SetTradeMode(value);
+                    _settingChanged = true;
                 }
             }
 
@@ -36,23 +51,23 @@ namespace AlsiUtils
                 {
                     _Spread = value;
                     SetSpread(value);
+                    _settingChanged = true;
                 }
             }
 
             private static void SetTradeMode(TradeMode Mode)
             {
-                var dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "TRADE_MODE").First();
+
+                var setting = Settings.Where(z => z.Setting_Name == "TRADE_MODE").First();
                 if (Mode == TradeMode.Normal) setting.ValueString = "NORMAL";
                 if (Mode == TradeMode.Hit) setting.ValueString = "HIT";
                 if (Mode == TradeMode.Aggressive) setting.ValueString = "AGGRESSIVE";
-                dc.SubmitChanges();
+
             }
 
             private static TradeMode GetTradeMode()
             {
-                var dc = new WebDbDataContext();
-                var Mode = dc.Settings.Where(z => z.Setting_Name == "TRADE_MODE").First().ValueString;
+                var Mode = Settings.Where(z => z.Setting_Name == "TRADE_MODE").First().ValueString;
                 if (Mode == "HIT") return TradeMode.Hit;
                 if (Mode == "AGGRESSIVE") return TradeMode.Aggressive;
                 return TradeMode.Normal;
@@ -60,20 +75,15 @@ namespace AlsiUtils
 
             private static double GetSpread()
             {
-                var dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "TRADE_MODE").First();
+                var setting = Settings.Where(z => z.Setting_Name == "TRADE_MODE").First();
                 return (double)setting.ValueNumber;
             }
 
             private static void SetSpread(double spread)
             {
-                var dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "TRADE_MODE").First();
+                var setting = Settings.Where(z => z.Setting_Name == "TRADE_MODE").First();
                 setting.ValueNumber = (int)spread;
-                dc.SubmitChanges();
             }
-
-
 
             public enum TradeMode
             {
@@ -86,7 +96,7 @@ namespace AlsiUtils
         public class General
         {
             #region HISAT_INST
-           
+
             private static string _HISAT_INST;
             public static string HISAT_INST
             {
@@ -99,21 +109,19 @@ namespace AlsiUtils
                 {
                     _HISAT_INST = value;
                     SetHiSat_Inst(value);
+                    _settingChanged = true;
                 }
             }
 
             private static string GetHiSat_Inst()
             {
-                var dc = new WebDbDataContext();
-                return dc.Settings.Where(z => z.Setting_Name == "HISAT_INST").First().ValueString;
+                return Settings.Where(z => z.Setting_Name == "HISAT_INST").First().ValueString;
             }
 
             private static void SetHiSat_Inst(string Instrument)
             {
-                var dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "HISAT_INST").First();
+                var setting = Settings.Where(z => z.Setting_Name == "HISAT_INST").First();
                 setting.ValueString = Instrument;
-                dc.SubmitChanges();
             }
 
             #endregion
@@ -130,23 +138,21 @@ namespace AlsiUtils
                 }
                 set
                 {
-                   _OTS_INST = value;
+                    _OTS_INST = value;
                     SetOTS_Inst(value);
+                    _settingChanged = true;
                 }
             }
 
             private static string GetOTS_Inst()
             {
-                var dc = new WebDbDataContext();
-                return dc.Settings.Where(z => z.Setting_Name == "OTS_INST").First().ValueString;
+                return Settings.Where(z => z.Setting_Name == "OTS_INST").First().ValueString;
             }
 
             private static void SetOTS_Inst(string Instrument)
             {
-                var dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "OTS_INST").First();
+                var setting = Settings.Where(z => z.Setting_Name == "OTS_INST").First();
                 setting.ValueString = Instrument;
-                dc.SubmitChanges();
             }
 
 
@@ -169,21 +175,20 @@ namespace AlsiUtils
                 {
                     _VOL = value;
                     SetVOL(value);
+                    _settingChanged = true;
                 }
             }
 
             private static int GetVOL()
             {
-                var dc = new WebDbDataContext();
-                return (int)dc.Settings.Where(z => z.Setting_Name == "VOL").First().ValueNumber;
+
+                return (int)Settings.Where(z => z.Setting_Name == "VOL").First().ValueNumber;
             }
 
             private static void SetVOL(int vol)
             {
-                var dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "VOL").First();
+                var setting = Settings.Where(z => z.Setting_Name == "VOL").First();
                 setting.ValueNumber = vol;
-                dc.SubmitChanges();
             }
 
 
@@ -206,24 +211,20 @@ namespace AlsiUtils
                 {
                     _STOPLOSS = value;
                     SetSTOPLOSS(value);
+                    _settingChanged = true;
                 }
             }
 
             private static int GetSTOPLOSS()
             {
-                var dc = new WebDbDataContext();
-                return (int)dc.Settings.Where(z => z.Setting_Name == "STOPLOSS").First().ValueNumber;
+                return (int)Settings.Where(z => z.Setting_Name == "STOPLOSS").First().ValueNumber;
             }
 
             private static void SetSTOPLOSS(int STOPLOSS)
             {
-                var dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "STOPLOSS").First();
+                var setting = Settings.Where(z => z.Setting_Name == "STOPLOSS").First();
                 setting.ValueNumber = STOPLOSS;
-                dc.SubmitChanges();
             }
-
-
 
 
 
@@ -243,21 +244,19 @@ namespace AlsiUtils
                 {
                     _TAKE_PROFIT = value;
                     SetTAKE_PROFIT(value);
+                    _settingChanged = true;
                 }
             }
 
             private static int GetTAKE_PROFIT()
             {
-                var dc = new WebDbDataContext();
-                return (int)dc.Settings.Where(z => z.Setting_Name == "TAKE_PROFIT").First().ValueNumber;
+                return (int)Settings.Where(z => z.Setting_Name == "TAKE_PROFIT").First().ValueNumber;
             }
 
             private static void SetTAKE_PROFIT(int TAKE_PROFIT)
             {
-                var dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "TAKE_PROFIT").First();
+                var setting = Settings.Where(z => z.Setting_Name == "TAKE_PROFIT").First();
                 setting.ValueNumber = TAKE_PROFIT;
-                dc.SubmitChanges();
             }
 
 
@@ -269,32 +268,30 @@ namespace AlsiUtils
             #region LIVE_START_DATE
 
             private static DateTime _LIVE_START_DATE;
-            public static DateTime  LIVE_START_DATE
+            public static DateTime LIVE_START_DATE
             {
                 get
                 {
-                    if (_LIVE_START_DATE.Year<1985) _LIVE_START_DATE = GetLIVE_START_DATE();
+                    if (_LIVE_START_DATE.Year < 1985) _LIVE_START_DATE = GetLIVE_START_DATE();
                     return _LIVE_START_DATE;
                 }
                 set
                 {
                     _LIVE_START_DATE = value;
                     SetLIVE_START_DATE(value);
+                    _settingChanged = true;
                 }
             }
 
             private static DateTime GetLIVE_START_DATE()
             {
-                var dc = new WebDbDataContext();
-                return (DateTime)dc.Settings.Where(z => z.Setting_Name == "LIVE_START_DATE").First().ValueDate;
+                return (DateTime)Settings.Where(z => z.Setting_Name == "LIVE_START_DATE").First().ValueDate;
             }
 
-            private static void SetLIVE_START_DATE(DateTime  LIVE_START_DATE)
+            private static void SetLIVE_START_DATE(DateTime LIVE_START_DATE)
             {
-                var dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "LIVE_START_DATE").First();
+                var setting = Settings.Where(z => z.Setting_Name == "LIVE_START_DATE").First();
                 setting.ValueDate = LIVE_START_DATE;
-                dc.SubmitChanges();
             }
 
 
@@ -322,21 +319,19 @@ namespace AlsiUtils
                     {
                         _A1 = value;
                         SetA1(value);
+                        _settingChanged = true;
                     }
                 }
 
                 private static int GetA1()
                 {
-                    var dc = new WebDbDataContext();
-                    return (int)dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().A1;
+                    return (int)IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().A1;
                 }
 
                 private static void SetA1(int A1)
                 {
-                    var dc = new WebDbDataContext();
-                    var setting = dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
-                    setting.A1= A1;
-                    dc.SubmitChanges();
+                    var setting = IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
+                    setting.A1 = A1;
                 }
 
 
@@ -359,21 +354,19 @@ namespace AlsiUtils
                     {
                         _A2 = value;
                         SetA2(value);
+                        _settingChanged = true;
                     }
                 }
 
                 private static int GetA2()
                 {
-                    var dc = new WebDbDataContext();
-                    return (int)dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().A2;
+                    return (int)IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().A2;
                 }
 
                 private static void SetA2(int A2)
                 {
-                    var dc = new WebDbDataContext();
-                    var setting = dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
+                    var setting = IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
                     setting.A2 = A2;
-                    dc.SubmitChanges();
                 }
 
 
@@ -396,21 +389,19 @@ namespace AlsiUtils
                     {
                         _B1 = value;
                         SetB1(value);
+                        _settingChanged = true;
                     }
                 }
 
                 private static int GetB1()
                 {
-                    var dc = new WebDbDataContext();
-                    return (int)dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().B1;
+                    return (int)IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().B1;
                 }
 
                 private static void SetB1(int B1)
                 {
-                    var dc = new WebDbDataContext();
-                    var setting = dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
+                    var setting = IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
                     setting.B1 = B1;
-                    dc.SubmitChanges();
                 }
 
 
@@ -433,21 +424,19 @@ namespace AlsiUtils
                     {
                         _B2 = value;
                         SetB2(value);
+                        _settingChanged = true;
                     }
                 }
 
                 private static int GetB2()
                 {
-                    var dc = new WebDbDataContext();
-                    return (int)dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().B2;
+                    return (int)IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().B2;
                 }
 
                 private static void SetB2(int B2)
                 {
-                    var dc = new WebDbDataContext();
-                    var setting = dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
+                    var setting = IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
                     setting.B2 = B2;
-                    dc.SubmitChanges();
                 }
 
 
@@ -470,21 +459,19 @@ namespace AlsiUtils
                     {
                         _C1 = value;
                         SetC1(value);
+                        _settingChanged = true;
                     }
                 }
 
                 private static int GetC1()
                 {
-                    var dc = new WebDbDataContext();
-                    return (int)dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().C1;
+                    return (int)IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First().C1;
                 }
 
                 private static void SetC1(int C1)
                 {
-                    var dc = new WebDbDataContext();
-                    var setting = dc.IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
+                    var setting = IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
                     setting.C1 = C1;
-                    dc.SubmitChanges();
                 }
 
 

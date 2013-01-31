@@ -21,8 +21,7 @@ namespace FrontEnd
         MarketOrder marketOrder;
         GlobalObjects.TimeInterval _Interval;
         private Statistics _Stats = new Statistics();
-        WebUpdate service;
-
+        WebUpdate service;      
         private OLVColumn ColStamp;
         private OLVColumn ColReason;
         private OLVColumn ColBuySell;
@@ -48,6 +47,7 @@ namespace FrontEnd
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            WebSettings.GetSettings();
             var start = new LoadingStartupEvent();
             start.Progress = 10;
             onStartupLoad(this, start);
@@ -175,7 +175,7 @@ namespace FrontEnd
                 {
                     Debug.WriteLine(ct.InstrumentName + "  " + ct.TimeStamp + "  reason " + ct.Reason + " " + ct.TradedPrice + "  " + ct.IndicatorNotes + "  " + ct.CurrentDirection + " Vol " + ct.TradeVolume);
                 }
-                
+
                 var algotime = DoStuff.GetAlgoTime();
                 var check = trades.Any(z => z.TimeStamp.Hour >= algotime.Hour && z.TimeStamp.Minute >= algotime.Minute && z.TimeStamp.Date == algotime.Date);
                 if (!check && timeout < 5)
@@ -225,8 +225,7 @@ namespace FrontEnd
             Debug.WriteLine("Loss % " + e.SumStats.Pct_Loss);
             PopulateStatBox(e.SumStats);
         }
-
-
+        
         public static Parameter_EMA_Scalp GetParameters()
         {
             AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
@@ -252,7 +251,7 @@ namespace FrontEnd
             emaB1TextBox.Text = WebSettings.Indicators.EmaScalp.B1.ToString();
             emaB2TextBox.Text = WebSettings.Indicators.EmaScalp.B2.ToString();
             emaCTextBox.Text = WebSettings.Indicators.EmaScalp.C1.ToString();
-            
+
             stopLossTextBox.Text = WebSettings.General.STOPLOSS.ToString();
             takeProfTextBox.Text = WebSettings.General.TAKE_PROFIT.ToString();
             tradeVolTextBox.Text = WebSettings.General.VOL.ToString();
@@ -264,7 +263,7 @@ namespace FrontEnd
             startDateTimePicker.Value = DateTime.Now.AddDays(-50);
             endDateTimePicker.MaxDate = DateTime.Now;
             liveStartTimePicker.Value = WebSettings.General.LIVE_START_DATE;
-            
+
 
 
             //TradeMode
@@ -778,7 +777,7 @@ namespace FrontEnd
             int em = 0;
             if (int.TryParse(tradeVolTextBox.Text, out em))
             {
-                WebSettings.General.VOL = em;              
+                WebSettings.General.VOL = em;
             }
             Cursor = Cursors.Default;
         }
@@ -789,7 +788,7 @@ namespace FrontEnd
             int em = 0;
             if (int.TryParse(takeProfTextBox.Text, out em))
             {
-                WebSettings.General.TAKE_PROFIT = em;               
+                WebSettings.General.TAKE_PROFIT = em;
             }
             Cursor = Cursors.Default;
         }
@@ -800,7 +799,7 @@ namespace FrontEnd
             int em = 0;
             if (int.TryParse(stopLossTextBox.Text, out em))
             {
-                WebSettings.General.STOPLOSS = em;              
+                WebSettings.General.STOPLOSS = em;
             }
             Cursor = Cursors.Default;
         }
@@ -913,32 +912,40 @@ namespace FrontEnd
         #region Email setup
         private void PopulateEmailTab()
         {
-            emailListBox.Items.Clear();
-            foreach (var v in WebUpdate._EmailList) emailListBox.Items.Add(v);
+            emailListView.Items.Clear();
+            int index = 0;
+            foreach (var v in WebUpdate._EmailList)
+            {
+                int x = ((bool)v.Active) ? 1 : 2;
+                ListViewItem lvi = new ListViewItem("", x);
+                lvi.SubItems.Add(v.Name);
+                lvi.SubItems.Add(v.Email);
+                lvi.Tag = v;
+                emailListView.Items.Add(lvi);
+            }
         }
 
-        private void emailListBox_SelectedValueChanged(object sender, EventArgs e)
+        private void emailListView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var email = (EmailList)emailListBox.SelectedItem;
-            emailTextBox.Text = email.Email;
-            nameTextBox.Text = email.Name;
-
+            Cursor = Cursors.WaitCursor;
+            WebUpdate.CheckUncheckEmailListUser(((EmailList)emailListView.SelectedItems[0].Tag).ID);         
+            PopulateEmailTab();
+            Cursor = Cursors.Default;
         }
+
 
         private void addEmailButton_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            var dc = new WebDbDataContext();
-            if (!dc.EmailLists.Any(z => z.Email == emailTextBox.Text.Trim()))
+
+            var contat = new EmailList()
             {
-                var contat = new EmailList()
-                {
-                    Name = nameTextBox.Text,
-                    Email = emailTextBox.Text,
-                };
-                dc.EmailLists.InsertOnSubmit(contat);
-                dc.SubmitChanges();
-                WebUpdate.GetEmailList();
+                Name = nameTextBox.Text.Trim(),
+                Email = emailTextBox.Text.Trim(),
+            };
+
+            if (WebUpdate.InsertNewUsertoEmailList(contat))
+            {
                 PopulateEmailTab();
                 emailTextBox.Clear();
                 nameTextBox.Clear();
@@ -951,20 +958,25 @@ namespace FrontEnd
             Cursor = Cursors.Default;
         }
 
+        private void emailListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (e.Item != null)
+            {
+                var u = (EmailList)e.Item.Tag;
+                emailTextBox.Text = u.Email;
+                nameTextBox.Text = u.Name;
+            }
+        }
 
 
         private void removeEmailButton_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            var dc = new WebDbDataContext();
-            var email = (EmailList)emailListBox.SelectedItem;
-            dc.EmailLists.DeleteOnSubmit(dc.EmailLists.Where(z => z.ID == email.ID).First());
-            dc.SubmitChanges();
-            WebUpdate.GetEmailList();
+            var email = (EmailList)emailListView.SelectedItems[0].Tag;
+            WebUpdate.DeleteUserFromEmailList(email.ID);
             PopulateEmailTab();
             Cursor = Cursors.Default;
         }
-
 
         #endregion
 
@@ -1105,6 +1117,21 @@ namespace FrontEnd
             WebSettings.TradeApproach.Spread = (double)spreadNumericUpDown.Value;
             Cursor = Cursors.Default;
         }
+
+        private void saveSettingsButton_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            WebSettings.SaveSettings();
+            Cursor = Cursors.Default;
+        }
+
+    
+
+
+
+
+
+
 
 
 

@@ -2,22 +2,10 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="WebDb">
   <DataContextMoniker Name="/WebDbDataContext" />
   <nestedChildShapes>
-    <classShape Id="ae8aa87c-556b-4f89-8d9f-110f299725a5" absoluteBounds="0.75, 0.75, 2, 1.3862939453125">
-      <DataClassMoniker Name="/WebDbDataContext/EmailList" />
-      <nestedChildShapes>
-        <elementListCompartment Id="06322226-0af8-486a-9b4c-26c4bb6bcb87" absoluteBounds="0.765, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="9331ae8b-b1c0-4517-a05d-514a33e3ec67" absoluteBounds="0.75, 4.75, 2, 2.1554996744791666">
       <DataClassMoniker Name="/WebDbDataContext/TradeHistory" />
       <nestedChildShapes>
         <elementListCompartment Id="1aae8e3a-c446-4bdc-ab9e-29f910a18b5f" absoluteBounds="0.765, 5.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="d8fa4b2c-9984-4e7e-9071-42bb1595f767" absoluteBounds="3.75, 0.75, 2, 2.7324039713541666">
-      <DataClassMoniker Name="/WebDbDataContext/WebTradeLog" />
-      <nestedChildShapes>
-        <elementListCompartment Id="6f1a423f-f289-4549-b6d7-3b0c442d2d55" absoluteBounds="3.7649999999999997, 1.21, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="8192e6cc-c855-4c25-8c55-1b02c6a1a361" absoluteBounds="2, 3, 2, 1.7708968098958331">
@@ -30,6 +18,18 @@
       <DataClassMoniker Name="/WebDbDataContext/IndicatorSetting" />
       <nestedChildShapes>
         <elementListCompartment Id="40a873d9-a538-43b2-b40a-edd32be27610" absoluteBounds="6.515, 1.71, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3ce1e2c7-9c90-482f-917a-8d9e4ef60b09" absoluteBounds="0.5, 1.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/WebDbDataContext/EmailList" />
+      <nestedChildShapes>
+        <elementListCompartment Id="75cc0f90-b480-4961-b3b5-44d7e8666849" absoluteBounds="0.515, 1.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3a59429e-6518-4d18-aceb-339029dfbddb" absoluteBounds="4.125, 1.5, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/WebDbDataContext/WebTradeLog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8b20067f-35d1-4730-93cc-079b071f4a22" absoluteBounds="4.14, 1.96, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

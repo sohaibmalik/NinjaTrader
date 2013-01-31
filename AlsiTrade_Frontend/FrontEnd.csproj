@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>29</ApplicationRevision>
+    <ApplicationRevision>30</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -144,6 +144,10 @@
     <ProjectReference Include="..\Communicator\Communicator\Communicator.csproj">
       <Project>{DADADE30-FDDF-4921-B96E-A8D0ECFFEB51}</Project>
       <Name>Communicator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExcelLink\ExcelLink\ExcelLink.csproj">
+      <Project>{102678C8-C660-4FC3-89BE-B46D2F82C614}</Project>
+      <Name>ExcelLink</Name>
     </ProjectReference>
     <ProjectReference Include="..\External Libraries\ObjectListViewDemo\ObjectListView\ObjectListView2010.csproj">
       <Project>{18FEDA0C-D147-4286-B39A-01204808106A}</Project>

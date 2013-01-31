@@ -75,15 +75,19 @@ namespace AlsiTrade_Backend
 
         void e_onMatch(object sender, OrderMatchEventArgs e)
         {
-            var et = e.Order;
+            var et = e.LastOrder;
+        
+           bool matched=(e.LastOrder.Status==xlTradeOrder.orderStatus.Completed);
+
             Trade t = new Trade()
             {
-                TimeStamp = DateTime.UtcNow.AddHours(2),
+                TimeStamp = matched?e.LastOrder.TimeStamp:DateTime.UtcNow.AddHours(2),
                 TradedPrice = et.Price,
                 TradeVolume = et.Volume,
                 BuyorSell = et.BS,
                 InstrumentName = et.Contract,
-                xlRef = et.Reference,
+                xlRef=et.Reference,
+                xlMatched=matched,               
 
             };
             OrderMatchEvent ome = new OrderMatchEvent();

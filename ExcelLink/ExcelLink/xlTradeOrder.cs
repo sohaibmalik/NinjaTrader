@@ -27,6 +27,7 @@ namespace ExcelLink
        public string Exchange { get; set; }
        public string Dealer { get; set; }
        public string Reference { get; set; }
+       public DateTime TimeStamp { get; set; }
 
        public void GetReference()
        {

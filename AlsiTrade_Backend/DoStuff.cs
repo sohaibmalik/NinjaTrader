@@ -374,7 +374,8 @@ namespace AlsiTrade_Backend
             {
                 var dc = new WebDbDataContext();
 
-                List<string> emails = dc.EmailLists.Select(z => z.Email).ToList();
+               // List<string> emails = dc.EmailLists.Where(z=>z.Active==true).Select(z => z.Email).ToList();
+                List<string> emails = WebUpdate._EmailList.Where(z => z.Active == true).Select(z => z.Email).ToList();
 
                 if (_Admin) Communicator.Gmail.SendEmail(emails[0], _Msg.Title, _Msg.Body, null, "pietpiel27@gmail.com", "1rachelle", "Alsi Trade System", false);
                 else
