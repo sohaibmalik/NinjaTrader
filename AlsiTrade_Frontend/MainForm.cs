@@ -270,6 +270,8 @@ namespace FrontEnd
             tradeModeNORMALRadioButton.Checked = (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Normal);
             tradeModeHITRadioButton.Checked = (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Hit);
             tradeModeAGGRESSIVERadioButton.Checked = (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Aggressive);
+            tradeModeBESTRadioButton.Checked = (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.BestBidOffer);
+            tradeModeBESTAGGRESSIVERadioButton.Checked = (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.BestAgressive);
             spreadNumericUpDown.Value = (decimal)WebSettings.TradeApproach.Spread;
         }
 
@@ -1124,6 +1126,30 @@ namespace FrontEnd
             WebSettings.SaveSettings();
             Cursor = Cursors.Default;
         }
+
+        private void tradeModeBESTRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tradeModeBESTRadioButton.Checked)
+            {
+                Cursor = Cursors.WaitCursor;
+                WebSettings.TradeApproach.Mode = WebSettings.TradeApproach.TradeMode.BestBidOffer;
+                spreadNumericUpDown.Enabled = false;
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void tradeModeBESTAGGRESSIVERadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (tradeModeBESTAGGRESSIVERadioButton.Checked)
+            {
+                Cursor = Cursors.WaitCursor;
+                WebSettings.TradeApproach.Mode = WebSettings.TradeApproach.TradeMode.BestAgressive;
+                spreadNumericUpDown.Enabled = true;
+                Cursor = Cursors.Default;
+            }
+        }
+
+       
 
     
 

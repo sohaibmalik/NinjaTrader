@@ -17,7 +17,7 @@ namespace AlsiTrade_Backend
         {
             if (trade.BuyorSell != Trade.BuySell.None)
             {
-                double price = adjustPriceToStrategy(trade);
+                double price = WebSettings.TradeApproach.AdjustPriceToStrategy(trade,HiSat.LivePrice.Bid,HiSat.LivePrice.Offer);
 
                 ExcelLink.xlTradeOrder o = new xlTradeOrder()
                 {
@@ -50,28 +50,7 @@ namespace AlsiTrade_Backend
             }
         }
 
-        private double adjustPriceToStrategy(Trade trade)
-        {
-            double last = trade.CurrentPrice;
-            double bid = HiSat.LivePrice.Bid;
-            double offer = HiSat.LivePrice.Offer;
-            double spread = WebSettings.TradeApproach.Spread;
-
-            if (trade.BuyorSell == Trade.BuySell.Buy)
-            {
-                if (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Hit) return offer;
-                if (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Aggressive) return last + spread;
-            }
-
-
-            if (trade.BuyorSell == Trade.BuySell.Sell)
-            {
-                if (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Hit) return bid;
-                if (WebSettings.TradeApproach.Mode == WebSettings.TradeApproach.TradeMode.Aggressive) return last - spread;
-            }
-
-            return last;
-        }
+       
 
         void e_onMatch(object sender, OrderMatchEventArgs e)
         {

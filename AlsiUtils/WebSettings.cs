@@ -62,6 +62,8 @@ namespace AlsiUtils
                 if (Mode == TradeMode.Normal) setting.ValueString = "NORMAL";
                 if (Mode == TradeMode.Hit) setting.ValueString = "HIT";
                 if (Mode == TradeMode.Aggressive) setting.ValueString = "AGGRESSIVE";
+                if (Mode == TradeMode.BestBidOffer) setting.ValueString = "BEST";
+                if (Mode == TradeMode.BestAgressive) setting.ValueString = "BESTAGGRESSIVE";
 
             }
 
@@ -70,6 +72,8 @@ namespace AlsiUtils
                 var Mode = Settings.Where(z => z.Setting_Name == "TRADE_MODE").First().ValueString;
                 if (Mode == "HIT") return TradeMode.Hit;
                 if (Mode == "AGGRESSIVE") return TradeMode.Aggressive;
+                if (Mode == "BEST") return TradeMode.BestBidOffer;
+                if (Mode == "BESTAGGRESSIVE") return TradeMode.BestAgressive;
                 return TradeMode.Normal;
             }
 
@@ -85,11 +89,46 @@ namespace AlsiUtils
                 setting.ValueNumber = (int)spread;
             }
 
+            public static double AdjustPriceToStrategy(Trade trade,double bid,double offer)
+            {
+                double last = trade.CurrentPrice;             
+                double spread = WebSettings.TradeApproach.Spread;
+
+                if (trade.BuyorSell == Trade.BuySell.Buy)
+                {
+                    if (Mode == TradeMode.Hit) return offer;
+                    if (Mode == TradeMode.Aggressive) return last + spread;
+                    if (Mode == TradeMode.BestBidOffer) return bid + 1;
+                    if (Mode == TradeMode.BestAgressive) return bid + spread;
+
+                }
+
+
+                if (trade.BuyorSell == Trade.BuySell.Sell)
+                {
+                    if (Mode == TradeMode.Hit) return bid;
+                    if (Mode == TradeMode.Aggressive) return last - spread;
+                    if (Mode == TradeMode.BestBidOffer) return offer- 1;
+                    if (Mode == TradeMode.BestAgressive) return offer - spread;
+                }
+
+                return last;
+            }
+
+            /// <summary>
+            /// Normal=Generated Price
+            /// Hit=Take Bid or Offer
+            /// Agressive = Normal +- Spread
+            /// BestBidOffer=Bid+1 Offer-1
+            /// BestAgressive=Bid+Spread Offer-Spread
+            /// </summary>
             public enum TradeMode
             {
                 Normal = 1,
                 Hit = 2,
                 Aggressive = 3,
+                BestBidOffer=4,
+                BestAgressive=5,
             }
         }
 
