@@ -990,9 +990,9 @@ namespace AlsiUtils
 		
 		private string _BackColor;
 		
-		private int _Matched;
+		private int _PriceMatched;
 		
-		private string _Ref;
+		private bool _Matched;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -1016,10 +1016,10 @@ namespace AlsiUtils
     partial void OnForeColorChanged();
     partial void OnBackColorChanging(string value);
     partial void OnBackColorChanged();
-    partial void OnMatchedChanging(int value);
+    partial void OnPriceMatchedChanging(int value);
+    partial void OnPriceMatchedChanged();
+    partial void OnMatchedChanging(bool value);
     partial void OnMatchedChanged();
-    partial void OnRefChanging(string value);
-    partial void OnRefChanged();
     #endregion
 		
 		public WebTradeLog()
@@ -1207,8 +1207,28 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Matched", DbType="Int NOT NULL")]
-		public int Matched
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PriceMatched", DbType="Int NOT NULL")]
+		public int PriceMatched
+		{
+			get
+			{
+				return this._PriceMatched;
+			}
+			set
+			{
+				if ((this._PriceMatched != value))
+				{
+					this.OnPriceMatchedChanging(value);
+					this.SendPropertyChanging();
+					this._PriceMatched = value;
+					this.SendPropertyChanged("PriceMatched");
+					this.OnPriceMatchedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Matched", DbType="Bit NOT NULL")]
+		public bool Matched
 		{
 			get
 			{
@@ -1223,26 +1243,6 @@ namespace AlsiUtils
 					this._Matched = value;
 					this.SendPropertyChanged("Matched");
 					this.OnMatchedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ref", DbType="VarChar(50)")]
-		public string Ref
-		{
-			get
-			{
-				return this._Ref;
-			}
-			set
-			{
-				if ((this._Ref != value))
-				{
-					this.OnRefChanging(value);
-					this.SendPropertyChanging();
-					this._Ref = value;
-					this.SendPropertyChanged("Ref");
-					this.OnRefChanged();
 				}
 			}
 		}

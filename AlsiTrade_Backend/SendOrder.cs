@@ -56,17 +56,17 @@ namespace AlsiTrade_Backend
         {
             var et = e.LastOrder;
         
-           bool matched=(e.LastOrder.Status==xlTradeOrder.orderStatus.Completed);
+         
 
             Trade t = new Trade()
             {
-                TimeStamp = matched?e.LastOrder.TimeStamp:DateTime.UtcNow.AddHours(2),
+                TimeStamp = e.Matched?e.LastOrder.TimeStamp:DateTime.UtcNow.AddHours(2),
                 TradedPrice = et.Price,
                 TradeVolume = et.Volume,
                 BuyorSell = et.BS,
                 InstrumentName = et.Contract,
                 xlRef=et.Reference,
-                xlMatched=matched,               
+                xlMatched=e.Matched,               
 
             };
             OrderMatchEvent ome = new OrderMatchEvent();

@@ -277,7 +277,7 @@
             this.tradeModeBESTAGGRESSIVERadioButton.AutoSize = true;
             this.tradeModeBESTAGGRESSIVERadioButton.Location = new System.Drawing.Point(16, 124);
             this.tradeModeBESTAGGRESSIVERadioButton.Name = "tradeModeBESTAGGRESSIVERadioButton";
-            this.tradeModeBESTAGGRESSIVERadioButton.Size = new System.Drawing.Size(115, 19);
+            this.tradeModeBESTAGGRESSIVERadioButton.Size = new System.Drawing.Size(107, 17);
             this.tradeModeBESTAGGRESSIVERadioButton.TabIndex = 6;
             this.tradeModeBESTAGGRESSIVERadioButton.TabStop = true;
             this.tradeModeBESTAGGRESSIVERadioButton.Text = "Best - Aggressive";
@@ -289,7 +289,7 @@
             this.tradeModeBESTRadioButton.AutoSize = true;
             this.tradeModeBESTRadioButton.Location = new System.Drawing.Point(16, 73);
             this.tradeModeBESTRadioButton.Name = "tradeModeBESTRadioButton";
-            this.tradeModeBESTRadioButton.Size = new System.Drawing.Size(47, 19);
+            this.tradeModeBESTRadioButton.Size = new System.Drawing.Size(46, 17);
             this.tradeModeBESTRadioButton.TabIndex = 5;
             this.tradeModeBESTRadioButton.TabStop = true;
             this.tradeModeBESTRadioButton.Text = "Best";
@@ -324,7 +324,7 @@
             this.tradeModeAGGRESSIVERadioButton.AutoSize = true;
             this.tradeModeAGGRESSIVERadioButton.Location = new System.Drawing.Point(16, 99);
             this.tradeModeAGGRESSIVERadioButton.Name = "tradeModeAGGRESSIVERadioButton";
-            this.tradeModeAGGRESSIVERadioButton.Size = new System.Drawing.Size(82, 19);
+            this.tradeModeAGGRESSIVERadioButton.Size = new System.Drawing.Size(77, 17);
             this.tradeModeAGGRESSIVERadioButton.TabIndex = 2;
             this.tradeModeAGGRESSIVERadioButton.TabStop = true;
             this.tradeModeAGGRESSIVERadioButton.Text = "Aggressive";
@@ -336,7 +336,7 @@
             this.tradeModeHITRadioButton.AutoSize = true;
             this.tradeModeHITRadioButton.Location = new System.Drawing.Point(16, 48);
             this.tradeModeHITRadioButton.Name = "tradeModeHITRadioButton";
-            this.tradeModeHITRadioButton.Size = new System.Drawing.Size(41, 19);
+            this.tradeModeHITRadioButton.Size = new System.Drawing.Size(38, 17);
             this.tradeModeHITRadioButton.TabIndex = 1;
             this.tradeModeHITRadioButton.TabStop = true;
             this.tradeModeHITRadioButton.Text = "Hit";
@@ -348,7 +348,7 @@
             this.tradeModeNORMALRadioButton.AutoSize = true;
             this.tradeModeNORMALRadioButton.Location = new System.Drawing.Point(16, 22);
             this.tradeModeNORMALRadioButton.Name = "tradeModeNORMALRadioButton";
-            this.tradeModeNORMALRadioButton.Size = new System.Drawing.Size(65, 19);
+            this.tradeModeNORMALRadioButton.Size = new System.Drawing.Size(58, 17);
             this.tradeModeNORMALRadioButton.TabIndex = 0;
             this.tradeModeNORMALRadioButton.TabStop = true;
             this.tradeModeNORMALRadioButton.Text = "Normal";
@@ -363,7 +363,6 @@
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(60, 23);
             this.comboBox2.TabIndex = 28;
-            this.comboBox2.Visible = false;
             // 
             // comboBox1
             // 
@@ -373,7 +372,6 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(85, 23);
             this.comboBox1.TabIndex = 27;
-            this.comboBox1.Visible = false;
             // 
             // button2
             // 
@@ -384,7 +382,6 @@
             this.button2.TabIndex = 26;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = false;
-            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // liveStartGroupBox
@@ -725,7 +722,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(346, 516);
+            this.tabPage2.Size = new System.Drawing.Size(353, 516);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -963,7 +960,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(346, 516);
+            this.tabPage4.Size = new System.Drawing.Size(353, 516);
             this.tabPage4.TabIndex = 2;
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1076,7 +1073,7 @@
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(346, 516);
+            this.tabPage5.Size = new System.Drawing.Size(353, 516);
             this.tabPage5.TabIndex = 3;
             this.tabPage5.Text = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1191,7 +1188,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(346, 516);
+            this.tabPage6.Size = new System.Drawing.Size(353, 516);
             this.tabPage6.TabIndex = 4;
             this.tabPage6.Text = "tabPage6";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -1340,7 +1337,7 @@
             this.historicalTradesTabPage.Location = new System.Drawing.Point(4, 22);
             this.historicalTradesTabPage.Name = "historicalTradesTabPage";
             this.historicalTradesTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.historicalTradesTabPage.Size = new System.Drawing.Size(775, 516);
+            this.historicalTradesTabPage.Size = new System.Drawing.Size(768, 516);
             this.historicalTradesTabPage.TabIndex = 1;
             this.historicalTradesTabPage.Text = "History";
             this.historicalTradesTabPage.UseVisualStyleBackColor = true;
@@ -1365,7 +1362,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(775, 516);
+            this.tabPage3.Size = new System.Drawing.Size(768, 516);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;

@@ -120,7 +120,7 @@ namespace FrontEnd
             msg.Title = "Order Matched";
             msg.Body = e.Trade.ToString();
             WebUpdate.SendOrder(e.Trade, true);
-            DoStuff.Email.SendEmail(e.Trade, msg, true);
+            DoStuff.Email.SendEmail(e.Trade, msg, true);            
             WebUpdate.SendOrderToWebDB(e.Trade);
 
         }

@@ -22,40 +22,35 @@ namespace FrontEnd
         {
             InitializeComponent();
             E.onMatch += new OrderMatched(E_onMatch);
+            CheckForIllegalCrossThreadCalls = false;
         }
 
         void E_onMatch(object sender, OrderMatchEventArgs e)
         {
-            listBox1.Items.Add(e.LastOrder.Price + "  " + e.LastOrder.Reference + "   " + e.LastOrder.Status);
+            this.BackColor = Color.Green;
+            label1.Text = e.LastOrder.Price.ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            xlTradeOrder ee = new xlTradeOrder();
+            ee.BS = Trade.BuySell.Buy;
+            ee.Price = 1233;
+            ee.TimeStamp = DateTime.Now;
+            ee.Status = xlTradeOrder.orderStatus.Ready;
             E.Connect();
-            foreach (var t in E.ReadAllInputOrders())
-            {
-                listBoxINSERT.Items.Add(t.Price + "  " + t.Reference);
-            }
+            E.WriteOrder(ee);
             E.Disconnect();
+
+            E.StartCheckWhenOrderCompletedTimer(5000);
         }
 
-        private void test_Load(object sender, EventArgs e)
-        {
-         
-            ExcelLink.xlTradeOrder xl;
-           var Es= E.GetMatchedOrders(out xl);
-          
-        }
+      
+            
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            E.Connect();
-            foreach (var t in E.ReadAllMatchedOrders())
-            {
-                listBoxMATCHED.Items.Add(t.Price + "  " + t.Reference);
-            }
-            E.Disconnect();
-        }
+       
+
+       
 
       
         

@@ -14,7 +14,7 @@ namespace ExcelLink
     {
         public xlTradeOrder LastOrder;
         public List<xlTradeOrder> AllMatchedOrders;
-       
+        public bool Matched { get; set; }
     }
 
     public class ExcelOrder
@@ -67,7 +67,7 @@ namespace ExcelLink
             _lastOrderMatched = false;
         }
 
-        public xlTradeOrder ReadLastOrder()
+        private xlTradeOrder ReadLastOrder()
         {
             xlBook = xlApp.ActiveWorkbook;
             xlSheet = xlBook.Worksheets.get_Item(2);
@@ -77,7 +77,8 @@ namespace ExcelLink
             int lastUsedColumn = last.Column + 1;
             Debug.WriteLine("Rows used " + lastUsedRow);
             var Order = new xlTradeOrder();
-            
+
+            Order.TimeStamp = DateTime.UtcNow.AddHours(2);
             Order.Contract = xlSheet.Cells[lastUsedRow, 1].Value;
             Order.BS = (xlSheet.Cells[lastUsedRow, 2].Value == "B") ? Trade.BuySell.Buy : Trade.BuySell.Sell;
             Order.Volume = (int)xlSheet.Cells[lastUsedRow, 3].Value;
@@ -87,7 +88,7 @@ namespace ExcelLink
             return Order;
         }
 
-        public List<xlTradeOrder> ReadAllInputOrders()
+        private List<xlTradeOrder> ReadAllInputOrders()
         {
             var Orders = new List<xlTradeOrder>();
             xlBook = xlApp.ActiveWorkbook;
@@ -114,7 +115,7 @@ namespace ExcelLink
             return Orders;
         }
 
-        public List<xlTradeOrder> ReadAllMatchedOrders()
+        private List<xlTradeOrder> ReadAllMatchedOrders()
         {
             var Orders = new List<xlTradeOrder>();
             xlBook = xlApp.ActiveWorkbook;
@@ -142,7 +143,7 @@ namespace ExcelLink
             return Orders;
         }
 
-        public List<xlTradeOrder> GetMatchedOrders(out xlTradeOrder LastMatched)
+        private List<xlTradeOrder> GetMatchedOrders(out xlTradeOrder LastMatched)
         {
             Connect();
             List<xlTradeOrder> insert = ReadAllInputOrders();
@@ -163,6 +164,7 @@ namespace ExcelLink
         {
             Connect();
             var Order = ReadLastOrder();
+            _lastOrder = Order;
             if (Order.Status == xlTradeOrder.orderStatus.Completed) return true;
             return false;
         }
@@ -181,9 +183,9 @@ namespace ExcelLink
             {
                 xlTradeOrder last;
                 OrderMatchEventArgs match = new OrderMatchEventArgs();
-                _lastOrderMatched = true;
-                match.AllMatchedOrders = GetMatchedOrders(out _lastOrder);
+                _lastOrderMatched = true;             
                 match.LastOrder = _lastOrder;
+                match.Matched = true;
                 onMatch(this, match);
                 _timer.Stop();
                 

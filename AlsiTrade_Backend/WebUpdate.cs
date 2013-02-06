@@ -14,7 +14,7 @@ namespace AlsiTrade_Backend
     {
         private static AlsiWebService.AlsiNotifyService service;
         public static List<EmailList> _EmailList = new List<EmailList>();
-        
+
         public WebUpdate()
         {
             service = new AlsiWebService.AlsiNotifyService();
@@ -48,9 +48,9 @@ namespace AlsiTrade_Backend
 
         public static bool InsertNewUsertoEmailList(EmailList user)
         {
-               var dc = new WebDbDataContext();
-               var insert = (!dc.EmailLists.Any(z => z.Email == user.Email));
-            if(insert)
+            var dc = new WebDbDataContext();
+            var insert = (!dc.EmailLists.Any(z => z.Email == user.Email));
+            if (insert)
             {
                 user.Active = true;
                 dc.EmailLists.InsertOnSubmit(user);
@@ -131,7 +131,7 @@ namespace AlsiTrade_Backend
             string bs = "none";
             if (trade.BuyorSell == Trade.BuySell.Buy) bs = "Buy";
             if (trade.BuyorSell == Trade.BuySell.Sell) bs = "Sell";
-            if (!CheckDbCount(dc,trade)) return;
+            if (!CheckDbCount(dc, trade)) return;
 
             if (!trade.xlMatched)
             {
@@ -142,8 +142,8 @@ namespace AlsiTrade_Backend
                     Price = (int)trade.TradedPrice,
                     Reason = trade.Reason.ToString(),
                     Volume = trade.TradeVolume,
-                    Matched = 0,
-                    Ref = trade.xlRef
+                    PriceMatched = 0,
+                    Matched = false,
                 };
                 dc.WebTradeLogs.InsertOnSubmit(wtl);
                 dc.SubmitChanges();
@@ -152,15 +152,15 @@ namespace AlsiTrade_Backend
             {
                 int c = dc.WebTradeLogs.Count();
                 var last = dc.WebTradeLogs.Skip(c - 1).Take(1).Single();
-                last.Ref = trade.xlRef;
-                last.Matched = (int)trade.TradedPrice;
+                last.Time = trade.TimeStamp;
+                last.Matched = true;
                 dc.SubmitChanges();
             }
-           
+
         }
 
 
-        private static  bool CheckDbCount(WebDbDataContext dc,Trade trade)
+        private static bool CheckDbCount(WebDbDataContext dc, Trade trade)
         {
             int c = dc.WebTradeLogs.Count();
             if (c > 0)
@@ -176,7 +176,8 @@ namespace AlsiTrade_Backend
                     Price = (int)trade.TradedPrice,
                     Reason = trade.Reason.ToString(),
                     Volume = trade.TradeVolume,
-                    Matched = (int)trade.TradedPrice,
+                    PriceMatched = (int)trade.TradedPrice,
+                    Matched = false,
                 };
                 dc.WebTradeLogs.InsertOnSubmit(wtl);
                 dc.SubmitChanges();
@@ -187,7 +188,7 @@ namespace AlsiTrade_Backend
 
         #region Clear Lists
 
-       public static void ClearEmailList()
+        public static void ClearEmailList()
         {
             var dc = new WebDbDataContext();
             var delall = dc.EmailLists;

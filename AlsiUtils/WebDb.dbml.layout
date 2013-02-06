@@ -26,10 +26,10 @@
         <elementListCompartment Id="75cc0f90-b480-4961-b3b5-44d7e8666849" absoluteBounds="0.515, 1.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="3a59429e-6518-4d18-aceb-339029dfbddb" absoluteBounds="4.125, 1.5, 2, 2.9247054036458331">
+    <classShape Id="460f8c37-8f01-43f7-ae46-b7ca77b4de14" absoluteBounds="4.75, 1.625, 2, 2.9247054036458331">
       <DataClassMoniker Name="/WebDbDataContext/WebTradeLog" />
       <nestedChildShapes>
-        <elementListCompartment Id="8b20067f-35d1-4730-93cc-079b071f4a22" absoluteBounds="4.14, 1.96, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="9eaffd17-669f-4415-b8f0-ecac49da81c4" absoluteBounds="4.765, 2.085, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
