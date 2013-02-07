@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="WebDb">
+  <DataContextMoniker Name="/WebDbDataContext" />
+  <nestedChildShapes>
+    <classShape Id="fa499c1b-4446-4ae5-8de9-b3f44d448552" absoluteBounds="6.125, 1.625, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/WebDbDataContext/TradeLog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="24980f14-2932-40b8-a777-02b9e654545d" absoluteBounds="6.14, 2.085, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

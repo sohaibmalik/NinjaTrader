@@ -317,6 +317,12 @@ namespace NotifierClientApp
 
         }
 
+        private void tradeLogToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TradeLogForm ts = new TradeLogForm();
+            ts.Show();
+        }
+
 
 
 

@@ -50,6 +50,7 @@
             this.StatusUpdateToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.statusUpdateDelaySecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DelayUpdateToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.tradeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -120,7 +121,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ordersToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.tradeLogToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(613, 24);
@@ -202,6 +204,13 @@
             this.DelayUpdateToolStripTextBox.Size = new System.Drawing.Size(100, 23);
             this.DelayUpdateToolStripTextBox.TextChanged += new System.EventHandler(this.DelayUpdateToolStripTextBox_TextChanged);
             // 
+            // tradeLogToolStripMenuItem
+            // 
+            this.tradeLogToolStripMenuItem.Name = "tradeLogToolStripMenuItem";
+            this.tradeLogToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
+            this.tradeLogToolStripMenuItem.Text = "TradeLog";
+            this.tradeLogToolStripMenuItem.Click += new System.EventHandler(this.tradeLogToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -233,7 +242,7 @@
             // 
             this.appStatusBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.appStatusBW_DoWork);
             // 
-            // Form1
+            // Notify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -245,7 +254,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "Notify";
             this.Text = "Web Notifier";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -284,6 +293,7 @@
         private System.Windows.Forms.ToolStripTextBox StatusUpdateToolStripTextBox;
         private System.Windows.Forms.ToolStripMenuItem statusUpdateDelaySecToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox DelayUpdateToolStripTextBox;
+        private System.Windows.Forms.ToolStripMenuItem tradeLogToolStripMenuItem;
 
     }
 }

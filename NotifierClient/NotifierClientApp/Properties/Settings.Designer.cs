@@ -78,5 +78,16 @@ namespace NotifierClientApp.Properties {
                 return ((string)(this["NotifierClientApp_AlsiWebService_L_AlsiNotifyService"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiDb;Persist Security Info=True" +
+            ";User ID=Pieter;Password=1Rachelle")]
+        public string AlsiDbConnectionString {
+            get {
+                return ((string)(this["AlsiDbConnectionString"]));
+            }
+        }
     }
 }
