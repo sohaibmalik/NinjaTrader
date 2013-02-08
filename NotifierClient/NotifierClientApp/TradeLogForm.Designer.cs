@@ -41,6 +41,7 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.matchedTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.columnPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1.SuspendLayout();
             this.infoBox.SuspendLayout();
             this.SuspendLayout();
@@ -50,6 +51,7 @@
             this.tradeListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnTime,
             this.columnBuySell,
+            this.columnPrice,
             this.columnReason,
             this.columnVolume,
             this.columnMatched,
@@ -60,7 +62,7 @@
             this.tradeListView.Location = new System.Drawing.Point(0, 0);
             this.tradeListView.MultiSelect = false;
             this.tradeListView.Name = "tradeListView";
-            this.tradeListView.Size = new System.Drawing.Size(521, 605);
+            this.tradeListView.Size = new System.Drawing.Size(604, 605);
             this.tradeListView.TabIndex = 0;
             this.tradeListView.UseCompatibleStateImageBehavior = false;
             this.tradeListView.View = System.Windows.Forms.View.Details;
@@ -108,7 +110,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 500);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(521, 105);
+            this.panel1.Size = new System.Drawing.Size(604, 105);
             this.panel1.TabIndex = 1;
             // 
             // infoBox
@@ -119,7 +121,7 @@
             this.infoBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.infoBox.Location = new System.Drawing.Point(0, 0);
             this.infoBox.Name = "infoBox";
-            this.infoBox.Size = new System.Drawing.Size(519, 103);
+            this.infoBox.Size = new System.Drawing.Size(602, 103);
             this.infoBox.TabIndex = 1;
             this.infoBox.TabStop = false;
             this.infoBox.Text = "Trade Info";
@@ -153,11 +155,17 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Matched Price";
             // 
+            // columnPrice
+            // 
+            this.columnPrice.Text = "Price";
+            this.columnPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnPrice.Width = 91;
+            // 
             // TradeLogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(521, 605);
+            this.ClientSize = new System.Drawing.Size(604, 605);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tradeListView);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -186,6 +194,7 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.TextBox matchedTextBox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ColumnHeader columnPrice;
 
     }
 }

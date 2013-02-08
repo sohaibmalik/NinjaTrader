@@ -34,6 +34,7 @@ namespace NotifierClientApp
                 ListViewItem lvi = new ListViewItem(t.Time.ToString());
                 lvi.Tag = t;
                 lvi.SubItems.Add(t.BuySell);
+                lvi.SubItems.Add(t.Price.ToString());
                 lvi.SubItems.Add(t.Reason);
                 lvi.SubItems.Add(t.Volume.ToString());
                 lvi.SubItems.Add(t.Matched.ToString());
