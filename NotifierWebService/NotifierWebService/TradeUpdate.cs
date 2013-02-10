@@ -4,7 +4,7 @@ using ExcelLink;
 
 namespace NotifierWebService
 {  
-    
+   
     public class TradeUpdate
     {
         public static List<xlTradeOrder> Orders = new List<xlTradeOrder>();
@@ -16,7 +16,7 @@ namespace NotifierWebService
     {
         public DateTime TimeStamp { get; set; }
         public Messages Message { get; set; }
-        public string Message_Custom { get; set; }
+        public string Message_Custom { get; set; }       
 
         public enum Messages
         {
@@ -24,5 +24,10 @@ namespace NotifierWebService
             isDead = 1,
             Startup=2,
         }
+    }
+
+    public class ManualTrade
+    {
+        public static bool PositionManuallyClosed { get; set; }
     }
 }

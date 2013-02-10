@@ -18,11 +18,13 @@ namespace FrontEnd
     {
         private PrepareForTrade p;
         private UpdateTimer U5;
+        private WebUpdate service;
         MarketOrder marketOrder;
+
+
         ManualTrade MT = new ManualTrade();
         GlobalObjects.TimeInterval _Interval;
         private Statistics _Stats = new Statistics();
-        WebUpdate service;
         private OLVColumn ColStamp;
         private OLVColumn ColReason;
         private OLVColumn ColBuySell;
@@ -54,7 +56,7 @@ namespace FrontEnd
             onStartupLoad(this, start);
 
             CheckForIllegalCrossThreadCalls = false;
-            // Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
+             Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
             _Interval = GlobalObjects.TimeInterval.Minute_5;
 
             start.Progress = 10;
@@ -71,9 +73,11 @@ namespace FrontEnd
 
             p.onPriceSync += new PrepareForTrade.PricesSynced(p_onPriceSync);
             U5.onStartUpdate += new UpdateTimer.StartUpdate(U5_onStartUpdate);
+            U5.OnManualCloseTrigger += new UpdateTimer.ManualCloseTrigger(U5_OnManualCloseTrigger);
             marketOrder.onOrderSend += new MarketOrder.OrderSend(marketOrder_onOrderSend);
             marketOrder.onOrderMatch += new MarketOrder.OrderMatch(marketOrder_onOrderMatch);
             _Stats.OnStatsCaculated += new Statistics.StatsCalculated(_Stats_OnStatsCaculated);
+
 
             start.Progress = 30;
             onStartupLoad(this, start);
@@ -99,8 +103,11 @@ namespace FrontEnd
             Debug.WriteLine("LAST TRADE : " + p._LastTrade.TimeStamp + "   " + p._LastTrade);
             service = new WebUpdate();
 
+
             start.Progress = 100;
             onStartupLoad(this, start);
+
+            WebUpdate.SetManualTradeTrigger(false);
 
 
             //test
@@ -114,6 +121,10 @@ namespace FrontEnd
             comboBox2.Items.Add(Trade.BuySell.Buy);
             comboBox2.Items.Add(Trade.BuySell.Sell);
         }
+
+
+
+
 
 
 
@@ -195,8 +206,11 @@ namespace FrontEnd
                     currentOrder = trades.Last();
 
                 //Manual Trade
-                MT.LastTrade = trades.Where(z => z.Reason != Trade.Trigger.None).Last();
-
+               
+                MT.LastTrade = trades.Where(z => z.TimeStamp <= currentOrder.TimeStamp && z.Reason != Trade.Trigger.None).Last();
+                MT.LastTrade.TradedPrice = AlsiTrade_Backend.HiSat.LivePrice.Last;
+               
+               
 
                 currentOrder.TradeVolume = Final.Last().TradeVolume * WebSettings.General.VOL;
                 currentOrder.InstrumentName = WebSettings.General.OTS_INST;
@@ -1073,17 +1087,30 @@ namespace FrontEnd
                 Refresh();
             }
 
+            if (resetManualCheckBox.Checked)
+            {
+                resetManualCheckBox.ForeColor = Color.Red;
+                Refresh();
+                WebSettings.General.MANUAL_CLOSE_TRIGGER = false;
+                resetManualCheckBox.ForeColor = Color.Green;
+                Refresh();
+            }
+
             clearTradeHistoryWebCheckBox.Checked = false;
             clearTradeLogWebCheckBox.Checked = false;
             clearTradeLogLocalCheckBox.Checked = false;
             clearEmailListCheckBox.Checked = false;
+            resetManualCheckBox.Checked = false;
 
-
+            resetManualCheckBox.ForeColor = Color.Black;
             clearTradeHistoryWebCheckBox.ForeColor = Color.Black;
             clearTradeLogWebCheckBox.ForeColor = Color.Black;
             clearTradeLogLocalCheckBox.ForeColor = Color.Black;
             clearEmailListCheckBox.ForeColor = Color.Black;
             clearDbButton.Enabled = true;
+
+           
+
             Cursor = Cursors.Default;
         }
 
@@ -1156,21 +1183,22 @@ namespace FrontEnd
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+      
+
+       
+
+
+        void U5_OnManualCloseTrigger(object sender, UpdateTimer.ManualCloseTriggerEventArgs e)
         {
-            Debug.WriteLine(ManualTrade.PositionManuallyClosed);
-            ManualTrade.PositionManuallyClosed = true;
-            Debug.WriteLine(ManualTrade.PositionManuallyClosed);
-            var mantrade = MT.GetCloseTrade();
+            Debug.WriteLine(e.Msg);
+            if (WebSettings.General.MANUAL_CLOSE_TRIGGER) return;
+            WebUpdate.SetManualTradeTrigger(false);
+            WebSettings.General.MANUAL_CLOSE_TRIGGER = true;
+            var mantrade = MT.GetCloseTrade();           
             marketOrder.SendOrderToMarketMANUALCLOSE(mantrade);
+            UpdateTradeLog(mantrade, true);
 
-            UpdateTradeLog(mantrade, false);
         }
-
-
-
-
-
 
 
 

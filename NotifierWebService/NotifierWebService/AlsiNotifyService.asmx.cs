@@ -97,5 +97,16 @@ namespace NotifierWebService
             
         }
 
+        [WebMethod]
+        public void TriggerManualTrade(bool Triggered)
+        {
+            ManualTrade.PositionManuallyClosed = Triggered;
+        }
+
+        [WebMethod]
+        public bool GetManualTradeTrigger()
+        {
+            return ManualTrade.PositionManuallyClosed;
+        }
     }
 }

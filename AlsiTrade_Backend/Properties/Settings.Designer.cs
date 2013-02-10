@@ -26,20 +26,20 @@ namespace AlsiTrade_Backend.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://alsitm.com/AlsiNotifyService.asmx")]
-        public string AlsiTrade_Backend_AlsiWebService_AlsiNotifyService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:4979/AlsiNotifyService.asmx")]
+        public string AlsiTrade_Backend_AlsiWebService1_AlsiNotifyService {
             get {
-                return ((string)(this["AlsiTrade_Backend_AlsiWebService_AlsiNotifyService"]));
+                return ((string)(this["AlsiTrade_Backend_AlsiWebService1_AlsiNotifyService"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:4979/AlsiNotifyService.asmx")]
-        public string AlsiTrade_Backend_AlsiWebService1_AlsiNotifyService {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://www.alsitm.com/AlsiNotifyService.asmx")]
+        public string AlsiTrade_Backend_AlsiWebService_AlsiNotifyService {
             get {
-                return ((string)(this["AlsiTrade_Backend_AlsiWebService1_AlsiNotifyService"]));
+                return ((string)(this["AlsiTrade_Backend_AlsiWebService_AlsiNotifyService"]));
             }
         }
     }

@@ -12,12 +12,15 @@ namespace AlsiTrade_Backend
 
     public class WebUpdate
     {
+
         private static AlsiWebService.AlsiNotifyService service;
         public static List<EmailList> _EmailList = new List<EmailList>();
+      
 
         public WebUpdate()
         {
             service = new AlsiWebService.AlsiNotifyService();
+          
             GetEmailList();
         }
 
@@ -73,6 +76,16 @@ namespace AlsiTrade_Backend
             service.InsertMessage(b);
         }
 
+        public bool CheckForManualClose()
+        {
+            return  service.GetManualTradeTrigger();                      
+        }
+
+        public static void SetManualTradeTrigger(bool bb)
+        {
+            service.TriggerManualTrade(bb);
+        }
+
         public static void SendOrder(Trade t, bool Matched)
         {
             var o = new AlsiWebService.xlTradeOrder();
@@ -84,9 +97,10 @@ namespace AlsiTrade_Backend
             o.Contract = t.InstrumentName;
             o.Status = Matched ? AlsiWebService.orderStatus.Completed : AlsiWebService.orderStatus.Ready;
             service.InsertNewOrder(o);
-
             var s = new AlsiWebService.AlsiNotifyService();
             s.InsertNewOrder(o);
+
+            if (t.Reason == Trade.Trigger.CloseLong || t.Reason == Trade.Trigger.CloseLong) WebSettings.General.MANUAL_CLOSE_TRIGGER = true;
         }
 
         public static void SyncOnlineDbTradeHistory(List<Trade> TradeOnly)
@@ -159,6 +173,7 @@ namespace AlsiTrade_Backend
 
         }
 
+       
 
         private static bool CheckDbCount(WebDbDataContext dc, Trade trade)
         {
@@ -215,6 +230,8 @@ namespace AlsiTrade_Backend
 
         #endregion
 
+
+      
 
     }
 }

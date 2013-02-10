@@ -155,6 +155,7 @@ namespace AlsiUtils
             private static string GetHiSat_Inst()
             {
                 return Settings.Where(z => z.Setting_Name == "HISAT_INST").First().ValueString;
+               
             }
 
             private static void SetHiSat_Inst(string Instrument)
@@ -338,6 +339,42 @@ namespace AlsiUtils
 
 
             #endregion
+
+            #region MANUAL_CLOSE_TRIGGER
+
+          //  public static WebDbDataContext dc = new WebDbDataContext();
+            private static bool _MANUAL_CLOSE_TRIGGER;
+            public static bool MANUAL_CLOSE_TRIGGER
+            {  
+                get
+                {
+                     _MANUAL_CLOSE_TRIGGER = GetMANUAL_CLOSE_TRIGGER();
+                    return _MANUAL_CLOSE_TRIGGER;
+                }
+                set
+                {
+                    _MANUAL_CLOSE_TRIGGER = value;
+                    SetMANUAL_CLOSE_TRIGGER(value);
+                    _settingChanged = true;
+                  
+                }
+            }
+
+            private static bool GetMANUAL_CLOSE_TRIGGER()
+            {
+                WebDbDataContext dc = new WebDbDataContext();
+                return bool.Parse(dc.Settings.Where(z => z.Setting_Name == "MANUAL_CLOSE_TRIGGER").First().ValueString);
+            }
+
+            private static void SetMANUAL_CLOSE_TRIGGER(bool Triggered)
+            {
+                WebDbDataContext dc = new WebDbDataContext();
+                var setting = dc.Settings.Where(z => z.Setting_Name == "MANUAL_CLOSE_TRIGGER").First();
+                setting.ValueString = Triggered.ToString();
+                dc.SubmitChanges();
+            }
+
+            #endregion
         }
 
         public class Indicators
@@ -372,6 +409,7 @@ namespace AlsiUtils
                     var setting = IndicatorSettings.Where(z => z.Name == "EMA_SCALP").First();
                     setting.A1 = A1;
                 }
+
 
 
 

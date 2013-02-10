@@ -34,6 +34,7 @@ namespace AlsiTrade_Backend
 
                     if (ManualTrade.CanCloseTrade(trade))
                     {
+                        WebUpdate.SetManualTradeTrigger(false);
                         e.Connect();
                         e.WriteOrder(o);
                         e.Disconnect();
@@ -57,8 +58,8 @@ namespace AlsiTrade_Backend
 
         public void SendOrderToMarketMANUALCLOSE(Trade trade)
         {
-                double price = WebSettings.TradeApproach.AdjustPriceToStrategy(trade, HiSat.LivePrice.Bid, HiSat.LivePrice.Offer);
-
+            double price = trade.BuyorSell == Trade.BuySell.Buy ? HiSat.LivePrice.Offer : HiSat.LivePrice.Bid;           
+          
                 ExcelLink.xlTradeOrder o = new xlTradeOrder()
                 {
                     BS = trade.BuyorSell,
@@ -70,7 +71,6 @@ namespace AlsiTrade_Backend
 
                 try
                 {
-
                         e.Connect();
                         e.WriteOrder(o);
                         e.Disconnect();
@@ -78,8 +78,7 @@ namespace AlsiTrade_Backend
                         oe.Success = true;
                         oe.Trade = trade;
                         onOrderSend(this, oe);
-                        e.StartCheckWhenOrderCompletedTimer(10000);
-                    
+                        e.StartCheckWhenOrderCompletedTimer(10000);                    
                 }
                 catch (Exception ex)
                 {

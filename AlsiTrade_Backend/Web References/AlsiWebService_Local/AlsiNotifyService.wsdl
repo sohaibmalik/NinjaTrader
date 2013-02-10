@@ -166,6 +166,26 @@
       <s:element name="SendEmailResponse">
         <s:complexType />
       </s:element>
+      <s:element name="TriggerManualTrade">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="Triggered" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TriggerManualTradeResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetManualTradeTrigger">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetManualTradeTriggerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetManualTradeTriggerResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="InsertNewOrderSoapIn">
@@ -228,6 +248,18 @@
   <wsdl:message name="SendEmailSoapOut">
     <wsdl:part name="parameters" element="tns:SendEmailResponse" />
   </wsdl:message>
+  <wsdl:message name="TriggerManualTradeSoapIn">
+    <wsdl:part name="parameters" element="tns:TriggerManualTrade" />
+  </wsdl:message>
+  <wsdl:message name="TriggerManualTradeSoapOut">
+    <wsdl:part name="parameters" element="tns:TriggerManualTradeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetManualTradeTriggerSoapIn">
+    <wsdl:part name="parameters" element="tns:GetManualTradeTrigger" />
+  </wsdl:message>
+  <wsdl:message name="GetManualTradeTriggerSoapOut">
+    <wsdl:part name="parameters" element="tns:GetManualTradeTriggerResponse" />
+  </wsdl:message>
   <wsdl:portType name="AlsiNotifyServiceSoap">
     <wsdl:operation name="InsertNewOrder">
       <wsdl:input message="tns:InsertNewOrderSoapIn" />
@@ -268,6 +300,14 @@
     <wsdl:operation name="SendEmail">
       <wsdl:input message="tns:SendEmailSoapIn" />
       <wsdl:output message="tns:SendEmailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TriggerManualTrade">
+      <wsdl:input message="tns:TriggerManualTradeSoapIn" />
+      <wsdl:output message="tns:TriggerManualTradeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetManualTradeTrigger">
+      <wsdl:input message="tns:GetManualTradeTriggerSoapIn" />
+      <wsdl:output message="tns:GetManualTradeTriggerSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="AlsiNotifyServiceSoap" type="tns:AlsiNotifyServiceSoap">
@@ -362,6 +402,24 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="TriggerManualTrade">
+      <soap:operation soapAction="http://tempuri.org/TriggerManualTrade" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetManualTradeTrigger">
+      <soap:operation soapAction="http://tempuri.org/GetManualTradeTrigger" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="AlsiNotifyServiceSoap12" type="tns:AlsiNotifyServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
@@ -448,6 +506,24 @@
     </wsdl:operation>
     <wsdl:operation name="SendEmail">
       <soap12:operation soapAction="http://tempuri.org/SendEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TriggerManualTrade">
+      <soap12:operation soapAction="http://tempuri.org/TriggerManualTrade" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetManualTradeTrigger">
+      <soap12:operation soapAction="http://tempuri.org/GetManualTradeTrigger" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

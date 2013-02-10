@@ -16,7 +16,7 @@ namespace AlsiTrade_Backend
         private DateTime _Now;
         private bool _UpdatePending;
         private WebUpdate service;
-       
+
 
         private DateTime _marketOpen = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 8, 31, 00);
         private DateTime _marketClose = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 17, 29, 59);
@@ -37,7 +37,14 @@ namespace AlsiTrade_Backend
 
         void _UpdateStatus_Elapsed(object sender, ElapsedEventArgs e)
         {
-          service.ReportStatus();
+            service.ReportStatus();
+            var trigger = service.CheckForManualClose();           
+            if (trigger)
+            {
+                ManualCloseTriggerEventArgs E = new ManualCloseTriggerEventArgs();
+                E.Msg = "TRIGGERED !!!! ";
+                OnManualCloseTrigger(this, E);
+            }
         }
 
         private bool CheckBusinessDay()
@@ -66,11 +73,11 @@ namespace AlsiTrade_Backend
                 if (_Now.Hour == 17 && _Now.Minute == 29) EndofDayUpdate();
             }
 
-        
-          
 
-            
-          
+
+
+
+
         }
 
 
@@ -127,7 +134,13 @@ namespace AlsiTrade_Backend
             public string Message;
             public bool EndOfDay;
         }
-        
+
+        public event ManualCloseTrigger OnManualCloseTrigger;
+        public delegate void ManualCloseTrigger(object sender, ManualCloseTriggerEventArgs e);
+        public class ManualCloseTriggerEventArgs : EventArgs
+        {
+            public string Msg;
+        }
 
     }
 }

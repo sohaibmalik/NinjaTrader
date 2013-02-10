@@ -13,7 +13,7 @@
 // 
 #pragma warning disable 1591
 
-namespace AlsiTrade_Backend.AlsiWebService_Local {
+namespace AlsiTrade_Backend.AlsiWebService_local {
     using System;
     using System.Web.Services;
     using System.Diagnostics;
@@ -48,6 +48,10 @@ namespace AlsiTrade_Backend.AlsiWebService_Local {
         private System.Threading.SendOrPostCallback GetCommandOperationCompleted;
         
         private System.Threading.SendOrPostCallback SendEmailOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback TriggerManualTradeOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback GetManualTradeTriggerOperationCompleted;
         
         private bool useDefaultCredentialsSetExplicitly;
         
@@ -116,6 +120,12 @@ namespace AlsiTrade_Backend.AlsiWebService_Local {
         
         /// <remarks/>
         public event SendEmailCompletedEventHandler SendEmailCompleted;
+        
+        /// <remarks/>
+        public event TriggerManualTradeCompletedEventHandler TriggerManualTradeCompleted;
+        
+        /// <remarks/>
+        public event GetManualTradeTriggerCompletedEventHandler GetManualTradeTriggerCompleted;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/InsertNewOrder", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -389,6 +399,61 @@ namespace AlsiTrade_Backend.AlsiWebService_Local {
             if ((this.SendEmailCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.SendEmailCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/TriggerManualTrade", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public void TriggerManualTrade(bool Triggered) {
+            this.Invoke("TriggerManualTrade", new object[] {
+                        Triggered});
+        }
+        
+        /// <remarks/>
+        public void TriggerManualTradeAsync(bool Triggered) {
+            this.TriggerManualTradeAsync(Triggered, null);
+        }
+        
+        /// <remarks/>
+        public void TriggerManualTradeAsync(bool Triggered, object userState) {
+            if ((this.TriggerManualTradeOperationCompleted == null)) {
+                this.TriggerManualTradeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnTriggerManualTradeOperationCompleted);
+            }
+            this.InvokeAsync("TriggerManualTrade", new object[] {
+                        Triggered}, this.TriggerManualTradeOperationCompleted, userState);
+        }
+        
+        private void OnTriggerManualTradeOperationCompleted(object arg) {
+            if ((this.TriggerManualTradeCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.TriggerManualTradeCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetManualTradeTrigger", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public bool GetManualTradeTrigger() {
+            object[] results = this.Invoke("GetManualTradeTrigger", new object[0]);
+            return ((bool)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void GetManualTradeTriggerAsync() {
+            this.GetManualTradeTriggerAsync(null);
+        }
+        
+        /// <remarks/>
+        public void GetManualTradeTriggerAsync(object userState) {
+            if ((this.GetManualTradeTriggerOperationCompleted == null)) {
+                this.GetManualTradeTriggerOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetManualTradeTriggerOperationCompleted);
+            }
+            this.InvokeAsync("GetManualTradeTrigger", new object[0], this.GetManualTradeTriggerOperationCompleted, userState);
+        }
+        
+        private void OnGetManualTradeTriggerOperationCompleted(object arg) {
+            if ((this.GetManualTradeTriggerCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.GetManualTradeTriggerCompleted(this, new GetManualTradeTriggerCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -855,6 +920,36 @@ namespace AlsiTrade_Backend.AlsiWebService_Local {
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
     public delegate void SendEmailCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
+    public delegate void TriggerManualTradeCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
+    public delegate void GetManualTradeTriggerCompletedEventHandler(object sender, GetManualTradeTriggerCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class GetManualTradeTriggerCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal GetManualTradeTriggerCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public bool Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
+            }
+        }
+    }
 }
 
 #pragma warning restore 1591

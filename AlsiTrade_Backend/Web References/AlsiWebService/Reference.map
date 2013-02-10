@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Results>
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://alsitm.com/AlsiNotifyService.asmx?disco" filename="AlsiNotifyService.disco" />
-    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://alsitm.com/AlsiNotifyService.asmx?wsdl" filename="AlsiNotifyService.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://www.alsitm.com/AlsiNotifyService.asmx?wsdl" filename="AlsiNotifyService.wsdl" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://www.alsitm.com/AlsiNotifyService.asmx?disco" filename="AlsiNotifyService.disco" />
   </Results>
 </DiscoveryClientResultsFile>

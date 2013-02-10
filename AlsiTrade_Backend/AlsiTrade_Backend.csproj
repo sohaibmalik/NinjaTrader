@@ -72,12 +72,12 @@
     <Compile Include="SendOrder.cs" />
     <Compile Include="UpdateDB.cs" />
     <Compile Include="UpdateTimer.cs" />
-    <Compile Include="Web References\AlsiWebService_Local\Reference.cs">
+    <Compile Include="Web References\AlsiWebService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="Web References\AlsiWebService\Reference.cs">
+    <Compile Include="Web References\AlsiWebService_local\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -104,31 +104,31 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Web References\AlsiWebService\AlsiNotifyService.wsdl" />
     <None Include="Web References\AlsiWebService\Boodskap.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
     <None Include="Web References\AlsiWebService\Command.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
-    <None Include="Web References\AlsiWebService\xlTradeOrder.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService_Local\Boodskap.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService_Local\Command.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService_Local\xlTradeOrder.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
-    <None Include="Web References\AlsiWebService_Local\AlsiNotifyService.wsdl" />
-    <None Include="Web References\AlsiWebService_Local\Reference.map">
+    <None Include="Web References\AlsiWebService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Web References\AlsiWebService\AlsiNotifyService.wsdl" />
-    <None Include="Web References\AlsiWebService\Reference.map">
+    <None Include="Web References\AlsiWebService\xlTradeOrder.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AlsiWebService_local\Boodskap.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AlsiWebService_local\Command.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AlsiWebService_local\xlTradeOrder.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\AlsiWebService_local\AlsiNotifyService.wsdl" />
+    <None Include="Web References\AlsiWebService_local\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -140,20 +140,9 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://alsitm.com/AlsiNotifyService.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\AlsiWebService\</RelPath>
-      <UpdateFromURL>http://alsitm.com/AlsiNotifyService.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>AlsiTrade_Backend_AlsiWebService_AlsiNotifyService</CachedSettingsPropName>
-    </WebReferenceUrl>
     <WebReferenceUrl Include="http://localhost:4979/AlsiNotifyService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\AlsiWebService_Local\</RelPath>
+      <RelPath>Web References\AlsiWebService_local\</RelPath>
       <UpdateFromURL>http://localhost:4979/AlsiNotifyService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
@@ -162,12 +151,23 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>AlsiTrade_Backend_AlsiWebService1_AlsiNotifyService</CachedSettingsPropName>
     </WebReferenceUrl>
+    <WebReferenceUrl Include="http://www.alsitm.com/AlsiNotifyService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\AlsiWebService\</RelPath>
+      <UpdateFromURL>http://www.alsitm.com/AlsiNotifyService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>AlsiTrade_Backend_AlsiWebService_AlsiNotifyService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Web References\AlsiWebService_local\AlsiNotifyService.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Web References\AlsiWebService\AlsiNotifyService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Web References\AlsiWebService_Local\AlsiNotifyService.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
