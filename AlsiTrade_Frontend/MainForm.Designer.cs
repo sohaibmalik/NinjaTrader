@@ -145,6 +145,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -217,6 +218,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button3);
             this.tabPage1.Controls.Add(this.saveSettingsButton);
             this.tabPage1.Controls.Add(this.tradeModeGroupBox);
             this.tabPage1.Controls.Add(this.comboBox2);
@@ -1403,6 +1405,16 @@
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(251, 202);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 31;
+            this.button3.Text = "button3";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1586,6 +1598,7 @@
         private System.Windows.Forms.ImageList saveSettingsImageList;
         private System.Windows.Forms.RadioButton tradeModeBESTAGGRESSIVERadioButton;
         private System.Windows.Forms.RadioButton tradeModeBESTRadioButton;
+        private System.Windows.Forms.Button button3;
         
     }
 }

@@ -16,34 +16,29 @@ namespace FrontEnd
 {
     public partial class test : Form
     {
-        private ExcelLink.ExcelOrder E = new ExcelOrder();
-
+        public Trade _lastTrade;
         public test()
         {
             InitializeComponent();
-            E.onMatch += new OrderMatched(E_onMatch);
-            CheckForIllegalCrossThreadCalls = false;
         }
 
-        void E_onMatch(object sender, OrderMatchEventArgs e)
+        private void test_Load(object sender, EventArgs e)
         {
-            this.BackColor = Color.Green;
-            label1.Text = e.LastOrder.Price.ToString();
+            _lastTrade = new Trade
+            {
+               TradedPrice=1234,
+               BuyorSell=Trade.BuySell.Buy,
+               Reason=Trade.Trigger.OpenLong,
+               TimeStamp=DateTime.Now,            
+            };
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            xlTradeOrder ee = new xlTradeOrder();
-            ee.BS = Trade.BuySell.Buy;
-            ee.Price = 1233;
-            ee.TimeStamp = DateTime.Now;
-            ee.Status = xlTradeOrder.orderStatus.Ready;
-            E.Connect();
-            E.WriteOrder(ee);
-            E.Disconnect();
 
-            E.StartCheckWhenOrderCompletedTimer(5000);
         }
+
+     
 
       
             

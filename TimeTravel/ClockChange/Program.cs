@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace FrontEnd
+namespace ClockChange
 {
     static class Program
     {
@@ -15,9 +15,7 @@ namespace FrontEnd
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-         
-           //Application.Run(new test());
-            Application.Run(new StartupForm());
+            Application.Run(new Form1());
         }
     }
 }

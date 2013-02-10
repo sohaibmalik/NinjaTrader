@@ -19,9 +19,10 @@ namespace FrontEnd
         private PrepareForTrade p;
         private UpdateTimer U5;
         MarketOrder marketOrder;
+        ManualTrade MT = new ManualTrade();
         GlobalObjects.TimeInterval _Interval;
         private Statistics _Stats = new Statistics();
-        WebUpdate service;      
+        WebUpdate service;
         private OLVColumn ColStamp;
         private OLVColumn ColReason;
         private OLVColumn ColBuySell;
@@ -53,7 +54,7 @@ namespace FrontEnd
             onStartupLoad(this, start);
 
             CheckForIllegalCrossThreadCalls = false;
-            Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
+            // Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
             _Interval = GlobalObjects.TimeInterval.Minute_5;
 
             start.Progress = 10;
@@ -66,6 +67,8 @@ namespace FrontEnd
             U5 = new UpdateTimer(_Interval);
             p = new PrepareForTrade(_Interval, WebSettings.General.HISAT_INST, GetParameters(), WebSettings.General.LIVE_START_DATE);
             marketOrder = new MarketOrder();
+
+
             p.onPriceSync += new PrepareForTrade.PricesSynced(p_onPriceSync);
             U5.onStartUpdate += new UpdateTimer.StartUpdate(U5_onStartUpdate);
             marketOrder.onOrderSend += new MarketOrder.OrderSend(marketOrder_onOrderSend);
@@ -120,7 +123,7 @@ namespace FrontEnd
             msg.Title = "Order Matched";
             msg.Body = e.Trade.ToString();
             WebUpdate.SendOrder(e.Trade, true);
-            DoStuff.Email.SendEmail(e.Trade, msg, true);            
+            DoStuff.Email.SendEmail(e.Trade, msg, true);
             WebUpdate.SendOrderToWebDB(e.Trade);
 
         }
@@ -191,6 +194,10 @@ namespace FrontEnd
                 else
                     currentOrder = trades.Last();
 
+                //Manual Trade
+                MT.LastTrade = trades.Where(z => z.Reason != Trade.Trigger.None).Last();
+
+
                 currentOrder.TradeVolume = Final.Last().TradeVolume * WebSettings.General.VOL;
                 currentOrder.InstrumentName = WebSettings.General.OTS_INST;
                 Debug.WriteLine("Sending " + currentOrder);
@@ -225,7 +232,7 @@ namespace FrontEnd
             Debug.WriteLine("Loss % " + e.SumStats.Pct_Loss);
             PopulateStatBox(e.SumStats);
         }
-        
+
         public static Parameter_EMA_Scalp GetParameters()
         {
             AlsiUtils.Strategies.Parameter_EMA_Scalp E = new AlsiUtils.Strategies.Parameter_EMA_Scalp()
@@ -930,7 +937,7 @@ namespace FrontEnd
         private void emailListView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            WebUpdate.CheckUncheckEmailListUser(((EmailList)emailListView.SelectedItems[0].Tag).ID);         
+            WebUpdate.CheckUncheckEmailListUser(((EmailList)emailListView.SelectedItems[0].Tag).ID);
             PopulateEmailTab();
             Cursor = Cursors.Default;
         }
@@ -1149,9 +1156,20 @@ namespace FrontEnd
             }
         }
 
-       
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Debug.WriteLine(ManualTrade.PositionManuallyClosed);
+            ManualTrade.PositionManuallyClosed = true;
+            Debug.WriteLine(ManualTrade.PositionManuallyClosed);
+            var mantrade = MT.GetCloseTrade();
+            marketOrder.SendOrderToMarketMANUALCLOSE(mantrade);
 
-    
+            UpdateTradeLog(mantrade, false);
+        }
+
+
+
+
 
 
 
