@@ -38,7 +38,7 @@ namespace AlsiTrade_Backend
         void _UpdateStatus_Elapsed(object sender, ElapsedEventArgs e)
         {
             service.ReportStatus();
-            var trigger = service.CheckForManualClose();           
+            var trigger = service.CheckForManualClose();
             if (trigger)
             {
                 ManualCloseTriggerEventArgs E = new ManualCloseTriggerEventArgs();
@@ -71,13 +71,13 @@ namespace AlsiTrade_Backend
 
                 if (!_UpdatePending && _Now.Second > 50) _UpdatePending = true;
                 if (_Now.Hour == 17 && _Now.Minute == 29) EndofDayUpdate();
+                if (AlsiTrade_Backend.HiSat.LivePrice.LastUpdate.AddMinutes(2) < DateTime.UtcNow.AddHours(2))
+                {
+                    AlsiTrade_Backend.HiSat.LivePrice.LastUpdate = DateTime.UtcNow.AddHours(2).AddSeconds(-30);
+                    ConnectionExpiredEventArgs E = new ConnectionExpiredEventArgs();
+                    OnConnectionExpired(this, E);
+                }
             }
-
-
-
-
-
-
         }
 
 
@@ -142,5 +142,12 @@ namespace AlsiTrade_Backend
             public string Msg;
         }
 
+
+        public event ConnectionExpired OnConnectionExpired;
+        public delegate void ConnectionExpired(object sender, ConnectionExpiredEventArgs e);
+        public class ConnectionExpiredEventArgs : EventArgs
+        {
+           
+        }
     }
 }

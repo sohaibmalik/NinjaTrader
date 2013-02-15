@@ -74,6 +74,7 @@ namespace FrontEnd
             p.onPriceSync += new PrepareForTrade.PricesSynced(p_onPriceSync);
             U5.onStartUpdate += new UpdateTimer.StartUpdate(U5_onStartUpdate);
             U5.OnManualCloseTrigger += new UpdateTimer.ManualCloseTrigger(U5_OnManualCloseTrigger);
+            U5.OnConnectionExpired += new UpdateTimer.ConnectionExpired(U5_OnConnectionExpired);
             marketOrder.onOrderSend += new MarketOrder.OrderSend(marketOrder_onOrderSend);
             marketOrder.onOrderMatch += new MarketOrder.OrderMatch(marketOrder_onOrderMatch);
             _Stats.OnStatsCaculated += new Statistics.StatsCalculated(_Stats_OnStatsCaculated);
@@ -122,11 +123,12 @@ namespace FrontEnd
             comboBox2.Items.Add(Trade.BuySell.Sell);
         }
 
-
-
-
-
-
+        void U5_OnConnectionExpired(object sender, UpdateTimer.ConnectionExpiredEventArgs e)
+        {
+            feed = new AlsiTrade_Backend.HiSat.LiveFeed(WebSettings.General.HISAT_INST);
+            Debug.WriteLine("RE-CONNECTING TO HI SAT");
+        }
+        
 
         void marketOrder_onOrderMatch(object sender, MarketOrder.OrderMatchEvent e)
         {
@@ -162,7 +164,7 @@ namespace FrontEnd
 
         void U5_onStartUpdate(object sender, UpdateTimer.StartUpDateEvent e)
         {
-            Debug.WriteLine(e.Message + "  " + e.Interval);
+            Debug.WriteLine(e.Message + "  " + e.Interval);           
             AlsiTrade_Backend.HiSat.LivePrice.EndOfDay = e.EndOfDay;
             p.GetPricesFromTick();
 

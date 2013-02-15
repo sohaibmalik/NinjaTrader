@@ -1,44 +1,59 @@
 ﻿using System;
 using System.Net;
+using System.Timers;
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Net.NetworkInformation;
+using System.Linq;
+using System.Runtime.InteropServices;
 namespace Communicator
 {
     public class Internet
     {
-        private bool _Connected;
+        Timer T;
 
-        public bool Connected
+
+
+
+        public Internet(int Interval)
         {
-            get
-            {
-                return _Connected;
-            }
-            set
-            {
-                if (value != _Connected)
-                {
-                    var e = new ConnectionStatusEventArgs();
-                    e.Connected = value;
-                    OnConnectionStatusChange(this, value);
-                }
-                _Connected = value;
-            }
+
+
+            T = new Timer();
+            T.Interval = Interval;
+            T.Elapsed += new ElapsedEventHandler(T_Elapsed);
+            T.Start();
+        }
+        void T_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            CheckConnection();
         }
 
-        public bool CheckConnection()
+
+
+       
+
+        private void CheckConnection()
         {
+            bool alive;
             try
             {
-                using (var client = new WebClient())
-                using (var stream = client.OpenRead("http://www.google.com"))
-                {
-                    return true;
-                }
+                IPHostEntry iheObj = Dns.GetHostByName("www.google.com"); //Gets the DNS information for the specified DNS host name
+               
+                alive=  true;
+
             }
             catch
             {
-                return false;
+                alive = false; // Not connected
             }
+
+
+            Debug.WriteLine("Connected  " + alive );
+
         }
+
+
 
         public event ConnectionStatus OnConnectionStatusChange;
         public delegate void ConnectionStatus(object Sender, ConnectionStatusEventArgs e);

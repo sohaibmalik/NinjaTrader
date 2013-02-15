@@ -7,18 +7,18 @@ namespace AlsiTrade_Backend.HiSat
 
     public class LiveFeed
     {
-     
-        DataFeed datafeed;       
-        string _Instrument;
-      
+        private DataFeed datafeed;
+        private string _Instrument;
+
         public LiveFeed(string InstrumentName)
         {
             datafeed = new DataFeed();
             _Instrument = InstrumentName;
             createHiSatEvents();
             Login();
-
         }
+
+     
 
         private void createHiSatEvents()
         {
@@ -27,14 +27,16 @@ namespace AlsiTrade_Backend.HiSat
             datafeed.onAsk += new DataFeed.onAskEventHandler(datafeed_onAsk);
             datafeed.onBid += new DataFeed.onBidEventHandler(datafeed_onBid);
             datafeed.onBidask += new DataFeed.onBidaskEventHandler(datafeed_onBidask);
+
         }
+
 
         /// <summary>
         /// Login to HiSat to receive Live Data.
         /// </summary>
         private void Login()
         {
-            datafeed.LogOnToHisat("Johan", "Hisat");                     
+            datafeed.LogOnToHisat("Johan", "Hisat");
         }
         /// <summary>
         /// Start Live Streaming once Logged In
@@ -50,7 +52,7 @@ namespace AlsiTrade_Backend.HiSat
         {
             Debug.WriteLine("STATUS UPDATE " + e.theString);
             if (e.theString == "Logged on to server")
-            {              
+            {
                 StartFeed(_Instrument);
             }
         }
@@ -59,23 +61,28 @@ namespace AlsiTrade_Backend.HiSat
         {
             // DataBase.insertTicks(e.TradeTime, Convert.ToInt32(e.TradePrice));  
             LivePrice.Last = (double)e.TradePrice;
-            
+            LivePrice.LastUpdate = DateTime.UtcNow.AddHours(2);
         }
 
         private void datafeed_onAsk(object sender, DataFeed.aAsk e)
         {
-            LivePrice.Offer = (double)e.AskPrice;          
+            LivePrice.Offer = (double)e.AskPrice;
+            LivePrice.LastUpdate = DateTime.UtcNow.AddHours(2);
         }
 
         private void datafeed_onBid(object sender, DataFeed.aBid e)
         {
-            LivePrice.Bid = (double)e.BidPrice;          
+            LivePrice.Bid = (double)e.BidPrice;
+            LivePrice.LastUpdate = DateTime.UtcNow.AddHours(2);
         }
 
         private void datafeed_onBidask(object sender, DataFeed.aBidAsk e)
         {
             LivePrice.Bid = (double)e.BidPrice;
-            LivePrice.Offer = (double)e.AskPrice;            
+            LivePrice.Offer = (double)e.AskPrice;
+            LivePrice.LastUpdate = DateTime.UtcNow.AddHours(2);
         }
+
+
     }
 }

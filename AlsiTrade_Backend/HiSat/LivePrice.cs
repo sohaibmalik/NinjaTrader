@@ -7,6 +7,7 @@ namespace AlsiTrade_Backend.HiSat
 {
     public static class LivePrice
     {
+        public static DateTime LastUpdate { get; set; }
         public static double Bid { get; set; }
         public static double Offer { get; set; }
         public static double Last { get; set; }

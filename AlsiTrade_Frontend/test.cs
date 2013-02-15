@@ -6,48 +6,37 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using AlsiTrade_Backend;
 using Communicator;
-using AlsiUtils;
 using System.Diagnostics;
-using ExcelLink;
 
 namespace FrontEnd
 {
-    public partial class test : Form
+    public partial class Test : Form
     {
-        public Trade _lastTrade;
-        public test()
+        private AlsiTrade_Backend.HiSat.LiveFeed feed;
+
+        public Test()
         {
             InitializeComponent();
         }
 
-        private void test_Load(object sender, EventArgs e)
+        private void Test_Load(object sender, EventArgs e)
         {
-            _lastTrade = new Trade
-            {
-               TradedPrice=1234,
-               BuyorSell=Trade.BuySell.Buy,
-               Reason=Trade.Trigger.OpenLong,
-               TimeStamp=DateTime.Now,            
-            };
+            feed = new AlsiTrade_Backend.HiSat.LiveFeed("MAR13ALSI");
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            Debug.WriteLine(AlsiTrade_Backend.HiSat.LivePrice.Last);
         }
 
-     
-
-      
+        private void button2_Click(object sender, EventArgs e)
+        {
             
-
-       
-
-       
+          
+        }
 
       
-        
     }
 }
