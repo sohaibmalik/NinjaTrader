@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="EmailMsg.cs" />
     <Compile Include="Gmail.cs" />
+    <Compile Include="Internet.cs" />
     <Compile Include="OutlookMail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SMS.cs" />
