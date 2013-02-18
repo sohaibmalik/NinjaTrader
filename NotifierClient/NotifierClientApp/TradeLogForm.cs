@@ -47,6 +47,7 @@ namespace NotifierClientApp
         {
            _selectedLog= (TradeLog)e.Item.Tag;
            matchedTextBox.Text = _selectedLog.PriceMatched.ToString();
+           checkBox.Checked = _selectedLog.Matched;
         }
 
         private void matchedTextBox_TextChanged(object sender, EventArgs e)
@@ -55,10 +56,12 @@ namespace NotifierClientApp
             if (int.TryParse(matchedTextBox.Text, out price))
             {
                 saveButton.Enabled = true;
+                deleteButton.Enabled = true;
             }
             else
             {
                 saveButton.Enabled = false;
+                deleteButton.Enabled = false;
             }
         }
 
@@ -67,9 +70,26 @@ namespace NotifierClientApp
             Cursor = Cursors.WaitCursor;
             saveButton.Enabled = false;
             _selectedLog.PriceMatched = price;
+            _selectedLog.Matched = checkBox.Checked;
             dc.SubmitChanges();
             LoadListview();
             Cursor = Cursors.Default;
         }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            DialogResult dr = MessageBox.Show("Delete ? ", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dr == DialogResult.No)
+            {
+                Cursor = Cursors.Default;
+                return;
+            }
+            dc.TradeLogs.DeleteOnSubmit(_selectedLog);
+            dc.SubmitChanges();
+            LoadListview();
+            Cursor = Cursors.Default;
+        }
+
     }
 }

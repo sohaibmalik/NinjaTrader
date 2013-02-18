@@ -65,7 +65,7 @@ namespace AlsiTrade_Backend
                     BS = trade.BuyorSell,
                     Price = price,
                     Volume = trade.TradeVolume,
-                    Contract = trade.InstrumentName,
+                    Contract = WebSettings.General.OTS_INST,
 
                 };
 

@@ -32,6 +32,7 @@
             this.tradeListView = new System.Windows.Forms.ListView();
             this.columnTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnBuySell = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnReason = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnVolume = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnMatched = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -41,7 +42,8 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.matchedTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.columnPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.checkBox = new System.Windows.Forms.CheckBox();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.infoBox.SuspendLayout();
             this.SuspendLayout();
@@ -79,6 +81,12 @@
             this.columnBuySell.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnBuySell.Width = 55;
             // 
+            // columnPrice
+            // 
+            this.columnPrice.Text = "Price";
+            this.columnPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.columnPrice.Width = 91;
+            // 
             // columnReason
             // 
             this.columnReason.Text = "Reason";
@@ -115,6 +123,8 @@
             // 
             // infoBox
             // 
+            this.infoBox.Controls.Add(this.deleteButton);
+            this.infoBox.Controls.Add(this.checkBox);
             this.infoBox.Controls.Add(this.saveButton);
             this.infoBox.Controls.Add(this.matchedTextBox);
             this.infoBox.Controls.Add(this.label1);
@@ -129,7 +139,7 @@
             // saveButton
             // 
             this.saveButton.Enabled = false;
-            this.saveButton.Location = new System.Drawing.Point(196, 58);
+            this.saveButton.Location = new System.Drawing.Point(521, 74);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 3;
@@ -155,11 +165,26 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Matched Price";
             // 
-            // columnPrice
+            // checkBox
             // 
-            this.columnPrice.Text = "Price";
-            this.columnPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnPrice.Width = 91;
+            this.checkBox.AutoSize = true;
+            this.checkBox.Location = new System.Drawing.Point(102, 33);
+            this.checkBox.Name = "checkBox";
+            this.checkBox.Size = new System.Drawing.Size(73, 19);
+            this.checkBox.TabIndex = 4;
+            this.checkBox.Text = "Matched";
+            this.checkBox.UseVisualStyleBackColor = true;
+            // 
+            // deleteButton
+            // 
+            this.deleteButton.Enabled = false;
+            this.deleteButton.Location = new System.Drawing.Point(521, 45);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(75, 23);
+            this.deleteButton.TabIndex = 5;
+            this.deleteButton.Text = "Delete";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
             // TradeLogForm
             // 
@@ -195,6 +220,8 @@
         private System.Windows.Forms.TextBox matchedTextBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ColumnHeader columnPrice;
+        private System.Windows.Forms.CheckBox checkBox;
+        private System.Windows.Forms.Button deleteButton;
 
     }
 }

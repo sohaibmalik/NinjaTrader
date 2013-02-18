@@ -35,21 +35,8 @@ namespace Communicator
 
         private void CheckConnection()
         {
-            bool alive;
-            try
-            {
-                IPHostEntry iheObj = Dns.GetHostByName("www.google.com"); //Gets the DNS information for the specified DNS host name
-               
-                alive=  true;
-
-            }
-            catch
-            {
-                alive = false; // Not connected
-            }
-
-
-            Debug.WriteLine("Connected  " + alive );
+          
+          
 
         }
 
