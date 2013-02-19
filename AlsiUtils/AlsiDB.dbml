@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="AlsiTrade" Class="AlsiDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True" SettingsObjectName="AlsiUtils.Properties.Settings" SettingsPropertyName="AlsiTradeConnectionString2" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AllHistoricMinute" Member="AllHistoricMinutes">
     <Type Name="AllHistoricMinute">
       <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />

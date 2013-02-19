@@ -26,6 +26,7 @@ namespace FrontEnd
         private string custom = "";
         private void StartupForm_Load(object sender, EventArgs e)
         {
+         
             pcStringRadioButton.Text = pc;
             laptopStringRadioButton.Text = laptop;
             pcStringRadioButton.BackColor = Color.Yellow;

@@ -323,6 +323,12 @@ namespace NotifierClientApp
             ts.Show();
         }
 
+        private void getPricesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var alsi = OnlinePrices.GetALSI();
+            pricesStatusLabel.Text = alsi.ToString();
+        }
+
 
 
 

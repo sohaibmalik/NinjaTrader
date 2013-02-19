@@ -47,12 +47,6 @@ namespace AlsiUtils
     partial void DeleteWebTradeLog(WebTradeLog instance);
     #endregion
 		
-		public WebDbDataContext() : 
-				base(global::AlsiUtils.Properties.Settings.Default.AlsiDbConnectionString1, mappingSource)
-		{
-			OnCreated();
-		}
-		
 		public WebDbDataContext(string connection) : 
 				base(connection, mappingSource)
 		{

@@ -35,6 +35,7 @@ namespace AlsiUtils
             bool alive = true;
             try
             {
+                AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = CCS;
                 AlsiDBDataContext dc = new AlsiDBDataContext();
                 dc.Connection.ConnectionString = CCS;
                 dc.Connection.Open();

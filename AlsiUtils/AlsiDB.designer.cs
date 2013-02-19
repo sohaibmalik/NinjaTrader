@@ -71,12 +71,6 @@ namespace AlsiUtils
     partial void DeleteTickTEMP(TickTEMP instance);
     #endregion
 		
-		public AlsiDBDataContext() : 
-				base(global::AlsiUtils.Properties.Settings.Default.AlsiTradeConnectionString2, mappingSource)
-		{
-			OnCreated();
-		}
-		
 		public AlsiDBDataContext(string connection) : 
 				base(connection, mappingSource)
 		{

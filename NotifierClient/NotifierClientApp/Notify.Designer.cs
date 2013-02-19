@@ -56,6 +56,8 @@
             this.statusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.appStatusBW = new System.ComponentModel.BackgroundWorker();
+            this.getPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pricesStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -122,7 +124,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ordersToolStripMenuItem,
             this.settingsToolStripMenuItem,
-            this.tradeLogToolStripMenuItem});
+            this.tradeLogToolStripMenuItem,
+            this.getPricesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(613, 24);
@@ -215,7 +218,8 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel1,
-            this.statusLabel2});
+            this.statusLabel2,
+            this.pricesStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 378);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(613, 22);
@@ -241,6 +245,20 @@
             // appStatusBW
             // 
             this.appStatusBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.appStatusBW_DoWork);
+            // 
+            // getPricesToolStripMenuItem
+            // 
+            this.getPricesToolStripMenuItem.Name = "getPricesToolStripMenuItem";
+            this.getPricesToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
+            this.getPricesToolStripMenuItem.Text = "Get Prices";
+            this.getPricesToolStripMenuItem.Click += new System.EventHandler(this.getPricesToolStripMenuItem_Click);
+            // 
+            // pricesStatusLabel
+            // 
+            this.pricesStatusLabel.BackColor = System.Drawing.Color.Lime;
+            this.pricesStatusLabel.Name = "pricesStatusLabel";
+            this.pricesStatusLabel.Size = new System.Drawing.Size(13, 17);
+            this.pricesStatusLabel.Text = "..";
             // 
             // Notify
             // 
@@ -294,6 +312,8 @@
         private System.Windows.Forms.ToolStripMenuItem statusUpdateDelaySecToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox DelayUpdateToolStripTextBox;
         private System.Windows.Forms.ToolStripMenuItem tradeLogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem getPricesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel pricesStatusLabel;
 
     }
 }
