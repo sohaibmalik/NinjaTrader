@@ -36,7 +36,9 @@ namespace AlsiTrade_Backend
             nT.IndicatorNotes = "MANUAL CLOSE";
             nT.ForeColor = Color.Orange;
             nT.BackColor = Color.Black;
-            
+            nT.TradeVolume = WebSettings.General.VOL;
+
+
             if (LastTrade.Reason == Trade.Trigger.OpenLong)
             {
                 nT.Reason = Trade.Trigger.CloseLong;
