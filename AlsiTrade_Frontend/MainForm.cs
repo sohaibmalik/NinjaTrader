@@ -262,6 +262,8 @@ namespace FrontEnd
                 StopLoss = WebSettings.General.STOPLOSS,
                 CloseEndofDay = false,
                 //Period = GlobalObjects.Prices.Count,
+
+
             };
 
             return E;

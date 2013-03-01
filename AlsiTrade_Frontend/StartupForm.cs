@@ -48,6 +48,7 @@ namespace FrontEnd
 
         void main_onStartupLoad(object sender, MainForm.LoadingStartupEvent e)
         {
+
             progressBar1.Value = e.Progress;
             progressBar1.Refresh();
 

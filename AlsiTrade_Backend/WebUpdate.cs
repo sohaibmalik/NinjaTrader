@@ -83,6 +83,7 @@ namespace AlsiTrade_Backend
 
         public static void SetManualTradeTrigger(bool bb)
         {
+            //tells the service to reset
             service.TriggerManualTrade(bb);
         }
 

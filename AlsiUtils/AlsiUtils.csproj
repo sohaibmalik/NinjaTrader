@@ -57,7 +57,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AlsiDB.dbml</DependentUpon>
     </Compile>
-    <Compile Include="AppMonitor.cs" />
     <Compile Include="Data Objects\CompletedTrade.cs" />
     <Compile Include="Data Objects\RegressionExt.cs" />
     <Compile Include="Data Objects\GlobalObjects.cs" />

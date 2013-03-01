@@ -1,13 +1,13 @@
 ﻿namespace FrontEnd
 {
-    partial class Test
+    partial class Overview
     {
-        /// <summary>
+        /// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
+        /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -20,29 +20,26 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Component Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
             this.SuspendLayout();
             // 
-            // Test
+            // Overview
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(547, 322);
-            this.Name = "Test";
-            this.Text = "Test";
-            this.Load += new System.EventHandler(this.Test_Load);
+            this.Name = "Overview";
+            this.Size = new System.Drawing.Size(326, 415);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
     }
 }

@@ -16,8 +16,8 @@ namespace FrontEnd
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //Application.Run(new Test());
-            Application.Run(new StartupForm());
+            Application.Run(new Test());
+           //Application.Run(new StartupForm());
         }
     }
 }

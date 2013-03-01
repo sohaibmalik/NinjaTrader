@@ -88,7 +88,7 @@ namespace AlsiUtils
 
             if (TradeList_Stats.Count == 0)
             {
-                Debug.WriteLine("Loading");
+                // Debug.WriteLine("Loading");
                 foreach (Trade t in Trades)
                 {
                     if (t.RunningProfit != 0) TradeList_Stats.Add(t);
@@ -97,7 +97,7 @@ namespace AlsiUtils
             }
             else
             {
-                Debug.WriteLine("NOT Loading Again");
+                // Debug.WriteLine("NOT Loading Again");
             }
 
 
@@ -120,10 +120,12 @@ namespace AlsiUtils
                                      Year = FGroup.Key.Y,
                                      Month = FGroup.Key.M,
                                      Week = FGroup.Key.W,
-                                     Count = FGroup.Count(),
-                                     SumPrice = (int)FGroup.Sum(t => t.RunningProfit),
-                                     AvPrice = (double)FGroup.Average(t => t.RunningProfit),
-                                     //Time = FGroup.Key.D
+                                     Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
+                                     // SumPrice = (int)FGroup.Sum(t => t.RunningProfit),
+                                     AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                      .Average(t => t.RunningProfit),
+                                     SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                     .Sum(t => t.RunningProfit)
                                  };
 
                 foreach (var v in weekly)
@@ -166,10 +168,12 @@ namespace AlsiUtils
                                         Year = FGroup.Key.Y,
                                         Month = FGroup.Key.M,
                                         Week = FGroup.Key.W,
-                                        Count = FGroup.Count(),
-                                        SumPrice = (int)FGroup.Sum(t => t.RunningProfit),
-                                        AvPrice = (double)FGroup.Average(t => t.RunningProfit),
-                                        //Time = FGroup.Key.D
+                                        Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
+                                        // SumPrice = (int)FGroup.Sum(t => t.RunningProfit),
+                                        AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                      .Average(t => t.RunningProfit),
+                                        SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                        .Sum(t => t.RunningProfit)
                                     };
 
                 foreach (var v in fortnight)
@@ -210,10 +214,11 @@ namespace AlsiUtils
                                   {
                                       Year = FGroup.Key.Y,
                                       Month = FGroup.Key.M,
-                                      Count = FGroup.Count(),
-                                      SumPrice = (int)FGroup.Sum(t => t.RunningProfit),
-                                      AvPrice = (double)FGroup.Average(t => t.RunningProfit),
-                                      //Time = FGroup.Key.D
+                                      Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
+                                      AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                      .Average(t => t.RunningProfit),
+                                      SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                      .Sum(t => t.RunningProfit)
                                   };
 
                 foreach (var v in monthly)
@@ -387,9 +392,8 @@ namespace AlsiUtils
 
             for (int x = 1; x < Trades.Count; x++)
             {
-                
-                   if(Trades[x].TradeTriggerGeneral==Trade.Trigger.Close)
 
+                if (Trades[x].TradeTriggerGeneral == Trade.Trigger.Close)
                 {
                     totalProfit += Trades[x].RunningProfit;
                     tradeCount++;
@@ -405,7 +409,7 @@ namespace AlsiUtils
                         prof_count++;
                         prof_sum += Trades[x].RunningProfit;
                     }
-                    
+
                     Trades[x].TotalPL = totalProfit;
                     Trades[x].TradeCount = (int)tradeCount;
                 }
@@ -611,15 +615,15 @@ namespace AlsiUtils
                 if (to.CloseTrade.Reason == Trade.Trigger.None) end = DateTime.Now;
 
                 var pl = from x in FullTradeList
-                          where x.TimeStamp >= to.OpenTrade.TimeStamp && x.TimeStamp <= end
-                          select x.RunningProfit;
+                         where x.TimeStamp >= to.OpenTrade.TimeStamp && x.TimeStamp <= end
+                         select x.RunningProfit;
 
                 var minmax = new
                 {
                     low = pl.Min(),
                     high = pl.Max(),
-                    close=pl.Last(),
-                    fist=pl.Skip(1).First(),
+                    close = pl.Last(),
+                    fist = pl.Skip(1).First(),
                 };
 
                 to.CloseTrade.OHLC.Low = minmax.low;
@@ -629,6 +633,59 @@ namespace AlsiUtils
             }
 
             return r;
+        }
+
+        public static List<CompletedTrade> TakeProfit_Exiguous(List<Trade> FullTradeList, double TakeProfit, double StopLoss)
+        {
+            var TakeProfitList = new List<CompletedTrade>();
+
+
+            var TO = Trade.TradesOnly(FullTradeList);
+            var CompletedList = CompletedTrade.CreateList(TO);
+
+
+            foreach (var t in CompletedList)
+            {
+                var pl = from x in FullTradeList
+                         where x.TimeStamp >= t.OpenTrade.TimeStamp && x.TimeStamp <= t.CloseTrade.TimeStamp
+                         select x;
+
+
+                var trade = new CompletedTrade();
+                trade.OpenTrade = t.OpenTrade;
+
+                //Check profit
+                Trade profitTrade;
+                Trade lossTrade;
+                if (pl.Any(z => z.RunningProfit > TakeProfit))
+                    profitTrade = pl.Where(z => z.RunningProfit > TakeProfit).First();
+                else
+                    profitTrade = t.CloseTrade;
+
+                trade.CloseTrade = profitTrade;
+
+                //check loss
+                //if (pl.Any(z => z.RunningProfit < StopLoss))
+                //    lossTrade = pl.Where(z => z.RunningProfit < StopLoss).First();
+                ////else
+                ////    lossTrade = t.CloseTrade;
+
+                //if (lossTrade.TimeStamp > profitTrade.TimeStamp)
+                //  trade.CloseTrade = profitTrade;
+                //else
+                //    trade.CloseTrade = lossTrade;
+
+
+                if (trade.OpenTrade.Reason == Trade.Trigger.OpenLong) trade.CloseTrade.Reason = Trade.Trigger.CloseLong;
+                if (trade.OpenTrade.Reason == Trade.Trigger.OpenShort) trade.CloseTrade.Reason = Trade.Trigger.CloseShort;
+
+
+                TakeProfitList.Add(trade);
+
+            }
+
+
+            return TakeProfitList;
         }
 
 
