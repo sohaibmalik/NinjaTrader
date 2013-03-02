@@ -10,6 +10,8 @@ namespace AlsiUtils
 	    public string Detail { get; set; }
 	    public string Value { get; set; }
 	    public Period Period { get; set; }
+        public DateTime FirstTrade { get; set; }
+        public DateTime LastTrade { get; set; }
 	    public int Year { get; set; }
 	    public int Month { get; set; }
 	    public int Week { get; set; }

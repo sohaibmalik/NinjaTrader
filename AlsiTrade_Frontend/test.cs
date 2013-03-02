@@ -90,8 +90,8 @@ namespace FrontEnd
         {
             Cursor = Cursors.WaitCursor;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
-            DataBase.dataTable dt = DataBase.dataTable.AllHistory;
-            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, false, new DateTime(2005, 1, 1), DateTime.Now.AddDays(1), dt);
+            DataBase.dataTable dt = DataBase.dataTable.MasterMinute;
+            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, false, new DateTime(2012, 1, 1), DateTime.Now.AddDays(1), dt);
             _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
             NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
@@ -99,6 +99,9 @@ namespace FrontEnd
             Cursor = Cursors.Default;
 
         }
+
+
+       
 
     }
 }

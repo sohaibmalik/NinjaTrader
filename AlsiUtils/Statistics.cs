@@ -78,167 +78,166 @@ namespace AlsiUtils
             }
         }
 
-        public static List<Trade> TradeList_Stats = new List<Trade>();
+      
         public static List<SummaryStats> SummaryProfitLoss(List<Trade> Trades, Period Period)
         {
+          
+                var TradeList_Stats = new List<Trade>();
+                List<SummaryStats> statsList = new List<SummaryStats>();
+                if (TradeList_Stats.Count == 0)
+                    foreach (Trade t in Trades) if (t.RunningProfit != 0) TradeList_Stats.Add(t);
 
-            List<SummaryStats> statsList = new List<SummaryStats>();
-
-
-
-            if (TradeList_Stats.Count == 0)
-            {
-                // Debug.WriteLine("Loading");
-                foreach (Trade t in Trades)
+                try
                 {
-                    if (t.RunningProfit != 0) TradeList_Stats.Add(t);
 
+                    #region Weekly
+
+                    if (Period == Period.Weekly)
+                    {
+                        var weekly = from q in TradeList_Stats
+                                     group q by new
+                                     {
+                                         Y = q.TimeStamp.Year,
+                                         M = q.TimeStamp.Month,
+                                         W = Math.Floor((decimal)q.TimeStamp.DayOfYear / 7) + 1,
+                                         //D=(DateTime)q.TimeStamp
+                                     }
+                                         into FGroup
+                                         orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.W
+                                         select new
+                                         {
+                                             Year = FGroup.Key.Y,
+                                             Month = FGroup.Key.M,
+                                             Week = FGroup.Key.W,
+                                             Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
+                                             FirstTradeDate = FGroup.First().TimeStamp,
+                                             LastTradeDate=FGroup.Last().TimeStamp,
+                                             AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                              .Average(t => t.RunningProfit),
+                                             SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                             .Sum(t => t.RunningProfit)
+                                         };
+
+                        foreach (var v in weekly)
+                        {
+                            SummaryStats stat = new SummaryStats();
+                            stat.Detail = "Weekly Profit and Loss Summary";
+                            stat.Period = Period;
+                            stat.Year = (int)v.Year;
+                            stat.Month = (int)v.Month;
+                            stat.Week = (int)v.Week;
+                            stat.Count = (int)v.Count;
+                            stat.Sum = (int)v.SumPrice;
+                            stat.Average = (double)v.AvPrice;
+                            stat.FirstTrade = v.FirstTradeDate;
+                            stat.LastTrade = v.LastTradeDate;
+                            statsList.Add(stat);
+
+                            Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
+                        }
+
+                    }
+
+                    #endregion
+
+                    #region Fortnight
+
+                    if (Period == Period.TwoWeekly)
+                    {
+
+                        var fortnight = from q in TradeList_Stats
+                                        group q by new
+                                        {
+                                            Y = q.TimeStamp.Year,
+                                            M = q.TimeStamp.Month,
+                                            W = q.TimeStamp.Day <= 15 ? 1 : 2,
+                                            //D=(DateTime)q.TimeStamp
+                                        }
+                                            into FGroup
+                                            orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.W
+                                            select new
+                                            {
+                                                Year = FGroup.Key.Y,
+                                                Month = FGroup.Key.M,
+                                                Week = FGroup.Key.W,
+                                                Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
+                                                FirstTradeDate = FGroup.First().TimeStamp,
+                                                LastTradeDate = FGroup.Last().TimeStamp,
+                                                AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                              .Average(t => t.RunningProfit),
+                                                SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                                .Sum(t => t.RunningProfit)
+                                            };
+
+                        foreach (var v in fortnight)
+                        {
+                            SummaryStats stat = new SummaryStats();
+                            stat.Detail = "Fortnightly Profit and Loss Summary";
+                            stat.Period = Period;
+                            stat.Year = (int)v.Year;
+                            stat.Month = (int)v.Month;
+                            stat.Week = (int)v.Week;
+                            stat.Count = (int)v.Count;
+                            stat.Sum = (int)v.SumPrice;
+                            stat.Average = (double)v.AvPrice;
+                            stat.FirstTrade = v.FirstTradeDate;
+                            stat.LastTrade = v.LastTradeDate;
+                            statsList.Add(stat);
+                            Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
+                        }
+
+
+                    }
+
+                    #endregion
+
+                    #region Monthly
+
+                    if (Period == Period.Monthly)
+                    {
+                        var monthly = from q in TradeList_Stats
+                                      group q by new
+                                      {
+                                          Y = q.TimeStamp.Year,
+                                          M = q.TimeStamp.Month,
+
+                                          //D=(DateTime)q.TimeStamp
+                                      }
+                                          into FGroup
+                                          orderby FGroup.Key.Y, FGroup.Key.M
+                                          select new
+                                          {
+                                              Year = FGroup.Key.Y,
+                                              Month = FGroup.Key.M,
+                                              FirstTradeDate = FGroup.First().TimeStamp,
+                                              LastTradeDate = FGroup.Last().TimeStamp,
+                                              Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
+                                              AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                              .Average(t => t.RunningProfit),
+                                              SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                              .Sum(t => t.RunningProfit)
+                                          };
+
+                        foreach (var v in monthly)
+                        {
+                            SummaryStats stat = new SummaryStats();
+                            stat.Detail = "Monthly Profit and Loss Summary";
+                            stat.Period = Period;
+                            stat.Year = (int)v.Year;
+                            stat.Month = (int)v.Month;
+                            stat.Week = 0;
+                            stat.Count = (int)v.Count;
+                            stat.Sum = (int)v.SumPrice;
+                            stat.Average = (double)v.AvPrice;
+                            stat.FirstTrade = v.FirstTradeDate;
+                            stat.LastTrade = v.LastTradeDate;
+                            statsList.Add(stat);
+                            Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
+                        }
+                    }
+                    #endregion
                 }
-            }
-            else
-            {
-                // Debug.WriteLine("NOT Loading Again");
-            }
-
-
-            #region Weekly
-
-            if (Period == Period.Weekly)
-            {
-                var weekly = from q in TradeList_Stats
-                             group q by new
-                             {
-                                 Y = q.TimeStamp.Year,
-                                 M = q.TimeStamp.Month,
-                                 W = Math.Floor((decimal)q.TimeStamp.DayOfYear / 7) + 1,
-                                 //D=(DateTime)q.TimeStamp
-                             }
-                                 into FGroup
-                                 orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.W
-                                 select new
-                                 {
-                                     Year = FGroup.Key.Y,
-                                     Month = FGroup.Key.M,
-                                     Week = FGroup.Key.W,
-                                     Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
-                                     // SumPrice = (int)FGroup.Sum(t => t.RunningProfit),
-                                     AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                      .Average(t => t.RunningProfit),
-                                     SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                     .Sum(t => t.RunningProfit)
-                                 };
-
-                foreach (var v in weekly)
-                {
-                    SummaryStats stat = new SummaryStats();
-                    stat.Detail = "Weekly Profit and Loss Summary";
-                    stat.Period = Period;
-                    stat.Year = (int)v.Year;
-                    stat.Month = (int)v.Month;
-                    stat.Week = (int)v.Week;
-                    stat.Count = (int)v.Count;
-                    stat.Sum = (int)v.SumPrice;
-                    stat.Average = (double)v.AvPrice;
-                    statsList.Add(stat);
-
-                    Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
-                }
-
-            }
-
-            #endregion
-
-            #region Fortnight
-
-            if (Period == Period.TwoWeekly)
-            {
-
-                var fortnight = from q in TradeList_Stats
-                                group q by new
-                                {
-                                    Y = q.TimeStamp.Year,
-                                    M = q.TimeStamp.Month,
-                                    W = q.TimeStamp.Day <= 15 ? 1 : 2,
-                                    //D=(DateTime)q.TimeStamp
-                                }
-                                    into FGroup
-                                    orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.W
-                                    select new
-                                    {
-                                        Year = FGroup.Key.Y,
-                                        Month = FGroup.Key.M,
-                                        Week = FGroup.Key.W,
-                                        Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
-                                        // SumPrice = (int)FGroup.Sum(t => t.RunningProfit),
-                                        AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                      .Average(t => t.RunningProfit),
-                                        SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                        .Sum(t => t.RunningProfit)
-                                    };
-
-                foreach (var v in fortnight)
-                {
-                    SummaryStats stat = new SummaryStats();
-                    stat.Detail = "Fortnightly Profit and Loss Summary";
-                    stat.Period = Period;
-                    stat.Year = (int)v.Year;
-                    stat.Month = (int)v.Month;
-                    stat.Week = (int)v.Week;
-                    stat.Count = (int)v.Count;
-                    stat.Sum = (int)v.SumPrice;
-                    stat.Average = (double)v.AvPrice;
-                    statsList.Add(stat);
-                    Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
-                }
-
-
-            }
-
-            #endregion
-
-            #region Monthly
-
-            if (Period == Period.Monthly)
-            {
-                var monthly = from q in TradeList_Stats
-                              group q by new
-                              {
-                                  Y = q.TimeStamp.Year,
-                                  M = q.TimeStamp.Month,
-
-                                  //D=(DateTime)q.TimeStamp
-                              }
-                                  into FGroup
-                                  orderby FGroup.Key.Y, FGroup.Key.M
-                                  select new
-                                  {
-                                      Year = FGroup.Key.Y,
-                                      Month = FGroup.Key.M,
-                                      Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
-                                      AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                      .Average(t => t.RunningProfit),
-                                      SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                      .Sum(t => t.RunningProfit)
-                                  };
-
-                foreach (var v in monthly)
-                {
-                    SummaryStats stat = new SummaryStats();
-                    stat.Detail = "Monthly Profit and Loss Summary";
-                    stat.Period = Period;
-                    stat.Year = (int)v.Year;
-                    stat.Month = (int)v.Month;
-                    stat.Week = 0;
-                    stat.Count = (int)v.Count;
-                    stat.Sum = (int)v.SumPrice;
-                    stat.Average = (double)v.AvPrice;
-                    statsList.Add(stat);
-                    Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
-                }
-            }
-            #endregion
-
-
+                catch { return statsList; }
             return statsList;
 
         }
