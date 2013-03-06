@@ -115,7 +115,10 @@ namespace AlsiUtils
                                              AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
                                               .Average(t => t.RunningProfit),
                                              SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                             .Sum(t => t.RunningProfit)
+                                             .Sum(t => t.RunningProfit),
+                                             marketmovement = (FGroup.Last().CurrentPrice)-(FGroup.First().CurrentPrice),
+                                             Prices=FGroup.Select(z=>z.CurrentPrice),
+                                             
                                          };
 
                         foreach (var v in weekly)
@@ -131,8 +134,10 @@ namespace AlsiUtils
                             stat.Average = (double)v.AvPrice;
                             stat.FirstTrade = v.FirstTradeDate;
                             stat.LastTrade = v.LastTradeDate;
+                            stat.MarketMovement = v.marketmovement;
+                            stat.StandardDeviation = StandardDeviation(v.Prices.ToList());
                             statsList.Add(stat);
-
+                            
                             Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
                         }
 
@@ -166,7 +171,9 @@ namespace AlsiUtils
                                                 AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
                                               .Average(t => t.RunningProfit),
                                                 SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                                .Sum(t => t.RunningProfit)
+                                                .Sum(t => t.RunningProfit),
+                                                  marketmovement = (FGroup.Last().CurrentPrice)-(FGroup.First().CurrentPrice),
+                                                Prices = FGroup.Select(z => z.CurrentPrice),
                                             };
 
                         foreach (var v in fortnight)
@@ -182,6 +189,8 @@ namespace AlsiUtils
                             stat.Average = (double)v.AvPrice;
                             stat.FirstTrade = v.FirstTradeDate;
                             stat.LastTrade = v.LastTradeDate;
+                            stat.MarketMovement=v.marketmovement;
+                            stat.StandardDeviation = StandardDeviation(v.Prices.ToList());
                             statsList.Add(stat);
                             Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
                         }
@@ -215,7 +224,9 @@ namespace AlsiUtils
                                               AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
                                               .Average(t => t.RunningProfit),
                                               SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                              .Sum(t => t.RunningProfit)
+                                              .Sum(t => t.RunningProfit),
+                                                marketmovement = (FGroup.Last().CurrentPrice)-(FGroup.First().CurrentPrice),
+                                              Prices = FGroup.Select(z => z.CurrentPrice),
                                           };
 
                         foreach (var v in monthly)
@@ -231,6 +242,8 @@ namespace AlsiUtils
                             stat.Average = (double)v.AvPrice;
                             stat.FirstTrade = v.FirstTradeDate;
                             stat.LastTrade = v.LastTradeDate;
+                            stat.MarketMovement=v.marketmovement;
+                            stat.StandardDeviation = StandardDeviation(v.Prices.ToList());
                             statsList.Add(stat);
                             Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
                         }
@@ -602,6 +615,11 @@ namespace AlsiUtils
             public SummaryStats SumStats;
         }
 
+        public static double StandardDeviation(List<double> values)
+        {
+            double avg = values.Average();
+            return Math.Sqrt(values.Average(v => Math.Pow(v - avg, 2)));
+        }
 
         public static List<CompletedTrade> IntratradeToCandle(List<Trade> FullTradeList)
         {

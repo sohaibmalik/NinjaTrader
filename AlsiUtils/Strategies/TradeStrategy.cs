@@ -491,6 +491,7 @@ namespace AlsiUtils.Strategies
                 }
                 if (_ST[x - 1].InstrumentName != _ST[x].InstrumentName) _ST[x - 1].Reason = Trade.TradeReason.ContractExpires;
 
+            
             }
 
         }
@@ -518,7 +519,7 @@ namespace AlsiUtils.Strategies
                 if ((_ST[x - 1].Position && _ST[x].Position) && _ST[x - 1].markedObjectA) _ST[x].markedObjectA = true;
                 if (!_ST[x - 1].markedObjectA && _ST[x].markedObjectA) _ST[x].markedObjectB = true;
 
-
+               
             }
             #endregion
         }
@@ -530,6 +531,8 @@ namespace AlsiUtils.Strategies
             #region Clear
             for (int x = 1; x < _ST.Count; x++)
             {
+                if (_ST[x].TimeStamp.Day==15 && _ST[x].TimeStamp.Hour==10)
+                   Debug.WriteLine(x) ;
                 _ST[x].markedObjectA = false;
                 _ST[x].RunningProfit = 0;
                 _ST[x].Position = false;
@@ -546,6 +549,8 @@ namespace AlsiUtils.Strategies
                     if (_ST[x].Reason == Trade.TradeReason.EndOfDayCloseLong) _ST[x].TradeTrigger = Trade.Trigger.EndOfDayCloseLong;
                     if (_ST[x].Reason == Trade.TradeReason.EndOfDayCloseShort) _ST[x].TradeTrigger = Trade.Trigger.EndOfDayCloseShort;
                     if (_ST[x].Reason == Trade.TradeReason.ContractExpires) _ST[x].TradeTrigger = Trade.Trigger.ContractExpires;
+
+                    if (_ST[x].Reason == Trade.TradeReason.TakeProfit) Debug.WriteLine(x + "    " + _ST[x].TimeStamp + "  " + _ST[x].TradeTrigger + "   " + _ST[x].TradedPrice + "   " + _ST[x].TotalProfit );
                 }
                 _ST[x].Reason = 0;
             }

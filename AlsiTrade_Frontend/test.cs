@@ -34,8 +34,13 @@ namespace FrontEnd
             WebSettings.GetSettings();
             start();
 
-            var sumstats = Statistics.SummaryProfitLoss(_FullTradeList, Period.Monthly);
+            foreach (var t in _FullTradeList.Where(t=>t.TimeStamp.Day==22))
+            {
+                Debug.WriteLine(t.TimeStamp + "  " + "TradedPrice " + t.TradedPrice +"  CurrntPrice " + t.CurrentPrice + "    "   +  t.CurrentDirection  +"   " +t.RunningProfit);
+            }
 
+
+         //   var sumstats = Statistics.SummaryProfitLoss(_FullTradeList, Period.Monthly);
             //foreach (var s in sumstats)
             //    Debug.WriteLine(s.Year + " / " + s.Month + "  = " + s.Sum);
         }
@@ -54,7 +59,7 @@ namespace FrontEnd
                     // Debug.WriteLine("Open " + v.OpenTrade.TimeStamp + "  " + v.OpenTrade.Reason + "  " + v.OpenTrade.TradedPrice  + "  " + v.OpenTrade.Position  + "  " + v.OpenTrade.RunningProfit );
                     Debug.WriteLine("Close " + v.CloseTrade.TimeStamp + "  " + v.CloseTrade.Reason + "  " + v.CloseTrade.TradedPrice + "  " + v.CloseTrade.Position + "  " + v.CloseTrade.RunningProfit + "     " + pl);
                 }
-                Debug.WriteLine("TOTAL PROFIT : P(" + ptsPROFIT + ")   = " + pl);
+               // Debug.WriteLine("TOTAL PROFIT : P(" + ptsPROFIT + ")   = " + pl);
             }
         }
 
@@ -90,8 +95,8 @@ namespace FrontEnd
         {
             Cursor = Cursors.WaitCursor;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
-            DataBase.dataTable dt = DataBase.dataTable.MasterMinute;
-            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, false, new DateTime(2012, 1, 1), DateTime.Now.AddDays(1), dt);
+            DataBase.dataTable dt = DataBase.dataTable.AllHistory;
+            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParameters(), t, false, new DateTime(2008, 9, 20), new DateTime(2009, 1, 1), dt);
             _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
             NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);

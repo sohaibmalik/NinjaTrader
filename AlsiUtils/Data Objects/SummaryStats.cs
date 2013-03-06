@@ -27,5 +27,7 @@ namespace AlsiUtils
         public decimal Pct_Loss { get; set; }
         public double TradeCount { get; set; }
         public decimal PL_Ratio { get; set; }
+        public double MarketMovement { get; set; }
+        public double StandardDeviation { get; set; }
 	}
 }

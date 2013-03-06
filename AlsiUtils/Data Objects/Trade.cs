@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AlsiUtils
 {
-    public class Trade
+    public partial class Trade
     {
         public double TradedPrice { get; set; }
         public DateTime TimeStamp { get; set; }
