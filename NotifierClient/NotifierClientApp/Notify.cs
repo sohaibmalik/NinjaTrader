@@ -146,6 +146,7 @@ namespace NotifierClientApp
             StatusUpdateTimer.Start();
             statusLabel1.Text = "AlsiTrade";
 
+            AlsiUtils.WebSettings.GetSettings();
 
         }
 
@@ -324,9 +325,9 @@ namespace NotifierClientApp
         }
 
         private void getPricesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var alsi = OnlinePrices.GetALSI();
-            pricesStatusLabel.Text = alsi.ToString();
+        {            
+            var alsi = AlsiTrade_Backend.HiSat.HistData.GetHistoricalTICK_FromWEB(DateTime.Now, DateTime.Now, AlsiUtils.WebSettings.General.HISAT_INST);
+            pricesStatusLabel.Text =  alsi.Last().Close.ToString();
         }
 
 
