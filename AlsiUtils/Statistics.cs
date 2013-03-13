@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
-using AlsiUtils.Indicators;
+using System.Linq;
 using AlsiUtils.Data_Objects;
 
 namespace AlsiUtils
@@ -752,7 +750,7 @@ namespace AlsiUtils
             return TakeProfitList;
         }
 
-        public static List<CompletedTrade> TakeProfit_Exiguous_SlowStoch(List<Trade> FullTradeList, int FK, int SK, int D)
+        public static List<CompletedTrade> TakeProfit_Exiguous_SlowStoch(List<Trade> FullTradeList, int FK, int SK, int D,double H,double L)
         {
             var TakeProfitList = new List<CompletedTrade>();
             var TO = Trade.TradesOnly(FullTradeList);
@@ -767,84 +765,91 @@ namespace AlsiUtils
                                 where x.TimeStamp >= t.OpenTrade.TimeStamp && x.TimeStamp <= t.CloseTrade.TimeStamp
                                 select x;
 
+                var period = from x in SlowStoch
+                             where x.TimeStamp >= t.OpenTrade.TimeStamp && x.TimeStamp <= t.CloseTrade.TimeStamp
+                             select x;
+
+                // foreach (var v in period) Debug.WriteLine(v.TimeStamp + "   " + v.D);
 
                 var trade = new CompletedTrade();
                 trade.OpenTrade = t.OpenTrade;
-                                              
-                    var period = SlowStoch.Where(ss => ss.TimeStamp == timeframe.TimeStamp);
 
-                    bool TookProfitLong = false;
-                    bool TookProfitShort = false;
-                    DateTime lowJumpUp = ts.TimeStamp;
-                    DateTime highDipDown = ts.TimeStamp;
 
-                    if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                bool TookProfitLong = false;
+                bool TookProfitShort = false;
+                DateTime lowJumpUp = t.CloseTrade.TimeStamp;
+                DateTime highDipDown = t.CloseTrade.TimeStamp;
+
+                if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                {
+                    bool touchedHigh = period.Where(z => z.D > H).Any();
+                    DateTime highTime;
+
+                    bool dipped;
+
+                    if (touchedHigh)
                     {
-                        bool touchedHigh = period.Any(z => z.Slow_D > 85);
-                        DateTime highTime;
-
-                        bool dipped;
-
-                        if (touchedHigh)
+                        highTime = period.Where(z => z.D > H).Select(a => a).First().TimeStamp;
+                        var x = period.Where(z => z.TimeStamp > highTime && z.D < H);
+                        dipped = x.Any();
+                        if (dipped)
                         {
-                            highTime = period.Where(z => z.Slow_D > 85).First().TimeStamp;
-                            var x = period.Where(z => z.TimeStamp > highTime && z.Slow_D < 85);
-                            dipped = x.Any();
-                            if (dipped)
-                            {
-                                highDipDown = x.First().TimeStamp;
-                                TookProfitLong = true;
-                            }
-                            else
-                                TookProfitLong = false;
-                        }
-                    }
-
-                    if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
-                    {
-                        var touchedLow = period.Any(z => z.Slow_D < 15);
-                        DateTime lowTime;
-
-                        bool jumped;
-                        if (touchedLow)
-                        {
-                            lowTime = period.Where(z => z.Slow_D < 15).First().TimeStamp;
-                            var x = period.Where(z => z.TimeStamp > lowTime && z.Slow_D > 5);
-                            jumped = x.Any();
-                            if (jumped)
-                            {
-                                lowJumpUp = x.First().TimeStamp;
-                                TookProfitShort = true;
-                            }
-                            else
-                                TookProfitShort = false;
-                        }
-
-                    }
-
-                    if (TookProfitLong)
-                    {
-                        trade.CloseTrade.TimeStamp = highDipDown;
-                      
-                    }
-                    else
-                        if (TookProfitShort)
-                        {
-                            trade.CloseTrade.TimeStamp = lowJumpUp;
+                            highDipDown = x.First().TimeStamp;
+                            TookProfitLong = true;
                         }
                         else
-                            trade.CloseTrade = t;
-                    //if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
-                    //    if (ts.CurrentPrice < GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Lower) boilTriggerCount++;
-                    //if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
-                    //    if (ts.CurrentPrice > GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Upper) boilTriggerCount++;
-                    //if (boilTriggerCount == triggercount)
-                    //{
-                    //    trade.CloseTrade = ts;
-                    //    break;
-                    //}
-                    //trade.CloseTrade = ts;
-                
+                            TookProfitLong = false;
+                    }
+                }
+
+                if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
+                {
+                   // foreach (var v in period) Debug.WriteLine(v.TimeStamp + "   " + v.D);
+                    var touchedLow = period.Where(z => z.D < L).Any();
+                    DateTime lowTime;
+
+                    bool jumped;
+                    if (touchedLow)
+                    {
+                       
+                        lowTime = (period.Where(z => z.D < L)).Select(a => a).First().TimeStamp;
+                        var x = period.Where(z => z.TimeStamp > lowTime && z.D > L);
+                        jumped = x.Any();
+                        if (jumped)
+                        {
+                            lowJumpUp = x.First().TimeStamp;
+                            TookProfitShort = true;
+                        }
+                        else
+                            TookProfitShort = false;
+                    }
+
+                }
+
+                if (TookProfitLong)
+                {
+                    trade.CloseTrade.TimeStamp = highDipDown;
+                    trade.CloseTrade.RunningProfit = timeframe.Where(z => z.TimeStamp == highDipDown).First().RunningProfit;
+                }
+                else
+                    if (TookProfitShort)
+                    {
+                        trade.CloseTrade.TimeStamp = lowJumpUp;
+                        trade.CloseTrade.RunningProfit = timeframe.Where(z => z.TimeStamp == lowJumpUp).First().RunningProfit;
+                    }
+                    else
+                        trade.CloseTrade = t.CloseTrade;
+                //if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
+                //    if (ts.CurrentPrice < GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Lower) boilTriggerCount++;
+                //if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                //    if (ts.CurrentPrice > GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Upper) boilTriggerCount++;
+                //if (boilTriggerCount == triggercount)
+                //{
+                //    trade.CloseTrade = ts;
+                //    break;
+                //}
+                //trade.CloseTrade = ts;
+
 
                 if (trade.OpenTrade.Reason == Trade.Trigger.OpenLong) trade.CloseTrade.Reason = Trade.Trigger.CloseLong;
                 if (trade.OpenTrade.Reason == Trade.Trigger.OpenShort) trade.CloseTrade.Reason = Trade.Trigger.CloseShort;

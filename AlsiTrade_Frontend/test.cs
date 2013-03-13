@@ -30,8 +30,8 @@ namespace FrontEnd
 
         private void Test_Load(object sender, EventArgs e)
         {
-            AlsiUtils.DataBase.SetConnectionString(Properties.Settings.Default.ConnectionString);
-            WebSettings.GetSettings();
+            AlsiUtils.DataBase.SetConnectionString(@"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True");
+          //  WebSettings.GetSettings();
             start();
 
             //foreach (var t in _FullTradeList.Where(t=>t.TimeStamp.Day==22))
@@ -50,32 +50,48 @@ namespace FrontEnd
 
         private void ExitTakeProf()
         {
+            double max = 0;
+            int MD = 0;
+            int MSK = 0;
+            int MFK = 0;
 
-            // for(double stop = 100; stop < 500; stop += 50)
-            for (int N = 50; N < 100; N += 50)
-            {
-                var TempList = new List<Trade>();
-                foreach (var t in _FullTradeList)
-                {
-                    Trade newTrade = (Trade)t.Clone();
-                    TempList.Add(newTrade);
-                }
+            for (int H = 95; H > 55; H--)
+            for (int L = 5; L < 45;L++ )
+                for (int D = 3; D < 30; D += 1)
+                    for (int SK = 3; SK < 30; SK += 1)
+                        for (int FK = 3; FK < 30; FK += 1)
+                        {
+                            var TempList = new List<Trade>();
+                            foreach (var t in _FullTradeList)
+                            {
+                                Trade newTrade = (Trade)t.Clone();
+                                TempList.Add(newTrade);
+                            }
 
 
-                double pl = 0;
-                var Ex = Statistics.TakeProfit_Exiguous_SlowStoch(_FullTradeList,7,3,3);
-                // var Ex = Statistics.TakeProfit_Exiguous_GoldenBoil(TempList , n, stdev, 4);
-               // var Ex = Statistics.TakeProfit_Exiguous(TempList, n, -1000);
-                foreach (var v in Ex)
-                {
-                    pl += v.CloseTrade.RunningProfit;
+                            double pl = 0;
+                            var Ex = Statistics.TakeProfit_Exiguous_SlowStoch(_FullTradeList, FK, SK, D,H, L);
+                            // var Ex = Statistics.TakeProfit_Exiguous_GoldenBoil(TempList , n, stdev, 4);
+                            // var Ex = Statistics.TakeProfit_Exiguous(TempList, n, -1000);
+                            foreach (var v in Ex)
+                            {
+                                pl += v.CloseTrade.RunningProfit;
 
-                     Debug.WriteLine("Open " + v.OpenTrade.TimeStamp + "  " + v.OpenTrade.Reason + "  " + v.OpenTrade.TradedPrice  + "  " + v.OpenTrade.Position  + "  " + v.OpenTrade.RunningProfit );
-                      Debug.WriteLine("Close " + v.CloseTrade.TimeStamp + "  " + v.CloseTrade.Reason + "  " + v.CloseTrade.TradedPrice + "  " + v.CloseTrade.Position + "  " + v.CloseTrade.RunningProfit + "     " + pl);
-                }
-                //  Debug.WriteLine("TOTAL PROFIT : P(" + n + ") stdev("+stop+")  = " + pl);
-                Debug.WriteLine("TOTAL PROFIT : P(" + N + ")   = " + pl);
-            }
+                                // Debug.WriteLine("Open " + v.OpenTrade.TimeStamp + "  " + v.OpenTrade.Reason + "  " + v.OpenTrade.TradedPrice  + "  " + v.OpenTrade.Position  + "  " + v.OpenTrade.RunningProfit );
+                                //  Debug.WriteLine("Close " + v.CloseTrade.TimeStamp + "  " + v.CloseTrade.Reason + "  " + v.CloseTrade.TradedPrice + "  " + v.CloseTrade.Position + "  " + v.CloseTrade.RunningProfit + "     " + pl);
+                            }
+                            //  Debug.WriteLine("TOTAL PROFIT : P(" + n + ") stdev("+stop+")  = " + pl);
+
+                            if (pl > max)
+                            {
+                                max = pl;
+                                MSK = SK;
+                                MFK = FK;
+                                MD = D;
+
+                                Debug.WriteLine("TOTAL PROFIT : (" + FK + " " + SK + "  " + D + ")   = " + pl + "       MAX " + max + "(" + MFK + " " + MSK + "  " + MD + " L " +L + " H " + H+")");
+                            }
+                        }
         }
 
         private void printOHLC()
@@ -96,13 +112,23 @@ namespace FrontEnd
                 SAR_STEP=0.02,
                 SAR_MAXP=0.2,
                 
-                A_EMA1 = WebSettings.Indicators.EmaScalp.A1,
-                A_EMA2 = WebSettings.Indicators.EmaScalp.A2,
-                B_EMA1 = WebSettings.Indicators.EmaScalp.B1,
-                B_EMA2 = WebSettings.Indicators.EmaScalp.B2,
-                C_EMA = WebSettings.Indicators.EmaScalp.C1,
-                TakeProfit = WebSettings.General.TAKE_PROFIT,
-                StopLoss = WebSettings.General.STOPLOSS,
+                //A_EMA1 = WebSettings.Indicators.EmaScalp.A1,
+                //A_EMA2 = WebSettings.Indicators.EmaScalp.A2,
+                //B_EMA1 = WebSettings.Indicators.EmaScalp.B1,
+                //B_EMA2 = WebSettings.Indicators.EmaScalp.B2,
+                //C_EMA = WebSettings.Indicators.EmaScalp.C1,
+                //TakeProfit = WebSettings.General.TAKE_PROFIT,
+                //StopLoss = WebSettings.General.STOPLOSS,
+                //CloseEndofDay = false,
+
+
+                A_EMA1 = 16,
+                A_EMA2 = 17,
+                B_EMA1 = 43,
+                B_EMA2 = 45,
+                C_EMA = 52,
+                TakeProfit = 450,
+                StopLoss = -350,
                 CloseEndofDay = false,
             };
 
@@ -115,7 +141,7 @@ namespace FrontEnd
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
             DataBase.dataTable dt = DataBase.dataTable.MasterMinute;
           //  _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMASAR(GetParametersSAR_EMA(), t, false, new DateTime(2013, 2, 20), new DateTime(2013, 03, 27), dt);
-            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2013, 1, 10), new DateTime(2013, 03, 27), dt);
+            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2013, 1, 01), new DateTime(2013, 03, 27), dt);
             _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
             NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
