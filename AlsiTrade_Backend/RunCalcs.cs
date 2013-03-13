@@ -12,14 +12,14 @@ namespace AlsiTrade_Backend
     public class RunCalcs
     {
 
-        public static List<Trade> RunEMAScalpLiveTrade(Parameter_EMA_Scalp Parameter,DateTime StartDate, GlobalObjects.TimeInterval Interval)
+        public static List<Trade> RunEMAScalpLiveTrade(Parameter_EMA_Scalp Parameter, DateTime StartDate, GlobalObjects.TimeInterval Interval)
         {
-          //  DateTime START = new DateTime(2012,06,02);//NB must be set periodically           
+            //  DateTime START = new DateTime(2012,06,02);//NB must be set periodically           
             DateTime e = DateTime.UtcNow.AddHours(5);
             UpdateDB.MergeTempWithHisto(Interval);
             GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(Interval, AlsiUtils.DataBase.dataTable.Temp, StartDate, e, false);
             var sp = GlobalObjects.Points.First();
-            var l = GlobalObjects.Points.Last();            
+            var l = GlobalObjects.Points.Last();
             return AlsiUtils.Strategies.EMA_Scalp.EmaScalp(Parameter, GlobalObjects.Points, false);
 
         }
@@ -30,6 +30,12 @@ namespace AlsiTrade_Backend
             return AlsiUtils.Strategies.EMA_Scalp.EmaScalp(Parameter, GlobalObjects.Points, TradesOnly);
         }
 
-      
+        public static List<Trade> RunEMASAR(Parameter_EMA_SAR Parameter, GlobalObjects.TimeInterval Interval, bool TradesOnly, DateTime Start, DateTime End, DataBase.dataTable Table)
+        {
+            GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(Interval, Table, Start, End, false);
+            return AlsiUtils.Strategies.EMA_SAR.EmaSar(Parameter, GlobalObjects.Points, TradesOnly);
+
+        }
+
     }
 }

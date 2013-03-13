@@ -13,20 +13,25 @@ namespace SilentListner
 {
     public partial class ConnectionMonitor : Form
     {
-       
+
 
         public ConnectionMonitor()
         {
             InitializeComponent();
         }
 
-        public static bool CheckForInternetConnection()
+        public bool CheckForInternetConnection()
         {
             try
             {
                 using (var client = new WebClient())
                 using (var stream = client.OpenRead("http://www.google.com"))
-                {
+                {                 
+                    if (HasDisconnected)
+                    {
+                        HasDisconnected = false;
+                        restartOTSTimer.Start();
+                    }
                     return true;
                 }
             }
@@ -36,8 +41,8 @@ namespace SilentListner
             }
         }
 
-      
 
+        private bool HasDisconnected;
         private void updateTimer_Tick(object sender, EventArgs e)
         {
             Debug.WriteLine("Checking");
@@ -46,10 +51,11 @@ namespace SilentListner
                 this.Show();
                 logListBox.Items.Add(DateTime.Now.ToShortTimeString() + " Connection Failed.Resetting Network");
                 Process.Start(@"C:\Users\Pieter\Dropbox\Alsi Trade App\Batch Commands\ResetNetwork.bat");
+                HasDisconnected = true;
             }
         }
 
-      
+
 
         private void ConnectionMonitor_Load(object sender, EventArgs e)
         {
@@ -62,9 +68,9 @@ namespace SilentListner
             if (true)
             {
                 e.Cancel = true;
-                this.Hide();                      
+                this.Hide();
             }
-        
+
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -73,13 +79,20 @@ namespace SilentListner
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
-        {                       
+        {
             this.Show();
         }
 
+        private void restartOTSTimer_Tick(object sender, EventArgs e)
+        {
+            logListBox.Items.Add(DateTime.Now.ToShortTimeString() + " Restarting OTS");
+            Process.Start(@"C:\Users\Pieter\Dropbox\Alsi Trade App\Batch Commands\RestartOTS.bat");
+            restartOTSTimer.Stop();
+        }
 
-       
 
-       
+
+
+
     }
 }

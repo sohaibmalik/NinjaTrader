@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
 namespace AlsiUtils
 {
-    public partial class Trade
+    public partial class Trade : ICloneable
     {
         public double TradedPrice { get; set; }
         public DateTime TimeStamp { get; set; }
@@ -32,14 +33,18 @@ namespace AlsiUtils
         //ExcelOrders
         public string xlRef { get; set; }
         public bool xlMatched { get; set; }
-        
 
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
 
         public Trade()
         {
             Extention = new Data_Objects.RegressionExt();
             OHLC = new Price();
-           
+
         }
         public enum BuySell
         {
@@ -55,26 +60,26 @@ namespace AlsiUtils
             None = 3,
         }
 
-     
+
         public enum Trigger
         {
             None,
             Open,
             Close,
-            OpenLong ,
-            CloseLong ,
-            OpenShort ,
-            CloseShort,            
+            OpenLong,
+            CloseLong,
+            OpenShort,
+            CloseShort,
             StopLoss,
             StopLossLong,
             StopLossShort,
-            TakeProfit ,
+            TakeProfit,
             TakeProfitLong,
             TakeProfitShort,
             EndOfDayClose,
             EndOfDayCloseLong,
             EndOfDayCloseShort,
-            ContractExpires ,
+            ContractExpires,
             Reverse,
             ReverseLong,
             ReverseShort,
@@ -115,7 +120,7 @@ namespace AlsiUtils
 
             string r = Reason.ToString();
             if (this.Reason == 0) r = "";
-            string msg = "Trade Details:  " + r + " \n" + TimeStamp.AddMinutes(5) + "  " + BuyorSell + "  " + TradeVolume + " @" + TradedPrice + "\n" ;
+            string msg = "Trade Details:  " + r + " \n" + TimeStamp.AddMinutes(5) + "  " + BuyorSell + "  " + TradeVolume + " @" + TradedPrice + "\n";
             return msg;
         }
 
@@ -129,10 +134,11 @@ namespace AlsiUtils
                     tradesonly.Add(z);
             }
 
-
             return tradesonly;
         }
 
-       
+
+
+
     }
 }

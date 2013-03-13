@@ -369,6 +369,7 @@ namespace AlsiUtils
 
             return ema;
         }
+
         public static List<EMA> createEMA(int N, List<VariableIndicator> Value)
         {
             List<EMA> ema = new List<EMA>();
@@ -427,6 +428,7 @@ namespace AlsiUtils
 
             return sma;
         }
+
         public static List<SMA> createSMA(int N, List<VariableIndicator> Value)
         {
             List<SMA> sma = new List<SMA>();
@@ -485,7 +487,6 @@ namespace AlsiUtils
             return stdev;
         }
 
-
         public static List<RegressionLine>  createRegression(int N, List<VariableIndicator> Value)
         {
             List<RegressionLine> REG = new List<RegressionLine>(); 
@@ -518,6 +519,52 @@ namespace AlsiUtils
 
             return REG;
 
+        }
+
+        public static List<SAR> createSAR(double STEP,double MAXP,List<Price> Price)
+        {
+            List<SAR> SAR = new List<AlsiUtils.SAR>();
+
+
+            double[] _close = new double[Price.Count];
+            double[] _high = new double[Price.Count];
+            double[] _low = new double[Price.Count];
+            double[] _open = new double[Price.Count];
+
+           
+            double[] _sar = new double[Price.Count];
+
+            for (int x = 0; x < Price.Count; x++)
+            {
+                _close[x] = Price[x].Close;
+                _high[x] = Price[x].High;
+                _low[x] = Price[x].Low;
+                _open[x] = Price[x].Open;
+
+            }
+
+            int a, b;
+            
+            Core.Sar(0, Price.Count - 1, _high, _low, STEP, MAXP, out a, out b, _sar);
+           // Core.SarExt(0, Price.Count - 1, _high, _low, 30000, 2, 0.02, 0.02, 2, 2, 0.02, 2, out a, out b, _sar);
+            for (int x = 0; x < _sar.Count() - a; x++)
+            {
+                //Debug.WriteLine("SAR " + _sar[x]);
+                //Debug.WriteLine(Price[x + a].TimeStamp + "   " + Price[x + a].Close);
+                //Debug.WriteLine("========" + x + "===========");
+
+                Debug.WriteLine(Price[x + a].Open + "," + Price[x + a].High + "," + Price[x + a].Low + "," + Price[x + a].Close + "," + _sar[x]);
+                SAR ss = new AlsiUtils.SAR();
+                ss.StopAndReverse = _sar[x];            
+                ss.TimeStamp = Price[x + a].TimeStamp;
+                ss.Price_Close = Price[x + a].Close;
+                ss.Price_High = Price[x + a].High;
+                ss.Price_Low = Price[x + a].Low;
+                ss.Price_Open = Price[x + a].Open;
+                SAR.Add(ss);
+            }
+
+            return SAR;
         }
     }
 }

@@ -63,6 +63,7 @@
     <Compile Include="Data Objects\GlobalObjects.cs" />
     <Compile Include="Indicators\EMA.cs" />
     <Compile Include="Indicators\RegressionLine.cs" />
+    <Compile Include="Indicators\SAR.cs" />
     <Compile Include="Indicators\SMA.cs" />
     <Compile Include="Indicators\StandardDev.cs" />
     <Compile Include="Indicators\Variable.cs" />
@@ -73,8 +74,10 @@
     </Compile>
     <Compile Include="Statistics.cs" />
     <Compile Include="Strategies\EmaSalp2.cs" />
+    <Compile Include="Strategies\EMA_SAR.cs" />
     <Compile Include="Strategies\EMA_Scalp.cs" />
     <Compile Include="Strategies\IndicatorExtentions\StochAroon.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_EMA_SAR.cs" />
     <Compile Include="Strategies\Parameters\Parameter_EMA_Scalp.cs" />
     <Compile Include="Strategies\Parameters\Parameter_Bollinger.cs" />
     <Compile Include="Strategies\Parameters\Parameter_General.cs" />

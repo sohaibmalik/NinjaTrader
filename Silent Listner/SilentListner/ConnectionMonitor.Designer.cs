@@ -36,6 +36,7 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.restartOTSTimer = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -85,6 +86,11 @@
             this.closeToolStripMenuItem.Text = "Exit";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
+            // restartOTSTimer
+            // 
+            this.restartOTSTimer.Interval = 60000;
+            this.restartOTSTimer.Tick += new System.EventHandler(this.restartOTSTimer_Tick);
+            // 
             // ConnectionMonitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -98,7 +104,6 @@
             this.Text = "ConnectionMonitor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ConnectionMonitor_FormClosing);
             this.Load += new System.EventHandler(this.ConnectionMonitor_Load);
-           
             this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -112,5 +117,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.Timer restartOTSTimer;
     }
 }

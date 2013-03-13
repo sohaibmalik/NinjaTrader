@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using AlsiUtils.Indicators;
+using AlsiUtils.Data_Objects;
 
 namespace AlsiUtils
 {
@@ -78,179 +80,179 @@ namespace AlsiUtils
             }
         }
 
-      
+
         public static List<SummaryStats> SummaryProfitLoss(List<Trade> Trades, Period Period)
         {
-          
-                var TradeList_Stats = new List<Trade>();
-                List<SummaryStats> statsList = new List<SummaryStats>();
-                if (TradeList_Stats.Count == 0)
-                    foreach (Trade t in Trades) if (t.RunningProfit != 0) TradeList_Stats.Add(t);
 
-                try
+            var TradeList_Stats = new List<Trade>();
+            List<SummaryStats> statsList = new List<SummaryStats>();
+            if (TradeList_Stats.Count == 0)
+                foreach (Trade t in Trades) if (t.RunningProfit != 0) TradeList_Stats.Add(t);
+
+            try
+            {
+
+                #region Weekly
+
+                if (Period == Period.Weekly)
+                {
+                    var weekly = from q in TradeList_Stats
+                                 group q by new
+                                 {
+                                     Y = q.TimeStamp.Year,
+                                     M = q.TimeStamp.Month,
+                                     W = Math.Floor((decimal)q.TimeStamp.DayOfYear / 7) + 1,
+                                     //D=(DateTime)q.TimeStamp
+                                 }
+                                     into FGroup
+                                     orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.W
+                                     select new
+                                     {
+                                         Year = FGroup.Key.Y,
+                                         Month = FGroup.Key.M,
+                                         Week = FGroup.Key.W,
+                                         Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
+                                         FirstTradeDate = FGroup.First().TimeStamp,
+                                         LastTradeDate = FGroup.Last().TimeStamp,
+                                         AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                          .Average(t => t.RunningProfit),
+                                         SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                         .Sum(t => t.RunningProfit),
+                                         marketmovement = (FGroup.Last().CurrentPrice) - (FGroup.First().CurrentPrice),
+                                         Prices = FGroup.Select(z => z.CurrentPrice),
+
+                                     };
+
+                    foreach (var v in weekly)
+                    {
+                        SummaryStats stat = new SummaryStats();
+                        stat.Detail = "Weekly Profit and Loss Summary";
+                        stat.Period = Period;
+                        stat.Year = (int)v.Year;
+                        stat.Month = (int)v.Month;
+                        stat.Week = (int)v.Week;
+                        stat.Count = (int)v.Count;
+                        stat.Sum = (int)v.SumPrice;
+                        stat.Average = (double)v.AvPrice;
+                        stat.FirstTrade = v.FirstTradeDate;
+                        stat.LastTrade = v.LastTradeDate;
+                        stat.MarketMovement = v.marketmovement;
+                        stat.StandardDeviation = StandardDeviation(v.Prices.ToList());
+                        statsList.Add(stat);
+
+                        //    Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
+                    }
+
+                }
+
+                #endregion
+
+                #region Fortnight
+
+                if (Period == Period.TwoWeekly)
                 {
 
-                    #region Weekly
-
-                    if (Period == Period.Weekly)
-                    {
-                        var weekly = from q in TradeList_Stats
-                                     group q by new
-                                     {
-                                         Y = q.TimeStamp.Year,
-                                         M = q.TimeStamp.Month,
-                                         W = Math.Floor((decimal)q.TimeStamp.DayOfYear / 7) + 1,
-                                         //D=(DateTime)q.TimeStamp
-                                     }
-                                         into FGroup
-                                         orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.W
-                                         select new
-                                         {
-                                             Year = FGroup.Key.Y,
-                                             Month = FGroup.Key.M,
-                                             Week = FGroup.Key.W,
-                                             Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
-                                             FirstTradeDate = FGroup.First().TimeStamp,
-                                             LastTradeDate=FGroup.Last().TimeStamp,
-                                             AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                              .Average(t => t.RunningProfit),
-                                             SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                             .Sum(t => t.RunningProfit),
-                                             marketmovement = (FGroup.Last().CurrentPrice)-(FGroup.First().CurrentPrice),
-                                             Prices=FGroup.Select(z=>z.CurrentPrice),
-                                             
-                                         };
-
-                        foreach (var v in weekly)
-                        {
-                            SummaryStats stat = new SummaryStats();
-                            stat.Detail = "Weekly Profit and Loss Summary";
-                            stat.Period = Period;
-                            stat.Year = (int)v.Year;
-                            stat.Month = (int)v.Month;
-                            stat.Week = (int)v.Week;
-                            stat.Count = (int)v.Count;
-                            stat.Sum = (int)v.SumPrice;
-                            stat.Average = (double)v.AvPrice;
-                            stat.FirstTrade = v.FirstTradeDate;
-                            stat.LastTrade = v.LastTradeDate;
-                            stat.MarketMovement = v.marketmovement;
-                            stat.StandardDeviation = StandardDeviation(v.Prices.ToList());
-                            statsList.Add(stat);
-                            
-                            Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
-                        }
-
-                    }
-
-                    #endregion
-
-                    #region Fortnight
-
-                    if (Period == Period.TwoWeekly)
-                    {
-
-                        var fortnight = from q in TradeList_Stats
-                                        group q by new
+                    var fortnight = from q in TradeList_Stats
+                                    group q by new
+                                    {
+                                        Y = q.TimeStamp.Year,
+                                        M = q.TimeStamp.Month,
+                                        W = q.TimeStamp.Day <= 15 ? 1 : 2,
+                                        //D=(DateTime)q.TimeStamp
+                                    }
+                                        into FGroup
+                                        orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.W
+                                        select new
                                         {
-                                            Y = q.TimeStamp.Year,
-                                            M = q.TimeStamp.Month,
-                                            W = q.TimeStamp.Day <= 15 ? 1 : 2,
-                                            //D=(DateTime)q.TimeStamp
-                                        }
-                                            into FGroup
-                                            orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.W
-                                            select new
-                                            {
-                                                Year = FGroup.Key.Y,
-                                                Month = FGroup.Key.M,
-                                                Week = FGroup.Key.W,
-                                                Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
-                                                FirstTradeDate = FGroup.First().TimeStamp,
-                                                LastTradeDate = FGroup.Last().TimeStamp,
-                                                AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                              .Average(t => t.RunningProfit),
-                                                SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                                .Sum(t => t.RunningProfit),
-                                                  marketmovement = (FGroup.Last().CurrentPrice)-(FGroup.First().CurrentPrice),
-                                                Prices = FGroup.Select(z => z.CurrentPrice),
-                                            };
+                                            Year = FGroup.Key.Y,
+                                            Month = FGroup.Key.M,
+                                            Week = FGroup.Key.W,
+                                            Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
+                                            FirstTradeDate = FGroup.First().TimeStamp,
+                                            LastTradeDate = FGroup.Last().TimeStamp,
+                                            AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                          .Average(t => t.RunningProfit),
+                                            SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                            .Sum(t => t.RunningProfit),
+                                            marketmovement = (FGroup.Last().CurrentPrice) - (FGroup.First().CurrentPrice),
+                                            Prices = FGroup.Select(z => z.CurrentPrice),
+                                        };
 
-                        foreach (var v in fortnight)
-                        {
-                            SummaryStats stat = new SummaryStats();
-                            stat.Detail = "Fortnightly Profit and Loss Summary";
-                            stat.Period = Period;
-                            stat.Year = (int)v.Year;
-                            stat.Month = (int)v.Month;
-                            stat.Week = (int)v.Week;
-                            stat.Count = (int)v.Count;
-                            stat.Sum = (int)v.SumPrice;
-                            stat.Average = (double)v.AvPrice;
-                            stat.FirstTrade = v.FirstTradeDate;
-                            stat.LastTrade = v.LastTradeDate;
-                            stat.MarketMovement=v.marketmovement;
-                            stat.StandardDeviation = StandardDeviation(v.Prices.ToList());
-                            statsList.Add(stat);
-                            Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
-                        }
-
-
-                    }
-
-                    #endregion
-
-                    #region Monthly
-
-                    if (Period == Period.Monthly)
+                    foreach (var v in fortnight)
                     {
-                        var monthly = from q in TradeList_Stats
-                                      group q by new
-                                      {
-                                          Y = q.TimeStamp.Year,
-                                          M = q.TimeStamp.Month,
-
-                                          //D=(DateTime)q.TimeStamp
-                                      }
-                                          into FGroup
-                                          orderby FGroup.Key.Y, FGroup.Key.M
-                                          select new
-                                          {
-                                              Year = FGroup.Key.Y,
-                                              Month = FGroup.Key.M,
-                                              FirstTradeDate = FGroup.First().TimeStamp,
-                                              LastTradeDate = FGroup.Last().TimeStamp,
-                                              Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
-                                              AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                              .Average(t => t.RunningProfit),
-                                              SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
-                                              .Sum(t => t.RunningProfit),
-                                                marketmovement = (FGroup.Last().CurrentPrice)-(FGroup.First().CurrentPrice),
-                                              Prices = FGroup.Select(z => z.CurrentPrice),
-                                          };
-
-                        foreach (var v in monthly)
-                        {
-                            SummaryStats stat = new SummaryStats();
-                            stat.Detail = "Monthly Profit and Loss Summary";
-                            stat.Period = Period;
-                            stat.Year = (int)v.Year;
-                            stat.Month = (int)v.Month;
-                            stat.Week = 0;
-                            stat.Count = (int)v.Count;
-                            stat.Sum = (int)v.SumPrice;
-                            stat.Average = (double)v.AvPrice;
-                            stat.FirstTrade = v.FirstTradeDate;
-                            stat.LastTrade = v.LastTradeDate;
-                            stat.MarketMovement=v.marketmovement;
-                            stat.StandardDeviation = StandardDeviation(v.Prices.ToList());
-                            statsList.Add(stat);
-                            Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
-                        }
+                        SummaryStats stat = new SummaryStats();
+                        stat.Detail = "Fortnightly Profit and Loss Summary";
+                        stat.Period = Period;
+                        stat.Year = (int)v.Year;
+                        stat.Month = (int)v.Month;
+                        stat.Week = (int)v.Week;
+                        stat.Count = (int)v.Count;
+                        stat.Sum = (int)v.SumPrice;
+                        stat.Average = (double)v.AvPrice;
+                        stat.FirstTrade = v.FirstTradeDate;
+                        stat.LastTrade = v.LastTradeDate;
+                        stat.MarketMovement = v.marketmovement;
+                        stat.StandardDeviation = StandardDeviation(v.Prices.ToList());
+                        statsList.Add(stat);
+                        // Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Week + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
                     }
-                    #endregion
+
+
                 }
-                catch { return statsList; }
+
+                #endregion
+
+                #region Monthly
+
+                if (Period == Period.Monthly)
+                {
+                    var monthly = from q in TradeList_Stats
+                                  group q by new
+                                  {
+                                      Y = q.TimeStamp.Year,
+                                      M = q.TimeStamp.Month,
+
+                                      //D=(DateTime)q.TimeStamp
+                                  }
+                                      into FGroup
+                                      orderby FGroup.Key.Y, FGroup.Key.M
+                                      select new
+                                      {
+                                          Year = FGroup.Key.Y,
+                                          Month = FGroup.Key.M,
+                                          FirstTradeDate = FGroup.First().TimeStamp,
+                                          LastTradeDate = FGroup.Last().TimeStamp,
+                                          Count = FGroup.Count(z => z.Reason != Trade.Trigger.None),
+                                          AvPrice = (double)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                          .Average(t => t.RunningProfit),
+                                          SumPrice = (int)FGroup.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong)
+                                          .Sum(t => t.RunningProfit),
+                                          marketmovement = (FGroup.Last().CurrentPrice) - (FGroup.First().CurrentPrice),
+                                          Prices = FGroup.Select(z => z.CurrentPrice),
+                                      };
+
+                    foreach (var v in monthly)
+                    {
+                        SummaryStats stat = new SummaryStats();
+                        stat.Detail = "Monthly Profit and Loss Summary";
+                        stat.Period = Period;
+                        stat.Year = (int)v.Year;
+                        stat.Month = (int)v.Month;
+                        stat.Week = 0;
+                        stat.Count = (int)v.Count;
+                        stat.Sum = (int)v.SumPrice;
+                        stat.Average = (double)v.AvPrice;
+                        stat.FirstTrade = v.FirstTradeDate;
+                        stat.LastTrade = v.LastTradeDate;
+                        stat.MarketMovement = v.marketmovement;
+                        stat.StandardDeviation = StandardDeviation(v.Prices.ToList());
+                        statsList.Add(stat);
+                        //  Debug.WriteLine(v.Year + "   " + v.Month + "  " + v.Count + "  " + v.SumPrice + "  " + v.AvPrice);
+                    }
+                }
+                #endregion
+            }
+            catch { return statsList; }
             return statsList;
 
         }
@@ -655,8 +657,6 @@ namespace AlsiUtils
         public static List<CompletedTrade> TakeProfit_Exiguous(List<Trade> FullTradeList, double TakeProfit, double StopLoss)
         {
             var TakeProfitList = new List<CompletedTrade>();
-
-
             var TO = Trade.TradesOnly(FullTradeList);
             var CompletedList = CompletedTrade.CreateList(TO);
 
@@ -679,18 +679,18 @@ namespace AlsiUtils
                 else
                     profitTrade = t.CloseTrade;
 
-                trade.CloseTrade = profitTrade;
 
-                //check loss
-                //if (pl.Any(z => z.RunningProfit < StopLoss))
-                //    lossTrade = pl.Where(z => z.RunningProfit < StopLoss).First();
-                ////else
-                ////    lossTrade = t.CloseTrade;
 
-                //if (lossTrade.TimeStamp > profitTrade.TimeStamp)
-                //  trade.CloseTrade = profitTrade;
-                //else
-                //    trade.CloseTrade = lossTrade;
+                // check loss
+                if (pl.Any(z => z.RunningProfit < StopLoss))
+                    lossTrade = pl.Where(z => z.RunningProfit < StopLoss).First();
+                else
+                    lossTrade = t.CloseTrade;
+
+                if (lossTrade.TimeStamp > profitTrade.TimeStamp)
+                    trade.CloseTrade = profitTrade;
+                else
+                    trade.CloseTrade = lossTrade;
 
 
                 if (trade.OpenTrade.Reason == Trade.Trigger.OpenLong) trade.CloseTrade.Reason = Trade.Trigger.CloseLong;
@@ -705,6 +705,158 @@ namespace AlsiUtils
             return TakeProfitList;
         }
 
+
+        public static List<CompletedTrade> TakeProfit_Exiguous_GoldenBoil(List<Trade> FullTradeList, int N, double stdev, int triggercount)
+        {
+            var TakeProfitList = new List<CompletedTrade>();
+            var TO = Trade.TradesOnly(FullTradeList);
+            var CompletedList = CompletedTrade.CreateList(TO);
+
+            var GoldenBoil = Factory_Indicator.createBollingerBand(N, stdev, GlobalObjects.Points, TicTacTec.TA.Library.Core.MAType.Sma);
+
+
+            foreach (var t in CompletedList)
+            {
+                var timeframe = from x in FullTradeList
+                                where x.TimeStamp >= t.OpenTrade.TimeStamp && x.TimeStamp <= t.CloseTrade.TimeStamp
+                                select x;
+
+
+                var trade = new CompletedTrade();
+                trade.OpenTrade = t.OpenTrade;
+
+                int boilTriggerCount = 0;
+                foreach (var ts in timeframe)
+                {
+                    if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
+                        if (ts.CurrentPrice < GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Lower) boilTriggerCount++;
+                    if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                        if (ts.CurrentPrice > GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Upper) boilTriggerCount++;
+                    if (boilTriggerCount == triggercount)
+                    {
+                        trade.CloseTrade = ts;
+                        break;
+                    }
+                    trade.CloseTrade = ts;
+                }
+
+                if (trade.OpenTrade.Reason == Trade.Trigger.OpenLong) trade.CloseTrade.Reason = Trade.Trigger.CloseLong;
+                if (trade.OpenTrade.Reason == Trade.Trigger.OpenShort) trade.CloseTrade.Reason = Trade.Trigger.CloseShort;
+
+
+                TakeProfitList.Add(trade);
+
+            }
+
+
+            return TakeProfitList;
+        }
+
+        public static List<CompletedTrade> TakeProfit_Exiguous_SlowStoch(List<Trade> FullTradeList, int FK, int SK, int D)
+        {
+            var TakeProfitList = new List<CompletedTrade>();
+            var TO = Trade.TradesOnly(FullTradeList);
+            var CompletedList = CompletedTrade.CreateList(TO);
+
+            var SlowStoch = Factory_Indicator.createSlowStochastic(FK, SK, D, GlobalObjects.Points);
+
+
+            foreach (var t in CompletedList)
+            {
+                var timeframe = from x in FullTradeList
+                                where x.TimeStamp >= t.OpenTrade.TimeStamp && x.TimeStamp <= t.CloseTrade.TimeStamp
+                                select x;
+
+
+                var trade = new CompletedTrade();
+                trade.OpenTrade = t.OpenTrade;
+                                              
+                    var period = SlowStoch.Where(ss => ss.TimeStamp == timeframe.TimeStamp);
+
+                    bool TookProfitLong = false;
+                    bool TookProfitShort = false;
+                    DateTime lowJumpUp = ts.TimeStamp;
+                    DateTime highDipDown = ts.TimeStamp;
+
+                    if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                    {
+                        bool touchedHigh = period.Any(z => z.Slow_D > 85);
+                        DateTime highTime;
+
+                        bool dipped;
+
+                        if (touchedHigh)
+                        {
+                            highTime = period.Where(z => z.Slow_D > 85).First().TimeStamp;
+                            var x = period.Where(z => z.TimeStamp > highTime && z.Slow_D < 85);
+                            dipped = x.Any();
+                            if (dipped)
+                            {
+                                highDipDown = x.First().TimeStamp;
+                                TookProfitLong = true;
+                            }
+                            else
+                                TookProfitLong = false;
+                        }
+                    }
+
+                    if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
+                    {
+                        var touchedLow = period.Any(z => z.Slow_D < 15);
+                        DateTime lowTime;
+
+                        bool jumped;
+                        if (touchedLow)
+                        {
+                            lowTime = period.Where(z => z.Slow_D < 15).First().TimeStamp;
+                            var x = period.Where(z => z.TimeStamp > lowTime && z.Slow_D > 5);
+                            jumped = x.Any();
+                            if (jumped)
+                            {
+                                lowJumpUp = x.First().TimeStamp;
+                                TookProfitShort = true;
+                            }
+                            else
+                                TookProfitShort = false;
+                        }
+
+                    }
+
+                    if (TookProfitLong)
+                    {
+                        trade.CloseTrade.TimeStamp = highDipDown;
+                      
+                    }
+                    else
+                        if (TookProfitShort)
+                        {
+                            trade.CloseTrade.TimeStamp = lowJumpUp;
+                        }
+                        else
+                            trade.CloseTrade = t;
+                    //if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
+                    //    if (ts.CurrentPrice < GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Lower) boilTriggerCount++;
+                    //if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                    //    if (ts.CurrentPrice > GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Upper) boilTriggerCount++;
+                    //if (boilTriggerCount == triggercount)
+                    //{
+                    //    trade.CloseTrade = ts;
+                    //    break;
+                    //}
+                    //trade.CloseTrade = ts;
+                
+
+                if (trade.OpenTrade.Reason == Trade.Trigger.OpenLong) trade.CloseTrade.Reason = Trade.Trigger.CloseLong;
+                if (trade.OpenTrade.Reason == Trade.Trigger.OpenShort) trade.CloseTrade.Reason = Trade.Trigger.CloseShort;
+
+
+                TakeProfitList.Add(trade);
+
+            }
+
+
+            return TakeProfitList;
+        }
 
     }
 }
