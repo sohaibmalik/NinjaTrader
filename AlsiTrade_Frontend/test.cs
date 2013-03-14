@@ -30,7 +30,7 @@ namespace FrontEnd
 
         private void Test_Load(object sender, EventArgs e)
         {
-            AlsiUtils.DataBase.SetConnectionString(@"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True");
+            AlsiUtils.DataBase.SetConnectionString(@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True");
           //  WebSettings.GetSettings();
             start();
 
@@ -55,12 +55,12 @@ namespace FrontEnd
             int MSK = 0;
             int MFK = 0;
 
-            for (int H = 95; H > 55; H--)
-            for (int L = 5; L < 45;L++ )
-                for (int D = 3; D < 30; D += 1)
-                    for (int SK = 3; SK < 30; SK += 1)
-                        for (int FK = 3; FK < 30; FK += 1)
-                        {
+            //for (int H = 95; H > 70; H--)
+            //for (int L = 5; L < 30;L++ )
+            //    for (int D = 3; D < 15; D += 1)
+            //        for (int SK = 15; SK < 25; SK += 1)
+            //            for (int FK = 23; FK < 30; FK += 1)
+            //            {
                             var TempList = new List<Trade>();
                             foreach (var t in _FullTradeList)
                             {
@@ -70,28 +70,28 @@ namespace FrontEnd
 
 
                             double pl = 0;
-                            var Ex = Statistics.TakeProfit_Exiguous_SlowStoch(_FullTradeList, FK, SK, D,H, L);
+                            var Ex = Statistics.TakeProfit_Exiguous_SlowStoch(_FullTradeList, 24, 23, 9,95, 14);
                             // var Ex = Statistics.TakeProfit_Exiguous_GoldenBoil(TempList , n, stdev, 4);
                             // var Ex = Statistics.TakeProfit_Exiguous(TempList, n, -1000);
                             foreach (var v in Ex)
                             {
                                 pl += v.CloseTrade.RunningProfit;
 
-                                // Debug.WriteLine("Open " + v.OpenTrade.TimeStamp + "  " + v.OpenTrade.Reason + "  " + v.OpenTrade.TradedPrice  + "  " + v.OpenTrade.Position  + "  " + v.OpenTrade.RunningProfit );
-                                //  Debug.WriteLine("Close " + v.CloseTrade.TimeStamp + "  " + v.CloseTrade.Reason + "  " + v.CloseTrade.TradedPrice + "  " + v.CloseTrade.Position + "  " + v.CloseTrade.RunningProfit + "     " + pl);
+                                 Debug.WriteLine("Open " + v.OpenTrade.TimeStamp + "  " + v.OpenTrade.Reason + "  " + v.OpenTrade.TradedPrice  + "  " + v.OpenTrade.Position  + "  " + v.OpenTrade.RunningProfit );
+                                  Debug.WriteLine("Close " + v.CloseTrade.TimeStamp + "  " + v.CloseTrade.Reason + "  " + v.CloseTrade.TradedPrice + "  " + v.CloseTrade.Position + "  " + v.CloseTrade.RunningProfit + "     " + pl);
                             }
                             //  Debug.WriteLine("TOTAL PROFIT : P(" + n + ") stdev("+stop+")  = " + pl);
 
-                            if (pl > max)
-                            {
-                                max = pl;
-                                MSK = SK;
-                                MFK = FK;
-                                MD = D;
+                            //if (pl > max)
+                            //{
+                            //    max = pl;
+                            //    MSK = SK;
+                            //    MFK = FK;
+                            //    MD = D;
 
-                                Debug.WriteLine("TOTAL PROFIT : (" + FK + " " + SK + "  " + D + ")   = " + pl + "       MAX " + max + "(" + MFK + " " + MSK + "  " + MD + " L " +L + " H " + H+")");
-                            }
-                        }
+                            //    Debug.WriteLine("TOTAL PROFIT : (" + FK + " " + SK + "  " + D + ")   = " + pl + "       MAX " + max + "(" + MFK + " " + MSK + "  " + MD + " L " +L + " H " + H+")");
+                            //}
+                        //}
         }
 
         private void printOHLC()
@@ -141,7 +141,7 @@ namespace FrontEnd
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
             DataBase.dataTable dt = DataBase.dataTable.MasterMinute;
           //  _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMASAR(GetParametersSAR_EMA(), t, false, new DateTime(2013, 2, 20), new DateTime(2013, 03, 27), dt);
-            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2013, 1, 01), new DateTime(2013, 03, 27), dt);
+            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2013, 1, 1), new DateTime(2013, 03, 27), dt);
             _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
             NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);

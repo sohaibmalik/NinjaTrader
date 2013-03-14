@@ -782,15 +782,15 @@ namespace AlsiUtils
 
                 if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
                 {
-                    bool touchedHigh = period.Where(z => z.D > H).Any();
+                    bool touchedHigh = period.Where(z => z.K  > H).Any();
                     DateTime highTime;
 
                     bool dipped;
 
                     if (touchedHigh)
                     {
-                        highTime = period.Where(z => z.D > H).Select(a => a).First().TimeStamp;
-                        var x = period.Where(z => z.TimeStamp > highTime && z.D < H);
+                        highTime = period.Where(z => z.K > H).Select(a => a).First().TimeStamp;
+                        var x = period.Where(z => z.TimeStamp > highTime && z.K < H);
                         dipped = x.Any();
                         if (dipped)
                         {
@@ -805,15 +805,15 @@ namespace AlsiUtils
                 if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
                 {
                    // foreach (var v in period) Debug.WriteLine(v.TimeStamp + "   " + v.D);
-                    var touchedLow = period.Where(z => z.D < L).Any();
+                    var touchedLow = period.Where(z => z.K < L).Any();
                     DateTime lowTime;
 
                     bool jumped;
                     if (touchedLow)
                     {
                        
-                        lowTime = (period.Where(z => z.D < L)).Select(a => a).First().TimeStamp;
-                        var x = period.Where(z => z.TimeStamp > lowTime && z.D > L);
+                        lowTime = (period.Where(z => z.K < L)).Select(a => a).First().TimeStamp;
+                        var x = period.Where(z => z.TimeStamp > lowTime && z.K > L);
                         jumped = x.Any();
                         if (jumped)
                         {
