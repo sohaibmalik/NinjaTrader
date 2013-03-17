@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AlsiUtils.Indicators;
+using AlsiUtils;
 
 namespace AlsiUtils.Strategies
 {

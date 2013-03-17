@@ -61,12 +61,6 @@
     <Compile Include="Data Objects\CompletedTrade.cs" />
     <Compile Include="Data Objects\RegressionExt.cs" />
     <Compile Include="Data Objects\GlobalObjects.cs" />
-    <Compile Include="Indicators\EMA.cs" />
-    <Compile Include="Indicators\RegressionLine.cs" />
-    <Compile Include="Indicators\SAR.cs" />
-    <Compile Include="Indicators\SMA.cs" />
-    <Compile Include="Indicators\StandardDev.cs" />
-    <Compile Include="Indicators\Variable.cs" />
     <Compile Include="SimDB.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,14 +96,8 @@
     <Compile Include="Working Class\DataBase.cs" />
     <Compile Include="Data Objects\LogData.cs" />
     <Compile Include="Indicators\Factory_Indicator.cs" />
-    <Compile Include="Indicators\Aroon.cs" />
-    <Compile Include="Indicators\BollingerBand.cs" />
     <Compile Include="Indicators\Indicator.cs" />
-    <Compile Include="Indicators\Macd.cs" />
     <Compile Include="Indicators\Price.cs" />
-    <Compile Include="Indicators\Rsi.cs" />
-    <Compile Include="Indicators\SlowStoch.cs" />
-    <Compile Include="Indicators\Trix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

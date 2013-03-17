@@ -36,6 +36,9 @@ namespace AlsiUtils
     partial void Inserttbl2Min(tbl2Min instance);
     partial void Updatetbl2Min(tbl2Min instance);
     partial void Deletetbl2Min(tbl2Min instance);
+    partial void InsertTProf(TProf instance);
+    partial void UpdateTProf(TProf instance);
+    partial void DeleteTProf(TProf instance);
     #endregion
 		
 		public SimDBDataContext() : 
@@ -81,6 +84,14 @@ namespace AlsiUtils
 			get
 			{
 				return this.GetTable<tbl2Min>();
+			}
+		}
+		
+		public System.Data.Linq.Table<TProf> TProfs
+		{
+			get
+			{
+				return this.GetTable<TProf>();
 			}
 		}
 	}
@@ -740,6 +751,356 @@ namespace AlsiUtils
 					this._Period = value;
 					this.SendPropertyChanged("Period");
 					this.OnPeriodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CloseEndDay", DbType="VarChar(5)")]
+		public string CloseEndDay
+		{
+			get
+			{
+				return this._CloseEndDay;
+			}
+			set
+			{
+				if ((this._CloseEndDay != value))
+				{
+					this.OnCloseEndDayChanging(value);
+					this.SendPropertyChanging();
+					this._CloseEndDay = value;
+					this.SendPropertyChanged("CloseEndDay");
+					this.OnCloseEndDayChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.TProf")]
+	public partial class TProf : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Count;
+		
+		private System.Nullable<int> _Trades;
+		
+		private System.Nullable<int> _TotalPL;
+		
+		private System.Nullable<decimal> _AvgPL;
+		
+		private System.Nullable<decimal> _Win;
+		
+		private System.Nullable<decimal> _Loose;
+		
+		private System.Nullable<int> _SK;
+		
+		private System.Nullable<int> _FK;
+		
+		private System.Nullable<int> _D;
+		
+		private System.Nullable<int> _H;
+		
+		private System.Nullable<int> _L;
+		
+		private string _Note;
+		
+		private string _CloseEndDay;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCountChanging(int value);
+    partial void OnCountChanged();
+    partial void OnTradesChanging(System.Nullable<int> value);
+    partial void OnTradesChanged();
+    partial void OnTotalPLChanging(System.Nullable<int> value);
+    partial void OnTotalPLChanged();
+    partial void OnAvgPLChanging(System.Nullable<decimal> value);
+    partial void OnAvgPLChanged();
+    partial void OnWinChanging(System.Nullable<decimal> value);
+    partial void OnWinChanged();
+    partial void OnLooseChanging(System.Nullable<decimal> value);
+    partial void OnLooseChanged();
+    partial void OnSKChanging(System.Nullable<int> value);
+    partial void OnSKChanged();
+    partial void OnFKChanging(System.Nullable<int> value);
+    partial void OnFKChanged();
+    partial void OnDChanging(System.Nullable<int> value);
+    partial void OnDChanged();
+    partial void OnHChanging(System.Nullable<int> value);
+    partial void OnHChanged();
+    partial void OnLChanging(System.Nullable<int> value);
+    partial void OnLChanged();
+    partial void OnNoteChanging(string value);
+    partial void OnNoteChanged();
+    partial void OnCloseEndDayChanging(string value);
+    partial void OnCloseEndDayChanged();
+    #endregion
+		
+		public TProf()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Count", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Count
+		{
+			get
+			{
+				return this._Count;
+			}
+			set
+			{
+				if ((this._Count != value))
+				{
+					this.OnCountChanging(value);
+					this.SendPropertyChanging();
+					this._Count = value;
+					this.SendPropertyChanged("Count");
+					this.OnCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Trades", DbType="Int")]
+		public System.Nullable<int> Trades
+		{
+			get
+			{
+				return this._Trades;
+			}
+			set
+			{
+				if ((this._Trades != value))
+				{
+					this.OnTradesChanging(value);
+					this.SendPropertyChanging();
+					this._Trades = value;
+					this.SendPropertyChanged("Trades");
+					this.OnTradesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPL", DbType="Int")]
+		public System.Nullable<int> TotalPL
+		{
+			get
+			{
+				return this._TotalPL;
+			}
+			set
+			{
+				if ((this._TotalPL != value))
+				{
+					this.OnTotalPLChanging(value);
+					this.SendPropertyChanging();
+					this._TotalPL = value;
+					this.SendPropertyChanged("TotalPL");
+					this.OnTotalPLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AvgPL", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> AvgPL
+		{
+			get
+			{
+				return this._AvgPL;
+			}
+			set
+			{
+				if ((this._AvgPL != value))
+				{
+					this.OnAvgPLChanging(value);
+					this.SendPropertyChanging();
+					this._AvgPL = value;
+					this.SendPropertyChanged("AvgPL");
+					this.OnAvgPLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Win", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> Win
+		{
+			get
+			{
+				return this._Win;
+			}
+			set
+			{
+				if ((this._Win != value))
+				{
+					this.OnWinChanging(value);
+					this.SendPropertyChanging();
+					this._Win = value;
+					this.SendPropertyChanged("Win");
+					this.OnWinChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Loose", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> Loose
+		{
+			get
+			{
+				return this._Loose;
+			}
+			set
+			{
+				if ((this._Loose != value))
+				{
+					this.OnLooseChanging(value);
+					this.SendPropertyChanging();
+					this._Loose = value;
+					this.SendPropertyChanged("Loose");
+					this.OnLooseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SK", DbType="Int")]
+		public System.Nullable<int> SK
+		{
+			get
+			{
+				return this._SK;
+			}
+			set
+			{
+				if ((this._SK != value))
+				{
+					this.OnSKChanging(value);
+					this.SendPropertyChanging();
+					this._SK = value;
+					this.SendPropertyChanged("SK");
+					this.OnSKChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK", DbType="Int")]
+		public System.Nullable<int> FK
+		{
+			get
+			{
+				return this._FK;
+			}
+			set
+			{
+				if ((this._FK != value))
+				{
+					this.OnFKChanging(value);
+					this.SendPropertyChanging();
+					this._FK = value;
+					this.SendPropertyChanged("FK");
+					this.OnFKChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D", DbType="Int")]
+		public System.Nullable<int> D
+		{
+			get
+			{
+				return this._D;
+			}
+			set
+			{
+				if ((this._D != value))
+				{
+					this.OnDChanging(value);
+					this.SendPropertyChanging();
+					this._D = value;
+					this.SendPropertyChanged("D");
+					this.OnDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int")]
+		public System.Nullable<int> H
+		{
+			get
+			{
+				return this._H;
+			}
+			set
+			{
+				if ((this._H != value))
+				{
+					this.OnHChanging(value);
+					this.SendPropertyChanging();
+					this._H = value;
+					this.SendPropertyChanged("H");
+					this.OnHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int")]
+		public System.Nullable<int> L
+		{
+			get
+			{
+				return this._L;
+			}
+			set
+			{
+				if ((this._L != value))
+				{
+					this.OnLChanging(value);
+					this.SendPropertyChanging();
+					this._L = value;
+					this.SendPropertyChanged("L");
+					this.OnLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Note", DbType="VarChar(50)")]
+		public string Note
+		{
+			get
+			{
+				return this._Note;
+			}
+			set
+			{
+				if ((this._Note != value))
+				{
+					this.OnNoteChanging(value);
+					this.SendPropertyChanging();
+					this._Note = value;
+					this.SendPropertyChanged("Note");
+					this.OnNoteChanged();
 				}
 			}
 		}

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using AlsiUtils.Indicators;
+using AlsiUtils;
 using TicTacTec.TA.Library;
 
 namespace AlsiUtils
@@ -565,6 +565,51 @@ namespace AlsiUtils
             }
 
             return SAR;
+        }
+
+        public static List<ATR> createATR(int N,List<Price> Price)
+        {
+            List<ATR> ATR = new List<ATR>();
+
+
+            double[] _close = new double[Price.Count];
+            double[] _high = new double[Price.Count];
+            double[] _low = new double[Price.Count];
+            double[] _open = new double[Price.Count];
+
+
+            double[] _atr = new double[Price.Count];
+
+            for (int x = 0; x < Price.Count; x++)
+            {
+                _close[x] = Price[x].Close;
+                _high[x] = Price[x].High;
+                _low[x] = Price[x].Low;
+                _open[x] = Price[x].Open;
+
+            }
+
+            int a, b;
+                      
+            Core.Atr(0, Price.Count - 1, _high, _low, _close, N, out a, out b, _atr);
+            for (int x = 0; x < _atr.Count() - a; x++)
+            {
+                //Debug.WriteLine("ATR " + _atr[x]);
+                //Debug.WriteLine(Price[x + a].TimeStamp + "   " + Price[x + a].Close);
+                //Debug.WriteLine("========" + x + "===========");
+
+              //  Debug.WriteLine(Price[x + a].Open + "," + Price[x + a].High + "," + Price[x + a].Low + "," + Price[x + a].Close + "," + _atr[x]);
+                ATR ss = new ATR();
+                ss.AvgTrueRange = _atr[x];
+                ss.TimeStamp = Price[x + a].TimeStamp;
+                ss.Price_Close = Price[x + a].Close;
+                ss.Price_High = Price[x + a].High;
+                ss.Price_Low = Price[x + a].Low;
+                ss.Price_Open = Price[x + a].Open;
+                ATR.Add(ss);
+            }
+
+            return ATR;
         }
     }
 }

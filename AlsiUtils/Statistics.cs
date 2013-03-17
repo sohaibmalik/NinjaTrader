@@ -257,11 +257,11 @@ namespace AlsiUtils
 
         public static void StandardDevOnPL(List<Trade> Trades)
         {
-            var viList = new List<Indicators.VariableIndicator>();
+            var viList = new List<VariableIndicator>();
             var list = Trades.Where(z => z.Reason == Trade.Trigger.CloseLong || z.Reason == Trade.Trigger.CloseShort);
             foreach (var l in list)
             {
-                var VI = new Indicators.VariableIndicator()
+                var VI = new VariableIndicator()
                 {
                     Value = l.TotalPL,
                     TimeStamp = l.TimeStamp,
@@ -277,11 +277,11 @@ namespace AlsiUtils
 
         public static List<Trade> RegressionAnalysis_OnPL(int N, List<Trade> Trades)
         {
-            List<Indicators.VariableIndicator> V = new List<Indicators.VariableIndicator>();
+            List<VariableIndicator> V = new List<VariableIndicator>();
             var tradeonlyList = Trades.Where(z => z.Reason == Trade.Trigger.CloseLong || z.Reason == Trade.Trigger.CloseShort);
             foreach (var v in tradeonlyList)
             {
-                var varindicator = new Indicators.VariableIndicator()
+                var varindicator = new VariableIndicator()
                 {
                     TimeStamp = v.TimeStamp,
                     Value = v.TotalPL,
@@ -750,7 +750,7 @@ namespace AlsiUtils
             return TakeProfitList;
         }
 
-        public static List<CompletedTrade> TakeProfit_Exiguous_SlowStoch(List<Trade> FullTradeList, int FK, int SK, int D,double H,double L)
+        public static List<CompletedTrade> TakeProfit_Exiguous_SlowStoch_K(List<Trade> FullTradeList, int FK, int SK, int D, double H, double L)
         {
             var TakeProfitList = new List<CompletedTrade>();
             var TO = Trade.TradesOnly(FullTradeList);
@@ -782,7 +782,7 @@ namespace AlsiUtils
 
                 if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
                 {
-                    bool touchedHigh = period.Where(z => z.K  > H).Any();
+                    bool touchedHigh = period.Where(z => z.K > H).Any();
                     DateTime highTime;
 
                     bool dipped;
@@ -804,14 +804,14 @@ namespace AlsiUtils
 
                 if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
                 {
-                   // foreach (var v in period) Debug.WriteLine(v.TimeStamp + "   " + v.D);
+                    // foreach (var v in period) Debug.WriteLine(v.TimeStamp + "   " + v.D);
                     var touchedLow = period.Where(z => z.K < L).Any();
                     DateTime lowTime;
 
                     bool jumped;
                     if (touchedLow)
                     {
-                       
+
                         lowTime = (period.Where(z => z.K < L)).Select(a => a).First().TimeStamp;
                         var x = period.Where(z => z.TimeStamp > lowTime && z.K > L);
                         jumped = x.Any();
@@ -863,5 +863,183 @@ namespace AlsiUtils
             return TakeProfitList;
         }
 
+        public static List<CompletedTrade> TakeProfit_Exiguous_SlowStoch_D(List<Trade> FullTradeList, int FK, int SK, int D, double H, double L)
+        {
+            var TakeProfitList = new List<CompletedTrade>();
+            var TO = Trade.TradesOnly(FullTradeList);
+            var CompletedList = CompletedTrade.CreateList(TO);
+
+            var SlowStoch = Factory_Indicator.createSlowStochastic(FK, SK, D, GlobalObjects.Points);
+
+
+            foreach (var t in CompletedList)
+            {
+                var timeframe = from x in FullTradeList
+                                where x.TimeStamp >= t.OpenTrade.TimeStamp && x.TimeStamp <= t.CloseTrade.TimeStamp
+                                select x;
+
+                var period = from x in SlowStoch
+                             where x.TimeStamp >= t.OpenTrade.TimeStamp && x.TimeStamp <= t.CloseTrade.TimeStamp
+                             select x;
+
+                // foreach (var v in period) Debug.WriteLine(v.TimeStamp + "   " + v.D);
+
+                var trade = new CompletedTrade();
+                trade.OpenTrade = t.OpenTrade;
+
+
+                bool TookProfitLong = false;
+                bool TookProfitShort = false;
+                DateTime lowJumpUp = t.CloseTrade.TimeStamp;
+                DateTime highDipDown = t.CloseTrade.TimeStamp;
+
+                if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                {
+                    bool touchedHigh = period.Where(z => z.D > H).Any();
+                    DateTime highTime;
+
+                    bool dipped;
+
+                    if (touchedHigh)
+                    {
+                        highTime = period.Where(z => z.D > H).Select(a => a).First().TimeStamp;
+                        var x = period.Where(z => z.TimeStamp > highTime && z.D < H);
+                        dipped = x.Any();
+                        if (dipped)
+                        {
+                            highDipDown = x.First().TimeStamp;
+                            TookProfitLong = true;
+                        }
+                        else
+                            TookProfitLong = false;
+                    }
+                }
+
+                if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
+                {
+                    // foreach (var v in period) Debug.WriteLine(v.TimeStamp + "   " + v.D);
+                    var touchedLow = period.Where(z => z.D < L).Any();
+                    DateTime lowTime;
+
+                    bool jumped;
+                    if (touchedLow)
+                    {
+
+                        lowTime = (period.Where(z => z.D < L)).Select(a => a).First().TimeStamp;
+                        var x = period.Where(z => z.TimeStamp > lowTime && z.D > L);
+                        jumped = x.Any();
+                        if (jumped)
+                        {
+                            lowJumpUp = x.First().TimeStamp;
+                            TookProfitShort = true;
+                        }
+                        else
+                            TookProfitShort = false;
+                    }
+
+                }
+
+                if (TookProfitLong)
+                {
+                    trade.CloseTrade.TimeStamp = highDipDown;
+                    trade.CloseTrade.RunningProfit = timeframe.Where(z => z.TimeStamp == highDipDown).First().RunningProfit;
+                }
+                else
+                    if (TookProfitShort)
+                    {
+                        trade.CloseTrade.TimeStamp = lowJumpUp;
+                        trade.CloseTrade.RunningProfit = timeframe.Where(z => z.TimeStamp == lowJumpUp).First().RunningProfit;
+                    }
+                    else
+                        trade.CloseTrade = t.CloseTrade;
+                //if (t.OpenTrade.Reason == Trade.Trigger.OpenShort)
+                //    if (ts.CurrentPrice < GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Lower) boilTriggerCount++;
+                //if (t.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                //    if (ts.CurrentPrice > GoldenBoil.Where(z => z.TimeStamp == ts.TimeStamp).First().Upper) boilTriggerCount++;
+                //if (boilTriggerCount == triggercount)
+                //{
+                //    trade.CloseTrade = ts;
+                //    break;
+                //}
+                //trade.CloseTrade = ts;
+
+
+                if (trade.OpenTrade.Reason == Trade.Trigger.OpenLong) trade.CloseTrade.Reason = Trade.Trigger.CloseLong;
+                if (trade.OpenTrade.Reason == Trade.Trigger.OpenShort) trade.CloseTrade.Reason = Trade.Trigger.CloseShort;
+
+
+                TakeProfitList.Add(trade);
+
+            }
+
+
+            return TakeProfitList;
+        }
+
+        public static List<CompletedTrade> TakeProfit_Exiguous_AvgProfitPeriod(List<Price> EndOfDay, List<Trade> FullTradeList, int I,  int ATR_Range, double ATR_Factor)
+        {
+            var TakeProfitList = new List<CompletedTrade>();
+            var TO = Trade.TradesOnly(FullTradeList);
+            var CompletedList = CompletedTrade.CreateList(TO);
+
+            var ATR = Factory_Indicator.createATR(ATR_Range, EndOfDay);
+
+            double pl = 0;
+            double count = 0;
+            double index = 0;
+            double tempPL = 0;
+            double TotalImprovement = 0;
+            List<TestData> TD = new List<TestData>();
+            foreach (var t in CompletedList)
+            {
+                var timeframe = from x in FullTradeList
+                                where x.TimeStamp >= t.OpenTrade.TimeStamp && x.TimeStamp <= t.CloseTrade.TimeStamp
+                                select x;
+
+
+                var TList = timeframe.ToList();
+
+
+                double A = 0;
+                double B = 0;
+                for (int x = 0; x < TList.Count; x++)
+                    if (x > I  && TList.First().TradeVolume != 2)
+                    {
+                        var adxYesterday = ATR.Where(z => z.TimeStamp.Date.AddDays(-1) == TList[x].TimeStamp.Date);
+                        if (adxYesterday.ToList().Count() == 0) break;
+                        var Z = Math.Round((adxYesterday.First().AvgTrueRange * ATR_Factor),2);
+                        if (TList[x].RunningProfit < Z) break;
+                        A = TList[x].RunningProfit;
+                        B = TList.Last().RunningProfit;
+                        tempPL += TList[x].RunningProfit;
+                        Debug.WriteLine(x + "  " + TList[x].TimeStamp + " vol : " + TList.First().TradeVolume + " ADRxFact " + Z + "         " + A + " VS " + B + " Diff : " + ((A - B) * TList.First().TradeVolume) + " Running " + TotalImprovement);
+                        TotalImprovement += ((A - B)); //*TList.First().TradeVolume);
+
+                    }
+
+            }
+
+
+
+
+            Debug.WriteLine("TOTAL IMPROVE I(" + I + ")" + "  ATR_Range(" + ATR_Range + ") ATR_Factor(" + ATR_Factor + ") ====>>  " + TotalImprovement);
+
+
+            return CompletedList;
+        }
+
+        internal class TestData
+        {
+            public DateTime Date { get; set; }
+            public double MaxProfitAtIndex { get; set; }
+            public int Index { get; set; }
+            public List<Trade> TradeList { get; set; }
+            public int Vol { get; set; }
+
+        }
+
+
     }
+
 }
+
