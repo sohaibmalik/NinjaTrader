@@ -124,6 +124,7 @@
             this.addEmailButton = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.resetManualCheckBox = new System.Windows.Forms.CheckBox();
             this.clearTradeHistoryWebCheckBox = new System.Windows.Forms.CheckBox();
             this.clearDbButton = new System.Windows.Forms.Button();
             this.clearTradeLogWebCheckBox = new System.Windows.Forms.CheckBox();
@@ -145,7 +146,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.resetManualCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -961,10 +961,10 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.groupBox2);
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(353, 514);
+            this.tabPage4.Size = new System.Drawing.Size(353, 516);
             this.tabPage4.TabIndex = 2;
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1074,10 +1074,10 @@
             this.tabPage5.Controls.Add(this.nameTextBox);
             this.tabPage5.Controls.Add(this.removeEmailButton);
             this.tabPage5.Controls.Add(this.addEmailButton);
-            this.tabPage5.Location = new System.Drawing.Point(4, 24);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(353, 514);
+            this.tabPage5.Size = new System.Drawing.Size(353, 516);
             this.tabPage5.TabIndex = 3;
             this.tabPage5.Text = "tabPage5";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1212,12 +1212,22 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Clear Lists";
             // 
+            // resetManualCheckBox
+            // 
+            this.resetManualCheckBox.AutoSize = true;
+            this.resetManualCheckBox.Location = new System.Drawing.Point(7, 140);
+            this.resetManualCheckBox.Name = "resetManualCheckBox";
+            this.resetManualCheckBox.Size = new System.Drawing.Size(121, 17);
+            this.resetManualCheckBox.TabIndex = 4;
+            this.resetManualCheckBox.Text = "Reset Manual Close";
+            this.resetManualCheckBox.UseVisualStyleBackColor = true;
+            // 
             // clearTradeHistoryWebCheckBox
             // 
             this.clearTradeHistoryWebCheckBox.AutoSize = true;
             this.clearTradeHistoryWebCheckBox.Location = new System.Drawing.Point(7, 115);
             this.clearTradeHistoryWebCheckBox.Name = "clearTradeHistoryWebCheckBox";
-            this.clearTradeHistoryWebCheckBox.Size = new System.Drawing.Size(129, 19);
+            this.clearTradeHistoryWebCheckBox.Size = new System.Drawing.Size(118, 17);
             this.clearTradeHistoryWebCheckBox.TabIndex = 3;
             this.clearTradeHistoryWebCheckBox.Text = "TradeHistory - Web";
             this.clearTradeHistoryWebCheckBox.UseVisualStyleBackColor = true;
@@ -1237,7 +1247,7 @@
             this.clearTradeLogWebCheckBox.AutoSize = true;
             this.clearTradeLogWebCheckBox.Location = new System.Drawing.Point(7, 90);
             this.clearTradeLogWebCheckBox.Name = "clearTradeLogWebCheckBox";
-            this.clearTradeLogWebCheckBox.Size = new System.Drawing.Size(108, 19);
+            this.clearTradeLogWebCheckBox.Size = new System.Drawing.Size(100, 17);
             this.clearTradeLogWebCheckBox.TabIndex = 2;
             this.clearTradeLogWebCheckBox.Text = "Tradelog - Web";
             this.clearTradeLogWebCheckBox.UseVisualStyleBackColor = true;
@@ -1247,7 +1257,7 @@
             this.clearTradeLogLocalCheckBox.AutoSize = true;
             this.clearTradeLogLocalCheckBox.Location = new System.Drawing.Point(7, 65);
             this.clearTradeLogLocalCheckBox.Name = "clearTradeLogLocalCheckBox";
-            this.clearTradeLogLocalCheckBox.Size = new System.Drawing.Size(112, 19);
+            this.clearTradeLogLocalCheckBox.Size = new System.Drawing.Size(103, 17);
             this.clearTradeLogLocalCheckBox.TabIndex = 1;
             this.clearTradeLogLocalCheckBox.Text = "Tradelog - Local";
             this.clearTradeLogLocalCheckBox.UseVisualStyleBackColor = true;
@@ -1257,7 +1267,7 @@
             this.clearEmailListCheckBox.AutoSize = true;
             this.clearEmailListCheckBox.Location = new System.Drawing.Point(7, 40);
             this.clearEmailListCheckBox.Name = "clearEmailListCheckBox";
-            this.clearEmailListCheckBox.Size = new System.Drawing.Size(76, 19);
+            this.clearEmailListCheckBox.Size = new System.Drawing.Size(70, 17);
             this.clearEmailListCheckBox.TabIndex = 0;
             this.clearEmailListCheckBox.Text = "Email List";
             this.clearEmailListCheckBox.UseVisualStyleBackColor = true;
@@ -1364,10 +1374,10 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.DBPricesGridView);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(768, 516);
+            this.tabPage3.Size = new System.Drawing.Size(768, 514);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1381,7 +1391,8 @@
             this.DBPricesGridView.Location = new System.Drawing.Point(3, 3);
             this.DBPricesGridView.Name = "DBPricesGridView";
             this.DBPricesGridView.ReadOnly = true;
-            this.DBPricesGridView.Size = new System.Drawing.Size(769, 460);
+            this.DBPricesGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.DBPricesGridView.Size = new System.Drawing.Size(762, 508);
             this.DBPricesGridView.TabIndex = 0;
             // 
             // statusStrip1
@@ -1407,16 +1418,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(1142, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // resetManualCheckBox
-            // 
-            this.resetManualCheckBox.AutoSize = true;
-            this.resetManualCheckBox.Location = new System.Drawing.Point(7, 140);
-            this.resetManualCheckBox.Name = "resetManualCheckBox";
-            this.resetManualCheckBox.Size = new System.Drawing.Size(129, 19);
-            this.resetManualCheckBox.TabIndex = 4;
-            this.resetManualCheckBox.Text = "Reset Manual Close";
-            this.resetManualCheckBox.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 

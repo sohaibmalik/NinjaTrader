@@ -53,7 +53,14 @@ namespace NotifierClientApp
         private void deleteButton_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            DialogResult dr = MessageBox.Show("Delete ? ", "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            string matchedSt = "";
+            if (_selectedLog.Matched) matchedSt = "Matched @ " + _selectedLog.PriceMatched;
+            else
+                matchedSt = "Not Macthed";
+            string dial = _selectedLog.Time.ToString() + "  " + _selectedLog.BuySell + " " + _selectedLog.Volume + " @ " + _selectedLog.Price + " " +matchedSt;
+
+            DialogResult dr = MessageBox.Show("Delete :\n" + dial, "Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (dr == DialogResult.No)
             {
                 Cursor = Cursors.Default;
