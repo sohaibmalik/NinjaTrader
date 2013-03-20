@@ -6,8 +6,8 @@
     <title></title>
     <script src="/Scripts/jquery-1.4.1.js" type="text/javascript"></script>
     <script src="/Scripts/jquery-1.4.1.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="/Scripts/highcharts/highcharts.js"></script>
-    <script type="text/javascript" src="/Scripts/highcharts/modules/exporting.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/highcharts.js"></script>
+    <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script>
     <script type="text/javascript">
        
     </script>
