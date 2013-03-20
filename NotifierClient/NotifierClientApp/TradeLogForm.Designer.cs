@@ -39,11 +39,12 @@
             this.columnPriceMatched = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
             this.infoBox = new System.Windows.Forms.GroupBox();
+            this.deleteButton = new System.Windows.Forms.Button();
+            this.checkBox = new System.Windows.Forms.CheckBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.matchedTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBox = new System.Windows.Forms.CheckBox();
-            this.deleteButton = new System.Windows.Forms.Button();
+            this.newButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.infoBox.SuspendLayout();
             this.SuspendLayout();
@@ -123,6 +124,7 @@
             // 
             // infoBox
             // 
+            this.infoBox.Controls.Add(this.newButton);
             this.infoBox.Controls.Add(this.deleteButton);
             this.infoBox.Controls.Add(this.checkBox);
             this.infoBox.Controls.Add(this.saveButton);
@@ -135,6 +137,27 @@
             this.infoBox.TabIndex = 1;
             this.infoBox.TabStop = false;
             this.infoBox.Text = "Trade Info";
+            // 
+            // deleteButton
+            // 
+            this.deleteButton.Enabled = false;
+            this.deleteButton.Location = new System.Drawing.Point(521, 45);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(75, 23);
+            this.deleteButton.TabIndex = 5;
+            this.deleteButton.Text = "Delete";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
+            // checkBox
+            // 
+            this.checkBox.AutoSize = true;
+            this.checkBox.Location = new System.Drawing.Point(102, 33);
+            this.checkBox.Name = "checkBox";
+            this.checkBox.Size = new System.Drawing.Size(73, 19);
+            this.checkBox.TabIndex = 4;
+            this.checkBox.Text = "Matched";
+            this.checkBox.UseVisualStyleBackColor = true;
             // 
             // saveButton
             // 
@@ -165,26 +188,14 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Matched Price";
             // 
-            // checkBox
+            // newButton
             // 
-            this.checkBox.AutoSize = true;
-            this.checkBox.Location = new System.Drawing.Point(102, 33);
-            this.checkBox.Name = "checkBox";
-            this.checkBox.Size = new System.Drawing.Size(73, 19);
-            this.checkBox.TabIndex = 4;
-            this.checkBox.Text = "Matched";
-            this.checkBox.UseVisualStyleBackColor = true;
-            // 
-            // deleteButton
-            // 
-            this.deleteButton.Enabled = false;
-            this.deleteButton.Location = new System.Drawing.Point(521, 45);
-            this.deleteButton.Name = "deleteButton";
-            this.deleteButton.Size = new System.Drawing.Size(75, 23);
-            this.deleteButton.TabIndex = 5;
-            this.deleteButton.Text = "Delete";
-            this.deleteButton.UseVisualStyleBackColor = true;
-            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            this.newButton.Location = new System.Drawing.Point(521, 16);
+            this.newButton.Name = "newButton";
+            this.newButton.Size = new System.Drawing.Size(75, 23);
+            this.newButton.TabIndex = 6;
+            this.newButton.Text = "New";
+            this.newButton.UseVisualStyleBackColor = true;
             // 
             // TradeLogForm
             // 
@@ -222,6 +233,7 @@
         private System.Windows.Forms.ColumnHeader columnPrice;
         private System.Windows.Forms.CheckBox checkBox;
         private System.Windows.Forms.Button deleteButton;
+        private System.Windows.Forms.Button newButton;
 
     }
 }

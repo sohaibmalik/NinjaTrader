@@ -82,6 +82,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NewOrderInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewOrderInput.Designer.cs">
+      <DependentUpon>NewOrderInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="Notify.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +118,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WebDb.dbml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="NewOrderInput.resx">
+      <DependentUpon>NewOrderInput.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Notify.resx">
       <DependentUpon>Notify.cs</DependentUpon>
     </EmbeddedResource>
