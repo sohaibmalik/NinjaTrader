@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.reasonComboBox = new System.Windows.Forms.ComboBox();
             this.volNum = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
@@ -42,6 +40,8 @@
             this.saveButton = new System.Windows.Forms.Button();
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.timeTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.matchedCheckBox = new System.Windows.Forms.CheckBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.volNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,35 +54,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Date-Time";
             // 
-            // radioButton1
-            // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(168, 52);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(45, 19);
-            this.radioButton1.TabIndex = 2;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Buy";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(225, 53);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(43, 19);
-            this.radioButton2.TabIndex = 3;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Sell";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
             // reasonComboBox
             // 
+            this.reasonComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.reasonComboBox.FormattingEnabled = true;
             this.reasonComboBox.Location = new System.Drawing.Point(111, 85);
             this.reasonComboBox.Name = "reasonComboBox";
             this.reasonComboBox.Size = new System.Drawing.Size(163, 23);
             this.reasonComboBox.TabIndex = 4;
+          
+            this.reasonComboBox.SelectedValueChanged += new System.EventHandler(this.reasonComboBox_SelectedValueChanged);
             // 
             // volNum
             // 
@@ -105,6 +86,7 @@
             0,
             0,
             0});
+            this.volNum.ValueChanged += new System.EventHandler(this.volNum_ValueChanged);
             // 
             // label2
             // 
@@ -149,6 +131,7 @@
             this.priceMatchedTextBox.Name = "priceMatchedTextBox";
             this.priceMatchedTextBox.Size = new System.Drawing.Size(163, 23);
             this.priceMatchedTextBox.TabIndex = 11;
+            this.priceMatchedTextBox.TextChanged += new System.EventHandler(this.priceMatchedTextBox_TextChanged);
             // 
             // label5
             // 
@@ -161,12 +144,14 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(187, 200);
+            this.saveButton.Enabled = false;
+            this.saveButton.Location = new System.Drawing.Point(187, 221);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(87, 27);
             this.saveButton.TabIndex = 12;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // dateTimePicker
             // 
@@ -185,11 +170,31 @@
             this.timeTimePicker.Size = new System.Drawing.Size(92, 23);
             this.timeTimePicker.TabIndex = 14;
             // 
+            // matchedCheckBox
+            // 
+            this.matchedCheckBox.AutoSize = true;
+            this.matchedCheckBox.Location = new System.Drawing.Point(111, 202);
+            this.matchedCheckBox.Name = "matchedCheckBox";
+            this.matchedCheckBox.Size = new System.Drawing.Size(15, 14);
+            this.matchedCheckBox.TabIndex = 15;
+            this.matchedCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(15, 201);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(54, 15);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Matched";
+            // 
             // NewOrderInput
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(298, 236);
+            this.ClientSize = new System.Drawing.Size(299, 259);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.matchedCheckBox);
             this.Controls.Add(this.timeTimePicker);
             this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.saveButton);
@@ -201,8 +206,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.volNum);
             this.Controls.Add(this.reasonComboBox);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "NewOrderInput";
@@ -217,8 +220,6 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.ComboBox reasonComboBox;
         private System.Windows.Forms.NumericUpDown volNum;
         private System.Windows.Forms.Label label2;
@@ -230,5 +231,7 @@
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.DateTimePicker timeTimePicker;
+        private System.Windows.Forms.CheckBox matchedCheckBox;
+        private System.Windows.Forms.Label label6;
     }
 }

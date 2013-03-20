@@ -15,8 +15,8 @@ namespace NotifierClientApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Notify());
-            Application.Run(new NewOrderInput());
+            Application.Run(new Notify());
+           
         }
     }
 }

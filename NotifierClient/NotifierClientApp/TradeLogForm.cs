@@ -11,12 +11,14 @@ namespace NotifierClientApp
 {
     public partial class TradeLogForm : Form
     {
+        private newLogSaved onUpdate;
         WebDbDataContext dc = new WebDbDataContext();
         TradeLog _selectedLog;
         int price;
         public TradeLogForm()
         {
             InitializeComponent();
+            onUpdate = LoadListview;
         }
 
         private void TradeLogForm_Load(object sender, EventArgs e)
@@ -43,38 +45,10 @@ namespace NotifierClientApp
             }
         }
 
-        private void tradeListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
-        {
-           _selectedLog= (TradeLog)e.Item.Tag;
-           matchedTextBox.Text = _selectedLog.PriceMatched.ToString();
-           checkBox.Checked = _selectedLog.Matched;
-        }
+     
+       
 
-        private void matchedTextBox_TextChanged(object sender, EventArgs e)
-        {
-           
-            if (int.TryParse(matchedTextBox.Text, out price))
-            {
-                saveButton.Enabled = true;
-                deleteButton.Enabled = true;
-            }
-            else
-            {
-                saveButton.Enabled = false;
-                deleteButton.Enabled = false;
-            }
-        }
-
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            Cursor = Cursors.WaitCursor;
-            saveButton.Enabled = false;
-            _selectedLog.PriceMatched = price;
-            _selectedLog.Matched = checkBox.Checked;
-            dc.SubmitChanges();
-            LoadListview();
-            Cursor = Cursors.Default;
-        }
+    
 
         private void deleteButton_Click(object sender, EventArgs e)
         {
@@ -89,6 +63,26 @@ namespace NotifierClientApp
             dc.SubmitChanges();
             LoadListview();
             Cursor = Cursors.Default;
+        }
+
+        private void newButton_Click(object sender, EventArgs e)
+        {
+            var n = new NewOrderInput(onUpdate);
+            n.Show();
+        }
+
+        private void tradeListView_DoubleClick(object sender, EventArgs e)
+        {
+            var tl = (TradeLog)tradeListView.SelectedItems[0].Tag;
+            var n = new NewOrderInput(onUpdate,tl);
+            n.Show();
+        }
+
+        private void tradeListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (tradeListView.SelectedItems.Count == 0) return;
+            _selectedLog = (TradeLog)tradeListView.SelectedItems[0].Tag;
+            deleteButton.Enabled = true;
         }
 
     }
