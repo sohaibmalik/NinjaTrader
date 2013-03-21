@@ -26,7 +26,13 @@ namespace FrontEnd
         private string custom = "";
         private void StartupForm_Load(object sender, EventArgs e)
         {
-         
+
+            if (!Communicator.Internet.CheckConnection())
+            {
+                MessageBox.Show("No Internet Connection", "Not Connected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(0);
+               
+            }
             pcStringRadioButton.Text = pc;
             laptopStringRadioButton.Text = laptop;
             pcStringRadioButton.BackColor = Color.Yellow;

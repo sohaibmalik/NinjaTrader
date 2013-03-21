@@ -59,7 +59,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using AlsiCharts;
-using WebKit;
+using System.IO;
+
 namespace FrontEnd
 {
     public partial class Chart : Form
@@ -71,8 +72,16 @@ namespace FrontEnd
 
         private void Chart_Load(object sender, EventArgs e)
         {
-            AlsiCharts.Test t = new AlsiCharts.Test();
-            t.RunChart();
+            AlsiCharts.MultiAxis c = new MultiAxis();
+
+            for (int x = 0; x < 10; x++)
+            {
+                c.XaxisLabels.Add(x.ToString());
+            }
+
+          
+            c.PopulateScript();
+            c.ShowChartInBrowser(new FileInfo(@"D:\abc.html"));
         }
 
       

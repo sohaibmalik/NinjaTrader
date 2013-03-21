@@ -31,14 +31,26 @@ namespace Communicator
 
 
 
-       
 
-        private void CheckConnection()
+
+        public static  bool CheckConnection()
         {
-          
-          
-
+            try
+            {
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead("http://www.google.com"))
+                {
+                  
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
+
+
 
 
 

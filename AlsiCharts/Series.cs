@@ -7,8 +7,7 @@ namespace AlsiCharts
 {
     public class Series
     {
-        public List<double> Data{ get; set; }
-        public List<string> XaxisLabels { get; set; }
+        public List<double> Data{ get; set; }      
         public string YaxixLabel { get; set; }
         public string Unit { get; set; }
         public string Color { get; set; }

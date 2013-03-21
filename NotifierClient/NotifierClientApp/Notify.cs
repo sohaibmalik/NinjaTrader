@@ -3,9 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Media;
 using System.Windows.Forms;
-
 
 namespace NotifierClientApp
 {
@@ -13,8 +11,8 @@ namespace NotifierClientApp
     {
         AlsiWebService.AlsiNotifyService service = new AlsiWebService.AlsiNotifyService();
         AlsiWebService.xlTradeOrder lastOrder;
-        private bool _updateApp1;       
-        private DateTime _app1LastUpdate = DateTime.Now.AddDays(-1);        
+        private bool _updateApp1;
+        private DateTime _app1LastUpdate = DateTime.Now.AddDays(-1);
         private int _OrderUpdate, _StatusUpdate, _StatusDelay;
         private delegate void StatusFail(AlsiWebService.Boodskap boodskap);
         private StatusFail onStatusFail;
@@ -95,14 +93,14 @@ namespace NotifierClientApp
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.DarkOrange;
                     if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "New Order!");
-                
+
                 }
                 if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed)
                 {
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.LightGreen;
                     if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "Order Matched!");
-                   
+
                 }
             }
 
@@ -117,7 +115,7 @@ namespace NotifierClientApp
                 foreach (var v in allOrders)
                     if (allOrders.Count() > 0)
                         foreach (var o in allOrders) updateFromWeb(o);
-             
+
             }
             catch (Exception ex)
             {
@@ -164,9 +162,9 @@ namespace NotifierClientApp
         {
             try
             {
-                var o = service.getLastOrder();              
+                var o = service.getLastOrder();
                 if (o != null) updateFromWeb(o);
-              
+
             }
             catch (Exception ex)
             {
@@ -209,7 +207,7 @@ namespace NotifierClientApp
 
         void ni_BalloonTipClicked(object sender, EventArgs e)
         {
-            _alertAcknowledged = DateTime.UtcNow.AddHours(2);         
+            _alertAcknowledged = DateTime.UtcNow.AddHours(2);
             alsiTradeFailedCount = 0;
             ni.Visible = false;
 
@@ -259,7 +257,7 @@ namespace NotifierClientApp
                 statusLabel1.BackColor = Color.LightGreen;
                 alsiTradeFailedCount = 0;
             }
-                    
+
         }
 
 
@@ -274,7 +272,7 @@ namespace NotifierClientApp
             catch (Exception ex)
             {
                 ordersListView.BackColor = Color.Red;
-                _updateApp1 = false;              
+                _updateApp1 = false;
                 service = new AlsiWebService.AlsiNotifyService();
             }
         }
@@ -283,9 +281,9 @@ namespace NotifierClientApp
         {
             var n = DateTime.UtcNow.AddHours(2);
             var b = service.getLastMessage();
-            if (b.Message == AlsiWebService.Messages.isAlive) _app1LastUpdate = b.TimeStamp;          
+            if (b.Message == AlsiWebService.Messages.isAlive) _app1LastUpdate = b.TimeStamp;
             Debug.WriteLine("Appupdate " + b.TimeStamp + "  " + b.Message);
-            var check1 = _app1LastUpdate.AddSeconds(Properties.Settings.Default.StatusDelayInt);          
+            var check1 = _app1LastUpdate.AddSeconds(Properties.Settings.Default.StatusDelayInt);
 
             if (check1 > n)
                 _updateApp1 = true;
@@ -320,14 +318,24 @@ namespace NotifierClientApp
 
         private void tradeLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (!Communicator.Internet.CheckConnection())
+            {
+                MessageBox.Show("No Internet Connection", "Not Connected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             TradeLogForm ts = new TradeLogForm();
             ts.Show();
         }
 
         private void getPricesToolStripMenuItem_Click(object sender, EventArgs e)
-        {            
+        {
+            if (!Communicator.Internet.CheckConnection())
+            {
+                MessageBox.Show("No Internet Connection", "Not Connected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             var alsi = AlsiTrade_Backend.HiSat.HistData.GetHistoricalTICK_FromWEB(DateTime.Now, DateTime.Now, AlsiUtils.WebSettings.General.HISAT_INST);
-            pricesStatusLabel.Text =  alsi.Last().Close.ToString();
+            pricesStatusLabel.Text = alsi.Last().Close.ToString();
         }
 
 

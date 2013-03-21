@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chart.cs" />
     <Compile Include="MultiAxis.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Series.cs" />

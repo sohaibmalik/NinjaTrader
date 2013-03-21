@@ -57,6 +57,7 @@
             this.logListBox.Name = "logListBox";
             this.logListBox.Size = new System.Drawing.Size(302, 227);
             this.logListBox.TabIndex = 0;
+            
             // 
             // notifyIcon
             // 

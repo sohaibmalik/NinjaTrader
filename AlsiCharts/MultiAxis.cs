@@ -6,29 +6,25 @@ using System.IO;
 
 namespace AlsiCharts
 {
-   public class MultiAxis
+   public class MultiAxis:Chart 
     {
-       public string Title { get; set; }
-       public string Subtitle { get; set; }
+       
+       public Series Series_A { get; set; }
+       public Series Series_B { get; set; }
+       public Series Series_C { get; set; }
+                  
 
-       public void Create()
+
+       public MultiAxis()
        {
-           
-          
+           #region Set Script
          
-       }
-       internal class Scrip
-       {
-           public string GetScript()
-           {
-              TextScrip.Replace("*", @"""");
-              return TextScrip.ToString();
-           }
-           public StringBuilder TextScrip = new StringBuilder(@"<!DOCTYPE HTML>
+           this.Script=
+          @"<!DOCTYPE HTML>
 <html>
 	<head>
 		<meta http-equiv=*Content-Type* content=*text/html; charset=utf-8*>
-		<title>Highcharts Example</title>
+		<title>%WEB_TAB_TITLE%</title>
 
 		<script type=*text/javascript* src=*http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js*></script>
 		<script type=*text/javascript*>
@@ -41,14 +37,13 @@ $(function () {
                 zoomType: 'xy'
             },
             title: {
-                text: 'Average Monthly Weather Data for Tokyo'
+                text: '%TITLE%'
             },
             subtitle: {
-                text: 'Source: WorldClimate.com'
+                text: '%SUBTITLE%'
             },
             xAxis: [{
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                categories: [%X_LABELS%]
             }],
             yAxis: [{ // Primary yAxis
                 labels: {
@@ -157,12 +152,34 @@ $(function () {
 <script src=*http://code.highcharts.com/highcharts.js*></script>
 <script src=*http://code.highcharts.com/modules/exporting.js*></script>
 
-<div id=*container* style=*min-width: 400px; height: 400px; margin: 0 auto*></div>
+<div id=*container* style=*min-width: %WIDTH_PX%px; height: %HEIGHT_PX%px; margin: 0 auto*></div>
 
 	</body>
 </html>
 
-");
+";
+           #endregion
+
+           
+
        }
+
+       public override void PopulateScript()
+       {
+           StringBuilder s = new StringBuilder(Script);
+           s.Replace("%WEB_TAB_TITLE%",this.WebTabTitle);
+           s.Replace("%TITLE%", this.Title);
+           s.Replace("%SUBTITLE%", this.Subtitle);
+           s.Replace("%WIDTH_PX%", this.Width.ToString());
+           s.Replace("%HEIGHT_PX%", this.Height.ToString());
+           s.Replace("%X_LABELS%", this.MakeXaxisLabels());
+           Script = s.ToString();
+       }
+
+
+
+
+
+      
     }
 }
