@@ -54,5 +54,13 @@ namespace AlsiCharts
             }
         }
 
+
+        public virtual string MakeYaxisData(List<double> Data)
+        {
+            var stringData=new List<string>();
+            foreach (var d in Data) stringData.Add(d.ToString());
+            var data = string.Join(",", stringData.ToArray());
+            return data;
+        }
     }
 }

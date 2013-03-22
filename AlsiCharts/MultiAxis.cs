@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
+﻿using System.Text;
 
 namespace AlsiCharts
 {
-   public class MultiAxis:Chart 
+    public class MultiAxis : Chart
     {
-       
-       public Series Series_A { get; set; }
-       public Series Series_B { get; set; }
-       public Series Series_C { get; set; }
-                  
+
+        public Series Series_A { get; set; }
+        public Series Series_B { get; set; }
+        public Series Series_C { get; set; }
 
 
-       public MultiAxis()
-       {
-           #region Set Script
-         
-           this.Script=
-          @"<!DOCTYPE HTML>
+
+        public MultiAxis()
+        {
+            #region Set Script
+
+            this.Script =
+           @"<!DOCTYPE HTML>
 <html>
 	<head>
 		<meta http-equiv=*Content-Type* content=*text/html; charset=utf-8*>
@@ -48,14 +44,14 @@ $(function () {
             yAxis: [{ // Primary yAxis
                 labels: {
                     formatter: function() {
-                        return this.value +'°C';
+                        return this.value +' %A_YAXIS_UNIT%';
                     },
                     style: {
                         color: '#89A54E'
                     }
                 },
                 title: {
-                    text: 'Temperature',
+                    text: '%A_SERIES_NAME%',
                     style: {
                         color: '#89A54E'
                     }
@@ -65,14 +61,14 @@ $(function () {
             }, { // Secondary yAxis
                 gridLineWidth: 0,
                 title: {
-                    text: 'Rainfall',
+                    text: '%B_SERIES_NAME%',
                     style: {
                         color: '#4572A7'
                     }
                 },
                 labels: {
                     formatter: function() {
-                        return this.value +' mm';
+                        return this.value +' %B_YAXIS_UNIT%';
                     },
                     style: {
                         color: '#4572A7'
@@ -82,14 +78,14 @@ $(function () {
             }, { // Tertiary yAxis
                 gridLineWidth: 0,
                 title: {
-                    text: 'Sea-Level Pressure',
+                    text: '%C_SERIES_NAME%',
                     style: {
                         color: '#AA4643'
                     }
                 },
                 labels: {
                     formatter: function() {
-                        return this.value +' mb';
+                        return this.value +' %C_YAXIS_UNIT%';
                     },
                     style: {
                         color: '#AA4643'
@@ -100,9 +96,9 @@ $(function () {
             tooltip: {
                 formatter: function() {
                     var unit = {
-                        'Rainfall': 'mm',
-                        'Temperature': '°C',
-                        'Sea-Level Pressure': 'mb'
+                        '%B_SERIES_NAME%': '%B_YAXIS_UNIT%',
+                        '%A_SERIES_NAME%': '%A_YAXIS_UNIT%',
+                        '%C_SERIES_NAME%': '%C_YAXIS_UNIT%'
                     }[this.series.name];
     
                     return ''+
@@ -119,25 +115,25 @@ $(function () {
                 backgroundColor: '#FFFFFF'
             },
             series: [{
-                name: 'Rainfall',
+                name: '%B_SERIES_NAME%',
                 color: '#4572A7',
                 type: 'column',
                 yAxis: 1,
                 data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
     
             }, {
-                name: 'Sea-Level Pressure',
+                name: '%C_SERIES_NAME%',
                 type: 'spline',
                 color: '#AA4643',
                 yAxis: 2,
-                data: [1016, 1016, 1015.9, 1015.5, 1012.3, 1009.5, 1009.6, 1010.2, 1013.1, 1016.9, 1018.2, 1016.7],
+                data: [%C_DATA%],
                 marker: {
                     enabled: false
                 },
                 dashStyle: 'shortdot'
     
             }, {
-                name: 'Temperature',
+                name: '%A_SERIES_NAME%',
                 color: '#89A54E',
                 type: 'spline',
                 data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
@@ -158,28 +154,45 @@ $(function () {
 </html>
 
 ";
-           #endregion
+            #endregion
 
-           
+            Series_A = new Series();
+            Series_B = new Series();
+            Series_C = new Series();
 
-       }
+        }
 
-       public override void PopulateScript()
-       {
-           StringBuilder s = new StringBuilder(Script);
-           s.Replace("%WEB_TAB_TITLE%",this.WebTabTitle);
-           s.Replace("%TITLE%", this.Title);
-           s.Replace("%SUBTITLE%", this.Subtitle);
-           s.Replace("%WIDTH_PX%", this.Width.ToString());
-           s.Replace("%HEIGHT_PX%", this.Height.ToString());
-           s.Replace("%X_LABELS%", this.MakeXaxisLabels());
-           Script = s.ToString();
-       }
+        public override void PopulateScript()
+        {
+            StringBuilder s = new StringBuilder(Script);
+            s.Replace("%WEB_TAB_TITLE%", this.WebTabTitle);
+            s.Replace("%TITLE%", this.Title);
+            s.Replace("%SUBTITLE%", this.Subtitle);
+            s.Replace("%WIDTH_PX%", this.Width.ToString());
+            s.Replace("%HEIGHT_PX%", this.Height.ToString());
+            s.Replace("%X_LABELS%", this.MakeXaxisLabels());
+
+            s.Replace("%A_YAXIS_UNIT%", Series_A.Unit);
+            s.Replace("%B_YAXIS_UNIT%", Series_B.Unit);
+            s.Replace("%C_YAXIS_UNIT%", Series_C.Unit);
+
+            s.Replace("%A_SERIES_NAME%", Series_A.YaxixLabel);
+            s.Replace("%B_SERIES_NAME%", Series_B.YaxixLabel);
+            s.Replace("%C_SERIES_NAME%", Series_C.YaxixLabel);
+
+            s.Replace("C_DATA", MakeYaxisData(Series_C.Data));
 
 
 
 
 
-      
+            Script = s.ToString();
+        }
+
+
+
+
+
+
     }
 }
