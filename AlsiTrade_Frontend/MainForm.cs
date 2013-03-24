@@ -936,7 +936,7 @@ namespace FrontEnd
             AlsiCharts.MultiAxis_3 c = new AlsiCharts.MultiAxis_3();
             c.Height = 900;
             c.SharedTootltip = true;
-            c.XaxisLabels = _TradeOnlyList.Select(z => z.TimeStamp.ToString()).ToList();
+            c.XaxisLabels = _TradeOnlyList.OrderBy(z=>z.TimeStamp).Select(z => z.TimeStamp.ToString()).ToList();
 
 
             c.Series_C.Data = _TradeOnlyList.Where(z=>z.RunningProfit!=0).OrderBy(z=>z.TimeStamp).Select(z => z.TotalPL).ToList();
