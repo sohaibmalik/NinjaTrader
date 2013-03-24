@@ -110,9 +110,9 @@ namespace FrontEnd
             eh = (int)nudE_H.Value;
 
             for (int H = h; H > eh; H--)
-                for (int L = l; L < el; L++)
-                    for (int D = d; D < ed; D += 1)
-                        for (int SK = sk; SK < esk; SK += 1)
+                for (int L = l; L < el; L+=2)
+                    for (int D = d; D < ed; D += 2)
+                        for (int SK = sk; SK < esk; SK += 2)
                         {
                             label_d.Text = D.ToString();
                             label_fk.Text = fk.ToString();
@@ -144,7 +144,7 @@ namespace FrontEnd
                                 }
                                 //  Debug.WriteLine("TOTAL PROFIT : P(" + n + ") stdev("+stop+")  = " + pl);
 
-                                if (pl > 20000)
+                                if (pl > 21000)
                                 {
                                     max = pl;
                                     MSK = SK;

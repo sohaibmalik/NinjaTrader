@@ -615,6 +615,7 @@ namespace FrontEnd
             Cursor = Cursors.WaitCursor;
             exportToTextButton.Enabled = false;
             synchWebTradesButton.Enabled = false;
+            drawChartButton.Enabled = false;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_1;
             if (_2minRadioButton.Checked) t = GlobalObjects.TimeInterval.Minute_2;
             if (_5minRadioButton.Checked) t = GlobalObjects.TimeInterval.Minute_5;
@@ -654,6 +655,7 @@ namespace FrontEnd
             dataTabControl.SelectedIndex = 1;
             exportToTextButton.Enabled = true;
             synchWebTradesButton.Enabled = true;
+            drawChartButton.Enabled = true;
         }
 
         private void loadTradeLogButton_Click(object sender, EventArgs e)
@@ -929,7 +931,46 @@ namespace FrontEnd
             AlsiTrade_Backend.WebUpdate.SyncOnlineDbTradeHistory(trades);
             Cursor = Cursors.Default;
         }
+        private void drawChartButton_Click(object sender, EventArgs e)
+        {
+            AlsiCharts.MultiAxis_3 c = new AlsiCharts.MultiAxis_3();
+            c.Height = 900;
+            c.SharedTootltip = true;
+            c.XaxisLabels = _TradeOnlyList.Select(z => z.TimeStamp.ToString()).ToList();
 
+
+            c.Series_C.Data = _TradeOnlyList.Where(z=>z.RunningProfit!=0).OrderBy(z=>z.TimeStamp).Select(z => z.TotalPL).ToList();
+            c.Series_C.LineStyle = AlsiCharts.Series.LineStyles.spline;
+            c.Series_C.AxisOppositeSide = true;
+            c.Series_C.YaxixLabel = "Total Profit";
+            c.Series_C.YaxisTitleColor = Color.DarkGreen;
+            c.Series_C.YaxisUnitColor = Color.DarkGreen;
+            c.Series_C.Unit = "pts";
+            c.Series_C.YaxisNumber = 0;
+
+            c.Series_B.Data  = _TradeOnlyList.Where(z=>z.RunningProfit!=0).OrderBy(z=>z.TimeStamp).Select(z => z.RunningProfit).ToList();
+            c.Series_B.LineStyle = AlsiCharts.Series.LineStyles.column;
+            c.Series_B.YaxisTitleColor = Color.SteelBlue;
+            c.Series_B.YaxisUnitColor = Color.SteelBlue;
+            c.Series_B.YaxixLabel = "Profit";
+            c.Series_B.Unit = "pts";
+            c.Series_B.AxisOppositeSide = false;
+            c.Series_B.YaxisNumber = 1;
+
+            c.Series_A.Data = _TradeOnlyList.Where(z => z.RunningProfit != 0).OrderBy(z => z.TimeStamp).Select(z => z.CurrentPrice).ToList();
+            c.Series_A.LineStyle = AlsiCharts.Series.LineStyles.spline;
+            c.Series_A.AxisOppositeSide = false;
+            c.Series_A.YaxixLabel = "Market Price";
+            c.Series_A.YaxisTitleColor = Color.Orange;
+            c.Series_A.YaxisUnitColor = Color.Orange;
+            c.Series_A.YaxisNumber = 2;
+
+
+
+
+            c.PopulateScript();
+            c.ShowChartInBrowser(new System.IO.FileInfo(@"D:\TradeHistory.html"));
+        }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             UpdateDB.FullHistoricUpdate_MasterMinute(WebSettings.General.HISAT_INST);
@@ -1203,6 +1244,8 @@ namespace FrontEnd
             UpdateTradeLog(mantrade, true);
 
         }
+
+       
 
 
 

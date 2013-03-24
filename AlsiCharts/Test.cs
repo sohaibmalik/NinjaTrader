@@ -4,132 +4,57 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace AlsiCharts
 {
    public class Test
     {
-       public string CreateChart()
+      public void TestMultiAxis_3()
        {
-           StreamWriter sr = new StreamWriter(@"d:\test.html");
-           Scrip script = new Scrip();
-           script.TextScrip.Replace("*", @"""");
-           sr.Write(script.TextScrip);
-           sr.Close();
-           return @"D:\test.html";
-          // return script.TextScrip.ToString();
+           AlsiCharts.MultiAxis_3 c = new MultiAxis_3();
+
+           for (int x = 0; x < 10; x++)
+           {
+               c.XaxisLabels.Add(x.ToString());
+               c.Series_A.Data.Add(x * (10 - 100));
+               c.Series_B.Data.Add(x * 1000);
+               c.Series_C.Data.Add(x * 3.1245);
+           }
+
+           c.Height = 700;
+           c.LegendBackColor = Color.White;
+           c.Series_A.LineStyle = Series.LineStyles.line;
+           c.Series_B.LineStyle = Series.LineStyles.line;
+           c.Series_C.LineStyle = Series.LineStyles.line;
+
+           c.Series_A.YaxisNumber = 0;
+           c.Series_B.YaxisNumber = 1;
+           c.Series_C.YaxisNumber = 2;
+
+           c.Series_A.AxisOppositeSide = true;
+           c.Series_B.AxisOppositeSide = false;
+           c.Series_C.AxisOppositeSide = true;
+
+           c.Series_A.Unit = "Unit AA";
+           c.Series_B.Unit = "Unit BB";
+           c.Series_C.Unit = "Unit CC";
+
+           c.Series_A.YaxixLabel = "Label A";
+           c.Series_B.YaxixLabel = "Label B";
+           c.Series_C.YaxixLabel = "Label C";
+
+           c.Series_A.YaxisTitleColor = Color.Red;
+           c.Series_A.YaxisUnitColor = Color.Purple;
+           c.Series_B.YaxisTitleColor = Color.Pink;
+           c.Series_B.YaxisUnitColor = Color.Blue;
+           c.Series_C.YaxisTitleColor = Color.Green;
+           c.Series_C.YaxisUnitColor = Color.Orange;
+
+           c.PopulateScript();
+           c.ShowChartInBrowser(new FileInfo(@"D:\abc.html"));
        }
 
-      public void RunChart()
-       {
-           Process.Start(CreateChart());
-       }
-
-
-       internal class Scrip
-       {
-           public StringBuilder TextScrip=new StringBuilder(@"<!DOCTYPE HTML>
-<html>
-	<head>
-		<meta http-equiv=*Content-Type* content=*text/html; charset=utf-8*>
-		<title>Highcharts Example</title>
-
-		<script type=*text/javascript* src=*http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js*></script>
-		<script type=*text/javascript*>
-$(function () {
-    var chart;
-    $(document).ready(function() {
-        chart = new Highcharts.Chart({
-            chart: {
-                renderTo: 'container',
-                zoomType: 'xy'
-            },
-            title: {
-                text: 'Average Monthly Temperature and Rainfall in Tokyo'
-            },
-            subtitle: {
-                text: 'Source: WorldClimate.com'
-            },
-            xAxis: [{
-                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-            }],
-            yAxis: [{ // Primary yAxis
-                labels: {
-                    formatter: function() {
-                        return this.value +'°C';
-                    },
-                    style: {
-                        color: '#89A54E'
-                    }
-                },
-                title: {
-                    text: 'Temperature',
-                    style: {
-                        color: '#89A54E'
-                    }
-                }
-            }, { // Secondary yAxis
-                title: {
-                    text: 'Rainfall',
-                    style: {
-                        color: '#4572A7'
-                    }
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value +' mm';
-                    },
-                    style: {
-                        color: '#4572A7'
-                    }
-                },
-                opposite: true
-            }],
-            tooltip: {
-                formatter: function() {
-                    return ''+
-                        this.x +': '+ this.y +
-                        (this.series.name == 'Rainfall' ? ' mm' : '°C');
-                }
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'left',
-                x: 120,
-                verticalAlign: 'top',
-                y: 100,
-                floating: true,
-                backgroundColor: '#FFFFFF'
-            },
-            series: [{
-                name: 'Rainfall',
-                color: '#4572A7',
-                type: 'column',
-                yAxis: 1,
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-    
-            }, {
-                name: 'Temperature',
-                color: '#89A54E',
-                type: 'spline',
-                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
-            }]
-        });
-    });
-    
-});
-		</script>
-	</head>
-	<body>
-<script src=*http://code.highcharts.com/highcharts.js*></script>
-<script src=*http://code.highcharts.com/modules/exporting.js*></script>
-
-<div id=*container* style=*min-width: 400px; height: 400px; margin: 0 auto*></div>
-
-	</body>
-</html>
-");
-       }
+      
     }
 }

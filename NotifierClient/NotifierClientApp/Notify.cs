@@ -335,6 +335,11 @@ namespace NotifierClientApp
                 return;
             }
             var alsi = AlsiTrade_Backend.HiSat.HistData.GetHistoricalTICK_FromWEB(DateTime.Now, DateTime.Now, AlsiUtils.WebSettings.General.HISAT_INST);
+            if (alsi.Count == 0)
+            {
+                pricesStatusLabel.Text = "Market Closed";
+                return;
+            }
             pricesStatusLabel.Text = alsi.Last().Close.ToString();
         }
 

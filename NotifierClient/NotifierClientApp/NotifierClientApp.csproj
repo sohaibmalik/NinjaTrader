@@ -248,6 +248,10 @@
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AlsiCharts\AlsiCharts.csproj">
+      <Project>{B147DB99-C269-45E5-879D-EC150D5C9676}</Project>
+      <Name>AlsiCharts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\AlsiTrade_Backend\AlsiTrade_Backend.csproj">
       <Project>{AE391C4B-1E3C-4092-AF0B-D8844625FCF9}</Project>
       <Name>AlsiTrade_Backend</Name>

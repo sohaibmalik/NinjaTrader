@@ -79,6 +79,7 @@
             this.emaB2TextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.drawChartButton = new System.Windows.Forms.Button();
             this.synchWebTradesButton = new System.Windows.Forms.Button();
             this.exportToTextButton = new System.Windows.Forms.Button();
             this.statsGroupBox = new System.Windows.Forms.GroupBox();
@@ -378,7 +379,7 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.LimeGreen;
+            this.button2.BackColor = System.Drawing.Color.Green;
             this.button2.Location = new System.Drawing.Point(279, 54);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(68, 23);
@@ -716,6 +717,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.drawChartButton);
             this.tabPage2.Controls.Add(this.synchWebTradesButton);
             this.tabPage2.Controls.Add(this.exportToTextButton);
             this.tabPage2.Controls.Add(this.statsGroupBox);
@@ -730,6 +732,17 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // drawChartButton
+            // 
+            this.drawChartButton.Enabled = false;
+            this.drawChartButton.Location = new System.Drawing.Point(9, 431);
+            this.drawChartButton.Name = "drawChartButton";
+            this.drawChartButton.Size = new System.Drawing.Size(75, 23);
+            this.drawChartButton.TabIndex = 13;
+            this.drawChartButton.Text = "Draw Chart";
+            this.drawChartButton.UseVisualStyleBackColor = true;
+            this.drawChartButton.Click += new System.EventHandler(this.drawChartButton_Click);
             // 
             // synchWebTradesButton
             // 
@@ -1189,10 +1202,10 @@
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.groupBox3);
-            this.tabPage6.Location = new System.Drawing.Point(4, 24);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(353, 514);
+            this.tabPage6.Size = new System.Drawing.Size(353, 516);
             this.tabPage6.TabIndex = 4;
             this.tabPage6.Text = "tabPage6";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -1374,10 +1387,10 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.DBPricesGridView);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(768, 514);
+            this.tabPage3.Size = new System.Drawing.Size(768, 516);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1603,6 +1616,7 @@
         private System.Windows.Forms.RadioButton tradeModeBESTAGGRESSIVERadioButton;
         private System.Windows.Forms.RadioButton tradeModeBESTRadioButton;
         private System.Windows.Forms.CheckBox resetManualCheckBox;
+        private System.Windows.Forms.Button drawChartButton;
         
     }
 }

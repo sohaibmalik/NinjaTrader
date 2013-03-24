@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Drawing;
 
 namespace AlsiCharts
 {
@@ -14,6 +15,22 @@ namespace AlsiCharts
         public string Subtitle { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
+        public bool SharedTootltip{get;set;}
+        public string LegendBackColorHEX { get; set; }
+        public Color LegendBackColor
+        {
+            set
+            {
+                LegendBackColorHEX = ColorToHEX(value);
+            }
+        }
+
+        private string ColorToHEX(Color c)
+        {
+            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+        }
+
+
         public List<string> XaxisLabels = new List<string>();
 
         public string Script = "";
@@ -34,6 +51,7 @@ namespace AlsiCharts
 
         public virtual void ShowChartInBrowser(FileInfo file)
         {
+            
             StreamWriter sr = new StreamWriter(file.FullName);
             sr.Write(GetScript());
             sr.Close();

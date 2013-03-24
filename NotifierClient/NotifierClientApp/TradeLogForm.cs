@@ -92,5 +92,6 @@ namespace NotifierClientApp
             deleteButton.Enabled = true;
         }
 
+      
     }
 }

@@ -72,24 +72,9 @@ namespace FrontEnd
 
         private void Chart_Load(object sender, EventArgs e)
         {
-            AlsiCharts.MultiAxis c = new MultiAxis();
-
-            for (int x = 0; x < 10; x++)
-            {
-                c.XaxisLabels.Add(x.ToString());
-            }
-
-
-            c.Series_A.Unit = "Unit AA";
-            c.Series_B.Unit = "Unit BB";
-            c.Series_C.Unit = "Unit CC";
-
-            c.Series_A.YaxixLabel = "Label A";
-            c.Series_B.YaxixLabel = "Label B";
-            c.Series_C.YaxixLabel = "Label C";
-
-            c.PopulateScript();
-            c.ShowChartInBrowser(new FileInfo(@"D:\abc.html"));
+            AlsiCharts.Test t = new AlsiCharts.Test();
+            t.TestMultiAxis_3();
+          
         }
 
       

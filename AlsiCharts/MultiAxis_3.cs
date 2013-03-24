@@ -1,8 +1,8 @@
 ﻿using System.Text;
 
-namespace AlsiCharts
+namespace AlsiCharts //http://www.highcharts.com/demo/
 {
-    public class MultiAxis : Chart
+    public class MultiAxis_3 : Chart
     {
 
         public Series Series_A { get; set; }
@@ -11,7 +11,7 @@ namespace AlsiCharts
 
 
 
-        public MultiAxis()
+        public MultiAxis_3()
         {
             #region Set Script
 
@@ -47,23 +47,23 @@ $(function () {
                         return this.value +' %A_YAXIS_UNIT%';
                     },
                     style: {
-                        color: '#89A54E'
+                        color: '%A_YAXIX_UNIT_COLOR%'
                     }
                 },
                 title: {
                     text: '%A_SERIES_NAME%',
                     style: {
-                        color: '#89A54E'
+                        color: '%A_YAXIX_TITLE_COLOR%'
                     }
                 },
-                opposite: true
+                opposite: %A_OPPOSITE%
     
             }, { // Secondary yAxis
                 gridLineWidth: 0,
                 title: {
                     text: '%B_SERIES_NAME%',
                     style: {
-                        color: '#4572A7'
+                        color: '%B_YAXIX_UNIT_COLOR%'
                     }
                 },
                 labels: {
@@ -71,16 +71,16 @@ $(function () {
                         return this.value +' %B_YAXIS_UNIT%';
                     },
                     style: {
-                        color: '#4572A7'
+                        color: '%B_YAXIX_TITLE_COLOR%'
                     }
-                }
+                }, opposite: %B_OPPOSITE%
     
             }, { // Tertiary yAxis
                 gridLineWidth: 0,
                 title: {
                     text: '%C_SERIES_NAME%',
                     style: {
-                        color: '#AA4643'
+                        color: '%C_YAXIX_UNIT_COLOR%'
                     }
                 },
                 labels: {
@@ -88,23 +88,13 @@ $(function () {
                         return this.value +' %C_YAXIS_UNIT%';
                     },
                     style: {
-                        color: '#AA4643'
+                        color: '%C_YAXIX_TITLE_COLOR%'
                     }
                 },
-                opposite: true
+                opposite: %C_OPPOSITE%
             }],
-            tooltip: {
-                formatter: function() {
-                    var unit = {
-                        '%B_SERIES_NAME%': '%B_YAXIS_UNIT%',
-                        '%A_SERIES_NAME%': '%A_YAXIS_UNIT%',
-                        '%C_SERIES_NAME%': '%C_YAXIS_UNIT%'
-                    }[this.series.name];
-    
-                    return ''+
-                        this.x +': '+ this.y +' '+ unit;
-                }
-            },
+            tooltip: {shared:%SHARED_TOOLTIP%},         
+                            
             legend: {
                 layout: 'vertical',
                 align: 'left',
@@ -112,31 +102,38 @@ $(function () {
                 verticalAlign: 'top',
                 y: 80,
                 floating: true,
-                backgroundColor: '#FFFFFF'
+                backgroundColor: '%LEGEND_BACK_COLOR%',
+              
             },
-            series: [{
+            series: [
+               {
+                name: '%A_SERIES_NAME%',
+                color: '%A_YAXIX_TITLE_COLOR%',
+                yAxis:%A_AXISNUM%,
+                type: '%A_LINETYPE%',
+                data: [%A_DATA%],
+                dashStyle: '%A_DASHSTYLE%',
+                marker: {enabled: false},
+                tooltip:{ valueSuffix: ' %A_YAXIS_UNIT%'}
+            },{
                 name: '%B_SERIES_NAME%',
-                color: '#4572A7',
-                type: 'column',
-                yAxis: 1,
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
-    
+                color: '%B_YAXIX_TITLE_COLOR%',
+                type: '%B_LINETYPE%',
+                yAxis: %B_AXISNUM%,
+                data: [%B_DATA%],
+                dashStyle: '%B_DASHSTYLE%',
+                marker: {enabled: false},
+               tooltip:{ valueSuffix: ' %B_YAXIS_UNIT%'}
             }, {
                 name: '%C_SERIES_NAME%',
-                type: 'spline',
-                color: '#AA4643',
-                yAxis: 2,
-                data: [%C_DATA%],
-                marker: {
-                    enabled: false
-                },
-                dashStyle: 'shortdot'
+                type: '%C_LINETYPE%',
+                color: '%C_YAXIX_TITLE_COLOR%',
+                yAxis: %C_AXISNUM%,
+                data: [%C_DATA%],               
+                dashStyle: '%C_DASHSTYLE%',
+                marker: {enabled: false},
+                tooltip:{ valueSuffix: ' %C_YAXIS_UNIT%'}
     
-            }, {
-                name: '%A_SERIES_NAME%',
-                color: '#89A54E',
-                type: 'spline',
-                data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
             }]
         });
     });
@@ -171,6 +168,16 @@ $(function () {
             s.Replace("%WIDTH_PX%", this.Width.ToString());
             s.Replace("%HEIGHT_PX%", this.Height.ToString());
             s.Replace("%X_LABELS%", this.MakeXaxisLabels());
+            s.Replace("%LEGEND_BACK_COLOR%", LegendBackColorHEX);
+            s.Replace("%SHARED_TOOLTIP%", SharedTootltip.ToString().ToLower());
+
+            s.Replace("%A_AXISNUM%", this.Series_A.YaxisNumber.ToString());
+            s.Replace("%B_AXISNUM%", this.Series_B.YaxisNumber.ToString());
+            s.Replace("%C_AXISNUM%", this.Series_C.YaxisNumber.ToString());
+
+            s.Replace("%A_OPPOSITE%", Series_A.AxisOppositeSide.ToString().ToLower());
+            s.Replace("%B_OPPOSITE%", Series_B.AxisOppositeSide.ToString().ToLower());
+            s.Replace("%C_OPPOSITE%", Series_C.AxisOppositeSide.ToString().ToLower());
 
             s.Replace("%A_YAXIS_UNIT%", Series_A.Unit);
             s.Replace("%B_YAXIS_UNIT%", Series_B.Unit);
@@ -180,11 +187,26 @@ $(function () {
             s.Replace("%B_SERIES_NAME%", Series_B.YaxixLabel);
             s.Replace("%C_SERIES_NAME%", Series_C.YaxixLabel);
 
-            s.Replace("C_DATA", MakeYaxisData(Series_C.Data));
+            s.Replace("%A_LINETYPE%", Series_A.LineStyle.ToString());
+            s.Replace("%B_LINETYPE%", Series_B.LineStyle.ToString());
+            s.Replace("%C_LINETYPE%", Series_C.LineStyle.ToString());
 
+            s.Replace("%A_DATA%", MakeYaxisData(Series_A.Data));
+            s.Replace("%B_DATA%", MakeYaxisData(Series_B.Data));
+            s.Replace("%C_DATA%", MakeYaxisData(Series_C.Data));
 
+            s.Replace("%A_YAXIX_UNIT_COLOR%", Series_A.YaxisUnitColorHEX);
+            s.Replace("%A_YAXIX_TITLE_COLOR%", Series_A.YaxisTitleColorHEX);
 
+            s.Replace("%B_YAXIX_UNIT_COLOR%", Series_B.YaxisUnitColorHEX);
+            s.Replace("%B_YAXIX_TITLE_COLOR%", Series_B.YaxisTitleColorHEX);
 
+            s.Replace("%C_YAXIX_UNIT_COLOR%", Series_C.YaxisUnitColorHEX);
+            s.Replace("%C_YAXIX_TITLE_COLOR%", Series_C.YaxisTitleColorHEX);
+
+            s.Replace("%A_DASHSTYLE%", Series_A.DashStyle.ToString());
+            s.Replace("%B_DASHSTYLE%", Series_B.DashStyle.ToString());
+            s.Replace("%C_DASHSTYLE%", Series_C.DashStyle.ToString());
 
             Script = s.ToString();
         }
