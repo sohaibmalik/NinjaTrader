@@ -39,6 +39,8 @@
             this.columnPriceMatched = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
             this.infoBox = new System.Windows.Forms.GroupBox();
+            this.chartSizeTextBox = new System.Windows.Forms.TextBox();
+            this.chartButton = new System.Windows.Forms.Button();
             this.newButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
@@ -121,6 +123,8 @@
             // 
             // infoBox
             // 
+            this.infoBox.Controls.Add(this.chartSizeTextBox);
+            this.infoBox.Controls.Add(this.chartButton);
             this.infoBox.Controls.Add(this.newButton);
             this.infoBox.Controls.Add(this.deleteButton);
             this.infoBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -129,7 +133,25 @@
             this.infoBox.Size = new System.Drawing.Size(602, 103);
             this.infoBox.TabIndex = 1;
             this.infoBox.TabStop = false;
-            this.infoBox.Text = "Trade Info";
+            // 
+            // chartSizeTextBox
+            // 
+            this.chartSizeTextBox.Location = new System.Drawing.Point(12, 44);
+            this.chartSizeTextBox.Name = "chartSizeTextBox";
+            this.chartSizeTextBox.Size = new System.Drawing.Size(35, 23);
+            this.chartSizeTextBox.TabIndex = 8;
+            this.chartSizeTextBox.Text = "750";
+            this.chartSizeTextBox.TextChanged += new System.EventHandler(this.chartSizeTextBox_TextChanged);
+            // 
+            // chartButton
+            // 
+            this.chartButton.Location = new System.Drawing.Point(11, 14);
+            this.chartButton.Name = "chartButton";
+            this.chartButton.Size = new System.Drawing.Size(75, 23);
+            this.chartButton.TabIndex = 7;
+            this.chartButton.Text = "Draw Chart";
+            this.chartButton.UseVisualStyleBackColor = true;
+            this.chartButton.Click += new System.EventHandler(this.chartButton_Click);
             // 
             // newButton
             // 
@@ -166,6 +188,7 @@
             this.Load += new System.EventHandler(this.TradeLogForm_Load);
             this.panel1.ResumeLayout(false);
             this.infoBox.ResumeLayout(false);
+            this.infoBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -184,6 +207,8 @@
         private System.Windows.Forms.ColumnHeader columnPrice;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.Button newButton;
+        private System.Windows.Forms.Button chartButton;
+        private System.Windows.Forms.TextBox chartSizeTextBox;
 
     }
 }

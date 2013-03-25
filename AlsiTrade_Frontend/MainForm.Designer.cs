@@ -79,6 +79,8 @@
             this.emaB2TextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label15 = new System.Windows.Forms.Label();
+            this.chartSizeTextBox = new System.Windows.Forms.TextBox();
             this.drawChartButton = new System.Windows.Forms.Button();
             this.synchWebTradesButton = new System.Windows.Forms.Button();
             this.exportToTextButton = new System.Windows.Forms.Button();
@@ -717,6 +719,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label15);
+            this.tabPage2.Controls.Add(this.chartSizeTextBox);
             this.tabPage2.Controls.Add(this.drawChartButton);
             this.tabPage2.Controls.Add(this.synchWebTradesButton);
             this.tabPage2.Controls.Add(this.exportToTextButton);
@@ -725,13 +729,32 @@
             this.tabPage2.Controls.Add(this.timeframeGroupBox);
             this.tabPage2.Controls.Add(this.timespanGroupBox);
             this.tabPage2.Controls.Add(this.runHistCalcButton);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(353, 516);
+            this.tabPage2.Size = new System.Drawing.Size(353, 514);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(49, 463);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(19, 15);
+            this.label15.TabIndex = 15;
+            this.label15.Text = "px";
+            // 
+            // chartSizeTextBox
+            // 
+            this.chartSizeTextBox.Location = new System.Drawing.Point(9, 460);
+            this.chartSizeTextBox.MaxLength = 4;
+            this.chartSizeTextBox.Name = "chartSizeTextBox";
+            this.chartSizeTextBox.Size = new System.Drawing.Size(37, 23);
+            this.chartSizeTextBox.TabIndex = 14;
+            this.chartSizeTextBox.Text = "750";
+            this.chartSizeTextBox.TextChanged += new System.EventHandler(this.chartSizeTextBox_TextChanged);
             // 
             // drawChartButton
             // 
@@ -1467,6 +1490,7 @@
             this.emaGroupBox.ResumeLayout(false);
             this.emaGroupBox.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.statsGroupBox.ResumeLayout(false);
             this.orderDetailGroupBox.ResumeLayout(false);
             this.orderDetailGroupBox.PerformLayout();
@@ -1617,6 +1641,8 @@
         private System.Windows.Forms.RadioButton tradeModeBESTRadioButton;
         private System.Windows.Forms.CheckBox resetManualCheckBox;
         private System.Windows.Forms.Button drawChartButton;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox chartSizeTextBox;
         
     }
 }

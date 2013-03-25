@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Drawing;
+using System.Net;
+using System;
 
 namespace AlsiCharts
 {
@@ -24,6 +26,7 @@ namespace AlsiCharts
                 LegendBackColorHEX = ColorToHEX(value);
             }
         }
+        public string OutputFileName { get; set; }
 
         private string ColorToHEX(Color c)
         {
@@ -49,10 +52,12 @@ namespace AlsiCharts
             return script.ToString();
         }
 
-        public virtual void ShowChartInBrowser(FileInfo file)
+        public virtual void ShowChartInBrowser()
         {
-            
-            StreamWriter sr = new StreamWriter(file.FullName);
+            if (OutputFileName == null) throw new Exception("No output name specified");
+            var dir = Path.GetTempPath();
+            var file = new FileInfo(dir + @"\" + OutputFileName + ".html");
+            StreamWriter sr = new StreamWriter(dir+@"\"+OutputFileName+".html");
             sr.Write(GetScript());
             sr.Close();
             Process.Start(file.FullName);
@@ -84,5 +89,39 @@ namespace AlsiCharts
         {
 
         }
+
+        public virtual void UploadFile()
+        {
+            try
+            {
+                // Get the object used to communicate with the server.
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://www.alsitm.com/alsitm.com/wwwroot/Charts/" + OutputFileName + ".html");
+                request.Method = WebRequestMethods.Ftp.UploadFile;
+
+                // This example assumes the FTP site uses anonymous logon.
+                request.Credentials = new NetworkCredential("alsitmadmin_ftp", "1Rachelle");
+
+                // Copy the contents of the file to the request stream.
+                var dir = Path.GetTempPath();
+                var file = dir + @"\" + OutputFileName + ".html";
+                StreamReader sourceStream = new StreamReader(file);
+                byte[] fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
+                sourceStream.Close();
+                request.ContentLength = fileContents.Length;
+
+                Stream requestStream = request.GetRequestStream();
+                requestStream.Write(fileContents, 0, fileContents.Length);
+                requestStream.Close();
+
+                FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+                Debug.WriteLine("Upload File Complete, status {0}", response.StatusDescription);
+
+                response.Close();
+            }
+            catch { }
+        }
     }
+
+    
 }

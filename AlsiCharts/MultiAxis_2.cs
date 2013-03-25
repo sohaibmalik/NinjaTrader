@@ -2,16 +2,16 @@
 
 namespace AlsiCharts //http://www.highcharts.com/demo/
 {
-    public class MultiAxis_3 : Chart
+    public class MultiAxis_2 : Chart
     {
 
         public Series Series_A { get; set; }
         public Series Series_B { get; set; }
-        public Series Series_C { get; set; }
+      
 
 
 
-        public MultiAxis_3()
+        public MultiAxis_2()
         {
             #region Set Script
 
@@ -76,23 +76,6 @@ $(function () {
                     }
                 }, opposite: %B_OPPOSITE%
     
-            }, { // Tertiary yAxis
-                gridLineWidth: 0,
-                title: {
-                    text: '%C_SERIES_NAME%',
-                    style: {
-                        color: '%C_YAXIX_UNIT_COLOR%'
-                    }
-                },
-                labels: {
-                    formatter: function() {
-                        return this.value +' %C_YAXIS_UNIT%';
-                    },
-                    style: {
-                        color: '%C_YAXIX_TITLE_COLOR%'
-                    }
-                },
-                opposite: %C_OPPOSITE%
             }],
             tooltip: {shared:%SHARED_TOOLTIP%},         
                             
@@ -119,17 +102,7 @@ $(function () {
                 data: [%B_DATA%],
                 dashStyle: '%B_DASHSTYLE%',
                 marker: {enabled: false},
-               tooltip:{ valueSuffix: ' %B_YAXIS_UNIT%'}
-            }, {
-                name: '%C_SERIES_NAME%',
-                type: '%C_LINETYPE%',
-                color: '%C_YAXIX_TITLE_COLOR%',
-                yAxis: %C_AXISNUM%,
-                data: [%C_DATA%],               
-                dashStyle: '%C_DASHSTYLE%',
-                marker: {enabled: false},
-                tooltip:{ valueSuffix: ' %C_YAXIS_UNIT%'}
-    
+               tooltip:{ valueSuffix: ' %B_YAXIS_UNIT%'}              
             }]
         });
     });
@@ -151,7 +124,7 @@ $(function () {
 
             Series_A = new Series();
             Series_B = new Series();
-            Series_C = new Series();
+            
 
         }
 
@@ -169,27 +142,27 @@ $(function () {
 
             s.Replace("%A_AXISNUM%", this.Series_A.YaxisNumber.ToString());
             s.Replace("%B_AXISNUM%", this.Series_B.YaxisNumber.ToString());
-            s.Replace("%C_AXISNUM%", this.Series_C.YaxisNumber.ToString());
+         
 
             s.Replace("%A_OPPOSITE%", Series_A.AxisOppositeSide.ToString().ToLower());
             s.Replace("%B_OPPOSITE%", Series_B.AxisOppositeSide.ToString().ToLower());
-            s.Replace("%C_OPPOSITE%", Series_C.AxisOppositeSide.ToString().ToLower());
+           
 
             s.Replace("%A_YAXIS_UNIT%", Series_A.Unit);
             s.Replace("%B_YAXIS_UNIT%", Series_B.Unit);
-            s.Replace("%C_YAXIS_UNIT%", Series_C.Unit);
+            
 
             s.Replace("%A_SERIES_NAME%", Series_A.YaxixLabel);
             s.Replace("%B_SERIES_NAME%", Series_B.YaxixLabel);
-            s.Replace("%C_SERIES_NAME%", Series_C.YaxixLabel);
+           
 
             s.Replace("%A_LINETYPE%", Series_A.LineStyle.ToString());
             s.Replace("%B_LINETYPE%", Series_B.LineStyle.ToString());
-            s.Replace("%C_LINETYPE%", Series_C.LineStyle.ToString());
+          
 
             s.Replace("%A_DATA%", MakeYaxisData(Series_A.Data));
             s.Replace("%B_DATA%", MakeYaxisData(Series_B.Data));
-            s.Replace("%C_DATA%", MakeYaxisData(Series_C.Data));
+           
 
             s.Replace("%A_YAXIX_UNIT_COLOR%", Series_A.YaxisUnitColorHEX);
             s.Replace("%A_YAXIX_TITLE_COLOR%", Series_A.YaxisTitleColorHEX);
@@ -197,12 +170,10 @@ $(function () {
             s.Replace("%B_YAXIX_UNIT_COLOR%", Series_B.YaxisUnitColorHEX);
             s.Replace("%B_YAXIX_TITLE_COLOR%", Series_B.YaxisTitleColorHEX);
 
-            s.Replace("%C_YAXIX_UNIT_COLOR%", Series_C.YaxisUnitColorHEX);
-            s.Replace("%C_YAXIX_TITLE_COLOR%", Series_C.YaxisTitleColorHEX);
 
             s.Replace("%A_DASHSTYLE%", Series_A.DashStyle.ToString());
             s.Replace("%B_DASHSTYLE%", Series_B.DashStyle.ToString());
-            s.Replace("%C_DASHSTYLE%", Series_C.DashStyle.ToString());
+          
 
             Script = s.ToString();
         }

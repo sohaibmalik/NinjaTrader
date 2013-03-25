@@ -14,9 +14,10 @@ namespace AlsiCharts
        {
            AlsiCharts.MultiAxis_3 c = new MultiAxis_3();
 
-           for (int x = 0; x < 10; x++)
+           for (int x = 0; x < 1000; x++)
            {
-               c.XaxisLabels.Add(x.ToString());
+              // c.XaxisLabels.Add(x.ToString());
+               c.XaxisLabels.Add(DateTime.Now.AddHours(x).ToString());
                c.Series_A.Data.Add(x * (10 - 100));
                c.Series_B.Data.Add(x * 1000);
                c.Series_C.Data.Add(x * 3.1245);
@@ -52,7 +53,7 @@ namespace AlsiCharts
            c.Series_C.YaxisUnitColor = Color.Orange;
 
            c.PopulateScript();
-           c.ShowChartInBrowser(new FileInfo(@"D:\abc.html"));
+           c.ShowChartInBrowser();
        }
 
       

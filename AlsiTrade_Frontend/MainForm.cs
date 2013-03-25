@@ -148,7 +148,10 @@ namespace FrontEnd
                 EmailMsg msg = new EmailMsg();
                 msg.Title = "New Trade";
                 msg.Body = "an Order was generated and sucessfully send to the Market. \n" + e.Trade.ToString() +
-                  "go to " + @"http://www.alsitm.com/Trades.aspx" + " to view trade history";
+                  "go to " + @"http://www.alsitm.com/Trades.aspx" + " to view trade history\n"
+                            + @"http://www.alsitm.com/charts/Statssummary.html" + " to view profit summary chart\n"
+                            + @"http://www.alsitm.com/charts/TradeHistory.html" + " to view trade history chart\n"
+                            + @"http://www.alsitm.com/charts/TradeDifference.html" + " to view actual trade difference chart";
                 DoStuff.Email.SendEmail(e.Trade, msg, false);
                 WebUpdate.SendOrder(e.Trade, false);
                 WebUpdate.SendOrderToWebDB(e.Trade);
@@ -931,12 +934,20 @@ namespace FrontEnd
             AlsiTrade_Backend.WebUpdate.SyncOnlineDbTradeHistory(trades);
             Cursor = Cursors.Default;
         }
+
+
+        private int chartsize = 750;
+        private void chartSizeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(chartSizeTextBox.Text, out chartsize);
+        }
+
         private void drawChartButton_Click(object sender, EventArgs e)
         {
             AlsiCharts.MultiAxis_3 c = new AlsiCharts.MultiAxis_3();
-            c.Height = 900;
+            c.Height = chartsize;
             c.SharedTootltip = true;
-            c.XaxisLabels = _TradeOnlyList.OrderBy(z=>z.TimeStamp).Select(z => z.TimeStamp.ToString()).ToList();
+            c.XaxisLabels = _TradeOnlyList.Where(z => z.RunningProfit != 0).OrderBy(z => z.TimeStamp).Select(z => z.TimeStamp.ToString()).ToList();
 
             c.Title = "Alsi Trade System Profit";
             c.Subtitle = _TradeOnlyList.Last().TimeStamp.ToLongDateString() + " - " + _TradeOnlyList.First().TimeStamp.ToLongDateString();
@@ -979,7 +990,9 @@ namespace FrontEnd
 
 
             c.PopulateScript();
-            c.ShowChartInBrowser(new System.IO.FileInfo(@"D:\TradeHistory.html"));
+            c.OutputFileName = "TradeHistory";
+            c.ShowChartInBrowser();
+            c.UploadFile();
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -1254,6 +1267,7 @@ namespace FrontEnd
             UpdateTradeLog(mantrade, true);
 
         }
+
 
        
 

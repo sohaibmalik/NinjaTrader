@@ -16,7 +16,7 @@ namespace NotifierClientApp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Notify());
-            //Application.Run(new TradeLogForm());
+           // Application.Run(new TradeLogForm());
         }
     }
 }
