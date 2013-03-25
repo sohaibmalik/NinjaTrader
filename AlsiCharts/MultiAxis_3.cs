@@ -96,12 +96,7 @@ $(function () {
             tooltip: {shared:%SHARED_TOOLTIP%},         
                             
             legend: {
-                layout: 'vertical',
-                align: 'left',
-                x: 120,
-                verticalAlign: 'top',
-                y: 80,
-                floating: true,
+             
                 backgroundColor: '%LEGEND_BACK_COLOR%',
               
             },

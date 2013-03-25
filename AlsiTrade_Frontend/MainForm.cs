@@ -938,17 +938,24 @@ namespace FrontEnd
             c.SharedTootltip = true;
             c.XaxisLabels = _TradeOnlyList.OrderBy(z=>z.TimeStamp).Select(z => z.TimeStamp.ToString()).ToList();
 
+            c.Title = "Alsi Trade System Profit";
+            c.Subtitle = _TradeOnlyList.Last().TimeStamp.ToLongDateString() + " - " + _TradeOnlyList.First().TimeStamp.ToLongDateString();
 
-            c.Series_C.Data = _TradeOnlyList.Where(z=>z.RunningProfit!=0).OrderBy(z=>z.TimeStamp).Select(z => z.TotalPL).ToList();
-            c.Series_C.LineStyle = AlsiCharts.Series.LineStyles.spline;
-            c.Series_C.AxisOppositeSide = true;
-            c.Series_C.YaxixLabel = "Total Profit";
-            c.Series_C.YaxisTitleColor = Color.DarkGreen;
-            c.Series_C.YaxisUnitColor = Color.DarkGreen;
-            c.Series_C.Unit = "pts";
-            c.Series_C.YaxisNumber = 0;
+            c.Series_A.Data = _TradeOnlyList.Where(z => z.RunningProfit != 0).OrderBy(z => z.TimeStamp).Select(z => z.CurrentPrice).ToList();
+            c.Series_B.Data = _TradeOnlyList.Where(z => z.RunningProfit != 0).OrderBy(z => z.TimeStamp).Select(z => z.RunningProfit).ToList();
+            c.Series_C.Data = _TradeOnlyList.Where(z => z.RunningProfit != 0).OrderBy(z => z.TimeStamp).Select(z => z.TotalPL).ToList();
 
-            c.Series_B.Data  = _TradeOnlyList.Where(z=>z.RunningProfit!=0).OrderBy(z=>z.TimeStamp).Select(z => z.RunningProfit).ToList();
+
+          
+            c.Series_A.LineStyle = AlsiCharts.Series.LineStyles.spline;
+            c.Series_A.AxisOppositeSide = false;
+            c.Series_A.YaxixLabel = "Market Price";
+            c.Series_A.YaxisTitleColor = Color.Orange;
+            c.Series_A.YaxisUnitColor = Color.Orange;
+            c.Series_A.YaxisNumber = 0;
+
+
+          
             c.Series_B.LineStyle = AlsiCharts.Series.LineStyles.column;
             c.Series_B.YaxisTitleColor = Color.SteelBlue;
             c.Series_B.YaxisUnitColor = Color.SteelBlue;
@@ -957,13 +964,16 @@ namespace FrontEnd
             c.Series_B.AxisOppositeSide = false;
             c.Series_B.YaxisNumber = 1;
 
-            c.Series_A.Data = _TradeOnlyList.Where(z => z.RunningProfit != 0).OrderBy(z => z.TimeStamp).Select(z => z.CurrentPrice).ToList();
-            c.Series_A.LineStyle = AlsiCharts.Series.LineStyles.spline;
-            c.Series_A.AxisOppositeSide = false;
-            c.Series_A.YaxixLabel = "Market Price";
-            c.Series_A.YaxisTitleColor = Color.Orange;
-            c.Series_A.YaxisUnitColor = Color.Orange;
-            c.Series_A.YaxisNumber = 2;
+
+         
+            c.Series_C.LineStyle = AlsiCharts.Series.LineStyles.spline;
+            c.Series_C.AxisOppositeSide = true;
+            c.Series_C.YaxixLabel = "Total Profit";
+            c.Series_C.YaxisTitleColor = Color.DarkGreen;
+            c.Series_C.YaxisUnitColor = Color.DarkGreen;
+            c.Series_C.Unit = "pts";
+            c.Series_C.YaxisNumber = 2;
+
 
 
 
