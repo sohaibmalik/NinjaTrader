@@ -11,21 +11,22 @@ namespace NotifierClientApp
         private newLogSaved _onSaved;
         private TradeLog tl;
         TradeLog EX;
-        public NewOrderInput(newLogSaved Updatedeleagte)
+        WebDbDataContext dc;
+        public NewOrderInput(newLogSaved Updatedeleagte, WebDbDataContext _dc)
         {
             InitializeComponent();
             _onSaved = Updatedeleagte;
-
+            dc = _dc;
         }
 
         private bool loadExisting;
-        public NewOrderInput(newLogSaved Updatedeleagte, TradeLog Log)
+        public NewOrderInput(newLogSaved Updatedeleagte, TradeLog Log,WebDbDataContext _dc)
         {
             InitializeComponent();
             _onSaved = Updatedeleagte;
             loadExisting = true;
             EX = Log;
-
+            dc = _dc;
         }
 
         private void PopuilateFromExisting(TradeLog ex)
@@ -132,7 +133,7 @@ namespace NotifierClientApp
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            var dc = new WebDbDataContext();
+           
             if (EX == null) dc.TradeLogs.InsertOnSubmit(tl);
             else
             {

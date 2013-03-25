@@ -28,6 +28,7 @@ namespace NotifierClientApp
 
         private void LoadListview()
         {
+            dc = new WebDbDataContext();
             tradeListView.Items.Clear();
             var log = dc.TradeLogs.OrderByDescending(z => z.Time).Take(25);
 
@@ -74,14 +75,14 @@ namespace NotifierClientApp
 
         private void newButton_Click(object sender, EventArgs e)
         {
-            var n = new NewOrderInput(onUpdate);
+            var n = new NewOrderInput(onUpdate,dc);
             n.Show();
         }
 
         private void tradeListView_DoubleClick(object sender, EventArgs e)
         {
             var tl = (TradeLog)tradeListView.SelectedItems[0].Tag;
-            var n = new NewOrderInput(onUpdate,tl);
+            var n = new NewOrderInput(onUpdate,tl,dc);
             n.Show();
         }
 
