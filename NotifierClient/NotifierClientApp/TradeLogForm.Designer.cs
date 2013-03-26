@@ -43,6 +43,7 @@
             this.chartButton = new System.Windows.Forms.Button();
             this.newButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
+            this.uploadButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.infoBox.SuspendLayout();
             this.SuspendLayout();
@@ -123,6 +124,7 @@
             // 
             // infoBox
             // 
+            this.infoBox.Controls.Add(this.uploadButton);
             this.infoBox.Controls.Add(this.chartSizeTextBox);
             this.infoBox.Controls.Add(this.chartButton);
             this.infoBox.Controls.Add(this.newButton);
@@ -174,6 +176,17 @@
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
+            // uploadButton
+            // 
+            this.uploadButton.Location = new System.Drawing.Point(11, 74);
+            this.uploadButton.Name = "uploadButton";
+            this.uploadButton.Size = new System.Drawing.Size(66, 23);
+            this.uploadButton.TabIndex = 9;
+            this.uploadButton.Text = "Upload";
+            this.uploadButton.UseVisualStyleBackColor = true;
+            this.uploadButton.Visible = false;
+            this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
+            // 
             // TradeLogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -209,6 +222,7 @@
         private System.Windows.Forms.Button newButton;
         private System.Windows.Forms.Button chartButton;
         private System.Windows.Forms.TextBox chartSizeTextBox;
+        private System.Windows.Forms.Button uploadButton;
 
     }
 }

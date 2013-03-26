@@ -618,6 +618,7 @@ namespace FrontEnd
             Cursor = Cursors.WaitCursor;
             exportToTextButton.Enabled = false;
             synchWebTradesButton.Enabled = false;
+            uploadButton.Visible = false;
             drawChartButton.Enabled = false;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_1;
             if (_2minRadioButton.Checked) t = GlobalObjects.TimeInterval.Minute_2;
@@ -935,7 +936,7 @@ namespace FrontEnd
             Cursor = Cursors.Default;
         }
 
-
+        private AlsiCharts.MultiAxis_3 c = new AlsiCharts.MultiAxis_3();
         private int chartsize = 750;
         private void chartSizeTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -944,7 +945,7 @@ namespace FrontEnd
 
         private void drawChartButton_Click(object sender, EventArgs e)
         {
-            AlsiCharts.MultiAxis_3 c = new AlsiCharts.MultiAxis_3();
+          
             c.Height = chartsize;
             c.SharedTootltip = true;
             c.XaxisLabels = _TradeOnlyList.Where(z => z.RunningProfit != 0).OrderBy(z => z.TimeStamp).Select(z => z.TimeStamp.ToString()).ToList();
@@ -992,8 +993,9 @@ namespace FrontEnd
             c.PopulateScript();
             c.OutputFileName = "TradeHistory";
             c.ShowChartInBrowser();
-            c.UploadFile();
+            uploadButton.Visible = true;
         }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             UpdateDB.FullHistoricUpdate_MasterMinute(WebSettings.General.HISAT_INST);
@@ -1266,6 +1268,13 @@ namespace FrontEnd
             marketOrder.SendOrderToMarketMANUALCLOSE(mantrade);
             UpdateTradeLog(mantrade, true);
 
+        }
+
+        private void uploadButton_Click(object sender, EventArgs e)
+        {
+            uploadButton.Visible = false;
+            c.UploadFile();
+           
         }
 
 

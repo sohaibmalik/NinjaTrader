@@ -94,9 +94,15 @@ namespace NotifierClientApp
             deleteButton.Enabled = true;
         }
 
+        AlsiCharts.MultiAxis_2 c = new AlsiCharts.MultiAxis_2();
+        private int chartsize = 750;
+        private void chartSizeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            int.TryParse(chartSizeTextBox.Text, out chartsize);
+        }
         private void chartButton_Click(object sender, EventArgs e)
         {
-            AlsiCharts.MultiAxis_2 c = new AlsiCharts.MultiAxis_2();
+            
 
             var diff = new List<double>();
             var totDiff = new List<double>();
@@ -153,13 +159,15 @@ namespace NotifierClientApp
             c.PopulateScript();
             c.OutputFileName = "TradeDifference";
             c.ShowChartInBrowser();
+            uploadButton.Visible = true;
+        }
+
+        private void uploadButton_Click(object sender, EventArgs e)
+        {
+            uploadButton.Visible = false;
             c.UploadFile();
         }
-        private int chartsize = 750;
-        private void chartSizeTextBox_TextChanged(object sender, EventArgs e)
-        {
-            int.TryParse(chartSizeTextBox.Text, out chartsize);
-        }
+       
 
 
     }

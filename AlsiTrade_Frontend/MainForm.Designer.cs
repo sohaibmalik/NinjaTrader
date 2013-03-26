@@ -149,6 +149,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.uploadButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -719,6 +720,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.uploadButton);
             this.tabPage2.Controls.Add(this.label15);
             this.tabPage2.Controls.Add(this.chartSizeTextBox);
             this.tabPage2.Controls.Add(this.drawChartButton);
@@ -1455,6 +1457,17 @@
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // uploadButton
+            // 
+            this.uploadButton.Location = new System.Drawing.Point(74, 460);
+            this.uploadButton.Name = "uploadButton";
+            this.uploadButton.Size = new System.Drawing.Size(74, 23);
+            this.uploadButton.TabIndex = 16;
+            this.uploadButton.Text = "Upload";
+            this.uploadButton.UseVisualStyleBackColor = true;
+            this.uploadButton.Visible = false;
+            this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1643,6 +1656,7 @@
         private System.Windows.Forms.Button drawChartButton;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox chartSizeTextBox;
+        private System.Windows.Forms.Button uploadButton;
         
     }
 }
