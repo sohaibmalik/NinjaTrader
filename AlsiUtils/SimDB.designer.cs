@@ -804,9 +804,9 @@ namespace AlsiUtils
 		
 		private int _Count;
 		
-		private System.Nullable<int> _Trades;
+		private System.Nullable<int> _PrevTotalPL;
 		
-		private System.Nullable<int> _TotalPL;
+		private System.Nullable<int> _NewTotalPL;
 		
 		private System.Nullable<decimal> _AvgPL;
 		
@@ -814,19 +814,13 @@ namespace AlsiUtils
 		
 		private System.Nullable<decimal> _Loose;
 		
-		private System.Nullable<int> _SK;
+		private System.Nullable<int> _Period;
 		
-		private System.Nullable<int> _FK;
+		private System.Nullable<int> _TakeProf;
 		
-		private System.Nullable<int> _D;
-		
-		private System.Nullable<int> _H;
-		
-		private System.Nullable<int> _L;
+		private System.Nullable<decimal> _Improve;
 		
 		private string _Note;
-		
-		private string _CloseEndDay;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -834,30 +828,24 @@ namespace AlsiUtils
     partial void OnCreated();
     partial void OnCountChanging(int value);
     partial void OnCountChanged();
-    partial void OnTradesChanging(System.Nullable<int> value);
-    partial void OnTradesChanged();
-    partial void OnTotalPLChanging(System.Nullable<int> value);
-    partial void OnTotalPLChanged();
+    partial void OnPrevTotalPLChanging(System.Nullable<int> value);
+    partial void OnPrevTotalPLChanged();
+    partial void OnNewTotalPLChanging(System.Nullable<int> value);
+    partial void OnNewTotalPLChanged();
     partial void OnAvgPLChanging(System.Nullable<decimal> value);
     partial void OnAvgPLChanged();
     partial void OnWinChanging(System.Nullable<decimal> value);
     partial void OnWinChanged();
     partial void OnLooseChanging(System.Nullable<decimal> value);
     partial void OnLooseChanged();
-    partial void OnSKChanging(System.Nullable<int> value);
-    partial void OnSKChanged();
-    partial void OnFKChanging(System.Nullable<int> value);
-    partial void OnFKChanged();
-    partial void OnDChanging(System.Nullable<int> value);
-    partial void OnDChanged();
-    partial void OnHChanging(System.Nullable<int> value);
-    partial void OnHChanged();
-    partial void OnLChanging(System.Nullable<int> value);
-    partial void OnLChanged();
+    partial void OnPeriodChanging(System.Nullable<int> value);
+    partial void OnPeriodChanged();
+    partial void OnTakeProfChanging(System.Nullable<int> value);
+    partial void OnTakeProfChanged();
+    partial void OnImproveChanging(System.Nullable<decimal> value);
+    partial void OnImproveChanged();
     partial void OnNoteChanging(string value);
     partial void OnNoteChanged();
-    partial void OnCloseEndDayChanging(string value);
-    partial void OnCloseEndDayChanged();
     #endregion
 		
 		public TProf()
@@ -885,42 +873,42 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Trades", DbType="Int")]
-		public System.Nullable<int> Trades
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PrevTotalPL", DbType="Int")]
+		public System.Nullable<int> PrevTotalPL
 		{
 			get
 			{
-				return this._Trades;
+				return this._PrevTotalPL;
 			}
 			set
 			{
-				if ((this._Trades != value))
+				if ((this._PrevTotalPL != value))
 				{
-					this.OnTradesChanging(value);
+					this.OnPrevTotalPLChanging(value);
 					this.SendPropertyChanging();
-					this._Trades = value;
-					this.SendPropertyChanged("Trades");
-					this.OnTradesChanged();
+					this._PrevTotalPL = value;
+					this.SendPropertyChanged("PrevTotalPL");
+					this.OnPrevTotalPLChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPL", DbType="Int")]
-		public System.Nullable<int> TotalPL
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NewTotalPL", DbType="Int")]
+		public System.Nullable<int> NewTotalPL
 		{
 			get
 			{
-				return this._TotalPL;
+				return this._NewTotalPL;
 			}
 			set
 			{
-				if ((this._TotalPL != value))
+				if ((this._NewTotalPL != value))
 				{
-					this.OnTotalPLChanging(value);
+					this.OnNewTotalPLChanging(value);
 					this.SendPropertyChanging();
-					this._TotalPL = value;
-					this.SendPropertyChanged("TotalPL");
-					this.OnTotalPLChanged();
+					this._NewTotalPL = value;
+					this.SendPropertyChanged("NewTotalPL");
+					this.OnNewTotalPLChanged();
 				}
 			}
 		}
@@ -985,102 +973,62 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SK", DbType="Int")]
-		public System.Nullable<int> SK
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Period", DbType="Int")]
+		public System.Nullable<int> Period
 		{
 			get
 			{
-				return this._SK;
+				return this._Period;
 			}
 			set
 			{
-				if ((this._SK != value))
+				if ((this._Period != value))
 				{
-					this.OnSKChanging(value);
+					this.OnPeriodChanging(value);
 					this.SendPropertyChanging();
-					this._SK = value;
-					this.SendPropertyChanged("SK");
-					this.OnSKChanged();
+					this._Period = value;
+					this.SendPropertyChanged("Period");
+					this.OnPeriodChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FK", DbType="Int")]
-		public System.Nullable<int> FK
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TakeProf", DbType="Int")]
+		public System.Nullable<int> TakeProf
 		{
 			get
 			{
-				return this._FK;
+				return this._TakeProf;
 			}
 			set
 			{
-				if ((this._FK != value))
+				if ((this._TakeProf != value))
 				{
-					this.OnFKChanging(value);
+					this.OnTakeProfChanging(value);
 					this.SendPropertyChanging();
-					this._FK = value;
-					this.SendPropertyChanged("FK");
-					this.OnFKChanged();
+					this._TakeProf = value;
+					this.SendPropertyChanged("TakeProf");
+					this.OnTakeProfChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_D", DbType="Int")]
-		public System.Nullable<int> D
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Improve", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> Improve
 		{
 			get
 			{
-				return this._D;
+				return this._Improve;
 			}
 			set
 			{
-				if ((this._D != value))
+				if ((this._Improve != value))
 				{
-					this.OnDChanging(value);
+					this.OnImproveChanging(value);
 					this.SendPropertyChanging();
-					this._D = value;
-					this.SendPropertyChanged("D");
-					this.OnDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int")]
-		public System.Nullable<int> H
-		{
-			get
-			{
-				return this._H;
-			}
-			set
-			{
-				if ((this._H != value))
-				{
-					this.OnHChanging(value);
-					this.SendPropertyChanging();
-					this._H = value;
-					this.SendPropertyChanged("H");
-					this.OnHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int")]
-		public System.Nullable<int> L
-		{
-			get
-			{
-				return this._L;
-			}
-			set
-			{
-				if ((this._L != value))
-				{
-					this.OnLChanging(value);
-					this.SendPropertyChanging();
-					this._L = value;
-					this.SendPropertyChanged("L");
-					this.OnLChanged();
+					this._Improve = value;
+					this.SendPropertyChanged("Improve");
+					this.OnImproveChanged();
 				}
 			}
 		}
@@ -1101,26 +1049,6 @@ namespace AlsiUtils
 					this._Note = value;
 					this.SendPropertyChanged("Note");
 					this.OnNoteChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CloseEndDay", DbType="VarChar(5)")]
-		public string CloseEndDay
-		{
-			get
-			{
-				return this._CloseEndDay;
-			}
-			set
-			{
-				if ((this._CloseEndDay != value))
-				{
-					this.OnCloseEndDayChanging(value);
-					this.SendPropertyChanging();
-					this._CloseEndDay = value;
-					this.SendPropertyChanged("CloseEndDay");
-					this.OnCloseEndDayChanged();
 				}
 			}
 		}

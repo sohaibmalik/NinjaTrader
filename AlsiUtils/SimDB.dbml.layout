@@ -14,10 +14,10 @@
         <elementListCompartment Id="3597a07d-3a16-42e0-8667-7b2decacdcde" absoluteBounds="5.39, 2.71, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="b1a61949-6ea8-410c-9c87-1687cc0fb81e" absoluteBounds="5, 1, 2, 3.3093082682291666">
+    <classShape Id="60c1bfcc-cc61-4549-a13d-2ee6ed99b29a" absoluteBounds="4, 0.625, 2, 2.7324039713541666">
       <DataClassMoniker Name="/SimDBDataContext/TProf" />
       <nestedChildShapes>
-        <elementListCompartment Id="c67b2a3d-55b0-4780-b9f1-0baa33006b16" absoluteBounds="5.015, 1.46, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="5673eedf-d5cc-4c11-8eed-e1b3aac53972" absoluteBounds="4.015, 1.085, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

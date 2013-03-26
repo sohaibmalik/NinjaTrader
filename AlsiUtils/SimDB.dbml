@@ -37,18 +37,15 @@
   <Table Name="dbo.TProf" Member="TProfs">
     <Type Name="TProf">
       <Column Name="Count" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Trades" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="TotalPL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PrevTotalPL" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NewTotalPL" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AvgPL" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
       <Column Name="Win" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
       <Column Name="Loose" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
-      <Column Name="SK" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="FK" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="D" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="H" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="L" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Period" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TakeProf" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Improve" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
       <Column Name="Note" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="CloseEndDay" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

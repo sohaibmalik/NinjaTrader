@@ -976,7 +976,7 @@ namespace AlsiUtils
             return TakeProfitList;
         }
 
-        public static List<CompletedTrade> TakeProfit_Exiguous_AvgProfitPeriod(List<Price> EndOfDay, List<Trade> FullTradeList, int I,  int ATR_Range, double ATR_Factor)
+        public static List<CompletedTrade> TakeProfit_Exiguous_AvgProfitPeriod(List<Price> EndOfDay, List<Trade> FullTradeList, int I, int ATR_Range, double ATR_Factor)
         {
             var TakeProfitList = new List<CompletedTrade>();
             var TO = Trade.TradesOnly(FullTradeList);
@@ -1003,11 +1003,11 @@ namespace AlsiUtils
                 double A = 0;
                 double B = 0;
                 for (int x = 0; x < TList.Count; x++)
-                    if (x > I  && TList.First().TradeVolume != 2)
+                    if (x > I && TList.First().TradeVolume != 2)
                     {
                         var adxYesterday = ATR.Where(z => z.TimeStamp.Date.AddDays(-1) == TList[x].TimeStamp.Date);
                         if (adxYesterday.ToList().Count() == 0) break;
-                        var Z = Math.Round((adxYesterday.First().AvgTrueRange * ATR_Factor),2);
+                        var Z = Math.Round((adxYesterday.First().AvgTrueRange * ATR_Factor), 2);
                         if (TList[x].RunningProfit < Z) break;
                         A = TList[x].RunningProfit;
                         B = TList.Last().RunningProfit;
@@ -1026,6 +1026,75 @@ namespace AlsiUtils
 
 
             return CompletedList;
+        }
+
+        public static List<CompletedTrade> TakeProfit_Exiguous_(List<Trade> FullTradeList, int tp, int period)
+        {
+            var TakeProfitList = new List<CompletedTrade>();
+            var TO = Trade.TradesOnly(FullTradeList);
+            var CompletedList = CompletedTrade.CreateList(TO);
+
+
+
+
+            double newProf = 0;
+            List<TestData> TD = new List<TestData>();
+            foreach (var t in CompletedList)
+            {
+                var timeframe = from x in FullTradeList
+                                where x.TimeStamp >= t.OpenTrade.TimeStamp && x.TimeStamp <= t.CloseTrade.TimeStamp
+                                select x;
+
+
+                var TList = timeframe.ToList();
+                var trade = new CompletedTrade();
+                trade.OpenTrade = TList[0];
+
+                if (TList.Count < period) ;
+                else
+                {
+                    for (int x = period; x < TList.Count; x++)
+                    {
+                        if (TList[x].RunningProfit - TList[x - period].RunningProfit >= tp)
+                        {
+                            newProf += TList[x].RunningProfit;
+                            trade.CloseTrade = TList[x];
+                            if (trade.OpenTrade.Reason == Trade.Trigger.OpenShort)
+                            {
+                                trade.CloseTrade.Reason = Trade.Trigger.CloseShort;
+                                trade.CloseTrade.BuyorSell = Trade.BuySell.Buy;
+                                trade.CloseTrade.TradeVolume = trade.OpenTrade.TradeVolume;
+
+                            }
+                            if (trade.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                            {
+                                trade.CloseTrade.Reason = Trade.Trigger.CloseLong;
+                                trade.CloseTrade.BuyorSell = Trade.BuySell.Sell;
+                                trade.CloseTrade.TradeVolume = trade.OpenTrade.TradeVolume;
+                            }
+                            TakeProfitList.Add(trade);
+                            break;
+                        }
+                    }
+
+                }
+
+            }
+
+            var totalOriginal = TO.Sum(z => z.RunningProfit);
+            var improve = Math.Round(((newProf - totalOriginal) / totalOriginal * 100), 2);
+
+            // Debug.WriteLine("TP," + tp + ",Period," + period + "," + newProf + "," + improve);
+
+            var tprof = new TProf
+            {
+
+            };
+            // Debug.WriteLine(TO.Sum(z => z.RunningProfit));
+
+
+
+            return TakeProfitList;
         }
 
         internal class TestData

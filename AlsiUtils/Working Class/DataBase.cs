@@ -167,10 +167,14 @@ namespace AlsiUtils
                 }
                 if (T == GlobalObjects.TimeInterval.Minute_5)
                 {
-                    var firstinDB = dc.OHLC_5_Minutes.AsEnumerable().First().Stamp;
-                    var lastinDB = dc.OHLC_5_Minutes.AsEnumerable().Last().Stamp;
-                    if (firstinDB > Start) dc.OHLC_5_AllHistory();
-                    if (lastinDB < End) dc.OHLC_5_AllHistory();
+                    try
+                    {
+                        var firstinDB = dc.OHLC_5_Minutes.AsEnumerable().First().Stamp;
+                        var lastinDB = dc.OHLC_5_Minutes.AsEnumerable().Last().Stamp;
+                        if (firstinDB > Start) dc.OHLC_5_AllHistory();
+                        if (lastinDB < End) dc.OHLC_5_AllHistory();
+                    }
+                    catch { dc.OHLC_5_AllHistory(); }
 
                 }
                 if (T == GlobalObjects.TimeInterval.Minute_10)
