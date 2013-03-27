@@ -1028,17 +1028,31 @@ namespace AlsiUtils
             return CompletedList;
         }
 
-        public static List<CompletedTrade> TakeProfit_Exiguous_(List<Trade> FullTradeList, int tp, int period)
+        public static List<Trade> TakeProfit_Exiguous_(List<Trade> FullTradeList, int tp, int period)
         {
             var TakeProfitList = new List<CompletedTrade>();
             var TO = Trade.TradesOnly(FullTradeList);
             var CompletedList = CompletedTrade.CreateList(TO);
-
-
-
-
             double newProf = 0;
             List<TestData> TD = new List<TestData>();
+
+
+            //reset 2 vol running prof
+            var doublevoladjusted = FullTradeList.Where(z => z.TradeVolume == 2);
+            foreach (var d in doublevoladjusted)
+            {
+                d.RunningProfit = (d.RunningProfit / 2);
+                // Debug.WriteLine(d.TimeStamp + "   " + d.Reason + "  " + d.CurrentPrice + "  " + d.TradedPrice + "  " + d.RunningProfit + "  " + d.TradeVolume);
+            }
+
+            //reset running pl + traded price
+            foreach (var v in FullTradeList)
+            {
+                v.TradedPrice = 0;
+                //  v.TotalPL = 0;
+            }
+
+
             foreach (var t in CompletedList)
             {
                 var timeframe = from x in FullTradeList
@@ -1049,21 +1063,30 @@ namespace AlsiUtils
                 var TList = timeframe.ToList();
                 var trade = new CompletedTrade();
                 trade.OpenTrade = TList[0];
-
+                trade.CloseTrade = TList.Last();
                 if (TList.Count < period) ;
                 else
                 {
                     for (int x = period; x < TList.Count; x++)
                     {
+
+
                         if (TList[x].RunningProfit - TList[x - period].RunningProfit >= tp)
                         {
-                            newProf += TList[x].RunningProfit;
+                            //mark changes
+                            var adjusted = timeframe.Where(z => z.TimeStamp > TList[x].TimeStamp);
+                            foreach (var a in adjusted) a.Notes = "reset";
+
+
                             trade.CloseTrade = TList[x];
+
+
                             if (trade.OpenTrade.Reason == Trade.Trigger.OpenShort)
                             {
                                 trade.CloseTrade.Reason = Trade.Trigger.CloseShort;
                                 trade.CloseTrade.BuyorSell = Trade.BuySell.Buy;
                                 trade.CloseTrade.TradeVolume = trade.OpenTrade.TradeVolume;
+                                trade.CloseTrade.Position = false;
 
                             }
                             if (trade.OpenTrade.Reason == Trade.Trigger.OpenLong)
@@ -1071,10 +1094,14 @@ namespace AlsiUtils
                                 trade.CloseTrade.Reason = Trade.Trigger.CloseLong;
                                 trade.CloseTrade.BuyorSell = Trade.BuySell.Sell;
                                 trade.CloseTrade.TradeVolume = trade.OpenTrade.TradeVolume;
+                                trade.CloseTrade.Position = false;
+
                             }
                             TakeProfitList.Add(trade);
                             break;
                         }
+
+                        TakeProfitList.Add(trade);
                     }
 
                 }
@@ -1084,18 +1111,82 @@ namespace AlsiUtils
             var totalOriginal = TO.Sum(z => z.RunningProfit);
             var improve = Math.Round(((newProf - totalOriginal) / totalOriginal * 100), 2);
 
-            // Debug.WriteLine("TP," + tp + ",Period," + period + "," + newProf + "," + improve);
+            Debug.WriteLine("TP," + tp + ",Period," + period + "," + newProf + "," + improve);
 
-            var tprof = new TProf
+
+            //calculate last trade
+            if (TakeProfitList.Last().CloseTrade == TakeProfitList.Last().OpenTrade)
             {
+                Debug.WriteLine("Open Position Found..Calculating..");
+                var timeframe = (from x in FullTradeList
+                                 where x.TimeStamp >= CompletedList.Last().OpenTrade.TimeStamp
+                                 select x).ToList();
 
-            };
-            // Debug.WriteLine(TO.Sum(z => z.RunningProfit));
+                if (timeframe.Count > period)
+                {
+                    var trade = TakeProfitList.Last();
+                    for (int x = period; x < timeframe.Count; x++)
+                    {
+                        if (timeframe[x].RunningProfit - timeframe[x - period].RunningProfit >= tp)
+                        {
+                            Debug.WriteLine("Take profit Live : " + timeframe[x]);
+                            trade.CloseTrade = timeframe[x];
+                            timeframe.Where(z => z.TimeStamp == timeframe[x].TimeStamp).First().RunningProfit = timeframe[x].RunningProfit;
+                            if (trade.OpenTrade.Reason == Trade.Trigger.OpenShort)
+                            {
+                                trade.CloseTrade.Reason = Trade.Trigger.CloseShort;
+                                trade.CloseTrade.BuyorSell = Trade.BuySell.Buy;
+                                trade.CloseTrade.TradeVolume = trade.OpenTrade.TradeVolume;
+                                trade.CloseTrade.Position = false;
+                                trade.CloseTrade.CurrentDirection = Trade.Direction.None;
+
+                            }
+                            if (trade.OpenTrade.Reason == Trade.Trigger.OpenLong)
+                            {
+                                trade.CloseTrade.Reason = Trade.Trigger.CloseLong;
+                                trade.CloseTrade.BuyorSell = Trade.BuySell.Sell;
+                                trade.CloseTrade.TradeVolume = trade.OpenTrade.TradeVolume;
+                                trade.CloseTrade.Position = false;
+                                trade.CloseTrade.CurrentDirection = Trade.Direction.None;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            foreach (var t in FullTradeList)
+            {
+                if (t.Notes == "reset")
+                {
+                    t.RunningProfit = 0;
+                    t.Reason = Trade.Trigger.None;
+                    t.Position = false;
+                    t.CurrentDirection = Trade.Direction.None;
+                    t.Notes = null;
+                    t.BuyorSell = Trade.BuySell.None;
+                    t.TradeVolume = 0;
+
+                }
+                //if (t.Reason == Trade.Trigger.CloseLong || t.Reason == Trade.Trigger.CloseShort)
+                //{
+                //    totlapl += (t.RunningProfit * t.TradeVolume);
+                //    t.TotalPL = totlapl;
+                //}
+
+
+                //if (t.Reason != Trade.Trigger.None)//(t.TimeStamp.Year == 2012 && t.TimeStamp.Month == 6 && t.TimeStamp.Day > 15)
+                //    Debug.WriteLine(t.TimeStamp + " " + t.CurrentPrice + "  " + t.Reason + " " + t.RunningProfit + " " + t.Notes + "  " + t.Position + "  " + t.CurrentDirection + "  " + t.TotalPL + "  " + t.TradeVolume + " " + t.TradedPrice);
+
+
+            }
 
 
 
-            return TakeProfitList;
+            return null;
         }
+
+
 
         internal class TestData
         {

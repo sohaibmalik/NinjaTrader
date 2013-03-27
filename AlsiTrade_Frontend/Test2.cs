@@ -30,17 +30,20 @@ namespace FrontEnd
         private void Test2_Load(object sender, EventArgs e)
         {
 
-            //@"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True"
-            //@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True"
-            AlsiUtils.DataBase.SetConnectionString(@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True");
+            var con = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            //var con=@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            AlsiUtils.DataBase.SetConnectionString(con);
 
             GetParams();
 
             start();
 
-            for (int x = 0; x < TP.Count;x++)
-                Statistics.TakeProfit_Exiguous_(_FullTradeList, TP[x], Per[x]);
+            //for (int x = 0; x < TP.Count;x++)
+            //    Statistics.TakeProfit_Exiguous_(_FullTradeList, TP[x], Per[x]);
 
+          
+             Statistics.TakeProfit_Exiguous_(_FullTradeList, 160, 20);//*
+            
         }
 
         List<int> Per = new List<int>();
