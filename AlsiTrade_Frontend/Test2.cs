@@ -30,20 +30,27 @@ namespace FrontEnd
         private void Test2_Load(object sender, EventArgs e)
         {
 
-            var con = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-            //var con=@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            //var con = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            var con=@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
             AlsiUtils.DataBase.SetConnectionString(con);
 
             GetParams();
 
             start();
 
-            //for (int x = 0; x < TP.Count;x++)
-            //    Statistics.TakeProfit_Exiguous_(_FullTradeList, TP[x], Per[x]);
+            //for (int TP = 100; TP < 200; TP++)
+            //    for (int P = 14; P < 45; P++)
+            //{
+            //    var t = new TakeProfitStrategy();
+            //    t.TakeProfit(_FullTradeList, TP, P);//*
+            //}
 
-          
-             Statistics.TakeProfit_Exiguous_(_FullTradeList, 160, 20);//*
-            
+
+            for (int x = 0; x < TP.Count; x++)
+            {
+                var t = new TakeProfitStrategy();
+                t.TakeProfit(_FullTradeList, TP[x], Per[x]);//*
+            }
         }
 
         List<int> Per = new List<int>();
@@ -52,7 +59,7 @@ namespace FrontEnd
         {
 
 
-            using (StreamReader reader = new StreamReader(@"d:\testdata.txt"))
+            using (StreamReader reader = new StreamReader(@"d:\testdata2.txt"))
             {
                 string line;
                 while ((line = reader.ReadLine()) != null)
@@ -71,9 +78,9 @@ namespace FrontEnd
         {
             Cursor = Cursors.WaitCursor;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
-            DataBase.dataTable dt = DataBase.dataTable.MasterMinute;
+            DataBase.dataTable dt = DataBase.dataTable.AllHistory;
             //  _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMASAR(GetParametersSAR_EMA(), t, false, new DateTime(2013, 2, 20), new DateTime(2013, 03, 27), dt);
-            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2012, 01, 01), new DateTime(2013, 04, 01), dt);
+            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2008, 01, 01), new DateTime(2009, 01, 01), dt);
             _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
             NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
