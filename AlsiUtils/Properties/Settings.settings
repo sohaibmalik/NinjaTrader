@@ -50,5 +50,21 @@
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
       <Value Profile="(Default)">Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiDb;Persist Security Info=True;User ID=Pieter;Password=1Rachelle</Value>
     </Setting>
+    <Setting Name="AlsiTMConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiTM;Persist Security Info=True;User ID=Pieter&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiTM;Persist Security Info=True;User ID=Pieter</Value>
+    </Setting>
+    <Setting Name="AlsiTMConnectionString1" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiTM;Persist Security Info=True;User ID=Pieter;Password=1Rachelle&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiTM;Persist Security Info=True;User ID=Pieter;Password=1Rachelle</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

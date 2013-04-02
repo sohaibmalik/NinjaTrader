@@ -39,11 +39,11 @@
             this.columnPriceMatched = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
             this.infoBox = new System.Windows.Forms.GroupBox();
+            this.uploadButton = new System.Windows.Forms.Button();
             this.chartSizeTextBox = new System.Windows.Forms.TextBox();
             this.chartButton = new System.Windows.Forms.Button();
             this.newButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
-            this.uploadButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.infoBox.SuspendLayout();
             this.SuspendLayout();
@@ -136,6 +136,17 @@
             this.infoBox.TabIndex = 1;
             this.infoBox.TabStop = false;
             // 
+            // uploadButton
+            // 
+            this.uploadButton.Location = new System.Drawing.Point(11, 74);
+            this.uploadButton.Name = "uploadButton";
+            this.uploadButton.Size = new System.Drawing.Size(66, 23);
+            this.uploadButton.TabIndex = 9;
+            this.uploadButton.Text = "Upload";
+            this.uploadButton.UseVisualStyleBackColor = true;
+            this.uploadButton.Visible = false;
+            this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
+            // 
             // chartSizeTextBox
             // 
             this.chartSizeTextBox.Location = new System.Drawing.Point(12, 44);
@@ -175,17 +186,6 @@
             this.deleteButton.Text = "Delete";
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
-            // 
-            // uploadButton
-            // 
-            this.uploadButton.Location = new System.Drawing.Point(11, 74);
-            this.uploadButton.Name = "uploadButton";
-            this.uploadButton.Size = new System.Drawing.Size(66, 23);
-            this.uploadButton.TabIndex = 9;
-            this.uploadButton.Text = "Upload";
-            this.uploadButton.UseVisualStyleBackColor = true;
-            this.uploadButton.Visible = false;
-            this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
             // 
             // TradeLogForm
             // 

@@ -16,15 +16,26 @@ namespace NotifierClientApp
         WebDbDataContext dc = new WebDbDataContext();
         TradeLog _selectedLog;
         int price;
-        public TradeLogForm()
+        Admin _admin;
+        public TradeLogForm(Admin admin)
         {
             InitializeComponent();
             onUpdate = LoadListview;
+            _admin = admin;
         }
 
         private void TradeLogForm_Load(object sender, EventArgs e)
         {
             LoadListview();
+            SetAdminButtons();
+        }
+
+        private void SetAdminButtons()
+        {
+            var vis = _admin.IsAdmin;
+            infoBox.Visible = vis;
+            
+
         }
 
         private void LoadListview()
@@ -76,15 +87,17 @@ namespace NotifierClientApp
 
         private void newButton_Click(object sender, EventArgs e)
         {
-            var n = new NewOrderInput(onUpdate, dc);
+            var n = new NewOrderInput(onUpdate, dc,_admin.IsAdmin );
             n.Show();
         }
 
         private void tradeListView_DoubleClick(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             var tl = (TradeLog)tradeListView.SelectedItems[0].Tag;
-            var n = new NewOrderInput(onUpdate, tl, dc);
+            var n = new NewOrderInput(onUpdate, tl, dc,_admin.IsAdmin);
             n.Show();
+            Cursor = Cursors.Default;
         }
 
         private void tradeListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)

@@ -17,7 +17,7 @@ namespace NotifierClientApp
         private delegate void StatusFail(AlsiWebService.Boodskap boodskap);
         private StatusFail onStatusFail;
         private NotifyIcon ni = new NotifyIcon();
-
+        private Admin admin = new Admin();
         public Notify()
         {
             InitializeComponent();
@@ -142,9 +142,18 @@ namespace NotifierClientApp
             StatusUpdateTimer.Enabled = true;
             StatusUpdateTimer.Interval = _StatusUpdate;
             StatusUpdateTimer.Start();
-            statusLabel1.Text = "AlsiTrade";
+            statusLabel1.Text = "Trade Bot Online";
 
+            SetAdminButtons(admin.IsAdmin);
+            admin.ReportLiveStatus(true);
             AlsiUtils.WebSettings.GetSettings();
+
+        }
+
+        private void SetAdminButtons(bool vis)
+        {
+            adminToolStripMenuItem.Visible = vis;
+            clearHistoryToolStripMenuItem.Enabled = vis;
 
         }
 
@@ -318,17 +327,20 @@ namespace NotifierClientApp
 
         private void tradeLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             if (!Communicator.Internet.CheckConnection())
             {
                 MessageBox.Show("No Internet Connection", "Not Connected", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            TradeLogForm ts = new TradeLogForm();
+            TradeLogForm ts = new TradeLogForm(admin);
             ts.Show();
+            Cursor = Cursors.Default;
         }
 
         private void getPricesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             if (!Communicator.Internet.CheckConnection())
             {
                 MessageBox.Show("No Internet Connection", "Not Connected", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -341,6 +353,18 @@ namespace NotifierClientApp
                 return;
             }
             pricesStatusLabel.Text = alsi.Last().Close.ToString();
+            Cursor = Cursors.Default;
+        }
+
+        private void adminToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var a = new AdminForm(admin);
+            a.Show();
+        }
+
+        private void Notify_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            admin.ReportLiveStatus(false);
         }
 
 

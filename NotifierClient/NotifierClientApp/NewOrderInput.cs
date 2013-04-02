@@ -12,21 +12,24 @@ namespace NotifierClientApp
         private TradeLog tl;
         TradeLog EX;
         WebDbDataContext dc;
-        public NewOrderInput(newLogSaved Updatedeleagte, WebDbDataContext _dc)
+        private bool admin;
+        public NewOrderInput(newLogSaved Updatedeleagte, WebDbDataContext _dc,bool AdminRights)
         {
             InitializeComponent();
             _onSaved = Updatedeleagte;
             dc = _dc;
+            admin = AdminRights;
         }
 
         private bool loadExisting;
-        public NewOrderInput(newLogSaved Updatedeleagte, TradeLog Log,WebDbDataContext _dc)
+        public NewOrderInput(newLogSaved Updatedeleagte, TradeLog Log,WebDbDataContext _dc,bool AdminRights)
         {
             InitializeComponent();
             _onSaved = Updatedeleagte;
             loadExisting = true;
             EX = Log;
             dc = _dc;
+            admin = AdminRights;
         }
 
         private void PopuilateFromExisting(TradeLog ex)
@@ -57,6 +60,7 @@ namespace NotifierClientApp
 
         private void NewOrderInput_Load(object sender, EventArgs e)
         {
+            saveButton.Visible = admin;
             PopulateBoxes();
             if (loadExisting) PopuilateFromExisting(EX);
         }

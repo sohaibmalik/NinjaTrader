@@ -51,13 +51,13 @@
             this.statusUpdateDelaySecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DelayUpdateToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.tradeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.adminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pricesStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.appStatusBW = new System.ComponentModel.BackgroundWorker();
-            this.getPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pricesStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -125,7 +125,8 @@
             this.ordersToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.tradeLogToolStripMenuItem,
-            this.getPricesToolStripMenuItem});
+            this.getPricesToolStripMenuItem,
+            this.adminToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(613, 24);
@@ -214,11 +215,24 @@
             this.tradeLogToolStripMenuItem.Text = "TradeLog";
             this.tradeLogToolStripMenuItem.Click += new System.EventHandler(this.tradeLogToolStripMenuItem_Click);
             // 
+            // getPricesToolStripMenuItem
+            // 
+            this.getPricesToolStripMenuItem.Name = "getPricesToolStripMenuItem";
+            this.getPricesToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
+            this.getPricesToolStripMenuItem.Text = "Get Prices";
+            this.getPricesToolStripMenuItem.Click += new System.EventHandler(this.getPricesToolStripMenuItem_Click);
+            // 
+            // adminToolStripMenuItem
+            // 
+            this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
+            this.adminToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.adminToolStripMenuItem.Text = "Admin";
+            this.adminToolStripMenuItem.Click += new System.EventHandler(this.adminToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel1,
-            this.statusLabel2,
             this.pricesStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 378);
             this.statusStrip1.Name = "statusStrip1";
@@ -232,11 +246,12 @@
             this.statusLabel1.Size = new System.Drawing.Size(10, 17);
             this.statusLabel1.Text = ".";
             // 
-            // statusLabel2
+            // pricesStatusLabel
             // 
-            this.statusLabel2.Name = "statusLabel2";
-            this.statusLabel2.Size = new System.Drawing.Size(10, 17);
-            this.statusLabel2.Text = ".";
+            this.pricesStatusLabel.BackColor = System.Drawing.Color.Lime;
+            this.pricesStatusLabel.Name = "pricesStatusLabel";
+            this.pricesStatusLabel.Size = new System.Drawing.Size(13, 17);
+            this.pricesStatusLabel.Text = "..";
             // 
             // StatusUpdateTimer
             // 
@@ -245,20 +260,6 @@
             // appStatusBW
             // 
             this.appStatusBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.appStatusBW_DoWork);
-            // 
-            // getPricesToolStripMenuItem
-            // 
-            this.getPricesToolStripMenuItem.Name = "getPricesToolStripMenuItem";
-            this.getPricesToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
-            this.getPricesToolStripMenuItem.Text = "Get Prices";
-            this.getPricesToolStripMenuItem.Click += new System.EventHandler(this.getPricesToolStripMenuItem_Click);
-            // 
-            // pricesStatusLabel
-            // 
-            this.pricesStatusLabel.BackColor = System.Drawing.Color.Lime;
-            this.pricesStatusLabel.Name = "pricesStatusLabel";
-            this.pricesStatusLabel.Size = new System.Drawing.Size(13, 17);
-            this.pricesStatusLabel.Text = "..";
             // 
             // Notify
             // 
@@ -274,6 +275,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Notify";
             this.Text = "Web Notifier";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Notify_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -301,7 +303,6 @@
         private System.Windows.Forms.ToolStripMenuItem clearHistoryToolStripMenuItem;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel1;
-        private System.Windows.Forms.ToolStripStatusLabel statusLabel2;
         private System.Windows.Forms.Timer StatusUpdateTimer;
         private System.ComponentModel.BackgroundWorker appStatusBW;
         private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
@@ -314,6 +315,7 @@
         private System.Windows.Forms.ToolStripMenuItem tradeLogToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem getPricesToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel pricesStatusLabel;
+        private System.Windows.Forms.ToolStripMenuItem adminToolStripMenuItem;
 
     }
 }
