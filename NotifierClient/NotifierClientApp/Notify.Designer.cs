@@ -76,7 +76,7 @@
             this.ordersListView.GridLines = true;
             this.ordersListView.Location = new System.Drawing.Point(0, 24);
             this.ordersListView.Name = "ordersListView";
-            this.ordersListView.Size = new System.Drawing.Size(613, 376);
+            this.ordersListView.Size = new System.Drawing.Size(609, 298);
             this.ordersListView.TabIndex = 0;
             this.ordersListView.UseCompatibleStateImageBehavior = false;
             this.ordersListView.View = System.Windows.Forms.View.Details;
@@ -129,7 +129,7 @@
             this.adminToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(613, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(609, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -145,14 +145,14 @@
             // getAllOrderToolStripMenuItem
             // 
             this.getAllOrderToolStripMenuItem.Name = "getAllOrderToolStripMenuItem";
-            this.getAllOrderToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.getAllOrderToolStripMenuItem.Text = "Get All Orders";
+            this.getAllOrderToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.getAllOrderToolStripMenuItem.Text = "Get Recent Live Orders";
             this.getAllOrderToolStripMenuItem.Click += new System.EventHandler(this.getAllOrderToolStripMenuItem_Click);
             // 
             // clearHistoryToolStripMenuItem
             // 
             this.clearHistoryToolStripMenuItem.Name = "clearHistoryToolStripMenuItem";
-            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.clearHistoryToolStripMenuItem.Text = "Clear History";
             this.clearHistoryToolStripMenuItem.Click += new System.EventHandler(this.clearHistoryToolStripMenuItem_Click);
             // 
@@ -234,9 +234,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel1,
             this.pricesStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 378);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 300);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(613, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(609, 22);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -266,11 +266,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(613, 400);
+            this.ClientSize = new System.Drawing.Size(609, 322);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.ordersListView);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Notify";

@@ -82,7 +82,7 @@ namespace NotifierClientApp
 
         }
 
-        // private bool _newTradeAlert, _tradeMatchAlert;
+        
         private DateTime _alertAcknowledged;
         private void ColorStatus()
         {
@@ -95,7 +95,7 @@ namespace NotifierClientApp
                     if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "New Order!");
 
                 }
-                if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed)
+                if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed && admin.IsAdmin )
                 {
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.LightGreen;
@@ -192,7 +192,7 @@ namespace NotifierClientApp
                 Debug.WriteLine(app + " Failed  " + alsiTradeFailedCount);
             }
 
-            if (alsiTradeFailedCount > 10) balloonNotify(App.AlsiTrade, "Failed to update !");
+            if (alsiTradeFailedCount > 10 && admin.IsAdmin ) balloonNotify(App.AlsiTrade, "Failed to update !");
 
 
         }
