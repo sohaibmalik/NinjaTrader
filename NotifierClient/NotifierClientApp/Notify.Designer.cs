@@ -58,6 +58,10 @@
             this.pricesStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.appStatusBW = new System.ComponentModel.BackgroundWorker();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.listView2 = new System.Windows.Forms.ListView();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -71,12 +75,11 @@
             this.headerQty,
             this.headerPrice,
             this.headerStatus});
-            this.ordersListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ordersListView.FullRowSelect = true;
             this.ordersListView.GridLines = true;
-            this.ordersListView.Location = new System.Drawing.Point(0, 24);
+            this.ordersListView.Location = new System.Drawing.Point(3, 24);
             this.ordersListView.Name = "ordersListView";
-            this.ordersListView.Size = new System.Drawing.Size(609, 298);
+            this.ordersListView.Size = new System.Drawing.Size(612, 298);
             this.ordersListView.TabIndex = 0;
             this.ordersListView.UseCompatibleStateImageBehavior = false;
             this.ordersListView.View = System.Windows.Forms.View.Details;
@@ -129,7 +132,7 @@
             this.adminToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(609, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(618, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -234,9 +237,9 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel1,
             this.pricesStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 300);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 538);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(609, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(618, 22);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -261,12 +264,57 @@
             // 
             this.appStatusBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.appStatusBW_DoWork);
             // 
+            // listView1
+            // 
+            this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listView1.Location = new System.Drawing.Point(141, 325);
+            this.listView1.Margin = new System.Windows.Forms.Padding(0);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(474, 168);
+            this.listView1.TabIndex = 5;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBox1.Location = new System.Drawing.Point(141, 496);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(429, 38);
+            this.textBox1.TabIndex = 6;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.BackgroundImage = global::NotifierClientApp.Properties.Resources.Messages_icon;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.button1.Location = new System.Drawing.Point(581, 496);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(34, 38);
+            this.button1.TabIndex = 7;
+            this.button1.UseVisualStyleBackColor = false;
+            // 
+            // listView2
+            // 
+            this.listView2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.listView2.Location = new System.Drawing.Point(3, 325);
+            this.listView2.Margin = new System.Windows.Forms.Padding(0);
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(135, 168);
+            this.listView2.TabIndex = 8;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            // 
             // Notify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(609, 322);
+            this.ClientSize = new System.Drawing.Size(618, 560);
+            this.Controls.Add(this.listView2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.listView1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.ordersListView);
             this.Controls.Add(this.menuStrip1);
@@ -317,6 +365,10 @@
         private System.Windows.Forms.ToolStripMenuItem getPricesToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel pricesStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem adminToolStripMenuItem;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListView listView2;
 
     }
 }
