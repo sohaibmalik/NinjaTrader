@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AlsiUtils;
+using NotifierClientApp.AlsiWebService;
 
 namespace NotifierClientApp
 {
@@ -82,7 +85,7 @@ namespace NotifierClientApp
 
         }
 
-        
+
         private DateTime _alertAcknowledged;
         private void ColorStatus()
         {
@@ -95,7 +98,7 @@ namespace NotifierClientApp
                     if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "New Order!");
 
                 }
-                if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed && admin.IsAdmin )
+                if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed && admin.IsAdmin)
                 {
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.LightGreen;
@@ -148,6 +151,9 @@ namespace NotifierClientApp
             admin.ReportLiveStatus(true);
             AlsiUtils.WebSettings.GetSettings();
 
+
+
+            LoadChat();
         }
 
         private void SetAdminButtons(bool vis)
@@ -192,7 +198,7 @@ namespace NotifierClientApp
                 Debug.WriteLine(app + " Failed  " + alsiTradeFailedCount);
             }
 
-            if (alsiTradeFailedCount > 10 && admin.IsAdmin ) balloonNotify(App.AlsiTrade, "Failed to update !");
+            if (alsiTradeFailedCount > 10 && admin.IsAdmin) balloonNotify(App.AlsiTrade, "Failed to update !");
 
 
         }
@@ -276,6 +282,7 @@ namespace NotifierClientApp
             try
             {
                 getAppUpdate();
+                UpdateChat();
                 ordersListView.BackColor = Color.White;
             }
             catch (Exception ex)
@@ -367,7 +374,94 @@ namespace NotifierClientApp
             admin.ReportLiveStatus(false);
         }
 
+
+
+
+        #region CHAT
+        List<tblUser> SelectedUsers = new List<tblUser>();
+        private List<Chat> ChatList;
+        private List<Chat> ReadList = new List<Chat>();
+        private List<long> SendToList = new List<long>();
+        private void LoadChat()
+        {
+            Utilities.SetWindowTheme(userListView.Handle, "Explorer", null);
+            Utilities.SetWindowTheme(chatHistoryListView.Handle, "Explorer", null);
+            chatSendButton.Enabled = false;
+            PopulateUserListView();
+
+
+
+        }
+
+        private void PopulateUserListView()
+        {
+            userListView.Items.Clear();
+            foreach (var u in admin.GetAllUsers())
+            {
+                ListViewItem lvi = new ListViewItem(u.USER_NAME);
+                lvi.SubItems.Add(u.USER_ADMIN.ToString());
+                lvi.ImageIndex = (bool)u.USER_LIVE ? 1 : 0;
+                lvi.Tag = u;
+                userListView.Items.Add(lvi);
+            }
+        }
+
+        private void UpdateChat()
+        {
+            ChatList = service.GetChatMessages().Where(z=>z.ToUserID.Contains(admin.UserID)).ToList();
+            ReadList.Clear();
+            foreach (ListViewItem r in chatHistoryListView.Items) ReadList.Add((Chat)r.Tag);
+            //compare lists
+            var temp=ReadList.ToLookup(x=>x.MessageID);
+            var newList = ChatList.Where(x => (!temp.Contains(x.MessageID)));
+            foreach(var N in newList)
+            {
+                ListViewItem lvi = new ListViewItem(N.Message + "  " + N.MessageID.ToString());
+                lvi.Tag = N;
+                chatHistoryListView.Items.Add(lvi);
+            }
+            
+
+
+           
+        }
+
+
+
+        private void DisplayUserInfo(tblUser user)
+        {
+            nameSelectedLabel.Text = "Send :";
+        }
+
+
+        private void userListView_ItemChecked(object sender, ItemCheckedEventArgs e)
+        {
+            var user = (tblUser)e.Item.Tag;
+            if (e.Item.Checked) SendToList.Add(user.ID);
+            else
+                SendToList.Remove(user.ID);
+
+          
+            DisplayUserInfo(user);
+        }
+
+
+        private void chatInputTextBox_TextChanged(object sender, EventArgs e)
+        {
+            chatSendButton.Enabled = (chatInputTextBox.TextLength != 0);
+        }
+
        
+        private void chatSendButton_Click(object sender, EventArgs e)
+        {
+            var c = new AlsiWebService.Chat();
+            c.Message = chatInputTextBox.Text;
+            c.FromUserID = admin.UserID;
+            c.ToUserID = SendToList.ToArray();
+            service.InsertChatMessage(c);
+            chatInputTextBox.Clear();
+          
+        }
 
 
 
@@ -375,6 +469,7 @@ namespace NotifierClientApp
 
 
 
+        #endregion
 
 
 

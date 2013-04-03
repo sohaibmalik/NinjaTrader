@@ -111,9 +111,23 @@ namespace NotifierWebService
         }
 
         [WebMethod]
-      public string GetPrice()
+        public void InsertChatMessage(Chat Message)
         {
-            return 
+            Chat.MesID++;
+            Message.MessageID = Chat.MesID;
+            Chat.ChatList.Add(Message);
+        }
+
+        [WebMethod]
+        public List<Chat> GetChatMessages()
+        {
+            return Chat.ChatList;
+        }
+
+        [WebMethod]
+        public string GetPrice()
+        {
+            return
                 @"[
 /* Jan 2013 */
 [1357084800000,549.03],

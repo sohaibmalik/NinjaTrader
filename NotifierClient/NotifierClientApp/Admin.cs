@@ -15,7 +15,7 @@ namespace NotifierClientApp
         string mac = "";
         private bool _IsAdmin;
         private bool Loaded;
-      
+        public long UserID;
         double version;
         public Admin()
         {
@@ -27,6 +27,7 @@ namespace NotifierClientApp
           //  MessageBox.Show(versionstring);
             dc = new AlsiTMDataContext();
             mac = Utilities.GetMacAddress();
+            UserID = dc.tblUsers.Where(z => z.USER_MACADRESS == mac).Select(z => z.ID).First();
             CreateNewUserIfNotExist();
             var user = dc.tblUsers.Where(z => z.USER_MACADRESS == mac).First();
             if (GetNewVersionNumber(user) > version)

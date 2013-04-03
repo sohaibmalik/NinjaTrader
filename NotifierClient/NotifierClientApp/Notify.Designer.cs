@@ -58,12 +58,18 @@
             this.pricesStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.StatusUpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.appStatusBW = new System.ComponentModel.BackgroundWorker();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.chatInputTextBox = new System.Windows.Forms.TextBox();
+            this.chatSendButton = new System.Windows.Forms.Button();
+            this.userListView = new System.Windows.Forms.ListView();
+            this.userCol = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chatUsersList = new System.Windows.Forms.ImageList(this.components);
+            this.nameSelectedLabel = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.chatHistoryListView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ordersListView
@@ -124,6 +130,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ordersToolStripMenuItem,
             this.settingsToolStripMenuItem,
@@ -132,7 +139,7 @@
             this.adminToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(618, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(619, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -239,7 +246,7 @@
             this.pricesStatusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 538);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(618, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(619, 22);
             this.statusStrip1.TabIndex = 4;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -264,57 +271,110 @@
             // 
             this.appStatusBW.DoWork += new System.ComponentModel.DoWorkEventHandler(this.appStatusBW_DoWork);
             // 
-            // listView1
+            // chatInputTextBox
             // 
-            this.listView1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listView1.Location = new System.Drawing.Point(141, 325);
-            this.listView1.Margin = new System.Windows.Forms.Padding(0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(474, 168);
-            this.listView1.TabIndex = 5;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.chatInputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.chatInputTextBox.Location = new System.Drawing.Point(141, 496);
+            this.chatInputTextBox.Multiline = true;
+            this.chatInputTextBox.Name = "chatInputTextBox";
+            this.chatInputTextBox.Size = new System.Drawing.Size(434, 38);
+            this.chatInputTextBox.TabIndex = 6;
+            this.chatInputTextBox.TextChanged += new System.EventHandler(this.chatInputTextBox_TextChanged);
             // 
-            // textBox1
+            // chatSendButton
             // 
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Location = new System.Drawing.Point(141, 496);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(429, 38);
-            this.textBox1.TabIndex = 6;
+            this.chatSendButton.BackColor = System.Drawing.Color.Transparent;
+            this.chatSendButton.BackgroundImage = global::NotifierClientApp.Properties.Resources.Messages_icon;
+            this.chatSendButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.chatSendButton.Location = new System.Drawing.Point(581, 496);
+            this.chatSendButton.Name = "chatSendButton";
+            this.chatSendButton.Size = new System.Drawing.Size(34, 38);
+            this.chatSendButton.TabIndex = 7;
+            this.chatSendButton.UseVisualStyleBackColor = false;
+            this.chatSendButton.Click += new System.EventHandler(this.chatSendButton_Click);
             // 
-            // button1
+            // userListView
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.BackgroundImage = global::NotifierClientApp.Properties.Resources.Messages_icon;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button1.Location = new System.Drawing.Point(581, 496);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(34, 38);
-            this.button1.TabIndex = 7;
-            this.button1.UseVisualStyleBackColor = false;
+            this.userListView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.userListView.CheckBoxes = true;
+            this.userListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.userCol});
+            this.userListView.Location = new System.Drawing.Point(3, 325);
+            this.userListView.Margin = new System.Windows.Forms.Padding(0);
+            this.userListView.MultiSelect = false;
+            this.userListView.Name = "userListView";
+            this.userListView.Size = new System.Drawing.Size(135, 168);
+            this.userListView.SmallImageList = this.chatUsersList;
+            this.userListView.TabIndex = 8;
+            this.userListView.UseCompatibleStateImageBehavior = false;
+            this.userListView.View = System.Windows.Forms.View.Details;
+            this.userListView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.userListView_ItemChecked);
             // 
-            // listView2
+            // userCol
             // 
-            this.listView2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.listView2.Location = new System.Drawing.Point(3, 325);
-            this.listView2.Margin = new System.Windows.Forms.Padding(0);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(135, 168);
-            this.listView2.TabIndex = 8;
-            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.userCol.Text = "User";
+            this.userCol.Width = 135;
+            // 
+            // chatUsersList
+            // 
+            this.chatUsersList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("chatUsersList.ImageStream")));
+            this.chatUsersList.TransparentColor = System.Drawing.Color.Transparent;
+            this.chatUsersList.Images.SetKeyName(0, "red.ico");
+            this.chatUsersList.Images.SetKeyName(1, "green.ico");
+            this.chatUsersList.Images.SetKeyName(2, "Empty.ico");
+            this.chatUsersList.Images.SetKeyName(3, "imageres_1024.ico");
+            this.chatUsersList.Images.SetKeyName(4, "yellow.ico");
+            // 
+            // nameSelectedLabel
+            // 
+            this.nameSelectedLabel.AutoSize = true;
+            this.nameSelectedLabel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.nameSelectedLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.nameSelectedLabel.Location = new System.Drawing.Point(86, 0);
+            this.nameSelectedLabel.Name = "nameSelectedLabel";
+            this.nameSelectedLabel.Size = new System.Drawing.Size(43, 38);
+            this.nameSelectedLabel.TabIndex = 9;
+            this.nameSelectedLabel.Text = "label1";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 132F));
+            this.tableLayoutPanel1.Controls.Add(this.nameSelectedLabel, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 496);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 38F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(132, 38);
+            this.tableLayoutPanel1.TabIndex = 10;
+            // 
+            // chatHistoryListView
+            // 
+            this.chatHistoryListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.chatHistoryListView.Location = new System.Drawing.Point(142, 325);
+            this.chatHistoryListView.Name = "chatHistoryListView";
+            this.chatHistoryListView.Size = new System.Drawing.Size(473, 168);
+            this.chatHistoryListView.TabIndex = 11;
+            this.chatHistoryListView.UseCompatibleStateImageBehavior = false;
+            this.chatHistoryListView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Message";
+            this.columnHeader1.Width = 450;
             // 
             // Notify
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.SteelBlue;
-            this.ClientSize = new System.Drawing.Size(618, 560);
-            this.Controls.Add(this.listView2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.listView1);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(619, 560);
+            this.Controls.Add(this.chatHistoryListView);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.userListView);
+            this.Controls.Add(this.chatSendButton);
+            this.Controls.Add(this.chatInputTextBox);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.ordersListView);
             this.Controls.Add(this.menuStrip1);
@@ -330,6 +390,8 @@
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -365,10 +427,16 @@
         private System.Windows.Forms.ToolStripMenuItem getPricesToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel pricesStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem adminToolStripMenuItem;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.TextBox chatInputTextBox;
+        private System.Windows.Forms.Button chatSendButton;
+        private System.Windows.Forms.ListView userListView;
+        private System.Windows.Forms.ColumnHeader userCol;
+        private System.Windows.Forms.ImageList chatUsersList;
+        private System.Windows.Forms.Label nameSelectedLabel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.ListView chatHistoryListView;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+       
 
     }
 }
