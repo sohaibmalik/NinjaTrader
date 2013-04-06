@@ -111,17 +111,9 @@ namespace NotifierWebService
         }
 
         [WebMethod]
-        public void InsertChatMessage(Chat Message)
+        public DateTime GetChatTime()
         {
-            Chat.MesID++;
-            Message.MessageID = Chat.MesID;
-            Chat.ChatList.Add(Message);
-        }
-
-        [WebMethod]
-        public List<Chat> GetChatMessages()
-        {
-            return Chat.ChatList;
+            return DateTime.UtcNow.AddHours(2);
         }
 
         [WebMethod]

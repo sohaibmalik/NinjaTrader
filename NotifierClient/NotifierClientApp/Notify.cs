@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using AlsiUtils;
 using NotifierClientApp.AlsiWebService;
+using System.Text;
 
 namespace NotifierClientApp
 {
@@ -151,7 +152,9 @@ namespace NotifierClientApp
             admin.ReportLiveStatus(true);
             AlsiUtils.WebSettings.GetSettings();
 
-
+            orderUpdateIntervalMsToolStripMenuItem.Visible = admin.IsAdmin;
+            statusUpdateDelaySecToolStripMenuItem.Visible = admin.IsAdmin;
+            statusUpdateIntervalMsToolStripMenuItem.Visible = admin.IsAdmin;
 
             LoadChat();
         }
@@ -282,7 +285,7 @@ namespace NotifierClientApp
             try
             {
                 getAppUpdate();
-                UpdateChat();
+                //   UpdateChat(false);
                 ordersListView.BackColor = Color.White;
             }
             catch (Exception ex)
@@ -345,7 +348,9 @@ namespace NotifierClientApp
             Cursor = Cursors.Default;
         }
 
-        private void getPricesToolStripMenuItem_Click(object sender, EventArgs e)
+
+
+        private void GetAlsiPrices()
         {
             Cursor = Cursors.WaitCursor;
             if (!Communicator.Internet.CheckConnection())
@@ -374,29 +379,90 @@ namespace NotifierClientApp
             admin.ReportLiveStatus(false);
         }
 
-
-
-
-        #region CHAT
-        List<tblUser> SelectedUsers = new List<tblUser>();
-        private List<Chat> ChatList;
-        private List<Chat> ReadList = new List<Chat>();
-        private List<long> SendToList = new List<long>();
-        private void LoadChat()
+        private void pricesStatusLabel_Click(object sender, EventArgs e)
         {
-            Utilities.SetWindowTheme(userListView.Handle, "Explorer", null);
-            Utilities.SetWindowTheme(chatHistoryListView.Handle, "Explorer", null);
-            chatSendButton.Enabled = false;
+            GetAlsiPrices();
+        }
+
+        private void changeUserNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var b = new ChangeUserNameForm(admin);
+            b.ShowDialog();
+            admin = new Admin();
             PopulateUserListView();
 
+        }
 
+        #region CHAT
+        private Chat t;
+        private List<Chat> ChatList;
+        private List<Chat> ReadList = new List<Chat>();
+        private List<int> SendToList = new List<int>();
+        private BackgroundWorker userUpdateBW = new BackgroundWorker();
+        private tblUser _SelectedUser;
 
+        public tblUser SelectedUser
+        {
+            get { return _SelectedUser; }
+            set
+            {
+                _SelectedUser = value;
+                UpdateChat(true);
+            }
+        }
+
+        private void LoadChat()
+        {
+            t = new Chat();
+            Utilities.SetWindowTheme(userListView.Handle, "Explorer", null);
+            Utilities.SetWindowTheme(chatHistoryListView.Handle, "Explorer", null);
+            chatSendButton.BackgroundImage = Properties.Resources.Messages_DisAbled_icon;
+            chatSendButton.Enabled = false;
+            userUpdateBW.DoWork += new DoWorkEventHandler(userUpdateBW_DoWork);
+            ToolTip userInfoTootltip = new ToolTip();
+            userInfoTootltip.SetToolTip(userListView, "Check to select users to send message to.\nHighlight a user to view chat.");
+            PopulateUserListView();
+            Text = Text + "  Logged in as " + admin.UserList.Where(x => x.ID == admin.UserID).First().USER_NAME;
+          
+            try
+            {
+                userListView.Items[0].Selected = true;
+            }
+            catch { }
+
+        }
+
+  
+
+        void userUpdateBW_DoWork(object sender, DoWorkEventArgs e)
+        {
+            RefreshUsers();
+        }
+
+        private void userStatusUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            userUpdateBW.RunWorkerAsync();
+
+        }
+
+        public void RefreshUsers()
+        {
+            var updated = admin.GetAllUsers();
+            foreach (ListViewItem lvi in userListView.Items)
+            {
+                var user = (tblUser)lvi.Tag;
+                user.USER_LIVE = updated.Where(z => z.ID == user.ID).Select(x => x.USER_LIVE).First();
+                lvi.ImageIndex = (bool)user.USER_LIVE ? 1 : 0;
+
+            }
+            userListView.Refresh();
         }
 
         private void PopulateUserListView()
         {
+            userListView.BeginUpdate();
             userListView.Items.Clear();
-            foreach (var u in admin.GetAllUsers())
+            foreach (var u in admin.GetAllUsers().Where(z => z.ID != admin.UserID))
             {
                 ListViewItem lvi = new ListViewItem(u.USER_NAME);
                 lvi.SubItems.Add(u.USER_ADMIN.ToString());
@@ -404,33 +470,62 @@ namespace NotifierClientApp
                 lvi.Tag = u;
                 userListView.Items.Add(lvi);
             }
+            userListView.EndUpdate();
         }
 
-        private void UpdateChat()
+        private int TryUpdate = 0;
+        private void UpdateChat(bool switched)
         {
-            ChatList = service.GetChatMessages().Where(z=>z.ToUserID.Contains(admin.UserID)).ToList();
-            ReadList.Clear();
-            foreach (ListViewItem r in chatHistoryListView.Items) ReadList.Add((Chat)r.Tag);
-            //compare lists
-            var temp=ReadList.ToLookup(x=>x.MessageID);
-            var newList = ChatList.Where(x => (!temp.Contains(x.MessageID)));
-            foreach(var N in newList)
+            if (switched) chatHistoryListView.Items.Clear();
+            if (TryUpdate == 3) return;
+            try
             {
-                ListViewItem lvi = new ListViewItem(N.Message + "  " + N.MessageID.ToString());
-                lvi.Tag = N;
-                chatHistoryListView.Items.Add(lvi);
+                
+                var ALL = t.GetChatMessages(admin.UserID,SelectedUser.ID);
+               
+
+
+               // ReadList.Clear();
+
+                //if (chatHistoryListView.Items.Count != 0)
+                //    foreach (ListViewItem r in chatHistoryListView.Items) ReadList.Add((Chat)r.Tag);
+
+                ////compare lists
+                //var temp = ReadList.ToLookup(x => x.MessageID);
+                //var newList = ChatList.Where(x => (!temp.Contains(x.MessageID)));
+                //foreach (var N in newList)
+                //{
+                //    ListViewItem lvi = new ListViewItem(admin.UserList.Where(x => x.ID == N.FromUserID).First().USER_NAME + " :    " + N.Message);
+                //    lvi.Tag = N;
+                //    chatHistoryListView.Items.Add(lvi);
+                //}
+
+
+
+                foreach (var N in ALL)
+                {
+                    ListViewItem lvi = new ListViewItem(admin.UserList.Where(x => x.ID == N.FromUserID).First().USER_NAME + " :    " + N.Message);
+                    lvi.Tag = N;
+                    chatHistoryListView.Items.Add(lvi);
+                }
+
+
+                TryUpdate = 0;
             }
-            
+            catch
+            {
+                TryUpdate++;
+                UpdateChat(false);
+            }
 
 
-           
         }
-
 
 
         private void DisplayUserInfo(tblUser user)
         {
             nameSelectedLabel.Text = "Send :";
+
         }
 
 
@@ -441,35 +536,89 @@ namespace NotifierClientApp
             else
                 SendToList.Remove(user.ID);
 
-          
+            VerifyInput();
             DisplayUserInfo(user);
         }
 
 
         private void chatInputTextBox_TextChanged(object sender, EventArgs e)
         {
-            chatSendButton.Enabled = (chatInputTextBox.TextLength != 0);
+            VerifyInput();
         }
 
-       
+        private void VerifyInput()
+        {
+            var x = (chatInputTextBox.TextLength != 0 && SendToList.Count != 0);
+            chatSendButton.Enabled = (x);
+            chatSendButton.BackgroundImage = x ? Properties.Resources.Messages_icon : Properties.Resources.Messages_DisAbled_icon;
+        }
+
         private void chatSendButton_Click(object sender, EventArgs e)
         {
-            var c = new AlsiWebService.Chat();
-            c.Message = chatInputTextBox.Text;
-            c.FromUserID = admin.UserID;
-            c.ToUserID = SendToList.ToArray();
-            service.InsertChatMessage(c);
+            var msg = new StringBuilder();
+            msg.Append(chatInputTextBox.Text);
+
+            foreach (var tu in SendToList)
+            {
+                var c = new Chat();
+                c.FromUserID = admin.UserID;
+                c.ToUserID = tu;
+                c.Time = service.GetChatTime();
+                c.Message = msg.ToString();
+                t.InsertChatMessage(c);
+            }
+
             chatInputTextBox.Clear();
-          
+
         }
 
+        private ToolTip MsgTooltip = new ToolTip();
+        private void chatHistoryListView_MouseHover(object sender, EventArgs e)
+        {
+            //Point localPoint = chatHistoryListView.PointToClient(Cursor.Position);
+            //ListViewItem x = chatHistoryListView.GetItemAt(localPoint.X, localPoint.Y);
+            //if (x == null) return;
+            //var msg = (Chat)x.Tag;
+            ////MsgTooltip.SetToolTip(userListView, msg.Message);
+            //MsgTooltip.Show(msg.Message, userListView, 5000);
+        }
 
+        private void chatHistoryListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            var msg = (Chat)e.Item.Tag;
+            //MsgTooltip.SetToolTip(userListView, msg.Message);
+            var MSG = new StringBuilder(admin.UserList.Where(z => z.ID == msg.FromUserID).First().USER_NAME + ":\n");
+            MSG.Append(msg.Time.ToShortTimeString() + "\n");
+            MSG.Append(msg.Message);
+            MsgTooltip.Show(Utilities.WrapWords(MSG.ToString(), 100), userListView, 3000);
+        }
 
-
-
+        private void userListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (userListView.SelectedItems.Count == 0) return;
+            Cursor = Cursors.WaitCursor;
+            SelectedUser = (tblUser)userListView.SelectedItems[0].Tag;
+            foreach (ListViewItem lvi in userListView.Items) lvi.Checked = false;
+            Cursor = Cursors.Default;
+        }
 
 
         #endregion
+
+      
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateChat(false);
+        }
+
+
+
+
+
+
+
+
 
 
 

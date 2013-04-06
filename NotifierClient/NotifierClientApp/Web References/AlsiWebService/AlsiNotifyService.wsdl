@@ -186,45 +186,16 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="InsertChatMessage">
+      <s:element name="GetChatTime">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetChatTimeResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="Message" type="tns:Chat" />
+            <s:element minOccurs="1" maxOccurs="1" name="GetChatTimeResult" type="s:dateTime" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:complexType name="Chat">
-        <s:sequence>
-          <s:element minOccurs="1" maxOccurs="1" name="Time" type="s:dateTime" />
-          <s:element minOccurs="1" maxOccurs="1" name="FromUserID" type="s:long" />
-          <s:element minOccurs="0" maxOccurs="1" name="ToUserID" type="tns:ArrayOfLong" />
-          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string" />
-          <s:element minOccurs="1" maxOccurs="1" name="MessageID" type="s:int" />
-        </s:sequence>
-      </s:complexType>
-      <s:complexType name="ArrayOfLong">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="long" type="s:long" />
-        </s:sequence>
-      </s:complexType>
-      <s:element name="InsertChatMessageResponse">
-        <s:complexType />
-      </s:element>
-      <s:element name="GetChatMessages">
-        <s:complexType />
-      </s:element>
-      <s:element name="GetChatMessagesResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetChatMessagesResult" type="tns:ArrayOfChat" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:complexType name="ArrayOfChat">
-        <s:sequence>
-          <s:element minOccurs="0" maxOccurs="unbounded" name="Chat" nillable="true" type="tns:Chat" />
-        </s:sequence>
-      </s:complexType>
       <s:element name="GetPrice">
         <s:complexType />
       </s:element>
@@ -309,17 +280,11 @@
   <wsdl:message name="GetManualTradeTriggerSoapOut">
     <wsdl:part name="parameters" element="tns:GetManualTradeTriggerResponse" />
   </wsdl:message>
-  <wsdl:message name="InsertChatMessageSoapIn">
-    <wsdl:part name="parameters" element="tns:InsertChatMessage" />
+  <wsdl:message name="GetChatTimeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetChatTime" />
   </wsdl:message>
-  <wsdl:message name="InsertChatMessageSoapOut">
-    <wsdl:part name="parameters" element="tns:InsertChatMessageResponse" />
-  </wsdl:message>
-  <wsdl:message name="GetChatMessagesSoapIn">
-    <wsdl:part name="parameters" element="tns:GetChatMessages" />
-  </wsdl:message>
-  <wsdl:message name="GetChatMessagesSoapOut">
-    <wsdl:part name="parameters" element="tns:GetChatMessagesResponse" />
+  <wsdl:message name="GetChatTimeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetChatTimeResponse" />
   </wsdl:message>
   <wsdl:message name="GetPriceSoapIn">
     <wsdl:part name="parameters" element="tns:GetPrice" />
@@ -376,13 +341,9 @@
       <wsdl:input message="tns:GetManualTradeTriggerSoapIn" />
       <wsdl:output message="tns:GetManualTradeTriggerSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="InsertChatMessage">
-      <wsdl:input message="tns:InsertChatMessageSoapIn" />
-      <wsdl:output message="tns:InsertChatMessageSoapOut" />
-    </wsdl:operation>
-    <wsdl:operation name="GetChatMessages">
-      <wsdl:input message="tns:GetChatMessagesSoapIn" />
-      <wsdl:output message="tns:GetChatMessagesSoapOut" />
+    <wsdl:operation name="GetChatTime">
+      <wsdl:input message="tns:GetChatTimeSoapIn" />
+      <wsdl:output message="tns:GetChatTimeSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetPrice">
       <wsdl:input message="tns:GetPriceSoapIn" />
@@ -499,17 +460,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="InsertChatMessage">
-      <soap:operation soapAction="http://tempuri.org/InsertChatMessage" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetChatMessages">
-      <soap:operation soapAction="http://tempuri.org/GetChatMessages" style="document" />
+    <wsdl:operation name="GetChatTime">
+      <soap:operation soapAction="http://tempuri.org/GetChatTime" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -637,17 +589,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="InsertChatMessage">
-      <soap12:operation soapAction="http://tempuri.org/InsertChatMessage" style="document" />
-      <wsdl:input>
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetChatMessages">
-      <soap12:operation soapAction="http://tempuri.org/GetChatMessages" style="document" />
+    <wsdl:operation name="GetChatTime">
+      <soap12:operation soapAction="http://tempuri.org/GetChatTime" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

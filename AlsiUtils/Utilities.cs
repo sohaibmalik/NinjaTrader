@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
-using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace AlsiUtils
 {
@@ -39,5 +39,32 @@ namespace AlsiUtils
         [DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
         public extern static int SetWindowTheme(IntPtr hWnd, string pszSubAppName,
                                                 string pszSubIdList);
+
+
+
+        public static string WrapWords(string actualText, int m_maxWidth)
+        {
+            const char space = (char)32;
+            string[] words = actualText.Split(space);
+
+            string ret = string.Empty;
+            int lineCounter = 1;
+
+            foreach (string word in words)
+            {
+                if (ret.Length + word.Length > m_maxWidth * lineCounter)
+                {
+                    ret = string.Concat(ret, "\n", word);
+                    lineCounter++;
+                }
+                else
+                {
+                    ret = string.Concat(ret, space, word);
+                }
+            }
+
+            return ret.Trim();
+        }
+
     }
 }

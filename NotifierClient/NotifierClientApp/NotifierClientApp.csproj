@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>36</ApplicationRevision>
+    <ApplicationRevision>50</ApplicationRevision>
     <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -90,6 +90,13 @@
     <Compile Include="AdminForm.Designer.cs">
       <DependentUpon>AdminForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChangeUserNameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangeUserNameForm.Designer.cs">
+      <DependentUpon>ChangeUserNameForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Chat.cs" />
     <Compile Include="NewOrderInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +142,9 @@
     <EmbeddedResource Include="AdminForm.resx">
       <DependentUpon>AdminForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ChangeUserNameForm.resx">
+      <DependentUpon>ChangeUserNameForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NewOrderInput.resx">
       <DependentUpon>NewOrderInput.cs</DependentUpon>
     </EmbeddedResource>
@@ -157,9 +167,6 @@
     <EmbeddedResource Include="UpdateForm.resx">
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Web References\AlsiWebService\Chat.datasource">
-      <DependentUpon>Reference.map</DependentUpon>
-    </None>
     <None Include="WebDb.dbml.layout">
       <DependentUpon>WebDb.dbml</DependentUpon>
     </None>
@@ -306,6 +313,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Messages-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Messages_DisAbled-icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

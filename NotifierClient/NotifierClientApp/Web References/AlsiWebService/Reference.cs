@@ -53,9 +53,7 @@ namespace NotifierClientApp.AlsiWebService {
         
         private System.Threading.SendOrPostCallback GetManualTradeTriggerOperationCompleted;
         
-        private System.Threading.SendOrPostCallback InsertChatMessageOperationCompleted;
-        
-        private System.Threading.SendOrPostCallback GetChatMessagesOperationCompleted;
+        private System.Threading.SendOrPostCallback GetChatTimeOperationCompleted;
         
         private System.Threading.SendOrPostCallback GetPriceOperationCompleted;
         
@@ -134,10 +132,7 @@ namespace NotifierClientApp.AlsiWebService {
         public event GetManualTradeTriggerCompletedEventHandler GetManualTradeTriggerCompleted;
         
         /// <remarks/>
-        public event InsertChatMessageCompletedEventHandler InsertChatMessageCompleted;
-        
-        /// <remarks/>
-        public event GetChatMessagesCompletedEventHandler GetChatMessagesCompleted;
+        public event GetChatTimeCompletedEventHandler GetChatTimeCompleted;
         
         /// <remarks/>
         public event GetPriceCompletedEventHandler GetPriceCompleted;
@@ -473,57 +468,29 @@ namespace NotifierClientApp.AlsiWebService {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/InsertChatMessage", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public void InsertChatMessage(Chat Message) {
-            this.Invoke("InsertChatMessage", new object[] {
-                        Message});
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetChatTime", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public System.DateTime GetChatTime() {
+            object[] results = this.Invoke("GetChatTime", new object[0]);
+            return ((System.DateTime)(results[0]));
         }
         
         /// <remarks/>
-        public void InsertChatMessageAsync(Chat Message) {
-            this.InsertChatMessageAsync(Message, null);
+        public void GetChatTimeAsync() {
+            this.GetChatTimeAsync(null);
         }
         
         /// <remarks/>
-        public void InsertChatMessageAsync(Chat Message, object userState) {
-            if ((this.InsertChatMessageOperationCompleted == null)) {
-                this.InsertChatMessageOperationCompleted = new System.Threading.SendOrPostCallback(this.OnInsertChatMessageOperationCompleted);
+        public void GetChatTimeAsync(object userState) {
+            if ((this.GetChatTimeOperationCompleted == null)) {
+                this.GetChatTimeOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetChatTimeOperationCompleted);
             }
-            this.InvokeAsync("InsertChatMessage", new object[] {
-                        Message}, this.InsertChatMessageOperationCompleted, userState);
+            this.InvokeAsync("GetChatTime", new object[0], this.GetChatTimeOperationCompleted, userState);
         }
         
-        private void OnInsertChatMessageOperationCompleted(object arg) {
-            if ((this.InsertChatMessageCompleted != null)) {
+        private void OnGetChatTimeOperationCompleted(object arg) {
+            if ((this.GetChatTimeCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.InsertChatMessageCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetChatMessages", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public Chat[] GetChatMessages() {
-            object[] results = this.Invoke("GetChatMessages", new object[0]);
-            return ((Chat[])(results[0]));
-        }
-        
-        /// <remarks/>
-        public void GetChatMessagesAsync() {
-            this.GetChatMessagesAsync(null);
-        }
-        
-        /// <remarks/>
-        public void GetChatMessagesAsync(object userState) {
-            if ((this.GetChatMessagesOperationCompleted == null)) {
-                this.GetChatMessagesOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetChatMessagesOperationCompleted);
-            }
-            this.InvokeAsync("GetChatMessages", new object[0], this.GetChatMessagesOperationCompleted, userState);
-        }
-        
-        private void OnGetChatMessagesOperationCompleted(object arg) {
-            if ((this.GetChatMessagesCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.GetChatMessagesCompleted(this, new GetChatMessagesCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.GetChatTimeCompleted(this, new GetChatTimeCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -747,75 +714,6 @@ namespace NotifierClientApp.AlsiWebService {
         
         /// <remarks/>
         None,
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.0.30319.233")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://tempuri.org/")]
-    public partial class Chat {
-        
-        private System.DateTime timeField;
-        
-        private long fromUserIDField;
-        
-        private long[] toUserIDField;
-        
-        private string messageField;
-        
-        private int messageIDField;
-        
-        /// <remarks/>
-        public System.DateTime Time {
-            get {
-                return this.timeField;
-            }
-            set {
-                this.timeField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public long FromUserID {
-            get {
-                return this.fromUserIDField;
-            }
-            set {
-                this.fromUserIDField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public long[] ToUserID {
-            get {
-                return this.toUserIDField;
-            }
-            set {
-                this.toUserIDField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public string Message {
-            get {
-                return this.messageField;
-            }
-            set {
-                this.messageField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public int MessageID {
-            get {
-                return this.messageIDField;
-            }
-            set {
-                this.messageIDField = value;
-            }
-        }
     }
     
     /// <remarks/>
@@ -1119,30 +1017,26 @@ namespace NotifierClientApp.AlsiWebService {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
-    public delegate void InsertChatMessageCompletedEventHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e);
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
-    public delegate void GetChatMessagesCompletedEventHandler(object sender, GetChatMessagesCompletedEventArgs e);
+    public delegate void GetChatTimeCompletedEventHandler(object sender, GetChatTimeCompletedEventArgs e);
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class GetChatMessagesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class GetChatTimeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal GetChatMessagesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal GetChatTimeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
         /// <remarks/>
-        public Chat[] Result {
+        public System.DateTime Result {
             get {
                 this.RaiseExceptionIfNecessary();
-                return ((Chat[])(this.results[0]));
+                return ((System.DateTime)(this.results[0]));
             }
         }
     }

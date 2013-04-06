@@ -15,19 +15,20 @@ namespace NotifierClientApp
         string mac = "";
         private bool _IsAdmin;
         private bool Loaded;
-        public long UserID;
+        public int UserID;
         double version;
+        public List<tblUser> UserList;
         public Admin()
         {
 
 
             var versionstring = "100";
 
-            version = double.Parse(versionstring);
-          //  MessageBox.Show(versionstring);
+            version = double.Parse(versionstring);        
             dc = new AlsiTMDataContext();
             mac = Utilities.GetMacAddress();
             UserID = dc.tblUsers.Where(z => z.USER_MACADRESS == mac).Select(z => z.ID).First();
+            UserList = dc.tblUsers.ToList();
             CreateNewUserIfNotExist();
             var user = dc.tblUsers.Where(z => z.USER_MACADRESS == mac).First();
             if (GetNewVersionNumber(user) > version)
@@ -109,9 +110,14 @@ namespace NotifierClientApp
 
         public void ReportLiveStatus(bool Live)
         {
-            var user = dc.tblUsers.Where(z => z.USER_MACADRESS == mac).First();
-            user.USER_LIVE = Live;
-            dc.SubmitChanges();
+            try
+            {
+                var user = dc.tblUsers.Where(z => z.USER_MACADRESS == mac).First();
+                user.USER_LIVE = Live;
+                dc.SubmitChanges();
+            }
+            catch { }
+            
         }
     }
 }

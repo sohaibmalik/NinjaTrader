@@ -50,8 +50,8 @@
             this.StatusUpdateToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.statusUpdateDelaySecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.DelayUpdateToolStripTextBox = new System.Windows.Forms.ToolStripTextBox();
+            this.changeUserNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tradeLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.getPricesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -67,6 +67,8 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.chatHistoryListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.userStatusUpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -135,8 +137,8 @@
             this.ordersToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.tradeLogToolStripMenuItem,
-            this.getPricesToolStripMenuItem,
-            this.adminToolStripMenuItem});
+            this.adminToolStripMenuItem,
+            this.testToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(619, 24);
@@ -171,7 +173,8 @@
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.orderUpdateIntervalMsToolStripMenuItem,
             this.statusUpdateIntervalMsToolStripMenuItem,
-            this.statusUpdateDelaySecToolStripMenuItem});
+            this.statusUpdateDelaySecToolStripMenuItem,
+            this.changeUserNameToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -218,19 +221,19 @@
             this.DelayUpdateToolStripTextBox.Size = new System.Drawing.Size(100, 23);
             this.DelayUpdateToolStripTextBox.TextChanged += new System.EventHandler(this.DelayUpdateToolStripTextBox_TextChanged);
             // 
+            // changeUserNameToolStripMenuItem
+            // 
+            this.changeUserNameToolStripMenuItem.Name = "changeUserNameToolStripMenuItem";
+            this.changeUserNameToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.changeUserNameToolStripMenuItem.Text = "Change Username";
+            this.changeUserNameToolStripMenuItem.Click += new System.EventHandler(this.changeUserNameToolStripMenuItem_Click);
+            // 
             // tradeLogToolStripMenuItem
             // 
             this.tradeLogToolStripMenuItem.Name = "tradeLogToolStripMenuItem";
             this.tradeLogToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
             this.tradeLogToolStripMenuItem.Text = "TradeLog";
             this.tradeLogToolStripMenuItem.Click += new System.EventHandler(this.tradeLogToolStripMenuItem_Click);
-            // 
-            // getPricesToolStripMenuItem
-            // 
-            this.getPricesToolStripMenuItem.Name = "getPricesToolStripMenuItem";
-            this.getPricesToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
-            this.getPricesToolStripMenuItem.Text = "Get Prices";
-            this.getPricesToolStripMenuItem.Click += new System.EventHandler(this.getPricesToolStripMenuItem_Click);
             // 
             // adminToolStripMenuItem
             // 
@@ -260,8 +263,9 @@
             // 
             this.pricesStatusLabel.BackColor = System.Drawing.Color.Lime;
             this.pricesStatusLabel.Name = "pricesStatusLabel";
-            this.pricesStatusLabel.Size = new System.Drawing.Size(13, 17);
-            this.pricesStatusLabel.Text = "..";
+            this.pricesStatusLabel.Size = new System.Drawing.Size(164, 17);
+            this.pricesStatusLabel.Text = "Click here to update Alsi price";
+            this.pricesStatusLabel.Click += new System.EventHandler(this.pricesStatusLabel_Click);
             // 
             // StatusUpdateTimer
             // 
@@ -309,6 +313,7 @@
             this.userListView.UseCompatibleStateImageBehavior = false;
             this.userListView.View = System.Windows.Forms.View.Details;
             this.userListView.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.userListView_ItemChecked);
+            this.userListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.userListView_ItemSelectionChanged);
             // 
             // userCol
             // 
@@ -358,11 +363,27 @@
             this.chatHistoryListView.TabIndex = 11;
             this.chatHistoryListView.UseCompatibleStateImageBehavior = false;
             this.chatHistoryListView.View = System.Windows.Forms.View.Details;
+           
+            this.chatHistoryListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.chatHistoryListView_ItemSelectionChanged);
+            this.chatHistoryListView.MouseHover += new System.EventHandler(this.chatHistoryListView_MouseHover);
             // 
             // columnHeader1
             // 
             this.columnHeader1.Text = "Message";
             this.columnHeader1.Width = 450;
+            // 
+            // userStatusUpdateTimer
+            // 
+            this.userStatusUpdateTimer.Enabled = true;
+            this.userStatusUpdateTimer.Interval = 5000;
+            this.userStatusUpdateTimer.Tick += new System.EventHandler(this.userStatusUpdateTimer_Tick);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
+            this.testToolStripMenuItem.Text = "Test";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // Notify
             // 
@@ -424,7 +445,6 @@
         private System.Windows.Forms.ToolStripMenuItem statusUpdateDelaySecToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox DelayUpdateToolStripTextBox;
         private System.Windows.Forms.ToolStripMenuItem tradeLogToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem getPricesToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel pricesStatusLabel;
         private System.Windows.Forms.ToolStripMenuItem adminToolStripMenuItem;
         private System.Windows.Forms.TextBox chatInputTextBox;
@@ -436,6 +456,9 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.ListView chatHistoryListView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.Timer userStatusUpdateTimer;
+        private System.Windows.Forms.ToolStripMenuItem changeUserNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
        
 
     }

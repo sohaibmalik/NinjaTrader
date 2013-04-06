@@ -30,12 +30,18 @@ namespace AlsiUtils
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InserttblUser(tblUser instance);
-    partial void UpdatetblUser(tblUser instance);
-    partial void DeletetblUser(tblUser instance);
     partial void InserttblLog(tblLog instance);
     partial void UpdatetblLog(tblLog instance);
     partial void DeletetblLog(tblLog instance);
+    partial void InserttblUser(tblUser instance);
+    partial void UpdatetblUser(tblUser instance);
+    partial void DeletetblUser(tblUser instance);
+    partial void InserttblMessageUser(tblMessageUser instance);
+    partial void UpdatetblMessageUser(tblMessageUser instance);
+    partial void DeletetblMessageUser(tblMessageUser instance);
+    partial void InserttblMessage(tblMessage instance);
+    partial void UpdatetblMessage(tblMessage instance);
+    partial void DeletetblMessage(tblMessage instance);
     #endregion
 		
 		public AlsiTMDataContext(string connection) : 
@@ -62,6 +68,14 @@ namespace AlsiUtils
 			OnCreated();
 		}
 		
+		public System.Data.Linq.Table<tblLog> tblLogs
+		{
+			get
+			{
+				return this.GetTable<tblLog>();
+			}
+		}
+		
 		public System.Data.Linq.Table<tblUser> tblUsers
 		{
 			get
@@ -70,193 +84,19 @@ namespace AlsiUtils
 			}
 		}
 		
-		public System.Data.Linq.Table<tblLog> tblLogs
+		public System.Data.Linq.Table<tblMessageUser> tblMessageUsers
 		{
 			get
 			{
-				return this.GetTable<tblLog>();
+				return this.GetTable<tblMessageUser>();
 			}
 		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="Pieter.tblUser")]
-	public partial class tblUser : INotifyPropertyChanging, INotifyPropertyChanged
-	{
 		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ID;
-		
-		private string _USER_NAME;
-		
-		private string _USER_MACADRESS;
-		
-		private System.Nullable<System.DateTime> _USER_EXPIRY;
-		
-		private System.Nullable<bool> _USER_ADMIN;
-		
-		private System.Nullable<bool> _USER_LIVE;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIDChanging(int value);
-    partial void OnIDChanged();
-    partial void OnUSER_NAMEChanging(string value);
-    partial void OnUSER_NAMEChanged();
-    partial void OnUSER_MACADRESSChanging(string value);
-    partial void OnUSER_MACADRESSChanged();
-    partial void OnUSER_EXPIRYChanging(System.Nullable<System.DateTime> value);
-    partial void OnUSER_EXPIRYChanged();
-    partial void OnUSER_ADMINChanging(System.Nullable<bool> value);
-    partial void OnUSER_ADMINChanged();
-    partial void OnUSER_LIVEChanging(System.Nullable<bool> value);
-    partial void OnUSER_LIVEChanged();
-    #endregion
-		
-		public tblUser()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ID
+		public System.Data.Linq.Table<tblMessage> tblMessages
 		{
 			get
 			{
-				return this._ID;
-			}
-			set
-			{
-				if ((this._ID != value))
-				{
-					this.OnIDChanging(value);
-					this.SendPropertyChanging();
-					this._ID = value;
-					this.SendPropertyChanged("ID");
-					this.OnIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_NAME", DbType="VarChar(50)")]
-		public string USER_NAME
-		{
-			get
-			{
-				return this._USER_NAME;
-			}
-			set
-			{
-				if ((this._USER_NAME != value))
-				{
-					this.OnUSER_NAMEChanging(value);
-					this.SendPropertyChanging();
-					this._USER_NAME = value;
-					this.SendPropertyChanged("USER_NAME");
-					this.OnUSER_NAMEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_MACADRESS", DbType="VarChar(50)")]
-		public string USER_MACADRESS
-		{
-			get
-			{
-				return this._USER_MACADRESS;
-			}
-			set
-			{
-				if ((this._USER_MACADRESS != value))
-				{
-					this.OnUSER_MACADRESSChanging(value);
-					this.SendPropertyChanging();
-					this._USER_MACADRESS = value;
-					this.SendPropertyChanged("USER_MACADRESS");
-					this.OnUSER_MACADRESSChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_EXPIRY", DbType="DateTime")]
-		public System.Nullable<System.DateTime> USER_EXPIRY
-		{
-			get
-			{
-				return this._USER_EXPIRY;
-			}
-			set
-			{
-				if ((this._USER_EXPIRY != value))
-				{
-					this.OnUSER_EXPIRYChanging(value);
-					this.SendPropertyChanging();
-					this._USER_EXPIRY = value;
-					this.SendPropertyChanged("USER_EXPIRY");
-					this.OnUSER_EXPIRYChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_ADMIN", DbType="Bit")]
-		public System.Nullable<bool> USER_ADMIN
-		{
-			get
-			{
-				return this._USER_ADMIN;
-			}
-			set
-			{
-				if ((this._USER_ADMIN != value))
-				{
-					this.OnUSER_ADMINChanging(value);
-					this.SendPropertyChanging();
-					this._USER_ADMIN = value;
-					this.SendPropertyChanged("USER_ADMIN");
-					this.OnUSER_ADMINChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_LIVE", DbType="Bit")]
-		public System.Nullable<bool> USER_LIVE
-		{
-			get
-			{
-				return this._USER_LIVE;
-			}
-			set
-			{
-				if ((this._USER_LIVE != value))
-				{
-					this.OnUSER_LIVEChanging(value);
-					this.SendPropertyChanging();
-					this._USER_LIVE = value;
-					this.SendPropertyChanged("USER_LIVE");
-					this.OnUSER_LIVEChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+				return this.GetTable<tblMessage>();
 			}
 		}
 	}
@@ -392,6 +232,639 @@ namespace AlsiUtils
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Pieter.tblUser")]
+	public partial class tblUser : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _USER_NAME;
+		
+		private string _USER_MACADRESS;
+		
+		private System.Nullable<System.DateTime> _USER_EXPIRY;
+		
+		private System.Nullable<bool> _USER_ADMIN;
+		
+		private System.Nullable<bool> _USER_LIVE;
+		
+		private EntitySet<tblMessageUser> _tblMessageUsers;
+		
+		private EntitySet<tblMessageUser> _tblMessageUsers1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnUSER_NAMEChanging(string value);
+    partial void OnUSER_NAMEChanged();
+    partial void OnUSER_MACADRESSChanging(string value);
+    partial void OnUSER_MACADRESSChanged();
+    partial void OnUSER_EXPIRYChanging(System.Nullable<System.DateTime> value);
+    partial void OnUSER_EXPIRYChanged();
+    partial void OnUSER_ADMINChanging(System.Nullable<bool> value);
+    partial void OnUSER_ADMINChanged();
+    partial void OnUSER_LIVEChanging(System.Nullable<bool> value);
+    partial void OnUSER_LIVEChanged();
+    #endregion
+		
+		public tblUser()
+		{
+			this._tblMessageUsers = new EntitySet<tblMessageUser>(new Action<tblMessageUser>(this.attach_tblMessageUsers), new Action<tblMessageUser>(this.detach_tblMessageUsers));
+			this._tblMessageUsers1 = new EntitySet<tblMessageUser>(new Action<tblMessageUser>(this.attach_tblMessageUsers1), new Action<tblMessageUser>(this.detach_tblMessageUsers1));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_NAME", DbType="VarChar(50)")]
+		public string USER_NAME
+		{
+			get
+			{
+				return this._USER_NAME;
+			}
+			set
+			{
+				if ((this._USER_NAME != value))
+				{
+					this.OnUSER_NAMEChanging(value);
+					this.SendPropertyChanging();
+					this._USER_NAME = value;
+					this.SendPropertyChanged("USER_NAME");
+					this.OnUSER_NAMEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_MACADRESS", DbType="VarChar(50)")]
+		public string USER_MACADRESS
+		{
+			get
+			{
+				return this._USER_MACADRESS;
+			}
+			set
+			{
+				if ((this._USER_MACADRESS != value))
+				{
+					this.OnUSER_MACADRESSChanging(value);
+					this.SendPropertyChanging();
+					this._USER_MACADRESS = value;
+					this.SendPropertyChanged("USER_MACADRESS");
+					this.OnUSER_MACADRESSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_EXPIRY", DbType="DateTime")]
+		public System.Nullable<System.DateTime> USER_EXPIRY
+		{
+			get
+			{
+				return this._USER_EXPIRY;
+			}
+			set
+			{
+				if ((this._USER_EXPIRY != value))
+				{
+					this.OnUSER_EXPIRYChanging(value);
+					this.SendPropertyChanging();
+					this._USER_EXPIRY = value;
+					this.SendPropertyChanged("USER_EXPIRY");
+					this.OnUSER_EXPIRYChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_ADMIN", DbType="Bit")]
+		public System.Nullable<bool> USER_ADMIN
+		{
+			get
+			{
+				return this._USER_ADMIN;
+			}
+			set
+			{
+				if ((this._USER_ADMIN != value))
+				{
+					this.OnUSER_ADMINChanging(value);
+					this.SendPropertyChanging();
+					this._USER_ADMIN = value;
+					this.SendPropertyChanged("USER_ADMIN");
+					this.OnUSER_ADMINChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_USER_LIVE", DbType="Bit")]
+		public System.Nullable<bool> USER_LIVE
+		{
+			get
+			{
+				return this._USER_LIVE;
+			}
+			set
+			{
+				if ((this._USER_LIVE != value))
+				{
+					this.OnUSER_LIVEChanging(value);
+					this.SendPropertyChanging();
+					this._USER_LIVE = value;
+					this.SendPropertyChanged("USER_LIVE");
+					this.OnUSER_LIVEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblMessageUser", Storage="_tblMessageUsers", ThisKey="ID", OtherKey="MSG_USER_FROM")]
+		public EntitySet<tblMessageUser> tblMessageUsers
+		{
+			get
+			{
+				return this._tblMessageUsers;
+			}
+			set
+			{
+				this._tblMessageUsers.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblMessageUser1", Storage="_tblMessageUsers1", ThisKey="ID", OtherKey="MSG_USER_TO")]
+		public EntitySet<tblMessageUser> tblMessageUsers1
+		{
+			get
+			{
+				return this._tblMessageUsers1;
+			}
+			set
+			{
+				this._tblMessageUsers1.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_tblMessageUsers(tblMessageUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblUser = this;
+		}
+		
+		private void detach_tblMessageUsers(tblMessageUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblUser = null;
+		}
+		
+		private void attach_tblMessageUsers1(tblMessageUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblUser1 = this;
+		}
+		
+		private void detach_tblMessageUsers1(tblMessageUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblUser1 = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Pieter.tblMessageUser")]
+	public partial class tblMessageUser : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _MSG_USER_ID;
+		
+		private System.Nullable<int> _MSG_USER_FROM;
+		
+		private System.Nullable<int> _MSG_USER_TO;
+		
+		private System.Nullable<int> _MSG_ID;
+		
+		private EntityRef<tblUser> _tblUser;
+		
+		private EntityRef<tblUser> _tblUser1;
+		
+		private EntityRef<tblMessage> _tblMessage;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnMSG_USER_IDChanging(int value);
+    partial void OnMSG_USER_IDChanged();
+    partial void OnMSG_USER_FROMChanging(System.Nullable<int> value);
+    partial void OnMSG_USER_FROMChanged();
+    partial void OnMSG_USER_TOChanging(System.Nullable<int> value);
+    partial void OnMSG_USER_TOChanged();
+    partial void OnMSG_IDChanging(System.Nullable<int> value);
+    partial void OnMSG_IDChanged();
+    #endregion
+		
+		public tblMessageUser()
+		{
+			this._tblUser = default(EntityRef<tblUser>);
+			this._tblUser1 = default(EntityRef<tblUser>);
+			this._tblMessage = default(EntityRef<tblMessage>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MSG_USER_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int MSG_USER_ID
+		{
+			get
+			{
+				return this._MSG_USER_ID;
+			}
+			set
+			{
+				if ((this._MSG_USER_ID != value))
+				{
+					this.OnMSG_USER_IDChanging(value);
+					this.SendPropertyChanging();
+					this._MSG_USER_ID = value;
+					this.SendPropertyChanged("MSG_USER_ID");
+					this.OnMSG_USER_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MSG_USER_FROM", DbType="Int")]
+		public System.Nullable<int> MSG_USER_FROM
+		{
+			get
+			{
+				return this._MSG_USER_FROM;
+			}
+			set
+			{
+				if ((this._MSG_USER_FROM != value))
+				{
+					if (this._tblUser.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMSG_USER_FROMChanging(value);
+					this.SendPropertyChanging();
+					this._MSG_USER_FROM = value;
+					this.SendPropertyChanged("MSG_USER_FROM");
+					this.OnMSG_USER_FROMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MSG_USER_TO", DbType="Int")]
+		public System.Nullable<int> MSG_USER_TO
+		{
+			get
+			{
+				return this._MSG_USER_TO;
+			}
+			set
+			{
+				if ((this._MSG_USER_TO != value))
+				{
+					if (this._tblUser1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMSG_USER_TOChanging(value);
+					this.SendPropertyChanging();
+					this._MSG_USER_TO = value;
+					this.SendPropertyChanged("MSG_USER_TO");
+					this.OnMSG_USER_TOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MSG_ID", DbType="Int")]
+		public System.Nullable<int> MSG_ID
+		{
+			get
+			{
+				return this._MSG_ID;
+			}
+			set
+			{
+				if ((this._MSG_ID != value))
+				{
+					if (this._tblMessage.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMSG_IDChanging(value);
+					this.SendPropertyChanging();
+					this._MSG_ID = value;
+					this.SendPropertyChanged("MSG_ID");
+					this.OnMSG_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblMessageUser", Storage="_tblUser", ThisKey="MSG_USER_FROM", OtherKey="ID", IsForeignKey=true)]
+		public tblUser tblUser
+		{
+			get
+			{
+				return this._tblUser.Entity;
+			}
+			set
+			{
+				tblUser previousValue = this._tblUser.Entity;
+				if (((previousValue != value) 
+							|| (this._tblUser.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tblUser.Entity = null;
+						previousValue.tblMessageUsers.Remove(this);
+					}
+					this._tblUser.Entity = value;
+					if ((value != null))
+					{
+						value.tblMessageUsers.Add(this);
+						this._MSG_USER_FROM = value.ID;
+					}
+					else
+					{
+						this._MSG_USER_FROM = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("tblUser");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblMessageUser1", Storage="_tblUser1", ThisKey="MSG_USER_TO", OtherKey="ID", IsForeignKey=true)]
+		public tblUser tblUser1
+		{
+			get
+			{
+				return this._tblUser1.Entity;
+			}
+			set
+			{
+				tblUser previousValue = this._tblUser1.Entity;
+				if (((previousValue != value) 
+							|| (this._tblUser1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tblUser1.Entity = null;
+						previousValue.tblMessageUsers1.Remove(this);
+					}
+					this._tblUser1.Entity = value;
+					if ((value != null))
+					{
+						value.tblMessageUsers1.Add(this);
+						this._MSG_USER_TO = value.ID;
+					}
+					else
+					{
+						this._MSG_USER_TO = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("tblUser1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblMessage_tblMessageUser", Storage="_tblMessage", ThisKey="MSG_ID", OtherKey="TBL_MSG_ID", IsForeignKey=true)]
+		public tblMessage tblMessage
+		{
+			get
+			{
+				return this._tblMessage.Entity;
+			}
+			set
+			{
+				tblMessage previousValue = this._tblMessage.Entity;
+				if (((previousValue != value) 
+							|| (this._tblMessage.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tblMessage.Entity = null;
+						previousValue.tblMessageUsers.Remove(this);
+					}
+					this._tblMessage.Entity = value;
+					if ((value != null))
+					{
+						value.tblMessageUsers.Add(this);
+						this._MSG_ID = value.TBL_MSG_ID;
+					}
+					else
+					{
+						this._MSG_ID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("tblMessage");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="Pieter.tblMessage")]
+	public partial class tblMessage : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _TBL_MSG_ID;
+		
+		private string _TBL_MSG_TEXT;
+		
+		private System.Nullable<System.DateTime> _TBL_MSG_TIME;
+		
+		private EntitySet<tblMessageUser> _tblMessageUsers;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnTBL_MSG_IDChanging(int value);
+    partial void OnTBL_MSG_IDChanged();
+    partial void OnTBL_MSG_TEXTChanging(string value);
+    partial void OnTBL_MSG_TEXTChanged();
+    partial void OnTBL_MSG_TIMEChanging(System.Nullable<System.DateTime> value);
+    partial void OnTBL_MSG_TIMEChanged();
+    #endregion
+		
+		public tblMessage()
+		{
+			this._tblMessageUsers = new EntitySet<tblMessageUser>(new Action<tblMessageUser>(this.attach_tblMessageUsers), new Action<tblMessageUser>(this.detach_tblMessageUsers));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TBL_MSG_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int TBL_MSG_ID
+		{
+			get
+			{
+				return this._TBL_MSG_ID;
+			}
+			set
+			{
+				if ((this._TBL_MSG_ID != value))
+				{
+					this.OnTBL_MSG_IDChanging(value);
+					this.SendPropertyChanging();
+					this._TBL_MSG_ID = value;
+					this.SendPropertyChanged("TBL_MSG_ID");
+					this.OnTBL_MSG_IDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TBL_MSG_TEXT", DbType="VarChar(MAX)")]
+		public string TBL_MSG_TEXT
+		{
+			get
+			{
+				return this._TBL_MSG_TEXT;
+			}
+			set
+			{
+				if ((this._TBL_MSG_TEXT != value))
+				{
+					this.OnTBL_MSG_TEXTChanging(value);
+					this.SendPropertyChanging();
+					this._TBL_MSG_TEXT = value;
+					this.SendPropertyChanged("TBL_MSG_TEXT");
+					this.OnTBL_MSG_TEXTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TBL_MSG_TIME", DbType="DateTime")]
+		public System.Nullable<System.DateTime> TBL_MSG_TIME
+		{
+			get
+			{
+				return this._TBL_MSG_TIME;
+			}
+			set
+			{
+				if ((this._TBL_MSG_TIME != value))
+				{
+					this.OnTBL_MSG_TIMEChanging(value);
+					this.SendPropertyChanging();
+					this._TBL_MSG_TIME = value;
+					this.SendPropertyChanged("TBL_MSG_TIME");
+					this.OnTBL_MSG_TIMEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblMessage_tblMessageUser", Storage="_tblMessageUsers", ThisKey="TBL_MSG_ID", OtherKey="MSG_ID")]
+		public EntitySet<tblMessageUser> tblMessageUsers
+		{
+			get
+			{
+				return this._tblMessageUsers;
+			}
+			set
+			{
+				this._tblMessageUsers.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_tblMessageUsers(tblMessageUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblMessage = this;
+		}
+		
+		private void detach_tblMessageUsers(tblMessageUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblMessage = null;
 		}
 	}
 }

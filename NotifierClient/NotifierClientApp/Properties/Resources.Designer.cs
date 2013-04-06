@@ -87,6 +87,13 @@ namespace NotifierClientApp.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Messages_DisAbled_icon {
+            get {
+                object obj = ResourceManager.GetObject("Messages_DisAbled_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Messages_icon {
             get {
                 object obj = ResourceManager.GetObject("Messages-icon", resourceCulture);
