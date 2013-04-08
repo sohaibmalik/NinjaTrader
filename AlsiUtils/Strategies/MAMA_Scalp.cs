@@ -1,38 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
+using System.Linq;
+using System.IO;
 
 namespace AlsiUtils.Strategies
 {
-    public class EmaSalp2
+   
+
+    public class MAMA_Scalp
     {
-        private static List<TradeStrategy2> _T;
+        private static List<TradeStrategy> _T;
         private static List<EMA> A_1;
         private static List<EMA> A_6;
         private static List<EMA> B_1;
         private static List<EMA> B_6;
         private static List<EMA> E1;
-        private static bool _CloseEndOfDay;
+        private static List<MAMA> MA;
 
-        public static List<Trade>  EmaScalp(Parameter_EMA_Scalp P, List<Price> price, bool tradeOnly)
-        {            
-           _CloseEndOfDay = P.CloseEndofDay;            
+        public static List<Trade> MAMAScalp(Parameter_MAMA P, List<Price> price, bool tradeOnly)
+        {
+
             A_1 = Factory_Indicator.createEMA(P.A_EMA1, price);
             A_6 = Factory_Indicator.createEMA(P.A_EMA2, price);
             B_1 = Factory_Indicator.createEMA(P.B_EMA1, price);
             B_6 = Factory_Indicator.createEMA(P.B_EMA2, price);
             E1 = Factory_Indicator.createEMA(P.C_EMA, price);
 
-            DateTime sd = E1[0].TimeStamp;
+            M = Factory_Indicator.createAdaptiveMA_MAMA(P.Fast, P.Slow, price);
 
+            //StreamWriter sr = new StreamWriter(@"d:\MAMA.txt");
+            //foreach (var m in MA.Skip(1000))
+            //{
+            //    sr.WriteLine(m.TimeStamp + "," + m.Price_Close + "," + m.Mama + "," + m.Fama);//+","+E1.Where(z=>z.TimeStamp==m.TimeStamp).First().Ema );
+            //}
+            //sr.Close();
+
+            //Environment.Exit(0);
+
+            DateTime sd = E1[0].TimeStamp;
+            
             CutToSize(sd);
-            TradeStrategy2 _strategy = new TradeStrategy2(price, sd, P, CalcTriggersOpen, CalcTriggersClose);
+            TradeStrategy _strategy = new TradeStrategy(price, P, B_6[0].TimeStamp, CalcTriggers,CalcTriggers2 );
+
             _strategy.Calculate();
             _T = _strategy.getStrategyList();
+            //for (int x = 0; x < _T.Count; x++) DP(x);
 
-            return GetTradeData(tradeOnly);
+
+            // _strategy.ClearList(); //FOR SIMULATOR
+            return GetTradeData(tradeOnly); // REAL TRADING
+            //  Clear();//FOR SIMULATOR
+
+            return new List<Trade>();
+
         }
 
 
@@ -76,14 +97,14 @@ namespace AlsiUtils.Strategies
             {
 
                 Debug.WriteLine(_T[x].TimeStamp
-                     + "," + _T[x].ActualTrade
+                     + "," + _T[x].ActualTrade 
                      + "," + _T[x].Price_Close
                      + ", E:" + Math.Round(E1[x].Ema, 2)
                      + "  A1:" + Math.Round(A_1[x].Ema, 2)
                      + "  A6:" + Math.Round(A_6[x].Ema, 2)
                      + "  B1:" + Math.Round(B_1[x].Ema, 2)
                      + "  B6:" + Math.Round(B_6[x].Ema, 2)
-                     + " Pos:" + _T[x].TradeDirection
+                     + " Pos:" + _T[x].TradeDirection 
                      + "  RunPL:," + _T[x].RunningProfit
                      + "," + _T[x].TotalProfit
                      + "," + _T[x].Reason
@@ -102,19 +123,17 @@ namespace AlsiUtils.Strategies
                 var t = new Trade()
                 {
                     InstrumentName = _T[x].InstrumentName,
-                    BuyorSell = TradeStrategy2.GetBuySell(_T[x].ActualTrade),
+                    BuyorSell = TradeStrategy.GetBuySell(_T[x].ActualTrade),
                     CurrentDirection = _T[x].TradeDirection,
                     Position = _T[x].Position,
                     RunningProfit = _T[x].RunningProfit,
                     TimeStamp = _T[x].TimeStamp,
                     TotalPL = _T[x].TotalProfit,
                     TradedPrice = _T[x].Price_Close,
-                    Reason = _T[x].TradeTrigger ,
-                    TradeTrigger=_T[x].ActualTrade,
-                    TradeTriggerGeneral=_T[x].TradeTriggerGeneral,
+                    Reason = _T[x].ActualTrade,
                     CurrentPrice = _T[x].Price_Close,
-                    TradeVolume = GetVolume(_T[x]),                    
-                    IndicatorNotes = "A1:" + Math.Round(A_1[x].Ema, 2) + "  A2:" + Math.Round(A_6[x].Ema, 2) + "  B1:" + Math.Round(B_1[x].Ema, 2) + "  B2:" + Math.Round(B_6[x].Ema, 2) + "  C:" + Math.Round(E1[x].Ema, 2)
+                    TradeVolume=GetVolume(_T[x]),
+                    IndicatorNotes = "A1:" + Math.Round(A_1[x].Ema,2) + "  A2:" + Math.Round(A_6[x].Ema,2) + "  B1:" + Math.Round(B_1[x].Ema,2) + "  B2:" + Math.Round(B_6[x].Ema,2) + "  C:" + Math.Round(E1[x].Ema,2)
 
                 };
 
@@ -126,25 +145,26 @@ namespace AlsiUtils.Strategies
                 {
                     trades.Add(t);
                 }
-
-                // Debug.WriteLine(t.TimeStamp + "," + t.BuyorSell + "," + t.CurrentDirection + "," + _T[x].TradeTrigger + ","  + _T[x].ActualTrade  + "," + _T[x].TradedPrice );
+              
+               // Debug.WriteLine(t.TimeStamp + "," + t.BuyorSell + "," + t.CurrentDirection + "," + _T[x].TradeTrigger + ","  + _T[x].ActualTrade  + "," + _T[x].TradedPrice );
             }
 
             Clear();
             return trades;
         }
 
-        private static int GetVolume(TradeStrategy2 T)
+        private static int GetVolume(TradeStrategy T)
         {
             int vol = 0;
             if (T.ActualTrade != Trade.Trigger.None) vol = 1;
-            if (T.ActualTrade == Trade.Trigger.ReverseLong || T.ActualTrade == Trade.Trigger.ReverseShort) vol = 2;
             return vol;
         }
-        
-        public static void CalcTriggersClose(List<TradeStrategy2> strategy, int x)
+
+
+        public static void CalcTriggers(List<TradeStrategy> strategy, int x)
         {
-            
+
+
             if (
                 (A_1[x - 1].Ema > B_1[x - 1].Ema && A_1[x].Ema < B_1[x].Ema)
                 )
@@ -155,43 +175,34 @@ namespace AlsiUtils.Strategies
                 )
                 strategy[x].TradeTrigger = Trade.Trigger.CloseShort;
 
-            if (_CloseEndOfDay)
-                if (strategy[x].TimeStamp.Hour == 8 && strategy[x - 1].TimeStamp.Hour > 8)
-                    strategy[x-1].TradeTrigger = Trade.Trigger.EndOfDayClose;
+
+            if (
+                (A_6[x - 1].Ema < E1[x - 1].Ema && A_6[x].Ema > B_1[x].Ema && A_6[x].Ema > E1[x].Ema)
+                || (A_6[x - 1].Ema < B_1[x - 1].Ema && A_6[x].Ema > B_1[x].Ema && A_6[x].Ema > E1[x].Ema)
+
+                )
+                strategy[x].TradeTrigger = Trade.Trigger.OpenLong;
+
+            if (
+                (A_6[x - 1].Ema > E1[x - 1].Ema && A_6[x].Ema < E1[x].Ema && A_6[x].Ema < B_6[x].Ema)
+                  || (A_6[x - 1].Ema > B_1[x - 1].Ema && A_6[x].Ema < B_1[x].Ema && A_6[x].Ema < B_6[x].Ema)
+                )
+                strategy[x].TradeTrigger = Trade.Trigger.OpenShort;
+
 
           
+
         }
 
-        public static void CalcTriggersOpen(List<TradeStrategy2> strategy, int x)
+        public static void CalcTriggers2(List<TradeStrategy> strategy, int x)
         {
-           
+            if (strategy[x].TradeDirection == Trade.Direction.Long && strategy[x].TradeTrigger == Trade.Trigger.OpenShort)
+                strategy[x].TradeTrigger = Trade.Trigger.ReverseShort;
 
-                    if (
-                        (A_6[x - 1].Ema < E1[x - 1].Ema && A_6[x].Ema > B_1[x].Ema && A_6[x].Ema > E1[x].Ema)
-                        || (A_6[x - 1].Ema < B_1[x - 1].Ema && A_6[x].Ema > B_1[x].Ema && A_6[x].Ema > E1[x].Ema)
-
-                        )
-                        strategy[x].TradeTrigger = Trade.Trigger.OpenLong;
-
-                    if (
-                        (A_6[x - 1].Ema > E1[x - 1].Ema && A_6[x].Ema < E1[x].Ema && A_6[x].Ema < B_6[x].Ema)
-                          || (A_6[x - 1].Ema > B_1[x - 1].Ema && A_6[x].Ema < B_1[x].Ema && A_6[x].Ema < B_6[x].Ema)
-                        )
-                        strategy[x].TradeTrigger = Trade.Trigger.OpenShort;
-                
-             //blocks trade if must close at end of day
-            if (_CloseEndOfDay)
-                if (strategy[x].TimeStamp.Hour < strategy[x - 1].TimeStamp.Hour)
-                { strategy[x-1].TradeTrigger = Trade.Trigger.None; }
-
-            //Contract Expires
-            if (strategy[x - 1].InstrumentName != strategy[x].InstrumentName)
-                strategy[x - 1].TradeTrigger = Trade.Trigger.EndOfDayClose;
+            if (strategy[x].TradeDirection == Trade.Direction.Short && strategy[x].TradeTrigger == Trade.Trigger.OpenLong)
+                strategy[x].TradeTrigger = Trade.Trigger.ReverseLong;
         }
-
-      
-
+     
 
     }
-
 }

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace AlsiUtils.Strategies
 {
-    public class Parameter_EMA_SAR : Parameter_EMA_Scalp
-    {      
-        public double SAR_STEP { get; set; }
-        public double SAR_MAXP { get; set; }
+    public class Parameter_MAMA : Parameter_EMA_Scalp
+    {     
+        public double Fast { get; set; }//defualt = 0.5;
+        public double Slow { get; set; }//defualt=0.05;
     }
 }

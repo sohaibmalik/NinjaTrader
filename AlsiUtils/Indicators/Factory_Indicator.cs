@@ -370,6 +370,36 @@ namespace AlsiUtils
             return ema;
         }
 
+        public static List<EMA> createDEMA(int N, List<Price> Price)
+        {
+            List<EMA> dema = new List<EMA>();
+
+            double[] _price = new double[Price.Count];
+
+            for (int x = 0; x < Price.Count; x++) _price[x] = Price[x].Close;
+
+            double[] _ema = new double[Price.Count];
+            int a, b;
+
+            Core.Dema(0, Price.Count - 1, _price, N, out a, out b, _ema);         
+            for (int x = 0; x < Price.Count - a; x++)
+            {
+                EMA e = new EMA
+                {
+                    TimeStamp = Price[x + a].TimeStamp,
+                    Price_Close = Price[x + a].Close,
+                    Price_High = Price[x + a].High,
+                    Price_Low = Price[x + a].Low,
+                    Price_Open = Price[x + a].Open,
+                    Ema = _ema[x],
+
+                };
+                dema.Add(e);
+            }
+
+            return dema;
+        }
+
         public static List<EMA> createEMA(int N, List<VariableIndicator> Value)
         {
             List<EMA> ema = new List<EMA>();
@@ -396,6 +426,100 @@ namespace AlsiUtils
             }
 
             return ema;
+        }
+
+        public static List<SMA> createAdaptiveMA_KAMA(int N, List<VariableIndicator> Value)
+        {
+            List<SMA> sma = new List<SMA>();
+
+            double[] _price = new double[Value.Count];
+
+            for (int x = 0; x < Value.Count; x++) _price[x] = Value[x].Value;
+
+            double[] _sma = new double[Value.Count];
+            int a, b;
+
+         
+            Core.Kama(0, Value.Count - 1, _price, N, out a, out b, _sma);
+           
+            for (int x = 0; x < Value.Count - a; x++)
+            {
+                SMA e = new SMA
+                {
+                    TimeStamp = Value[x + a].TimeStamp,
+                    CustomValue = Value[x + a].Value,
+                    Sma = _sma[x],
+
+                };
+                sma.Add(e);
+            }
+
+            return sma;
+        }
+
+
+        public static List<MAMA> createAdaptiveMA_MAMA(double FastLimit,double SlowLimit, List<Price> Price)
+        {
+            List<MAMA> mama = new List<MAMA>();
+
+            double[] _price = new double[Price.Count];
+
+            for (int x = 0; x < Price.Count; x++) _price[x] = Price[x].Close;
+
+            double[] _mama = new double[Price.Count];
+            double[] _fama = new double[Price.Count];
+            int a, b;
+
+            Core.Mama(0, Price.Count - 1, _price,FastLimit,SlowLimit , out a, out b, _mama,_fama );
+
+            for (int x = 0; x < Price.Count - a; x++)
+            {
+                MAMA e = new MAMA
+                {
+                    TimeStamp = Price[x + a].TimeStamp,
+                    Price_Close = Price[x + a].Close,
+                    Price_High = Price[x + a].High,
+                    Price_Low = Price[x + a].Low,
+                    Price_Open = Price[x + a].Open,
+                    Mama = _mama[x],
+                    Fama=_fama[x],
+
+                };
+                mama.Add(e);
+            }
+
+            return mama;
+        }
+
+        public static List<SMA> createAdaptiveMA_KAMA(int N, List<Price> Price)
+        {
+            List<SMA> sma = new List<SMA>();
+
+            double[] _price = new double[Price.Count];
+
+            for (int x = 0; x < Price.Count; x++) _price[x] = Price[x].Close;
+
+            double[] _sma = new double[Price.Count];
+            int a, b;
+
+            Core.Kama(0, Price.Count - 1, _price, N, out a, out b, _sma);
+
+            for (int x = 0; x < Price.Count - a; x++)
+            {
+                SMA e = new SMA
+                {
+                    TimeStamp = Price[x + a].TimeStamp,
+                    Price_Close = Price[x + a].Close,
+                    Price_High = Price[x + a].High,
+                    Price_Low = Price[x + a].Low,
+                    Price_Open = Price[x + a].Open,
+                    Sma = _sma[x],
+
+                };
+                sma.Add(e);
+            }
+
+            return sma;
         }
 
         public static List<SMA> createSMA(int N, List<Price> Price)

@@ -37,5 +37,11 @@ namespace AlsiTrade_Backend
 
         }
 
+        public static List<Trade> RunMAMAScalp(Parameter_MAMA Parameter, GlobalObjects.TimeInterval Interval, bool TradesOnly, DateTime Start, DateTime End, DataBase.dataTable Table)
+        {
+            GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(Interval, Table, Start, End, false);
+            return AlsiUtils.Strategies.MAMA_Scalp.MAMAScalp(Parameter, GlobalObjects.Points, TradesOnly);
+        }
+
     }
 }

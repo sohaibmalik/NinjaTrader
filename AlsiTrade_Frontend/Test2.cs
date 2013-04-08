@@ -21,6 +21,8 @@ namespace FrontEnd
         private List<CompletedTrade> NewTrades;
         private List<Trade> _TradeOnlyList;
 
+        private static double TPF;
+        private static double SLF;
 
         public Test2()
         {
@@ -34,23 +36,22 @@ namespace FrontEnd
             var con=@"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
             AlsiUtils.DataBase.SetConnectionString(con);
 
-            GetParams();
-
-            start();
-
-            //for (int TP = 100; TP < 200; TP++)
-            //    for (int P = 14; P < 45; P++)
+            //for (double sl = 0.01; sl < 0.02; sl += 0.001)
+            //for (double tp = 0.01; tp < 0.02; tp += 0.001)
             //{
-            //    var t = new TakeProfitStrategy();
-            //    t.TakeProfit(_FullTradeList, TP, P);//*
+                //TPF = 0.02;
+               // SLF = 0.016;
+                start();
+               // var runprof = _FullTradeList.Where(z => z.Reason == Trade.Trigger.CloseShort || z.Reason == Trade.Trigger.CloseLong).ToList();
+               // var profold = runprof.Last().TotalPL;
+               //// if(profold>19000)
+               //     Debug.WriteLine("Old " + profold + " SL: " + SLF + "  TP: " + TPF);
             //}
+           // var t = new TakeProfitStrategy();
+            //   t.TakeProfit2(_FullTradeList);
 
 
-            for (int x = 0; x < TP.Count; x++)
-            {
-                var t = new TakeProfitStrategy();
-                t.TakeProfit(_FullTradeList, TP[x], Per[x]);//*
-            }
+
         }
 
         List<int> Per = new List<int>();
@@ -78,9 +79,9 @@ namespace FrontEnd
         {
             Cursor = Cursors.WaitCursor;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
-            DataBase.dataTable dt = DataBase.dataTable.AllHistory;
-            //  _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMASAR(GetParametersSAR_EMA(), t, false, new DateTime(2013, 2, 20), new DateTime(2013, 03, 27), dt);
-            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2008, 01, 01), new DateTime(2009, 01, 01), dt);
+            DataBase.dataTable dt = DataBase.dataTable.MasterMinute;          
+            //_FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), dt);
+            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunMAMAScalp(GetParametersMAMA(), t, false, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), dt);
             _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
             NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
@@ -89,12 +90,11 @@ namespace FrontEnd
 
         }
 
-        public static Parameter_EMA_SAR GetParametersSAR_EMA()
+        public static Parameter_MAMA GetParametersMAMA()
         {
-            AlsiUtils.Strategies.Parameter_EMA_SAR E = new AlsiUtils.Strategies.Parameter_EMA_SAR()
+            AlsiUtils.Strategies.Parameter_MAMA E = new AlsiUtils.Strategies.Parameter_MAMA()
             {
-                SAR_STEP = 0.02,
-                SAR_MAXP = 0.2,
+              
 
                 //A_EMA1 = WebSettings.Indicators.EmaScalp.A1,
                 //A_EMA2 = WebSettings.Indicators.EmaScalp.A2,
@@ -105,7 +105,9 @@ namespace FrontEnd
                 //StopLoss = WebSettings.General.STOPLOSS,
                 //CloseEndofDay = false,
 
-
+                Fast=0.5,//0.1
+                Slow=0.05,//0.01
+            
                 A_EMA1 = 16,
                 A_EMA2 = 17,
                 B_EMA1 = 43,
@@ -113,6 +115,8 @@ namespace FrontEnd
                 C_EMA = 52,
                 TakeProfit = 450,
                 StopLoss = -350,
+                TakeProfitFactor=TPF,
+                StoplossFactor=SLF,
                 CloseEndofDay = false,
             };
 

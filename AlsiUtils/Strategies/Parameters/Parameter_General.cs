@@ -11,6 +11,8 @@ namespace AlsiUtils.Strategies
 
         public int TakeProfit{get;set;}
         public int StopLoss { get; set;}
+        public double TakeProfitFactor { get; set; }
+        public double StoplossFactor { get; set; }
         public bool CloseEndofDay { get; set; }
         
     }

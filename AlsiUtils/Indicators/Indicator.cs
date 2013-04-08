@@ -201,6 +201,7 @@ namespace AlsiUtils
         public double Ema { get; set; }
         public double CustomValue { get; set; }
     }
+  
 
     public class Macd : Indicator
     {
@@ -322,6 +323,16 @@ namespace AlsiUtils
     {
         public double Sma { get; set; }
         public double CustomValue { get; set; }
+    }
+
+ /// <summary>
+ /// MAMA defualt = 0.05
+ /// FAMA(Following Adaptive Moving Average) defualt=0.5
+ /// </summary>
+    public class MAMA:Indicator
+    {
+        public double Mama { get; set; }
+        public double Fama { get; set; }
     }
 
     public class StandardDev : Indicator

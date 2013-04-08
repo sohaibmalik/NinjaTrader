@@ -15,6 +15,7 @@ namespace AlsiUtils.Strategies
         public delegate void Triggers_Delegate(List<TradeStrategy> TradeStraterty, int Index);
         public static Triggers_Delegate _Trigger;
         public static Triggers_Delegate _Trigger2;
+        private static List<TP_SL> TPSL = new List<TP_SL>();
 
         public TradeStrategy()
         {
@@ -44,7 +45,7 @@ namespace AlsiUtils.Strategies
                     _ST.Add(st);
                 }
             }
-
+           // GetDynamicStopLoss(Prices, parameter.StoplossFactor ,parameter.TakeProfitFactor);
         }
 
         public List<TradeStrategy> getStrategyList()
@@ -484,6 +485,8 @@ namespace AlsiUtils.Strategies
             {
                 if (_ST[x].RunningProfit < _p.StopLoss) _ST[x].Reason = Trade.TradeReason.StopLoss;
                 if (_ST[x].RunningProfit > _p.TakeProfit) _ST[x].Reason = Trade.TradeReason.TakeProfit;
+                //if (_ST[x].RunningProfit < GetStopLoss(_ST[x].TimeStamp))_ST[x].Reason = Trade.TradeReason.StopLoss;
+                //if(_ST[x].RunningProfit>GetTakeProfit (_ST[x].TimeStamp))_ST[x].Reason = Trade.TradeReason.TakeProfit;
                 if (_p.CloseEndofDay)
                 {
                     if (_ST[x].TimeStamp.Hour == 17 && _ST[x].TimeStamp.Minute == 20 && _ST[x].TradeDirection == Trade.Direction.Long) _ST[x].Reason = Trade.TradeReason.EndOfDayCloseLong;
@@ -491,7 +494,7 @@ namespace AlsiUtils.Strategies
                 }
                 if (_ST[x - 1].InstrumentName != _ST[x].InstrumentName) _ST[x - 1].Reason = Trade.TradeReason.ContractExpires;
 
-            
+
             }
 
         }
@@ -519,7 +522,7 @@ namespace AlsiUtils.Strategies
                 if ((_ST[x - 1].Position && _ST[x].Position) && _ST[x - 1].markedObjectA) _ST[x].markedObjectA = true;
                 if (!_ST[x - 1].markedObjectA && _ST[x].markedObjectA) _ST[x].markedObjectB = true;
 
-               
+
             }
             #endregion
         }
@@ -550,7 +553,7 @@ namespace AlsiUtils.Strategies
                     if (_ST[x].Reason == Trade.TradeReason.EndOfDayCloseShort) _ST[x].TradeTrigger = Trade.Trigger.EndOfDayCloseShort;
                     if (_ST[x].Reason == Trade.TradeReason.ContractExpires) _ST[x].TradeTrigger = Trade.Trigger.ContractExpires;
 
-                  //  if (_ST[x].Reason == Trade.TradeReason.TakeProfit) Debug.WriteLine(x + "    " + _ST[x].TimeStamp + "  " + _ST[x].TradeTrigger + "   " + _ST[x].TradedPrice + "   " + _ST[x].TotalProfit );
+                    //  if (_ST[x].Reason == Trade.TradeReason.TakeProfit) Debug.WriteLine(x + "    " + _ST[x].TimeStamp + "  " + _ST[x].TradeTrigger + "   " + _ST[x].TradedPrice + "   " + _ST[x].TotalProfit );
                 }
                 _ST[x].Reason = 0;
             }
@@ -558,10 +561,55 @@ namespace AlsiUtils.Strategies
 
         }
 
+        private static void GetDynamicStopLoss(List<Price> prices, double StopLossFactor, double TakeProfitFactor)
+        {
+
+            var fortnight = from q in prices
+                            group q by new
+                            {
+                                Y = q.TimeStamp.Year,
+                                M = q.TimeStamp.Month,
+                                W = q.TimeStamp.Day <= 15 ? 1 : 2,
+                                //D=(DateTime)q.TimeStamp
+                            }
+                                into FGroup
+                                orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.W
+                                select new
+                                {
+                                    Year = FGroup.Key.Y,
+                                    Month = FGroup.Key.M,
+                                    Week = FGroup.Key.W,
+                                    AvPrice = Math.Round((double)FGroup.Average(t => t.Close), 3),
+
+                                };
+
+            foreach (var v in fortnight)
+            {
+                var d = new DateTime(v.Year, v.Month, v.Week == 1 ? 1 : 15);
+                var tpst = new TP_SL()
+                {
+                    Datum = d,
+                    AvgMarketPrice = v.AvPrice,
+                    StopLoss = (int)(v.AvPrice * StopLossFactor),
+                    TakeProfit = (int)(v.AvPrice * TakeProfitFactor),
+
+                };
+                TPSL.Add(tpst);
+            }
 
 
 
+        }
 
+        private static int GetStopLoss(DateTime date)
+        {
+            return TPSL.Where(z => z.Datum <= date).Last().StopLoss;
+        }
+
+        private static int GetTakeProfit(DateTime date)
+        {
+            return TPSL.Where(z => z.Datum <= date).Last().StopLoss;
+        }
 
         public static Trade.BuySell GetBuySell(Trade.Trigger trigger)
         {
@@ -610,7 +658,13 @@ namespace AlsiUtils.Strategies
         public double TotalProfit { get; set; }
         public double TradeCount { get; set; }
 
-
+        internal class TP_SL
+        {   //Take Profit , Stop Loss
+            public DateTime Datum { get; set; }
+            public double AvgMarketPrice { get; set; }
+            public int StopLoss { get; set; }
+            public int TakeProfit { get; set; }
+        }
 
         public class Expansion
         {
@@ -676,10 +730,10 @@ namespace AlsiUtils.Strategies
                 var CompTrades = Trade.TradesOnly(Trades);
                 var CompleteList = CompletedTrade.CreateList(CompTrades);
 
-                for (int x = 2; x < CompleteList.Count; x++) 
+                for (int x = 2; x < CompleteList.Count; x++)
                 {
-                    if (CompleteList[x - 2].CloseTrade.Extention.Slope < CompleteList[x-1].CloseTrade.Extention.Slope
-                        && CompleteList[x-1].CloseTrade.Extention.Slope < 0)
+                    if (CompleteList[x - 2].CloseTrade.Extention.Slope < CompleteList[x - 1].CloseTrade.Extention.Slope
+                        && CompleteList[x - 1].CloseTrade.Extention.Slope < 0)
                         CompleteList[x].OpenTrade.Extention.OrderVol = 2;
                 }
                 foreach (var t in CompleteList)
@@ -689,9 +743,9 @@ namespace AlsiUtils.Strategies
                     {
                         t.CloseTrade.Extention.OrderVol = 1;
                         t.OpenTrade.Extention.OrderVol = 1;
-                    }                    
+                    }
                 }
-                    
+
                 return CompleteList;
             }
 

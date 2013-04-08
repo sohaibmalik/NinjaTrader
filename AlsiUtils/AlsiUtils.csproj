@@ -75,21 +75,18 @@
       <DependentUpon>SimDB.dbml</DependentUpon>
     </Compile>
     <Compile Include="Statistics.cs" />
-    <Compile Include="Strategies\EmaSalp2.cs" />
+    <Compile Include="Strategies\MAMA_Scalp.cs" />
     <Compile Include="Strategies\EMA_SAR.cs" />
     <Compile Include="Strategies\EMA_Scalp.cs" />
     <Compile Include="Strategies\IndicatorExtentions\StochAroon.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_MAMA.cs" />
     <Compile Include="Strategies\Parameters\Parameter_EMA_SAR.cs" />
     <Compile Include="Strategies\Parameters\Parameter_EMA_Scalp.cs" />
     <Compile Include="Strategies\Parameters\Parameter_Bollinger.cs" />
     <Compile Include="Strategies\Parameters\Parameter_General.cs" />
     <Compile Include="Strategies\Parameters\Parameter_SlowStoch.cs" />
     <Compile Include="Strategies\Parameters\Parameter_SS_RSI.cs" />
-    <Compile Include="Strategies\Startegy_SSPOP_RSI.cs" />
-    <Compile Include="Strategies\Strategy_Bollinger.cs" />
-    <Compile Include="Strategies\Strategy_SSPOP.cs" />
     <Compile Include="Strategies\TradeStrategy.cs" />
-    <Compile Include="Strategies\TradeStrategy2.cs" />
     <Compile Include="TakeProfitStrategy.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="WebDb.cs">
