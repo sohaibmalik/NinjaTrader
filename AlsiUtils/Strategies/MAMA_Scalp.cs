@@ -27,7 +27,7 @@ namespace AlsiUtils.Strategies
             B_6 = Factory_Indicator.createEMA(P.B_EMA2, price);
             E1 = Factory_Indicator.createEMA(P.C_EMA, price);
 
-            M = Factory_Indicator.createAdaptiveMA_MAMA(P.Fast, P.Slow, price);
+            MA = Factory_Indicator.createAdaptiveMA_MAMA(P.Fast, P.Slow, price);
 
             //StreamWriter sr = new StreamWriter(@"d:\MAMA.txt");
             //foreach (var m in MA.Skip(1000))

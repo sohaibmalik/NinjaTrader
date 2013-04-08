@@ -4,10 +4,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using AlsiUtils;
-using NotifierClientApp.AlsiWebService;
-using System.Text;
 
 namespace NotifierClientApp
 {
@@ -48,6 +47,7 @@ namespace NotifierClientApp
 
         private void updateListView(ListViewItem lvi, AlsiWebService.xlTradeOrder order)
         {
+
             var ind = ordersListView.Items.Count;
             if (ind == 0)
             {
@@ -57,10 +57,12 @@ namespace NotifierClientApp
             }
 
             //Status Update
+
             if (lastOrder.Price == order.Price
                 && lastOrder.Volume == order.Volume
                 && lastOrder.BS == order.BS
-                && lastOrder.Status != order.Status)
+                && lastOrder.Status != order.Status
+                 )
             {
                 lastOrder = order;
                 ordersListView.Items[ind - 1].Tag = order;
@@ -99,7 +101,7 @@ namespace NotifierClientApp
                     if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "New Order!");
 
                 }
-                if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed && admin.IsAdmin)
+                if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed)
                 {
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.LightGreen;
@@ -215,7 +217,7 @@ namespace NotifierClientApp
             {
                 Title = "Alsi Trade";
             }
-
+            if (!admin.IsAdmin && Msg.Contains("Matched")) return;
             // (new SoundPlayer(Properties.Resources.alert3)).Play();
             ni.Visible = true;
             ni.Icon = Properties.Resources.alert;
@@ -247,6 +249,7 @@ namespace NotifierClientApp
         enum App
         {
             AlsiTrade = 1,
+            NewMessage = 2,
 
         }
 
@@ -285,7 +288,7 @@ namespace NotifierClientApp
             try
             {
                 getAppUpdate();
-                //   UpdateChat(false);
+                UpdateChat(false);
                 ordersListView.BackColor = Color.White;
             }
             catch (Exception ex)
@@ -377,6 +380,7 @@ namespace NotifierClientApp
         private void Notify_FormClosing(object sender, FormClosingEventArgs e)
         {
             admin.ReportLiveStatus(false);
+
         }
 
         private void pricesStatusLabel_Click(object sender, EventArgs e)
@@ -414,6 +418,7 @@ namespace NotifierClientApp
         private void LoadChat()
         {
             t = new Chat();
+            t.NewMessage += new Chat.OnNewMessage(t_NewMessage);
             Utilities.SetWindowTheme(userListView.Handle, "Explorer", null);
             Utilities.SetWindowTheme(chatHistoryListView.Handle, "Explorer", null);
             chatSendButton.BackgroundImage = Properties.Resources.Messages_DisAbled_icon;
@@ -423,7 +428,7 @@ namespace NotifierClientApp
             userInfoTootltip.SetToolTip(userListView, "Check to select users to send message to.\nHighlight a user to view chat.");
             PopulateUserListView();
             Text = Text + "  Logged in as " + admin.UserList.Where(x => x.ID == admin.UserID).First().USER_NAME;
-          
+
             try
             {
                 userListView.Items[0].Selected = true;
@@ -432,7 +437,12 @@ namespace NotifierClientApp
 
         }
 
-  
+        void t_NewMessage(object sender, Chat.NewMessageEventArgs e)
+        {
+
+        }
+
+
 
         void userUpdateBW_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -453,7 +463,9 @@ namespace NotifierClientApp
                 var user = (tblUser)lvi.Tag;
                 user.USER_LIVE = updated.Where(z => z.ID == user.ID).Select(x => x.USER_LIVE).First();
                 lvi.ImageIndex = (bool)user.USER_LIVE ? 1 : 0;
-
+                //var cl = ChatList.Where(z => z.FromUserID == user.ID);
+                //var cll = cl.Any(z => z.Viewed == false);
+                //if (cll) lvi.BackColor = Color.Yellow;
             }
             userListView.Refresh();
         }
@@ -480,29 +492,17 @@ namespace NotifierClientApp
             if (TryUpdate == 3) return;
             try
             {
-                
-                var ALL = t.GetChatMessages(admin.UserID,SelectedUser.ID);
-               
 
+                ChatList = t.GetChatMessages(admin.UserID, SelectedUser.ID);
+                ReadList.Clear();
 
-               // ReadList.Clear();
+                if (chatHistoryListView.Items.Count != 0)
+                    foreach (ListViewItem r in chatHistoryListView.Items) ReadList.Add((Chat)r.Tag);
 
-                //if (chatHistoryListView.Items.Count != 0)
-                //    foreach (ListViewItem r in chatHistoryListView.Items) ReadList.Add((Chat)r.Tag);
-
-                ////compare lists
-                //var temp = ReadList.ToLookup(x => x.MessageID);
-                //var newList = ChatList.Where(x => (!temp.Contains(x.MessageID)));
-                //foreach (var N in newList)
-                //{
-                //    ListViewItem lvi = new ListViewItem(admin.UserList.Where(x => x.ID == N.FromUserID).First().USER_NAME + " :    " + N.Message);
-                //    lvi.Tag = N;
-                //    chatHistoryListView.Items.Add(lvi);
-                //}
-
-
-
-                foreach (var N in ALL)
+                //compare lists
+                var temp = ReadList.ToLookup(x => x.MessageID);
+                var newList = ChatList.Where(x => (!temp.Contains(x.MessageID)));
+                foreach (var N in newList)
                 {
                     ListViewItem lvi = new ListViewItem(admin.UserList.Where(x => x.ID == N.FromUserID).First().USER_NAME + " :    " + N.Message);
                     lvi.Tag = N;
@@ -558,14 +558,19 @@ namespace NotifierClientApp
             var msg = new StringBuilder();
             msg.Append(chatInputTextBox.Text);
 
+            int index = 0;
+            DateTime time = new DateTime();
             foreach (var tu in SendToList)
             {
                 var c = new Chat();
                 c.FromUserID = admin.UserID;
                 c.ToUserID = tu;
-                c.Time = service.GetChatTime();
+                if (index == 0) time = service.GetChatTime();
+                c.Time = time;
                 c.Message = msg.ToString();
-                t.InsertChatMessage(c);
+                if (index == 0) t.InsertChatMessage(c);
+                t.InsertChatUserMessage(c);
+                index++;
             }
 
             chatInputTextBox.Clear();
@@ -586,12 +591,15 @@ namespace NotifierClientApp
         private void chatHistoryListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             var msg = (Chat)e.Item.Tag;
-            //MsgTooltip.SetToolTip(userListView, msg.Message);
+            // if (!msg.Viewed && msg.ToUserID == admin.UserID) admin.SetDocViewed(true, msg);
+            //  e.Item.ForeColor = Color.Black;            
             var MSG = new StringBuilder(admin.UserList.Where(z => z.ID == msg.FromUserID).First().USER_NAME + ":\n");
             MSG.Append(msg.Time.ToShortTimeString() + "\n");
             MSG.Append(msg.Message);
             MsgTooltip.Show(Utilities.WrapWords(MSG.ToString(), 100), userListView, 3000);
+
         }
+
 
         private void userListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
@@ -603,13 +611,39 @@ namespace NotifierClientApp
         }
 
 
+
         #endregion
 
-      
 
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+
+
+        private void SendTEST()
         {
-            UpdateChat(false);
+            bool Matched = true;
+            var t = new AlsiUtils.Trade()
+            {
+                TimeStamp = DateTime.Now,
+                BuyorSell = Trade.BuySell.Buy,
+                InstrumentName = "Test",
+                TradedPrice = 13333,
+                TradeVolume = 1,
+
+            };
+
+
+            var o = new AlsiWebService.xlTradeOrder();
+            if (t.BuyorSell == Trade.BuySell.Buy) o.BS = AlsiWebService.BuySell.Buy;
+            if (t.BuyorSell == Trade.BuySell.Sell) o.BS = AlsiWebService.BuySell.Sell;
+            o.Timestamp = t.TimeStamp;
+            o.Volume = t.TradeVolume;
+            o.Price = t.TradedPrice;
+            o.Contract = t.InstrumentName;
+            o.Status = Matched ? AlsiWebService.orderStatus.Completed : AlsiWebService.orderStatus.Ready;
+            service.InsertNewOrder(o);
+            var s = new AlsiWebService.AlsiNotifyService();
+            s.InsertNewOrder(o);
+
+            if (t.Reason == Trade.Trigger.CloseLong || t.Reason == Trade.Trigger.CloseLong) WebSettings.General.MANUAL_CLOSE_TRIGGER = true;
         }
 
 
@@ -621,9 +655,10 @@ namespace NotifierClientApp
 
 
 
-
-
-
-
     }
+
+
+
+
+
 }

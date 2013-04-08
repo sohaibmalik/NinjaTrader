@@ -2,49 +2,49 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="AlsiTM">
   <DataContextMoniker Name="/AlsiTMDataContext" />
   <nestedChildShapes>
-    <classShape Id="ce78c308-eccc-44ef-a20f-e675a1feeb5f" absoluteBounds="5.75, 3.75, 2, 1.5785953776041666">
+    <classShape Id="f36f98d0-858f-4fa2-919f-4c73930c431c" absoluteBounds="3.75, 3.75, 2, 1.5785953776041666">
       <DataClassMoniker Name="/AlsiTMDataContext/tblLog" />
       <nestedChildShapes>
-        <elementListCompartment Id="faf34e5b-7244-4fb6-a86a-51177a6aecf7" absoluteBounds="5.7650000000000006, 4.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="1779e736-849a-446b-a228-8ab297e5ec60" absoluteBounds="3.765, 4.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="39ee10c3-549c-412f-8f41-56a562fdc4fa" absoluteBounds="0.75, 0.875, 2, 1.9631982421875">
+    <classShape Id="fcb82899-077a-4e06-82d9-c697f4d8357b" absoluteBounds="0.75, 0.875, 2, 1.9631982421875">
       <DataClassMoniker Name="/AlsiTMDataContext/tblUser" />
       <nestedChildShapes>
-        <elementListCompartment Id="6d55b8b1-e670-4ff6-b2f5-c5a70a7acc20" absoluteBounds="0.765, 1.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="e8ed0ae6-3a9d-4213-91a2-1d69364d4747" absoluteBounds="0.765, 1.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="790cb3fd-381d-4096-a389-72d91df555e1" absoluteBounds="4.5, 0.75, 2, 1.5785953776041664">
-      <DataClassMoniker Name="/AlsiTMDataContext/tblMessageUser" />
-      <nestedChildShapes>
-        <elementListCompartment Id="6cb6033e-fdbf-4b73-b135-3c1814bf319f" absoluteBounds="4.5150000000000006, 1.21, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <associationConnector edgePoints="[(2.75 : 1.60179768880208); (4.25510416666667 : 1.60179768880208 : JumpStart); (4.42177083333333 : 1.60179768880208 : JumpEnd); (4.5 : 1.60179768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/AlsiTMDataContext/tblUser/tblUser_tblMessageUser" />
-      <nodes>
-        <classShapeMoniker Id="39ee10c3-549c-412f-8f41-56a562fdc4fa" />
-        <classShapeMoniker Id="790cb3fd-381d-4096-a389-72d91df555e1" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 1.17589884440104); (4.25510416666667 : 1.17589884440104 : JumpStart); (4.42177083333333 : 1.17589884440104 : JumpEnd); (4.5 : 1.17589884440104)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/AlsiTMDataContext/tblUser/tblUser_tblMessageUser1" />
-      <nodes>
-        <classShapeMoniker Id="39ee10c3-549c-412f-8f41-56a562fdc4fa" />
-        <classShapeMoniker Id="790cb3fd-381d-4096-a389-72d91df555e1" />
-      </nodes>
-    </associationConnector>
-    <classShape Id="4ceed1ee-369e-4138-96bb-52be71361be2" absoluteBounds="2.5, 4.375, 2, 1.3862939453125">
+    <classShape Id="d698f25e-d8e3-448c-a286-12ba8da34a27" absoluteBounds="0.75, 4.25, 2, 1.3862939453125005">
       <DataClassMoniker Name="/AlsiTMDataContext/tblMessage" />
       <nestedChildShapes>
-        <elementListCompartment Id="58d86e25-11dd-4477-ab1f-bb8c9985f38c" absoluteBounds="2.515, 4.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="a26d50f1-c9b4-42e9-8055-41b8c4e6fbfc" absoluteBounds="0.765, 4.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(3.625 : 4.375); (3.625 : 3.1890625); (4.01041666666667 : 3.1890625); (4.01041666666667 : 2.14583333333333); (4.3384375 : 2.14583333333333); (4.3384375 : 0.78125); (4.5 : 0.78125)]" manuallyRouted="true" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <classShape Id="4d3282d4-07bb-4441-b23d-c265d04c6795" absoluteBounds="4.375, 1.25, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/AlsiTMDataContext/tblMessageUser" />
+      <nestedChildShapes>
+        <elementListCompartment Id="eb8d83a6-6126-4a06-8773-261c4157fa49" absoluteBounds="4.39, 1.71, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 5.51369466145833); (6.09375 : 5.51369466145833); (6.09375 : 3.02089680989583)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/AlsiTMDataContext/tblMessage/tblMessage_tblMessageUser" />
       <nodes>
-        <classShapeMoniker Id="4ceed1ee-369e-4138-96bb-52be71361be2" />
-        <classShapeMoniker Id="790cb3fd-381d-4096-a389-72d91df555e1" />
+        <classShapeMoniker Id="d698f25e-d8e3-448c-a286-12ba8da34a27" />
+        <classShapeMoniker Id="4d3282d4-07bb-4441-b23d-c265d04c6795" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 2.04409912109375); (4.375 : 2.04409912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/AlsiTMDataContext/tblUser/tblUser_tblMessageUser" />
+      <nodes>
+        <classShapeMoniker Id="fcb82899-077a-4e06-82d9-c697f4d8357b" />
+        <classShapeMoniker Id="4d3282d4-07bb-4441-b23d-c265d04c6795" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 1.58454956054687); (4.375 : 1.58454956054687)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/AlsiTMDataContext/tblUser/tblUser_tblMessageUser1" />
+      <nodes>
+        <classShapeMoniker Id="fcb82899-077a-4e06-82d9-c697f4d8357b" />
+        <classShapeMoniker Id="4d3282d4-07bb-4441-b23d-c265d04c6795" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

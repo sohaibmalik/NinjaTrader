@@ -1,11 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
-using System.Windows.Forms;
 using AlsiUtils;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Diagnostics;
 
 namespace NotifierClientApp
 {
@@ -24,12 +21,12 @@ namespace NotifierClientApp
 
             var versionstring = "100";
 
-            version = double.Parse(versionstring);        
+            version = double.Parse(versionstring);
             dc = new AlsiTMDataContext();
             mac = Utilities.GetMacAddress();
+            CreateNewUserIfNotExist();
             UserID = dc.tblUsers.Where(z => z.USER_MACADRESS == mac).Select(z => z.ID).First();
             UserList = dc.tblUsers.ToList();
-            CreateNewUserIfNotExist();
             var user = dc.tblUsers.Where(z => z.USER_MACADRESS == mac).First();
             if (GetNewVersionNumber(user) > version)
             {
@@ -46,6 +43,8 @@ namespace NotifierClientApp
             dc.tblLogs.InsertOnSubmit(log);
             dc.SubmitChanges();
         }
+       public  AlsiTMDataContext msgViewedContext = new AlsiTMDataContext();
+
 
         private double GetNewVersionNumber(tblUser user)
         {
@@ -117,7 +116,14 @@ namespace NotifierClientApp
                 dc.SubmitChanges();
             }
             catch { }
-            
+
+        }
+
+        public void SetDocViewed(bool Viewed, Chat Msg)
+        {          
+            var M = dc.tblMessageUsers.Where(z => z.MSG_ID == Msg.MessageID && z.MSG_USER_TO == UserID);
+            if (M != null) M.First().MSG_VIEWED = Viewed;
+           
         }
     }
 }

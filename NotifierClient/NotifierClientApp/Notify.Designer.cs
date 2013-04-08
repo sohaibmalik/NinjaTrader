@@ -68,7 +68,6 @@
             this.chatHistoryListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.userStatusUpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -137,8 +136,7 @@
             this.ordersToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.tradeLogToolStripMenuItem,
-            this.adminToolStripMenuItem,
-            this.testToolStripMenuItem});
+            this.adminToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(619, 24);
@@ -363,7 +361,6 @@
             this.chatHistoryListView.TabIndex = 11;
             this.chatHistoryListView.UseCompatibleStateImageBehavior = false;
             this.chatHistoryListView.View = System.Windows.Forms.View.Details;
-           
             this.chatHistoryListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.chatHistoryListView_ItemSelectionChanged);
             this.chatHistoryListView.MouseHover += new System.EventHandler(this.chatHistoryListView_MouseHover);
             // 
@@ -377,13 +374,6 @@
             this.userStatusUpdateTimer.Enabled = true;
             this.userStatusUpdateTimer.Interval = 5000;
             this.userStatusUpdateTimer.Tick += new System.EventHandler(this.userStatusUpdateTimer_Tick);
-            // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
-            this.testToolStripMenuItem.Text = "Test";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // Notify
             // 
@@ -458,7 +448,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.Timer userStatusUpdateTimer;
         private System.Windows.Forms.ToolStripMenuItem changeUserNameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
        
 
     }
