@@ -43,7 +43,7 @@ namespace NotifierClientApp
             dc.tblLogs.InsertOnSubmit(log);
             dc.SubmitChanges();
         }
-       public  AlsiTMDataContext msgViewedContext = new AlsiTMDataContext();
+        public AlsiTMDataContext msgViewedContext = new AlsiTMDataContext();
 
 
         private double GetNewVersionNumber(tblUser user)
@@ -120,10 +120,10 @@ namespace NotifierClientApp
         }
 
         public void SetDocViewed(bool Viewed, Chat Msg)
-        {          
+        {
             var M = dc.tblMessageUsers.Where(z => z.MSG_ID == Msg.MessageID && z.MSG_USER_TO == UserID);
             if (M != null) M.First().MSG_VIEWED = Viewed;
-           
+
         }
     }
 }

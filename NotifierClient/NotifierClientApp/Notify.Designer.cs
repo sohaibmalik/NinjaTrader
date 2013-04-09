@@ -154,6 +154,7 @@
             // 
             // getAllOrderToolStripMenuItem
             // 
+            this.getAllOrderToolStripMenuItem.Enabled = false;
             this.getAllOrderToolStripMenuItem.Name = "getAllOrderToolStripMenuItem";
             this.getAllOrderToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.getAllOrderToolStripMenuItem.Text = "Get Recent Live Orders";
@@ -276,11 +277,13 @@
             // chatInputTextBox
             // 
             this.chatInputTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.chatInputTextBox.Enabled = false;
             this.chatInputTextBox.Location = new System.Drawing.Point(141, 496);
             this.chatInputTextBox.Multiline = true;
             this.chatInputTextBox.Name = "chatInputTextBox";
             this.chatInputTextBox.Size = new System.Drawing.Size(434, 38);
             this.chatInputTextBox.TabIndex = 6;
+            this.chatInputTextBox.Text = "Still under contruction";
             this.chatInputTextBox.TextChanged += new System.EventHandler(this.chatInputTextBox_TextChanged);
             // 
             // chatSendButton
@@ -298,7 +301,6 @@
             // userListView
             // 
             this.userListView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.userListView.CheckBoxes = true;
             this.userListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.userCol});
             this.userListView.Location = new System.Drawing.Point(3, 325);
@@ -315,7 +317,7 @@
             // 
             // userCol
             // 
-            this.userCol.Text = "User";
+            this.userCol.Text = "Online users";
             this.userCol.Width = 135;
             // 
             // chatUsersList
@@ -333,11 +335,11 @@
             this.nameSelectedLabel.AutoSize = true;
             this.nameSelectedLabel.Dock = System.Windows.Forms.DockStyle.Right;
             this.nameSelectedLabel.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.nameSelectedLabel.Location = new System.Drawing.Point(86, 0);
+            this.nameSelectedLabel.Location = new System.Drawing.Point(88, 0);
             this.nameSelectedLabel.Name = "nameSelectedLabel";
-            this.nameSelectedLabel.Size = new System.Drawing.Size(43, 38);
+            this.nameSelectedLabel.Size = new System.Drawing.Size(41, 38);
             this.nameSelectedLabel.TabIndex = 9;
-            this.nameSelectedLabel.Text = "label1";
+            this.nameSelectedLabel.Text = "Send:";
             // 
             // tableLayoutPanel1
             // 
@@ -355,6 +357,7 @@
             // 
             this.chatHistoryListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
+            this.chatHistoryListView.Enabled = false;
             this.chatHistoryListView.Location = new System.Drawing.Point(142, 325);
             this.chatHistoryListView.Name = "chatHistoryListView";
             this.chatHistoryListView.Size = new System.Drawing.Size(473, 168);

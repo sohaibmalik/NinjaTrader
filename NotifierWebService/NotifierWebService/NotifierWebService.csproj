@@ -59,7 +59,6 @@
       <DependentUpon>AlsiNotifyService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Chat.cs" />
     <Compile Include="OnlineDb.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

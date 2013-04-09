@@ -295,7 +295,7 @@ namespace NotifierClientApp
             try
             {
                 getAppUpdate();
-                UpdateChat(false);
+               // UpdateChat(false);
                 ordersListView.BackColor = Color.White;
             }
             catch (Exception ex)
@@ -418,7 +418,7 @@ namespace NotifierClientApp
             set
             {
                 _SelectedUser = value;
-                UpdateChat(true);
+               // UpdateChat(true);
             }
         }
 
@@ -439,6 +439,8 @@ namespace NotifierClientApp
             try
             {
                 userListView.Items[0].Selected = true;
+               // SendTEST();
+               // Environment.Exit(0);
             }
             catch { }
 
@@ -474,9 +476,7 @@ namespace NotifierClientApp
                 var user = (tblUser)lvi.Tag;
                 user.USER_LIVE = updated.Where(z => z.ID == user.ID).Select(x => x.USER_LIVE).First();
                 lvi.ImageIndex = (bool)user.USER_LIVE ? 1 : 0;
-                //var cl = ChatList.Where(z => z.FromUserID == user.ID);
-                //var cll = cl.Any(z => z.Viewed == false);
-                //if (cll) lvi.BackColor = Color.Yellow;
+               
             }
             userListView.Refresh();
         }
@@ -636,7 +636,7 @@ namespace NotifierClientApp
                 TimeStamp = DateTime.Now,
                 BuyorSell = Trade.BuySell.Buy,
                 InstrumentName = "Test",
-                TradedPrice = 13333,
+                TradedPrice = 34465,
                 TradeVolume = 1,
 
             };
