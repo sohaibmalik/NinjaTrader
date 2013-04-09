@@ -19,13 +19,17 @@ namespace NotifierClientApp
         private int _OrderUpdate, _StatusUpdate, _StatusDelay;
         private delegate void StatusFail(AlsiWebService.Boodskap boodskap);
         private StatusFail onStatusFail;
-        private NotifyIcon ni = new NotifyIcon();
+        private NotifyIcon tradeNotify = new NotifyIcon();
+        private NotifyIcon newMsgNotify = new NotifyIcon();
         private Admin admin = new Admin();
         public Notify()
         {
             InitializeComponent();
-            ni.BalloonTipClicked += new EventHandler(ni_BalloonTipClicked);
+            tradeNotify.BalloonTipClicked += new EventHandler(tradeNotify_BalloonTipClicked);
+            newMsgNotify.BalloonTipClicked += new EventHandler(newMsgNotify_BalloonTipClicked);
         }
+
+       
 
 
 
@@ -98,14 +102,14 @@ namespace NotifierClientApp
                 {
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.DarkOrange;
-                    if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "New Order!");
+                    if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade,"Alsi Trade", "New Order!",tradeNotify);
 
                 }
                 if (((AlsiWebService.xlTradeOrder)i.Tag).Status == AlsiWebService.orderStatus.Completed)
                 {
                     var ordertime = ((AlsiWebService.xlTradeOrder)i.Tag).Timestamp;
                     i.BackColor = Color.LightGreen;
-                    if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade, "Order Matched!");
+                    if (_alertAcknowledged <= ordertime) balloonNotify(App.AlsiTrade,"Alsi Trade", "Order Matched!", tradeNotify);
 
                 }
             }
@@ -203,20 +207,16 @@ namespace NotifierClientApp
                 Debug.WriteLine(app + " Failed  " + alsiTradeFailedCount);
             }
 
-            if (alsiTradeFailedCount > 10 && admin.IsAdmin) balloonNotify(App.AlsiTrade, "Failed to update !");
+            if (alsiTradeFailedCount > 10 && admin.IsAdmin) balloonNotify(App.AlsiTrade,"Alsi Trade", "Failed to update !", tradeNotify);
 
 
         }
 
 
 
-        private void balloonNotify(App app, string Msg)
+        private void balloonNotify(App app,string Title, string Msg,NotifyIcon ni)
         {
-            string Title = "";
-            if (app == App.AlsiTrade)
-            {
-                Title = "Alsi Trade";
-            }
+                             
             if (!admin.IsAdmin && Msg.Contains("Matched")) return;
             // (new SoundPlayer(Properties.Resources.alert3)).Play();
             ni.Visible = true;
@@ -225,13 +225,20 @@ namespace NotifierClientApp
 
         }
 
-        void ni_BalloonTipClicked(object sender, EventArgs e)
+       
+
+        void newMsgNotify_BalloonTipClicked(object sender, EventArgs e)
+        {
+            newMsgNotify.Visible = false;
+        }
+
+        void tradeNotify_BalloonTipClicked(object sender, EventArgs e)
         {
             _alertAcknowledged = DateTime.UtcNow.AddHours(2);
             alsiTradeFailedCount = 0;
-            ni.Visible = false;
-
+            tradeNotify.Visible = false; 
         }
+
 
         private void getAllOrderToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -439,7 +446,11 @@ namespace NotifierClientApp
 
         void t_NewMessage(object sender, Chat.NewMessageEventArgs e)
         {
-
+            if (_SelectedUser.ID != e.FromUserID)
+            {
+                var msg = AlsiUtils.Utilities.WrapWords(e.Message, 30);
+                balloonNotify(App.NewMessage, e.FromUser + " :", msg, newMsgNotify);
+            }
         }
 
 

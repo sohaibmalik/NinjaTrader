@@ -82,11 +82,13 @@ namespace NotifierClientApp
             var Sent = dc.tblMessageUsers.Where(z => z.MSG_USER_FROM == ThisUser && z.MSG_USER_TO == FromUser);
             var Inbox = dc.tblMessageUsers.Where(z => z.MSG_USER_TO == ThisUser && z.MSG_USER_FROM == FromUser);
             var All = Sent.Union(Inbox).OrderBy(z => z.tblMessage.TBL_MSG_TIME);//.Where(z => z.tblMessage.TBL_MSG_TIME >= DateTime.Now.AddDays(-1));
-
+            if (Inbox.Count() == 0) return new List<Chat>();
             int fromid = Inbox.AsEnumerable().Last().MSG_USER_FROM;
                 e = new NewMessageEventArgs();
                 e.FromUser = dc.tblUsers.Where(z => z.ID == fromid).First().USER_NAME;
+                e.FromUserID = dc.tblUsers.Where(z => z.ID == fromid).First().ID;
                 e.Message = Inbox.ToList().Last().tblMessage.TBL_MSG_TEXT;
+            
                 InboxMsgCount = dc.tblMessageUsers.Where(z => z.MSG_USER_TO == ThisUser).Count();
             
             foreach (var msg in All)
@@ -119,7 +121,9 @@ namespace NotifierClientApp
         public class NewMessageEventArgs : EventArgs
         {
             public string FromUser { get; set; }
+            public int FromUserID { get; set; }
             public string Message { get; set; }
+
         }
     }
 }
