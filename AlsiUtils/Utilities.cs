@@ -66,5 +66,17 @@ namespace AlsiUtils
             return ret.Trim();
         }
 
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
+        public static void FindWindowAndShow(string WindowName)
+        {
+            IntPtr hwnd = FindWindow(null,WindowName);
+           //see HOD-Utils for how to send messages
+        }
+
+
     }
 }

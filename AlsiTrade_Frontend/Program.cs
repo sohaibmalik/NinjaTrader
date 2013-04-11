@@ -2,23 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace FrontEnd
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+        //http://odetocode.com/blogs/scott/archive/2004/08/20/the-misunderstood-mutex.aspx
+        static string appGuid = "d4ca826e-0ad2-47d4-9430-8576f2b374d4";
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            using (Mutex mutex = new Mutex(false, "Global\\" + appGuid))
+            {
+                if (!mutex.WaitOne(0, false))
+                {
+                    MessageBox.Show("Instance already running");
+                    Environment.Exit(0);
+                }
 
-          //  Application.Run(new Chart());
-          // Application.Run(new StartupForm());
-           Application.Run(new Test2());
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                //  Application.Run(new Chart());
+                Application.Run(new StartupForm());
+                // Application.Run(new Test2());
+            }
         }
     }
 }
