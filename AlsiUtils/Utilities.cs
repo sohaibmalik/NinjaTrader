@@ -10,7 +10,7 @@ namespace AlsiUtils
     {
         public static string GetMacAddress()
         {
-           return "test";
+           //return "test";
             const int MIN_MAC_ADDR_LENGTH = 12;
             string macAddress = "";
             long maxSpeed = -1;
@@ -77,6 +77,6 @@ namespace AlsiUtils
            //see HOD-Utils for how to send messages
         }
 
-
+        
     }
 }

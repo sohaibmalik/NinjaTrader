@@ -37,7 +37,7 @@ namespace AlsiChatService
 
         public DateTime GetServerTime()
         {
-            throw new NotImplementedException();
+            return DateTime.UtcNow.AddHours(2);
         }
     }
 }

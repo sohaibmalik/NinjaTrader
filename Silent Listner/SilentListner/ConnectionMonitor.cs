@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace SilentListner
 {
@@ -30,7 +31,11 @@ namespace SilentListner
                     if (HasDisconnected)
                     {
                         HasDisconnected = false;
+                        logListBox.Items.Add(DateTime.Now.ToShortTimeString() + " Restarting OTS");
+                        Process.Start(@"C:\Users\Pieter\Dropbox\Alsi Trade App\Batch Commands\RestartOTS.bat");
                         restartOTSTimer.Start();
+                        updateTimer.Stop();
+                       
                     }
                     return true;
                 }
@@ -46,12 +51,29 @@ namespace SilentListner
         private void updateTimer_Tick(object sender, EventArgs e)
         {
             Debug.WriteLine("Checking");
+
             if (!CheckForInternetConnection())
             {
                 this.Show();
                 logListBox.Items.Add(DateTime.Now.ToShortTimeString() + " Connection Failed.Resetting Network");
                 Process.Start(@"C:\Users\Pieter\Dropbox\Alsi Trade App\Batch Commands\ResetNetwork.bat");
                 HasDisconnected = true;
+                Debug.WriteLine("Internet Failed ...");             
+                           
+            
+            }
+           
+            if (!FindWindow("Excel Link"))
+            {
+
+                this.Show();              
+                //HasDisconnected = true;
+                Debug.WriteLine("OTS Failed ...");
+                updateTimer.Stop();
+                restartOTSTimer.Start();
+                logListBox.Items.Add(DateTime.Now.ToShortTimeString() + " OTS Failed ...");
+                logListBox.Items.Add(DateTime.Now.ToShortTimeString() + " Restarting OTS...");
+                Process.Start(@"C:\Users\Pieter\Dropbox\Alsi Trade App\Batch Commands\RestartOTS.bat");
             }
         }
 
@@ -85,10 +107,26 @@ namespace SilentListner
 
         private void restartOTSTimer_Tick(object sender, EventArgs e)
         {
-            logListBox.Items.Add(DateTime.Now.ToShortTimeString() + " Restarting OTS");
-            Process.Start(@"C:\Users\Pieter\Dropbox\Alsi Trade App\Batch Commands\RestartOTS.bat");
+            this.Show(); 
+            Debug.WriteLine("Resuming Checks");
+            logListBox.Items.Add(DateTime.Now.ToShortTimeString() + " Resuming Checks");
             restartOTSTimer.Stop();
+            updateTimer.Start();
         }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
+        public static bool FindWindow(string WindowName)
+        {
+            IntPtr hwnd = FindWindow(null, WindowName);        
+            if ((int)hwnd == 0) return false;
+            return true;
+       
+        }
+      
+
 
       
 

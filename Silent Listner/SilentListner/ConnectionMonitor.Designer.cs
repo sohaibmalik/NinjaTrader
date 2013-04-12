@@ -57,7 +57,6 @@
             this.logListBox.Name = "logListBox";
             this.logListBox.Size = new System.Drawing.Size(302, 227);
             this.logListBox.TabIndex = 0;
-            
             // 
             // notifyIcon
             // 
@@ -89,7 +88,7 @@
             // 
             // restartOTSTimer
             // 
-            this.restartOTSTimer.Interval = 60000;
+            this.restartOTSTimer.Interval = 120000;
             this.restartOTSTimer.Tick += new System.EventHandler(this.restartOTSTimer_Tick);
             // 
             // ConnectionMonitor
