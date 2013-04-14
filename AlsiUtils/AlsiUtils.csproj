@@ -87,6 +87,7 @@
     <Compile Include="Strategies\Parameters\Parameter_SlowStoch.cs" />
     <Compile Include="Strategies\Parameters\Parameter_SS_RSI.cs" />
     <Compile Include="Strategies\TradeStrategy.cs" />
+    <Compile Include="TakeProfit.cs" />
     <Compile Include="TakeProfitStrategy.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="WebDb.cs">

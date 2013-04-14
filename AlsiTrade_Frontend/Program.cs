@@ -25,8 +25,8 @@ namespace FrontEnd
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 //  Application.Run(new Chart());
-                Application.Run(new StartupForm());
-                // Application.Run(new Test2());
+               // Application.Run(new StartupForm());
+                 Application.Run(new Test2());
             }
         }
     }
