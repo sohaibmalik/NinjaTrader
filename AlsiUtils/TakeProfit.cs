@@ -112,8 +112,7 @@ namespace AlsiUtils
 				if (tpt[x].StopLoss_RunningTotalProfit > upper2 && tpt[x - 1].StopLoss_RunningTotalProfit < upper2) tpt[x].TakeProfit_Trigger2_ReEnter = true;
 
 				//LowerLevel1-AddPosition Trade
-				if (tpt[x].StopLoss_RunningTotalProfit < lower1 && tpt[x - 1].StopLoss_RunningTotalProfit > lower1) tpt[x].StopLoss_Triggered1_ReEnter = true;
-
+				if (tpt[x].StopLoss_RunningTotalProfit > lower1 && tpt[x - 1].StopLoss_RunningTotalProfit < lower1) tpt[x].StopLoss_Triggered1_ReEnter = true;
 
 
 			}

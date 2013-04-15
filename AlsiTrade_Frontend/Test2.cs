@@ -32,9 +32,7 @@ namespace FrontEnd
         private void Test2_Load(object sender, EventArgs e)
         {
 
-            var con = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-            //var con = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-            AlsiUtils.DataBase.SetConnectionString(con);
+           
 
          
             start();

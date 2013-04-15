@@ -24,6 +24,11 @@ namespace FrontEnd
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
+               // var con = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+                var con = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+                AlsiUtils.DataBase.SetConnectionString(con);
+
+
                 //  Application.Run(new Chart());
                // Application.Run(new StartupForm());
                  Application.Run(new Test2());
