@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace AlsiUtils
 {
@@ -77,6 +78,19 @@ namespace AlsiUtils
            //see HOD-Utils for how to send messages
         }
 
+
+
+				public static void PrintAllProperties(object obj)
+				{
+					Debug.WriteLine("===========Print new object====================");
+					foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(obj))
+					{
+						string name = descriptor.Name;
+						object value = descriptor.GetValue(obj);
+						Debug.WriteLine("{0}={1}", name, value);
+					}
+					Debug.WriteLine("===============================================");
+				}
         
     }
 }
