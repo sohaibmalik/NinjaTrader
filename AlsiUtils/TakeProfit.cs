@@ -10,14 +10,18 @@ namespace AlsiUtils
         private List<TakeProfit.TakeProfitTrade> _FullTradeList = new List<TakeProfit.TakeProfitTrade>();
         private List<CompletedTrade> _CompletedTrades = new List<CompletedTrade>();
         private double  NewTotalRunningPL;
+				
+
         public TakeProfit(List<Trade> FullTradeList, List<CompletedTrade> CompletedTrades)
         {
             _CompletedTrades = CompletedTrades;
+				
+					
             foreach (var a in FullTradeList)
             {
 
                 var b = new TakeProfitTrade((Trade)a.Clone());
-                b.StopLoss_UpperLevel_1 = 150;
+								b.StopLoss_UpperLevel_1 =150;
                 b.StopLoss_UpperLevel_2 = 300;
                 b.StopLoss_LoweLevel_1 = -150;
                 _FullTradeList.Add(b);
@@ -40,11 +44,12 @@ namespace AlsiUtils
                 var tpl = pl.ToList();
                 AdjustVolume(tpl);
                 SetCenterLine(tpl);
-                SetCloseTriggers(tpl);
-                SetOpenTriggers(tpl);
-                SetOpenCloseRawTriggers(tpl);
-                SetOpenCloseTriggers(tpl);
-                CalcProfLoss(tpl);
+								SetMAMA(tpl);
+              //  SetCloseTriggers(tpl);
+              //  SetOpenTriggers(tpl);
+              //  SetOpenCloseRawTriggers(tpl);
+              //  SetOpenCloseTriggers(tpl);
+              //  CalcProfLoss(tpl);
             }
 
 
@@ -56,12 +61,14 @@ namespace AlsiUtils
         private void Print()
         {
             StreamWriter sr = new StreamWriter(@"d:\tt.txt");
-            foreach (var d in _FullTradeList.Skip(1000).Where(z => z.StopLoss_CenterLine != 0))
+            foreach (var d in _FullTradeList.Where(z => z.StopLoss_CenterLine != 0).Skip(1000).Take(2000))
             {
-                var data = d.TimeStamp + "," + d.Reason + "," + d.RunningProfit + "," + d.StopLoss_RunningTotalProfit + "," + d.StopLoss_CenterLine + "," + d.StopLoss_TakeProfitLevel_1
-                        + "," + d.StopLoss_TakeProfitLevel_2 + "," + d.StopLoss_StopLossLevel_1 + "," + d.TakeProfit_Trigger1_Close + "," + d.TakeProfit_Trigger2_Close + "," + d.StopLoss_Triggered1_Close
-                        + "," + d.TakeProfit_Trigger1_ReEnter + "," + d.TakeProfit_Trigger2_ReEnter + "," + d.StopLoss_Triggered1_ReEnter
-                        + "," + d.TradeAction_Raw + "," + d.TradeAction + "," + d.IntraPosition + "," + d.NewRunningProf + "," + d.NewTotalRunningProf +","+d.TradeVolume;
+							var data = d.TimeStamp + "," + d.Reason + "," + d.RunningProfit + "," + d.StopLoss_RunningTotalProfit + "," + d.StopLoss_CenterLine + "," + d.StopLoss_TakeProfitLevel_1
+											+ "," + d.StopLoss_TakeProfitLevel_2 + "," + d.StopLoss_StopLossLevel_1
+											+ "," + d.MAMA;
+											 //+ "," + d.TakeProfit_Trigger1_Close + "," + d.TakeProfit_Trigger2_Close + "," + d.StopLoss_Triggered1_Close
+                       // + "," + d.TakeProfit_Trigger1_ReEnter + "," + d.TakeProfit_Trigger2_ReEnter + "," + d.StopLoss_Triggered1_ReEnter
+                       // + "," + d.TradeAction_Raw + "," + d.TradeAction + "," + d.IntraPosition + "," + d.NewRunningProf + "," + d.NewTotalRunningProf +","+d.TradeVolume;
                 //	Debug.WriteLine(data);
                 //	AlsiUtils.Utilities.PrintAllProperties(d);
                 sr.WriteLine(data);
@@ -83,6 +90,11 @@ namespace AlsiUtils
             }
 
         }
+			private void SetMAMA(List<TakeProfitTrade>tpt)
+				{
+
+				}
+
 
         private void AdjustVolume(List<TakeProfitTrade> tpt)
         {
@@ -193,10 +205,10 @@ namespace AlsiUtils
                 else
                     tpt[x].NewTotalRunningProf = tpt[x - 1].NewTotalRunningProf;
             }
-            NewTotalRunningPL += tpt[i - 1].NewRunningProf;
+           
             
         }
-           
+        
       
 
         public class TakeProfitTrade : Trade
@@ -226,6 +238,7 @@ namespace AlsiUtils
             public bool TakeProfit_Trigger2_ReEnter;
             public bool StopLoss_Triggered1_ReEnter;
 
+						public double MAMA { get; set; }
 
             public TakeProfitTrade(Trade trade)
             {
