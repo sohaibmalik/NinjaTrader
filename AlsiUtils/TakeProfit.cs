@@ -21,12 +21,11 @@ namespace AlsiUtils
         public TakeProfit(List<Trade> FullTradeList, List<CompletedTrade> CompletedTrades, double mama, double fama)
         {
             _CompletedTrades = CompletedTrades;
-            _m = 0.05;
-            _f = 0.05;
+            _m = 0.01;
+            _f = 0.01;
 
             foreach (var a in FullTradeList)
             {
-
                 var b = new TakeProfitTrade((Trade)a.Clone());
 
                 _FullTradeList.Add(b);
@@ -72,11 +71,11 @@ namespace AlsiUtils
                          select x;
 
                 var tpl = pl.ToList();
-                SetCloseTriggers(tpl);
-                SetOpenTriggers(tpl);
-                SetOpenCloseRawTriggers(tpl);
-                SetOpenCloseTriggers(tpl);
-                CalcProfLoss(tpl);
+             //   SetCloseTriggers(tpl);
+              //  SetOpenTriggers(tpl);
+              //  SetOpenCloseRawTriggers(tpl);
+              //  SetOpenCloseTriggers(tpl);
+              //  CalcProfLoss(tpl);
 
             }
         }
@@ -100,7 +99,7 @@ namespace AlsiUtils
                 varlist2.Add(v);
             }
 
-            var reg = Factory_Indicator.createRegression(5, varlist2);
+            var reg = Factory_Indicator.createRegression(18, varlist2);
             var varlist3 = new List<VariableIndicator>();
 
             foreach (var rr in reg)
@@ -113,7 +112,7 @@ namespace AlsiUtils
                 varlist3.Add(q);
             }
 
-            var reg2 = Factory_Indicator.createRegression(25, varlist3);
+            var reg2 = Factory_Indicator.createRegression(9, varlist3);
 
             var varlist4 = new List<VariableIndicator>();
 
@@ -127,17 +126,17 @@ namespace AlsiUtils
                 varlist4.Add(qq);
             }
 
-            var reg3 = Factory_Indicator.createRegression(25, varlist4);
+            var reg3 = Factory_Indicator.createRegression(5, varlist4);
 
             StreamWriter sr = new StreamWriter(@"d:\tt.txt");
-            foreach (var d in F.Skip(100).Take(1500))
+            foreach (var d in F.Skip(100).Take(3000))
             {
                 var r = reg.Where(z => z.TimeStamp == d.TimeStamp).First();
                 var r2 = reg2.Where(z => z.TimeStamp == d.TimeStamp).First();
                 var r3 = reg3.Where(z => z.TimeStamp == d.TimeStamp).First();
                 var data = d.TimeStamp + "," + d.Reason + "," + d.RunningProfit + "," + d.StopLoss_RunningTotalProfit
                            + "," + d.Mama.Mama + "," + d.Mama.Fama + "," + d.Trigger_Open + "," + d.Trigger_Close
-                           + "," + d.TradeAction_Raw + "," + d.TradeAction + "," + d.AllowTrade + "," + (d.NewTotalRunningProf * 0) + "," + r.Regression + "," + r.Slope + "," + (r2.Slope * 10) + "," + (r3.Slope * 100) + "," + 2;
+                           + "," + d.TradeAction_Raw + "," + d.TradeAction + "," + d.AllowTrade + "," + (d.NewTotalRunningProf * 0) + "," + r.Regression + "," + r.Slope + "," + (r2.Slope * 10) + "," + (r3.Slope * 100) + "," + 1;
 
                 sr.WriteLine(data);
             }
