@@ -19,6 +19,7 @@ namespace AlsiUtils
         public string Notes { get; set; }
         public bool Position { get; set; }
         public double RunningProfit { get; set; }
+        public double TotalRunningProfit { get; set; }
         public Direction CurrentDirection { get; set; }
         public double CurrentPrice { get; set; }
         public double TotalPL { get; set; }

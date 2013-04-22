@@ -73,6 +73,7 @@ namespace FrontEnd
             NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
             _TradeOnlyList = CompletedTrade.CreateList(NewTrades);
+           
             Cursor = Cursors.Default;
 
         }
