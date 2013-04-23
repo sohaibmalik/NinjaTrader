@@ -32,12 +32,13 @@ namespace FrontEnd
         private void Test2_Load(object sender, EventArgs e)
         {                                
             start();
-            //for (double p = 0.01; p < 1; p+=0.02)
-            //    for (double m = 0;m<1; m+=0.02)
-            //    {
-                    var tp = new TakeProfit(_FullTradeList, NewTrades, 0.01, 0.01);
-                    tp.Calculate();
-               // }
+						for (double c = 0.75; c < 1.50; c += 0.25)
+            for (double p = 0.01; p < 1; p+=0.02)
+						for (double m = 0.01; m < 1; m += 0.02)
+						{
+							var tp = new TakeProfit(_FullTradeList, NewTrades, m,p, c);
+							tp.Calculate();
+						}
             Close();
         }
 
