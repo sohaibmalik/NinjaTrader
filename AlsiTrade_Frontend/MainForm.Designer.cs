@@ -79,6 +79,7 @@
             this.emaB2TextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.uploadButton = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
             this.chartSizeTextBox = new System.Windows.Forms.TextBox();
             this.drawChartButton = new System.Windows.Forms.Button();
@@ -122,9 +123,21 @@
             this.userPictureBox = new System.Windows.Forms.PictureBox();
             this.label13 = new System.Windows.Forms.Label();
             this.emailTextBox = new System.Windows.Forms.TextBox();
-            this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.name_EmailTextBox = new System.Windows.Forms.TextBox();
             this.removeEmailButton = new System.Windows.Forms.Button();
             this.addEmailButton = new System.Windows.Forms.Button();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.smsCheckBox = new System.Windows.Forms.CheckBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.smsTextbox = new System.Windows.Forms.TextBox();
+            this.name_SMSTextBox = new System.Windows.Forms.TextBox();
+            this.removeSMSButton = new System.Windows.Forms.Button();
+            this.addSMSButton = new System.Windows.Forms.Button();
+            this.smsListView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.resetManualCheckBox = new System.Windows.Forms.CheckBox();
@@ -149,7 +162,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.uploadButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -175,6 +187,9 @@
             this.tabPage5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.userPictureBox)).BeginInit();
+            this.tabPage7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.tabPage6.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.dataTabControl.SuspendLayout();
@@ -211,6 +226,7 @@
             this.settingsTabControl.Controls.Add(this.tabPage2);
             this.settingsTabControl.Controls.Add(this.tabPage4);
             this.settingsTabControl.Controls.Add(this.tabPage5);
+            this.settingsTabControl.Controls.Add(this.tabPage7);
             this.settingsTabControl.Controls.Add(this.tabPage6);
             this.settingsTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.settingsTabControl.Location = new System.Drawing.Point(0, 0);
@@ -731,13 +747,24 @@
             this.tabPage2.Controls.Add(this.timeframeGroupBox);
             this.tabPage2.Controls.Add(this.timespanGroupBox);
             this.tabPage2.Controls.Add(this.runHistCalcButton);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(353, 514);
+            this.tabPage2.Size = new System.Drawing.Size(353, 516);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // uploadButton
+            // 
+            this.uploadButton.Location = new System.Drawing.Point(74, 460);
+            this.uploadButton.Name = "uploadButton";
+            this.uploadButton.Size = new System.Drawing.Size(74, 23);
+            this.uploadButton.TabIndex = 16;
+            this.uploadButton.Text = "Upload";
+            this.uploadButton.UseVisualStyleBackColor = true;
+            this.uploadButton.Visible = false;
+            this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
             // 
             // label15
             // 
@@ -1109,7 +1136,7 @@
             this.tabPage5.Controls.Add(this.userPictureBox);
             this.tabPage5.Controls.Add(this.label13);
             this.tabPage5.Controls.Add(this.emailTextBox);
-            this.tabPage5.Controls.Add(this.nameTextBox);
+            this.tabPage5.Controls.Add(this.name_EmailTextBox);
             this.tabPage5.Controls.Add(this.removeEmailButton);
             this.tabPage5.Controls.Add(this.addEmailButton);
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
@@ -1117,7 +1144,7 @@
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage5.Size = new System.Drawing.Size(353, 516);
             this.tabPage5.TabIndex = 3;
-            this.tabPage5.Text = "tabPage5";
+            this.tabPage5.Text = "Email";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // emailListView
@@ -1197,12 +1224,12 @@
             this.emailTextBox.Size = new System.Drawing.Size(156, 23);
             this.emailTextBox.TabIndex = 4;
             // 
-            // nameTextBox
+            // name_EmailTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(37, 406);
-            this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(156, 23);
-            this.nameTextBox.TabIndex = 3;
+            this.name_EmailTextBox.Location = new System.Drawing.Point(37, 406);
+            this.name_EmailTextBox.Name = "name_EmailTextBox";
+            this.name_EmailTextBox.Size = new System.Drawing.Size(156, 23);
+            this.name_EmailTextBox.TabIndex = 3;
             // 
             // removeEmailButton
             // 
@@ -1223,6 +1250,121 @@
             this.addEmailButton.Text = "+";
             this.addEmailButton.UseVisualStyleBackColor = true;
             this.addEmailButton.Click += new System.EventHandler(this.addEmailButton_Click);
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Controls.Add(this.smsCheckBox);
+            this.tabPage7.Controls.Add(this.pictureBox2);
+            this.tabPage7.Controls.Add(this.pictureBox3);
+            this.tabPage7.Controls.Add(this.smsTextbox);
+            this.tabPage7.Controls.Add(this.name_SMSTextBox);
+            this.tabPage7.Controls.Add(this.removeSMSButton);
+            this.tabPage7.Controls.Add(this.addSMSButton);
+            this.tabPage7.Controls.Add(this.smsListView);
+            this.tabPage7.Location = new System.Drawing.Point(4, 24);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(353, 514);
+            this.tabPage7.TabIndex = 5;
+            this.tabPage7.Text = "SMS";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // smsCheckBox
+            // 
+            this.smsCheckBox.AutoSize = true;
+            this.smsCheckBox.Location = new System.Drawing.Point(225, 483);
+            this.smsCheckBox.Name = "smsCheckBox";
+            this.smsCheckBox.Size = new System.Drawing.Size(93, 19);
+            this.smsCheckBox.TabIndex = 17;
+            this.smsCheckBox.Text = "Sms Enabled";
+            this.smsCheckBox.UseVisualStyleBackColor = true;
+            this.smsCheckBox.CheckedChanged += new System.EventHandler(this.smsCheckBox_CheckedChanged);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(11, 444);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 16;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Location = new System.Drawing.Point(11, 413);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 15;
+            this.pictureBox3.TabStop = false;
+            // 
+            // smsTextbox
+            // 
+            this.smsTextbox.Location = new System.Drawing.Point(39, 442);
+            this.smsTextbox.Name = "smsTextbox";
+            this.smsTextbox.Size = new System.Drawing.Size(156, 23);
+            this.smsTextbox.TabIndex = 14;
+            // 
+            // name_SMSTextBox
+            // 
+            this.name_SMSTextBox.Location = new System.Drawing.Point(39, 413);
+            this.name_SMSTextBox.Name = "name_SMSTextBox";
+            this.name_SMSTextBox.Size = new System.Drawing.Size(156, 23);
+            this.name_SMSTextBox.TabIndex = 13;
+            // 
+            // removeSMSButton
+            // 
+            this.removeSMSButton.Location = new System.Drawing.Point(313, 18);
+            this.removeSMSButton.Name = "removeSMSButton";
+            this.removeSMSButton.Size = new System.Drawing.Size(27, 23);
+            this.removeSMSButton.TabIndex = 12;
+            this.removeSMSButton.Text = "-";
+            this.removeSMSButton.UseVisualStyleBackColor = true;
+            this.removeSMSButton.Click += new System.EventHandler(this.removeSMSButton_Click);
+            // 
+            // addSMSButton
+            // 
+            this.addSMSButton.Location = new System.Drawing.Point(200, 442);
+            this.addSMSButton.Name = "addSMSButton";
+            this.addSMSButton.Size = new System.Drawing.Size(28, 23);
+            this.addSMSButton.TabIndex = 11;
+            this.addSMSButton.Text = "+";
+            this.addSMSButton.UseVisualStyleBackColor = true;
+            this.addSMSButton.Click += new System.EventHandler(this.addSMSButton_Click);
+            // 
+            // smsListView
+            // 
+            this.smsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.smsListView.FullRowSelect = true;
+            this.smsListView.Location = new System.Drawing.Point(8, 18);
+            this.smsListView.MultiSelect = false;
+            this.smsListView.Name = "smsListView";
+            this.smsListView.Size = new System.Drawing.Size(299, 377);
+            this.smsListView.SmallImageList = this.imageList;
+            this.smsListView.TabIndex = 10;
+            this.smsListView.UseCompatibleStateImageBehavior = false;
+            this.smsListView.View = System.Windows.Forms.View.Details;
+            this.smsListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.smsListView_ItemSelectionChanged);
+            this.smsListView.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.smsListView_MouseDoubleClick);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "";
+            this.columnHeader1.Width = 28;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Name";
+            this.columnHeader2.Width = 100;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Tel";
+            this.columnHeader3.Width = 160;
             // 
             // tabPage6
             // 
@@ -1403,7 +1545,7 @@
             this.histListview.GroupImageList = this.imageList;
             this.histListview.Location = new System.Drawing.Point(3, 3);
             this.histListview.Name = "histListview";
-            this.histListview.Size = new System.Drawing.Size(769, 460);
+            this.histListview.Size = new System.Drawing.Size(762, 510);
             this.histListview.SmallImageList = this.imageList;
             this.histListview.TabIndex = 0;
             this.histListview.UseCompatibleStateImageBehavior = false;
@@ -1430,7 +1572,7 @@
             this.DBPricesGridView.Name = "DBPricesGridView";
             this.DBPricesGridView.ReadOnly = true;
             this.DBPricesGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DBPricesGridView.Size = new System.Drawing.Size(762, 508);
+            this.DBPricesGridView.Size = new System.Drawing.Size(762, 510);
             this.DBPricesGridView.TabIndex = 0;
             // 
             // statusStrip1
@@ -1456,17 +1598,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(1142, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // uploadButton
-            // 
-            this.uploadButton.Location = new System.Drawing.Point(74, 460);
-            this.uploadButton.Name = "uploadButton";
-            this.uploadButton.Size = new System.Drawing.Size(74, 23);
-            this.uploadButton.TabIndex = 16;
-            this.uploadButton.Text = "Upload";
-            this.uploadButton.UseVisualStyleBackColor = true;
-            this.uploadButton.Visible = false;
-            this.uploadButton.Click += new System.EventHandler(this.uploadButton_Click);
             // 
             // MainForm
             // 
@@ -1519,6 +1650,10 @@
             this.tabPage5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.userPictureBox)).EndInit();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.tabPage6.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -1608,7 +1743,7 @@
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox emailTextBox;
-        private System.Windows.Forms.TextBox nameTextBox;
+        private System.Windows.Forms.TextBox name_EmailTextBox;
         private System.Windows.Forms.Button removeEmailButton;
         private System.Windows.Forms.Button addEmailButton;
         private System.Windows.Forms.GroupBox liveStartGroupBox;
@@ -1657,6 +1792,18 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox chartSizeTextBox;
         private System.Windows.Forms.Button uploadButton;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.TextBox smsTextbox;
+        private System.Windows.Forms.TextBox name_SMSTextBox;
+        private System.Windows.Forms.Button removeSMSButton;
+        private System.Windows.Forms.Button addSMSButton;
+        private System.Windows.Forms.ListView smsListView;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.CheckBox smsCheckBox;
         
     }
 }

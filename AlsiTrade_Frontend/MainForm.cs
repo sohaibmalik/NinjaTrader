@@ -136,6 +136,11 @@ namespace FrontEnd
             msg.Title = "Order Matched";
             msg.Body = e.Trade.ToString();
             WebUpdate.SendOrder(e.Trade, true);
+            SmsMsg sms = new SmsMsg()
+            {
+                text = "Order Matched",
+            };
+            DoStuff.SMS.SendSms(e.Trade, sms, true);
             DoStuff.Email.SendEmail(e.Trade, msg, true);
             WebUpdate.SendOrderToWebDB(e.Trade);
 
@@ -152,7 +157,13 @@ namespace FrontEnd
                             + @"http://www.alsitm.com/charts/Statssummary.html" + " to view profit summary chart\n"
                             + @"http://www.alsitm.com/charts/TradeHistory.html" + " to view trade history chart\n"
                             + @"http://www.alsitm.com/charts/TradeDifference.html" + " to view actual trade difference chart";
+
+                SmsMsg sms = new SmsMsg()
+                {
+                    text="New Order",
+                };
                 DoStuff.Email.SendEmail(e.Trade, msg, false);
+                DoStuff.SMS.SendSms(e.Trade,sms , false);
                 WebUpdate.SendOrder(e.Trade, false);
                 WebUpdate.SendOrderToWebDB(e.Trade);
             }
@@ -161,6 +172,12 @@ namespace FrontEnd
                 EmailMsg msg = new EmailMsg();
                 msg.Title = "Trade input Failed";
                 msg.Body = "an Order was generated but could not be send to Excel. \n" + e.Trade.ToString();
+
+                SmsMsg sms = new SmsMsg()
+                {
+                    text = "Order Submission Failed",
+                };                
+                DoStuff.SMS.SendSms(e.Trade, sms, true);
                 DoStuff.Email.SendEmail(e.Trade, msg, true);
             }
         }
@@ -292,6 +309,7 @@ namespace FrontEnd
             endDateTimePicker.MaxDate = DateTime.Now;
             liveStartTimePicker.Value = WebSettings.General.LIVE_START_DATE;
 
+            smsCheckBox.Checked = WebSettings.General.ENABLE_SMS;
 
 
             //TradeMode
@@ -792,6 +810,7 @@ namespace FrontEnd
         {
             if (e.TabPageIndex == 2) dataTabControl.SelectedIndex = 2;
             if (e.TabPageIndex == 3) PopulateEmailTab();
+            if (e.TabPageIndex == 4) PopulateSmsTab();
         }
 
         private void UpdateAllHistoPrices_Click(object sender, EventArgs e)
@@ -916,8 +935,10 @@ namespace FrontEnd
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //p.GetPricesFromWeb();
-            p.GetPricesFromTick();
+            ////p.GetPricesFromWeb();
+            //p.GetPricesFromTick();
+            Debug.WriteLine(Communicator.SMS.GetSmsBalance());
+            DoStuff.SMS.SendSms(new Trade(), new SmsMsg { text = "Test SMS" }, false);
         }
 
 
@@ -1033,7 +1054,7 @@ namespace FrontEnd
 
             var contat = new EmailList()
             {
-                Name = nameTextBox.Text.Trim(),
+                Name = name_EmailTextBox.Text.Trim(),
                 Email = emailTextBox.Text.Trim(),
             };
 
@@ -1041,7 +1062,7 @@ namespace FrontEnd
             {
                 PopulateEmailTab();
                 emailTextBox.Clear();
-                nameTextBox.Clear();
+                name_EmailTextBox.Clear();
                 addEmailButton.Enabled = true;
             }
             else
@@ -1057,7 +1078,7 @@ namespace FrontEnd
             {
                 var u = (EmailList)e.Item.Tag;
                 emailTextBox.Text = u.Email;
-                nameTextBox.Text = u.Name;
+                name_EmailTextBox.Text = u.Name;
             }
         }
 
@@ -1073,6 +1094,85 @@ namespace FrontEnd
 
         #endregion
 
+        #region SMS Setup
+      private void  PopulateSmsTab()
+        {
+         smsListView.Items.Clear();
+            int index = 0;
+            foreach (var v in WebUpdate._SMSList)
+            {
+                int x = ((bool)v.Active) ? 1 : 2;
+                ListViewItem lvi = new ListViewItem("", x);
+                lvi.SubItems.Add(v.Name);
+                lvi.SubItems.Add(v.TelNr);
+                lvi.Tag = v;
+                smsListView.Items.Add(lvi);
+            }
+            loadsmsCheckedValue = true;
+        }
+
+      private void smsListView_MouseDoubleClick(object sender, MouseEventArgs e)
+      {
+          Cursor = Cursors.WaitCursor;
+          WebUpdate.CheckUncheckSmsListUser(((SmsList)smsListView.SelectedItems[0].Tag).ID);
+          PopulateSmsTab();
+          Cursor = Cursors.Default;
+      }
+
+      private void smsListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+      {
+          if (e.Item != null)
+          {
+              var u = (SmsList)e.Item.Tag;
+              smsTextbox.Text = u.TelNr;
+              name_SMSTextBox.Text = u.Name;
+          }
+      }
+
+      private void removeSMSButton_Click(object sender, EventArgs e)
+      {
+          Cursor = Cursors.WaitCursor;
+          var sms = (SmsList)smsListView.SelectedItems[0].Tag;
+          WebUpdate.DeleteUserFromSmsList(sms.ID);
+          PopulateSmsTab();
+          Cursor = Cursors.Default;
+      }
+
+      private void addSMSButton_Click(object sender, EventArgs e)
+      {
+          Cursor = Cursors.WaitCursor;
+
+          var contat = new SmsList()
+          {
+              Name = name_SMSTextBox.Text.Trim(),
+              TelNr = smsTextbox.Text.Trim(),
+          };
+
+          if (WebUpdate.InsertNewUsertoSmsList(contat))
+          {
+              PopulateSmsTab();
+              smsTextbox.Clear();
+              name_SMSTextBox.Clear();
+              addSMSButton.Enabled = true;
+          }
+          else
+          {
+              MessageBox.Show("Nr Already Exist");
+          }
+          Cursor = Cursors.Default;
+      }
+
+      private bool loadsmsCheckedValue = false;
+      private void smsCheckBox_CheckedChanged(object sender, EventArgs e)
+      {
+          Cursor = Cursors.WaitCursor;
+          if (loadsmsCheckedValue) WebSettings.General.ENABLE_SMS = smsCheckBox.Checked;
+          Cursor = Cursors.Default;
+      }
+
+       
+
+        #endregion
         private void liveStartTimePicker_ValueChanged(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
@@ -1276,6 +1376,14 @@ namespace FrontEnd
             c.UploadFile();
            
         }
+
+       
+
+     
+
+       
+
+      
 
 
        

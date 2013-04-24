@@ -388,6 +388,35 @@ namespace AlsiTrade_Backend
 
         }
 
+        public class SMS
+        {
+            private static Trade _SMSTrade;
+            private static SmsMsg _Msg;
+            private static BackgroundWorker BW;
+            private static bool _Admin;
+
+
+            public static void SendSms(Trade trade, SmsMsg Msg, bool AdminEmail)
+            {
+                _Msg = Msg;
+                _SMSTrade = trade;
+                _Admin = AdminEmail;
+                BW = new BackgroundWorker();
+                BW.DoWork += new DoWorkEventHandler(BW_DoWork);
+                BW.RunWorkerAsync();
+            }
+
+            static void BW_DoWork(object sender, DoWorkEventArgs e)
+            {
+                var dc = new WebDbDataContext();
+
+                bool smsON = WebSettings.General.ENABLE_SMS;
+                List<string> sms = WebUpdate._SMSList.Where(z => z.Active == true).Select(z => z.TelNr).ToList();
+                foreach (var s in sms)
+                   if(smsON) Communicator.SMS.sendSMS(s, _Msg.text);
+
+            }
+        }
 
         /// <summary>
         /// Sync the Clock to Internet Time

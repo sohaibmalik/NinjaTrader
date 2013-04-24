@@ -15,13 +15,14 @@ namespace AlsiTrade_Backend
 
         private static AlsiWebService.AlsiNotifyService service;
         public static List<EmailList> _EmailList = new List<EmailList>();
-      
+        public static List<SmsList> _SMSList = new List<SmsList>();
 
         public WebUpdate()
         {
             service = new AlsiWebService.AlsiNotifyService();
           
             GetEmailList();
+             GetSmsList();
         }
 
 
@@ -29,6 +30,12 @@ namespace AlsiTrade_Backend
         {
             var dc = new WebDbDataContext();
             _EmailList = dc.EmailLists.OrderBy(z => z.ID).ToList();
+        }
+
+        public static void GetSmsList()
+        {
+            var dc = new WebDbDataContext();
+            _SMSList = dc.SmsLists.OrderBy(z => z.ID).ToList();
         }
 
         public static void CheckUncheckEmailListUser(int UserID)
@@ -39,6 +46,14 @@ namespace AlsiTrade_Backend
             dc.SubmitChanges();
             GetEmailList();
         }
+        public static void CheckUncheckSmsListUser(int UserID)
+        {
+            var dc = new WebDbDataContext();
+            var user = dc.SmsLists.Where(z => z.ID == UserID).First();
+            user.Active = !user.Active;
+            dc.SubmitChanges();
+            GetSmsList();
+        }
 
         public static void DeleteUserFromEmailList(int UserID)
         {
@@ -47,6 +62,15 @@ namespace AlsiTrade_Backend
             dc.EmailLists.DeleteOnSubmit(user);
             dc.SubmitChanges();
             GetEmailList();
+        }
+
+        public static void DeleteUserFromSmsList(int UserID)
+        {
+            var dc = new WebDbDataContext();
+            var user = dc.SmsLists.Where(z => z.ID == UserID).First();
+            dc.SmsLists.DeleteOnSubmit(user);
+            dc.SubmitChanges();
+            GetSmsList();
         }
 
         public static bool InsertNewUsertoEmailList(EmailList user)
@@ -59,6 +83,20 @@ namespace AlsiTrade_Backend
                 dc.EmailLists.InsertOnSubmit(user);
                 dc.SubmitChanges();
                 GetEmailList();
+            }
+            return insert;
+        }
+
+        public static bool InsertNewUsertoSmsList(SmsList user)
+        {
+            var dc = new WebDbDataContext();
+            var insert = (!dc.SmsLists.Any(z => z.TelNr == user.TelNr));
+            if (insert)
+            {
+                user.Active = true;
+                dc.SmsLists.InsertOnSubmit(user);
+                dc.SubmitChanges();
+                GetSmsList();
             }
             return insert;
         }

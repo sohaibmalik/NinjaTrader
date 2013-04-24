@@ -11,4 +11,11 @@ namespace Communicator
       public string Title { get; set; }
       public bool Html { get; set; }
     }
+
+    public  class SmsMsg
+    {
+        public string text { get; set; }
+        public string DestinationNr { get; set; }
+    }
+
 }

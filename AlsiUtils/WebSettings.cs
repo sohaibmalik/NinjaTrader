@@ -375,6 +375,39 @@ namespace AlsiUtils
             }
 
             #endregion
+
+            #region SMS
+            private static bool _ENABLE_SMS;
+            public static bool ENABLE_SMS
+            {
+                get
+                {
+                    _ENABLE_SMS = GetENABLE_SMS();
+                    return _ENABLE_SMS;
+                }
+                set
+                {
+                    _ENABLE_SMS = value;
+                    Set_ENABLE_SMS(value);
+                    _settingChanged = true;
+
+                }
+            }
+
+            private static bool GetENABLE_SMS()
+            {
+                WebDbDataContext dc = new WebDbDataContext();
+                return bool.Parse(dc.Settings.Where(z => z.Setting_Name == "ENABLE_SMS").First().ValueString);
+            }
+
+            private static void Set_ENABLE_SMS(bool Triggered)
+            {
+                WebDbDataContext dc = new WebDbDataContext();
+                var setting = dc.Settings.Where(z => z.Setting_Name == "ENABLE_SMS").First();
+                setting.ValueString = Triggered.ToString();
+                dc.SubmitChanges();
+            }
+            #endregion
         }
 
         public class Indicators
