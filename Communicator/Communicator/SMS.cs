@@ -32,7 +32,30 @@ namespace Communicator
 
 		}
 
+		public static void sendSMS(SmsMsg Msg)
+		{
 
+			WebClient client = new WebClient();
+			// Add a user agent header in case the requested URI contains a query.
+
+			client.QueryString.Add("user", "pieterf33@gmail.com");
+			client.QueryString.Add("password", "1rachelle");
+			client.QueryString.Add("api_id", "3422248");
+			client.QueryString.Add("to", Msg.DestinationNr);
+			client.QueryString.Add("text", Msg.text);
+			string baseurl = "http://api.clickatell.com/http/sendmsg";
+			Stream data = client.OpenRead(baseurl);
+			StreamReader reader = new StreamReader(data);
+			string s = reader.ReadToEnd();
+			data.Close();
+			reader.Close();
+			Debug.WriteLine(s);
+
+
+
+			// http://api.clickatell.com/http/sendmsg?user=pieterf33%40gmail.com&password=PASSWORD&api_id=3422248&to=31683973700&text=Message
+
+		}
 
 		public static int GetSmsBalance()
 		{

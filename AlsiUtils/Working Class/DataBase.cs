@@ -17,7 +17,6 @@ namespace AlsiUtils
             AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = ConnectionString;
         }
 
-
         public static void SetConnectionString()
         {
 
@@ -44,9 +43,6 @@ namespace AlsiUtils
             { alive = false; }
             return alive;
         }
-
-
-
 
         static public void InsertTradeLog(Trade TradeObject)
         {
@@ -438,14 +434,7 @@ namespace AlsiUtils
                 High = 0;
                 Low = 0;
             }
-        }
-
-
-
-
-
-
-
+        }					
 
         static public void insertTicks(DateTime Stamp, int Price)
         {
@@ -464,9 +453,7 @@ namespace AlsiUtils
             dc.SubmitChanges();
 
         }
-
-
-
+			
 
         public enum dataTable
         {

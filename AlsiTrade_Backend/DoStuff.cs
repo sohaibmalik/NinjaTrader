@@ -413,7 +413,7 @@ namespace AlsiTrade_Backend
                 bool smsON = WebSettings.General.ENABLE_SMS;
                 List<string> sms = WebUpdate._SMSList.Where(z => z.Active == true).Select(z => z.TelNr).ToList();
                 foreach (var s in sms)
-                   if(smsON) Communicator.SMS.sendSMS(s, _Msg.text);
+                   if(smsON) Communicator.SMS.sendSMS(s, _Msg.text + "\n"+ _SMSTrade);
 
             }
         }

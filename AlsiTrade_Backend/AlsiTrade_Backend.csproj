@@ -81,6 +81,7 @@
     </Compile>
     <Compile Include="RunCalcs.cs" />
     <Compile Include="SendOrder.cs" />
+    <Compile Include="SyncDB.cs" />
     <Compile Include="UpdateDB.cs" />
     <Compile Include="UpdateTimer.cs" />
     <Compile Include="Web References\AlsiWebService\Reference.cs">
