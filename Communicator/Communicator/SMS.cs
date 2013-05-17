@@ -41,8 +41,9 @@ namespace Communicator
 			client.QueryString.Add("user", "pieterf33@gmail.com");
 			client.QueryString.Add("password", "1rachelle");
 			client.QueryString.Add("api_id", "3422248");
+			client.QueryString.Add("from", Msg.From);
 			client.QueryString.Add("to", Msg.DestinationNr);
-			client.QueryString.Add("text", Msg.text);
+			client.QueryString.Add("text", Msg.text);			
 			string baseurl = "http://api.clickatell.com/http/sendmsg";
 			Stream data = client.OpenRead(baseurl);
 			StreamReader reader = new StreamReader(data);

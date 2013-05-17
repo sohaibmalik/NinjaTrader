@@ -16,6 +16,8 @@ namespace Communicator
     {
         public string text { get; set; }
         public string DestinationNr { get; set; }
+				public string From { get; set; }
     }
+
 
 }

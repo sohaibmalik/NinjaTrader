@@ -32,7 +32,7 @@ namespace AlsiTrade_Backend
 
 		void bw_DoWork(object sender, DoWorkEventArgs e)
 		{
-			var del = dc.MasterMinutes.Where(z => z.Stamp >= _StartOnlineData);
+			var del = dc.MasterMinutes.Where(z => z.Stamp >= _EndOnlineData.AddDays(-5));
 			dc.MasterMinutes.DeleteAllOnSubmit(del);
 			dc.SubmitChanges();
 			AlsiTrade_Backend.UpdateDB.FullHistoricUpdate_MasterMinute(WebSettings.General.HISAT_INST);
