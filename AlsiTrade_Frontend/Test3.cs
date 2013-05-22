@@ -25,7 +25,7 @@ namespace FrontEnd
 
 
             string line = string.Empty;
-            StreamReader sr = new StreamReader(@"D:\rsi.txt");
+            StreamReader sr = new StreamReader(@"D:\PLDATA.csv");
 
             while ((line = sr.ReadLine()) != null)
             {
@@ -37,10 +37,10 @@ namespace FrontEnd
             }
             sr.Close();
 
-            var rsi = AlsiUtils.Factory_Indicator.createEMA(75,price);
+						var rsi = AlsiUtils.Factory_Indicator.createAroon(20, price);
 
             StreamWriter sw = new StreamWriter(@"D:\DATATEST.txt");
-            foreach (var r in rsi) sw.WriteLine(r.Ema);
+            foreach (var r in rsi) sw.WriteLine(r.Price_Close +","+r.Aroon_Up+","+r.Aroon_Down);
             sw.Close();
 
             Close();

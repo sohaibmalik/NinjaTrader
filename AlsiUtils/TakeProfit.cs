@@ -46,9 +46,8 @@ namespace AlsiUtils
 			var diff = (-plold + plnew);
 
 			//	if(diff>0)
-			Debug.WriteLine("mama " + _m + "  fama " + _f + "    "
-
-				+ "     " + diff);
+			//Debug.WriteLine("mama " + _m + "  fama " + _f + "    "+ "     " + diff);
+			SetOHLC();
 			Print();
 		}
 
@@ -93,7 +92,32 @@ namespace AlsiUtils
 			}
 		}
 
+		private void SetOHLC()
+		{
+			var tpl = new List<TakeProfit.TakeProfitTrade>();
+			StreamWriter sr = new StreamWriter(@"d:\ohlcPL.txt");
+			int C = _CompletedTrades.Count;
+			for (int i = 1; i < C; i++)
+			{
+				var pl = from x in _FullTradeList
+								 where x.TimeStamp >= _CompletedTrades[i].OpenTrade.TimeStamp && x.TimeStamp <= _CompletedTrades[i].CloseTrade.TimeStamp 
+								 select x;
 
+				if (tpl.Count != 0)
+				{
+					tpl = pl.ToList();
+					var o = tpl[1].CurrentPrice - tpl[0].TradedPrice;
+					var h = tpl.Max(x => x.CurrentPrice) - tpl[0].TradedPrice;
+					var l = tpl.Min(x => x.CurrentPrice) - tpl[0].TradedPrice;
+					var c = tpl.Last().CurrentPrice - tpl[0].TradedPrice;
+
+
+					// Debug.WriteLine(i + "  O:" + (o + tpl[0].RunningTotalProfit_New) + "  H:" + (h + tpl[0].RunningTotalProfit_New) + "  L:" + (l + tpl[0].RunningTotalProfit_New) + "  C:" + (c + tpl[0].RunningTotalProfit_New));
+					sr.WriteLine(i + "," + (o + tpl[0].RunningTotalProfit_New) + "," + (h + tpl[0].RunningTotalProfit_New) + "," + (l + tpl[0].RunningTotalProfit_New) + "," + (c + tpl[0].RunningTotalProfit_New));
+				}
+			}
+			sr.Close();
+		}
 
 		private void Print()
 		{
