@@ -6,7 +6,7 @@ using TicTacTec.TA.Library;
 
 namespace AlsiUtils
 {
-	class Factory_Indicator
+	public class Factory_Indicator
 	{
 
 

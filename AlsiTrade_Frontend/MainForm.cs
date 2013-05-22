@@ -100,7 +100,7 @@ namespace FrontEnd
             onStartupLoad(this, start);
 
 
-            //   DoStuff.TickBulkCopy(Properties.Settings.Default.HISAT_INST, p._LastTrade.TimeStamp);
+          
             Debug.WriteLine("LAST TRADE : " + p._LastTrade.TimeStamp + "   " + p._LastTrade);
             service = new WebUpdate();
 

@@ -101,13 +101,15 @@ namespace AlsiUtils
 
 			var F = _FullTradeList.Where(z => z.StopLoss_CenterLine != 0);
 			StreamWriter sr = new StreamWriter(@"d:\tt.txt");
-			foreach (var d in F.Skip(100).Take(8000))
+			foreach (var d in F.Skip(100))
 			{
 
-				var data = d.TimeStamp + "," + d.Reason + "," + d.RunningProfit + "," + d.TotalRunningProfit
-									 + "," + d.Mama.Mama + "," + d.Mama.Fama + "," + d.Trigger_Open + "," + d.Trigger_Close
-									 + "," + d.TradeAction_Raw + "," + d.TradeAction + "," + d.InPosition + "," + d.Reg1_Slope + "," + (d.Reg2_Slope) + "," + (d.Reg3_Slope)
-									 + "," + _cutoff + "," + d.RunningProfit_New + "," + d.RunningTotalProfit_New;
+                var data = d.TimeStamp + "," + d.Reason + "," + d.RunningProfit + "," + d.TotalRunningProfit
+                                     + "," + d.Mama.Mama + "," + d.Mama.Fama + "," + d.Trigger_Open + "," + d.Trigger_Close
+                                     + "," + d.TradeAction_Raw + "," + d.TradeAction + "," + d.InPosition + "," + d.Reg1_Slope + "," + (d.Reg2_Slope) + "," + (d.Reg3_Slope)
+                                     + "," + _cutoff + "," + d.RunningProfit_New + "," + (d.RunningTotalProfit_New);
+
+                                    
 
 				sr.WriteLine(data);
 			}
@@ -362,8 +364,8 @@ namespace AlsiUtils
 				if (tpt[x].Trigger_Open) tpt[x].TradeAction_Raw = TakeProfitTrade.TradeActions.OpenTrade;
 
 			}
-		}
-		private void SetOpenCloseTriggers(List<TakeProfitTrade> tpt)
+		}	
+        private void SetOpenCloseTriggers(List<TakeProfitTrade> tpt)
 		{
 
 			tpt[0].TradeAction = TakeProfitTrade.TradeActions.None;

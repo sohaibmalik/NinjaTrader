@@ -115,6 +115,12 @@
     <Compile Include="Test2.Designer.cs">
       <DependentUpon>Test2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Test3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Test3.Designer.cs">
+      <DependentUpon>Test3.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Chart.resx">
       <DependentUpon>Chart.cs</DependentUpon>
     </EmbeddedResource>
@@ -136,6 +142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Test2.resx">
       <DependentUpon>Test2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test3.resx">
+      <DependentUpon>Test3.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="FrontEnd_TemporaryKey.pfx" />
