@@ -82,6 +82,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="TA-Lib-Core, Version=1.0.2813.38947, Culture=neutral, PublicKeyToken=fdb2a6b268f56aa5, processorArchitecture=MSIL">
+      <HintPath>..\External Libraries\TA-Lib-Core.dll</HintPath>
+    </Reference>
     <Reference Include="WebKitBrowser">
       <HintPath>..\..\..\..\Desktop\hiChart Example\WebKit.NET-0.5-bin-cairo\bin\WebKitBrowser.dll</HintPath>
     </Reference>

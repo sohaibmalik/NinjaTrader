@@ -25,22 +25,28 @@ namespace FrontEnd
 
 
             string line = string.Empty;
-            StreamReader sr = new StreamReader(@"D:\PLDATA.csv");
+            StreamReader sr = new StreamReader(@"D:\ohlcPLAll.txt");
 
             while ((line = sr.ReadLine()) != null)
             {
+                var str = line.Split(',');
                 var p = new Price()
                 {
-                    Close=double.Parse(line),
+                    Open=double.Parse(str[1]),
+                    High = double.Parse(str[2]),
+                    Low = double.Parse(str[3]),
+                    Close = double.Parse(str[4]),
+
+
                 };
                 price.Add(p);
             }
             sr.Close();
 
-						var rsi = AlsiUtils.Factory_Indicator.createAroon(20, price);
+            var rsi = AlsiUtils.Factory_Indicator.createBollingerBand(20, 2, price, TicTacTec.TA.Library.Core.MAType.Ema);
 
-            StreamWriter sw = new StreamWriter(@"D:\DATATEST.txt");
-            foreach (var r in rsi) sw.WriteLine(r.Price_Close +","+r.Aroon_Up+","+r.Aroon_Down);
+            StreamWriter sw = new StreamWriter(@"D:\indicator.txt");
+            foreach (var r in rsi) sw.WriteLine(r.Price_Close +","+r.Upper+","+r.Lower);
             sw.Close();
 
             Close();
