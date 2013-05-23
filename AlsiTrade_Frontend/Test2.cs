@@ -31,56 +31,34 @@ namespace FrontEnd
 
         private void Test2_Load(object sender, EventArgs e)
         {                                
-            start();
+            start();									
+						//var tp = new TakeProfit(_FullTradeList, NewTrades, 0.01, 0.01);
+						//tp.Calculate();
 					
-						//for (double p = 0.01; p < 1; p+=0.02)
-						//for (double m = 0.01; m < 1; m += 0.02)
-						//{
-						//  var tp = new TakeProfit(_FullTradeList, NewTrades, m, p);
-						var tp = new TakeProfit(_FullTradeList, NewTrades, 0.01, 0.01);
-						  tp.Calculate();
-						//}
-
-
-
+						var tp = new ProfitAlgoLayer(_FullTradeList, NewTrades);
+						tp.Calculate();
 			
-
             Close();
         }
 
         List<int> Per = new List<int>();
         List<int> TP = new List<int>();
-        private void GetParams()
-        {
+      
 
-
-            using (StreamReader reader = new StreamReader(@"d:\testdata2.txt"))
-            {
-                string line;
-                while ((line = reader.ReadLine()) != null)
-                {
-                    string[] parts = line.Split(',');
-                    TP.Add(int.Parse(parts[1]));
-                    Per.Add(int.Parse(parts[3]));
-                    // Debug.WriteLine(line); // Write to console.
-                }
-            }
-
-        }
-
-
+		
+				
         private void start()
         {
             Cursor = Cursors.WaitCursor;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
-            DataBase.dataTable dt = DataBase.dataTable.AllHistory;
+            DataBase.dataTable dt = DataBase.dataTable.MasterMinute;
             //_FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), dt);
             _FullTradeList = AlsiTrade_Backend.RunCalcs.RunMAMAScalp(GetParametersMAMA(), t, false, new DateTime(2005, 02, 02), new DateTime(2014, 04, 15), dt);
             _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
             NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
             _TradeOnlyList = CompletedTrade.CreateList(NewTrades);
-           
+					
             Cursor = Cursors.Default;
 
         }

@@ -735,6 +735,7 @@ namespace AlsiUtils.Strategies
                     if (CompleteList[x - 2].CloseTrade.Extention.Slope < CompleteList[x - 1].CloseTrade.Extention.Slope
                         && CompleteList[x - 1].CloseTrade.Extention.Slope < 0)
                         CompleteList[x].OpenTrade.Extention.OrderVol = 2;
+											
                 }
                 foreach (var t in CompleteList)
                 {

@@ -464,7 +464,11 @@ namespace NotifierClientApp
 
         private void userStatusUpdateTimer_Tick(object sender, EventArgs e)
         {
-            userUpdateBW.RunWorkerAsync();
+					try
+					{
+						userUpdateBW.RunWorkerAsync();
+					}
+					catch(Exception ex){}
 
         }
 
