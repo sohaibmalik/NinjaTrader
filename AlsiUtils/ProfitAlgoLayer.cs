@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 
 namespace AlsiUtils
 {
@@ -40,9 +41,9 @@ namespace AlsiUtils
 				var tpl = pl.ToList();
 				if (tpl.Count > 0)
 				{
-					SetOpenCloseRawTriggers(tpl);
-					SetOpenCloseTriggers(tpl);
-					CalcProfLoss(tpl);
+					//SetOpenCloseRawTriggers(tpl);
+					//SetOpenCloseTriggers(tpl);
+					//CalcProfLoss(tpl);
 				}
 			}
 
@@ -54,12 +55,14 @@ namespace AlsiUtils
 			foreach (var r in BOIL) sw.WriteLine(r.TimeStamp + "," + r.Price_Close + "," + r.Upper + "," + r.Lower);
 			sw.Close();
 
+		//	CalcBoilTriggers();
 		}
 		private void SetOHLC()
 		{
 			var tpl = new List<ProfitAlgoLayer.TakeProfitTrade>();
 			//	StreamWriter sr = new StreamWriter(@"d:\ohlcPL.txt");
 			int C = _CompletedTrades.Count;
+			double totProfit = 0;
 			for (int i = 1; i < C; i++)
 			{
 				var pl = from x in _FullTradeList
@@ -69,18 +72,20 @@ namespace AlsiUtils
 				tpl = pl.ToList();
 				if (tpl.Count > 1)
 				{
-					var o = tpl[1].CurrentPrice - tpl[0].TradedPrice;
-					var h = tpl.Max(x => x.CurrentPrice) - tpl[0].TradedPrice;
-					var l = tpl.Min(x => x.CurrentPrice) - tpl[0].TradedPrice;
-					var c = tpl.Last().CurrentPrice - tpl[0].TradedPrice;
+					var o = 0;
+					var h = 0;
+					var l = 0;
+					var c = tpl.Last().RunningProfit;
 
 					var P = new Price();
 					P.TimeStamp = tpl.Last().TimeStamp;
 					P.Open = o + tpl[0].RunningTotalProfit_New;
 					P.High = h + tpl[0].RunningTotalProfit_New;
 					P.Low = l + tpl[0].RunningTotalProfit_New;
-					P.Close = c + tpl[0].RunningTotalProfit_New;
+					totProfit += tpl.Last().RunningProfit;
+					P.Close = totProfit;
 					OHLC_LIST.Add(P);
+					//Debug.WriteLine(P.Close);
 					//	Debug.WriteLine(i + "," + (o + tpl[0].RunningTotalProfit_New) + "," + (h + tpl[0].RunningTotalProfit_New) + "," + (l + tpl[0].RunningTotalProfit_New) + "," + (c + tpl[0].RunningTotalProfit_New));
 					//	Debug.WriteLine(i + "," + P.Open + "," + "," + P.High + "," + P.Low + "," + P.Close);
 				}
@@ -133,57 +138,14 @@ namespace AlsiUtils
 				else
 					trade[x].TotalRunningProfit = tp + trade[x].RunningProfit;
 
-
+			
 			}
 
 
 
 
 
-		}
-		private void SetOpenCloseRawTriggers(List<TakeProfitTrade> tpt)
-		{
-
-			tpt[0].TradeAction_Raw = TakeProfitTrade.TradeActions.None;
-			int i = tpt.Count;
-
-			for (int x = 1; x < i; x++)
-			{
-				tpt[x].TradeAction_Raw = TakeProfitTrade.TradeActions.None;
-				if (tpt[x].Trigger_Close) tpt[x].TradeAction_Raw = TakeProfitTrade.TradeActions.CloseTrade;
-				if (tpt[x].Trigger_Open) tpt[x].TradeAction_Raw = TakeProfitTrade.TradeActions.OpenTrade;
-
-			}
-		}
-		private void SetOpenCloseTriggers(List<TakeProfitTrade> tpt)
-		{
-
-			tpt[0].TradeAction = TakeProfitTrade.TradeActions.None;
-			tpt[0].InPosition = true;
-			//tpt[0].AllowTrade = CurrentAllowTrade;
-			int i = tpt.Count - 0;
-
-			for (int x = 1; x < i; x++)
-			{
-				//set start
-				tpt[x].InPosition = tpt[x - 1].InPosition;
-				//close trade
-				if (tpt[x].InPosition && tpt[x].TradeAction_Raw == TakeProfitTrade.TradeActions.CloseTrade)
-				{
-					tpt[x].InPosition = false;
-					//  CurrentAllowTrade = false;
-					tpt[x].TradeAction = tpt[x].TradeAction_Raw;
-				}
-
-				//open trade
-				if (!tpt[x].InPosition && tpt[x].TradeAction_Raw == TakeProfitTrade.TradeActions.OpenTrade)
-				{
-					tpt[x].InPosition = true;
-					// CurrentAllowTrade = true;
-					tpt[x].TradeAction = tpt[x].TradeAction_Raw;
-				}
-			}
-		}
+		}	
 		private void CalcProfLoss(List<TakeProfitTrade> tpt)
 		{
 			int i = tpt.Count;
@@ -214,7 +176,7 @@ namespace AlsiUtils
 			public bool Trigger_Close { get; set; }
 			public bool Trigger_Open { get; set; }
 			public bool ReverseTrade { get; set; }
-
+			public BollingerBand BB { get; set; }
 			public TakeProfitTrade(Trade trade)
 			{
 				this.BuyorSell = trade.BuyorSell;
@@ -250,10 +212,37 @@ namespace AlsiUtils
 
 		private void CalcBoilTriggers()
 		{
-			foreach (var b in BOIL)
+			for (int x = 1; x < BOIL.Count; x++)
 			{
-
+				var trade=_FullTradeList.Where(z=>z.TimeStamp==BOIL[x].TimeStamp).First();
+				if (BOIL[x].Price_Close > BOIL[x].Upper) trade.ReverseTrade = true;
+				trade.BB = BOIL[x];				
 			}
+			foreach (var d in _FullTradeList.Where(x => x.BB == null)) d.BB = new BollingerBand();
+			foreach (var d in _FullTradeList)
+			{
+			//	d.RunningProfit = 0;
+			}
+			var C=_FullTradeList.Where(x=>x.Reason!=Trade.Trigger.None).ToList();
+			var c=C.Count();
+			for (int x = 1; x < c; x++)
+			{
+				if (C[x - 1].ReverseTrade == true)
+				{
+					C[x].TradeVolume = -2;
+				}
+				if (x>1&&C[x - 2].ReverseTrade) C[x].TradeVolume = -2;
+				
+			}
+			
+			foreach (var r in _FullTradeList.Where(z=>z.Reason!=Trade.Trigger.None))
+			{
+				//Debug.WriteLine(r.TimeStamp + " " + r.CurrentPrice + "  " + r.BB.Price_Close + "  " + r.ReverseTrade  + "  " + r.Reason + "   " +r.TradeVolume 
+				//+"  "+r.RunningProfit + "   " 	);
+
+				//Debug.WriteLine(r.RunningProfit);
+			}
+
 		}
 
 		#endregion
