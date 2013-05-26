@@ -121,7 +121,7 @@ namespace AlsiUtils
 
             string r = Reason.ToString();
             if (this.Reason == 0) r = "";
-            string msg = "Trade Details:  " + r + " \n" + TimeStamp.AddMinutes(5) + "  " + BuyorSell + "  " + TradeVolume + " @" + TradedPrice + "\n";
+            string msg = "Trade Details:  " + r + " \n" + TimeStamp.AddMinutes(4) + "  " + BuyorSell + "  " + TradeVolume + " @" + TradedPrice + "\n";
             return msg;
         }
 

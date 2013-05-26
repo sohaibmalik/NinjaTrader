@@ -16,4 +16,12 @@ namespace AlsiUtils
         }
     }
 
+    public partial class MasterMinute
+    {
+        public override string ToString()
+        {
+            return Stamp + " " + "O:" + O + " H:" + H + " L:" + L + " C:" + C;
+        }
+    }
+
 }
