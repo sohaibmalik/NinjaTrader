@@ -49,32 +49,38 @@ namespace AlsiUtils
                 }
             }
 
+						StreamWriter sw = new StreamWriter(@"D:\OHLC.csv");
             //SetOHLC_TradeOnly();
             SetOHLC_IntraTrade();
 
-            //BOIL = AlsiUtils.Factory_Indicator.createBollingerBand(21, 1.5, OHLC_LIST, TicTacTec.TA.Library.Core.MAType.Kama);
-            //var EM = AlsiUtils.Factory_Indicator.createSMA(5, OHLC_LIST);
+           // BOIL = AlsiUtils.Factory_Indicator.createBollingerBand(21, 1.5, OHLC_LIST, TicTacTec.TA.Library.Core.MAType.Kama);
+						var EM = AlsiUtils.Factory_Indicator.createAdaptiveMA_MAMA(0.01,0.01, OHLC_LIST);
             //StreamWriter sw = new StreamWriter(@"D:\indicator.txt");
-            //foreach (var r in BOIL) sw.WriteLine(EM.Where(z => z.TimeStamp == r.TimeStamp).First().Sma + "," + r.Price_Close + "," + r.Upper + "," + r.Lower + "," + r.Mid);
-            //sw.Close();
-
-
-            StreamWriter sw = new StreamWriter(@"D:\OHLC.csv");
-            var D = new DateTime(2000, 01, 01, 12, 00, 00);
-            foreach (var s in OHLC_LIST)
-            {
-                D = s.TimeStamp;
-                var data = new StringBuilder(String.Format("{0:yyyy.MM.dd}", D));
-                data.Append("," + String.Format("{0:HH:mm}", D));
-                data.Append("," + s.Open);
-                data.Append("," + s.High);
-                data.Append("," + s.Low);
-                data.Append("," + s.Close);
-                data.Append("," + (D.Minute + 1));
-
-                sw.WriteLine(data);
-            }
+						foreach (var r in EM)
+						{
+							var topband = r.Mama +100;
+							var lowband = r.Mama - 100;
+							sw.WriteLine(r.TimeStamp + "," + r.Price_Close + "," + r.Mama+","+topband+","+lowband );
+						}
             sw.Close();
+
+
+          
+						//var D = new DateTime(2000, 01, 01, 12, 00, 00);
+						//foreach (var s in OHLC_LIST)
+						//{
+						//    D = s.TimeStamp;
+						//    var data = new StringBuilder(String.Format("{0:yyyy.MM.dd}", D));
+						//    data.Append("," + String.Format("{0:HH:mm}", D));
+						//    data.Append("," + s.Open);
+						//    data.Append("," + s.High);
+						//    data.Append("," + s.Low);
+						//    data.Append("," + s.Close);
+						//    data.Append("," + (D.Minute + 1));
+
+						//    sw.WriteLine(data);
+						//}
+           // sw.Close();
             //	CalcBoilTriggers();
         }
         private void SetOHLC_TradeOnly()
