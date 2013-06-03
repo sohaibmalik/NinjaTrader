@@ -33,54 +33,56 @@ namespace AlsiUtils
 
         public void Calculate()
         {
-            int C = _CompletedTrades.Count;
-            for (int i = 1; i < C; i++)
-            {
-                var pl = from x in _FullTradeList
-                         where x.TimeStamp >= _CompletedTrades[i].OpenTrade.TimeStamp && x.TimeStamp <= _CompletedTrades[i].CloseTrade.TimeStamp
-                         select x;
+            //int C = _CompletedTrades.Count;
+            //for (int i = 1; i < C; i++)
+            //{
+            //    var pl = from x in _FullTradeList
+            //             where x.TimeStamp >= _CompletedTrades[i].OpenTrade.TimeStamp && x.TimeStamp <= _CompletedTrades[i].CloseTrade.TimeStamp
+            //             select x;
 
-                var tpl = pl.ToList();
-                if (tpl.Count > 0)
-                {
-                    //SetOpenCloseRawTriggers(tpl);
-                    //SetOpenCloseTriggers(tpl);
-                    //CalcProfLoss(tpl);
-                }
-            }
+            //   // var tpl = pl.ToList();
+            //    //if (tpl.Count > 0)
+            //    //{
+            //    //    //SetOpenCloseRawTriggers(tpl);
+            //    //    //SetOpenCloseTriggers(tpl);
+            //    //    //CalcProfLoss(tpl);
+            //    //}
+            //}
 
-						StreamWriter sw = new StreamWriter(@"D:\OHLC.csv");
+            StreamWriter sw = new StreamWriter(@"D:\OHLC.csv");
             //SetOHLC_TradeOnly();
             SetOHLC_IntraTrade();
 
-           // BOIL = AlsiUtils.Factory_Indicator.createBollingerBand(21, 1.5, OHLC_LIST, TicTacTec.TA.Library.Core.MAType.Kama);
-						var EM = AlsiUtils.Factory_Indicator.createAdaptiveMA_MAMA(0.01,0.01, OHLC_LIST);
+            // BOIL = AlsiUtils.Factory_Indicator.createBollingerBand(21, 1.5, OHLC_LIST, TicTacTec.TA.Library.Core.MAType.Kama);
+            var EM = AlsiUtils.Factory_Indicator.createAdaptiveMA_MAMA(0.01, 0.01, OHLC_LIST);
             //StreamWriter sw = new StreamWriter(@"D:\indicator.txt");
-						foreach (var r in EM)
-						{
-							var topband = r.Mama +100;
-							var lowband = r.Mama - 100;
-							sw.WriteLine(r.TimeStamp + "," + r.Price_Close + "," + r.Mama+","+topband+","+lowband );
-						}
+            foreach (var r in EM)
+            {
+                var topband = r.Mama + 100;
+                var lowband = r.Mama - 100;
+                var trade = _FullTradeList.Where(z => z.TimeStamp == r.TimeStamp).First();
+
+                sw.WriteLine(trade.Reason + "," + r.TimeStamp + "," + r.Price_Close + "," + r.Mama + "," + topband + "," + lowband + "," + trade.TradeVolume);
+            }
             sw.Close();
 
 
-          
-						//var D = new DateTime(2000, 01, 01, 12, 00, 00);
-						//foreach (var s in OHLC_LIST)
-						//{
-						//    D = s.TimeStamp;
-						//    var data = new StringBuilder(String.Format("{0:yyyy.MM.dd}", D));
-						//    data.Append("," + String.Format("{0:HH:mm}", D));
-						//    data.Append("," + s.Open);
-						//    data.Append("," + s.High);
-						//    data.Append("," + s.Low);
-						//    data.Append("," + s.Close);
-						//    data.Append("," + (D.Minute + 1));
 
-						//    sw.WriteLine(data);
-						//}
-           // sw.Close();
+            //var D = new DateTime(2000, 01, 01, 12, 00, 00);
+            //foreach (var s in OHLC_LIST)
+            //{
+            //    D = s.TimeStamp;
+            //    var data = new StringBuilder(String.Format("{0:yyyy.MM.dd}", D));
+            //    data.Append("," + String.Format("{0:HH:mm}", D));
+            //    data.Append("," + s.Open);
+            //    data.Append("," + s.High);
+            //    data.Append("," + s.Low);
+            //    data.Append("," + s.Close);
+            //    data.Append("," + (D.Minute + 1));
+
+            //    sw.WriteLine(data);
+            //}
+            // sw.Close();
             //	CalcBoilTriggers();
         }
         private void SetOHLC_TradeOnly()
@@ -124,7 +126,7 @@ namespace AlsiUtils
         private void SetOHLC_IntraTrade()
         {
             var tpl = new List<ProfitAlgoLayer.TakeProfitTrade>();
-        //    StreamWriter sr = new StreamWriter(@"d:\ohlcPL.txt");
+            //    StreamWriter sr = new StreamWriter(@"d:\ohlcPL.txt");
             int C = _CompletedTrades.Count;
             double totProfit = 0;
             double start = 0;
@@ -136,14 +138,14 @@ namespace AlsiUtils
                           where x.TimeStamp >= _CompletedTrades[i].OpenTrade.TimeStamp && x.TimeStamp <= _CompletedTrades[i].CloseTrade.TimeStamp
                           select x;
 
-              
+
 
                 tpl = pl5.ToList();
-                
+
                 if (tpl.Count > 1)
                 {
-                                   
-                  
+
+
                     foreach (var v in tpl)
                     {
                         var f = M.Where(z => z.Stamp == v.TimeStamp).First();
@@ -151,38 +153,38 @@ namespace AlsiUtils
 
 
                         start = tpl.First().TradedPrice;
-                        
+
                         double o = 0;
-                         if(tpl[0].Reason==Trade.Trigger.OpenShort)o= (start-market.Open ) + totProfit;
-                         if (tpl[0].Reason == Trade.Trigger.OpenLong) o = (market.Open-start) + totProfit;
+                        if (tpl[0].Reason == Trade.Trigger.OpenShort) o = (start - market.Open) + totProfit;
+                        if (tpl[0].Reason == Trade.Trigger.OpenLong) o = (market.Open - start) + totProfit;
 
                         double h = 0;
-                        if (tpl[0].Reason == Trade.Trigger.OpenShort) h = (start-market.High) + totProfit;
-                        if (tpl[0].Reason == Trade.Trigger.OpenLong) h = (market.High-start) + totProfit;
+                        if (tpl[0].Reason == Trade.Trigger.OpenShort) h = (start - market.High) + totProfit;
+                        if (tpl[0].Reason == Trade.Trigger.OpenLong) h = (market.High - start) + totProfit;
 
                         double l = 0;
                         if (tpl[0].Reason == Trade.Trigger.OpenShort) l = (start - market.Low) + totProfit;
-                        if (tpl[0].Reason == Trade.Trigger.OpenLong) l = (market.Low-start) + totProfit;
+                        if (tpl[0].Reason == Trade.Trigger.OpenLong) l = (market.Low - start) + totProfit;
 
                         double c = 0;
                         if (tpl[0].Reason == Trade.Trigger.OpenShort) c = (start - market.Close) + totProfit;
-                        if (tpl[0].Reason == Trade.Trigger.OpenLong) c = (market.Close-start) + totProfit;
+                        if (tpl[0].Reason == Trade.Trigger.OpenLong) c = (market.Close - start) + totProfit;
 
-                       
+
 
                         var P = new Price();
-                        P.TimeStamp =market.TimeStamp;
+                        P.TimeStamp = market.TimeStamp;
                         P.Open = o;
                         P.High = h;
                         P.Low = l;
                         P.Close = c;
                         if (v.TimeStamp == tpl.Last().TimeStamp)
-                        {                            
+                        {
                             totProfit += tpl.Last().RunningProfit;
                         }
-                      
+
                         OHLC_LIST.Add(P);
-                      
+
                         //sr.WriteLine(
                         //    P.Open
                         //    + "," + P.High
@@ -195,14 +197,14 @@ namespace AlsiUtils
                         //             + "," + market.Close
                         //             + "," + totProfit
                         //             );
-                       
+
                     }
                     //Debug.WriteLine(P.Close);
                     //	Debug.WriteLine(i + "," + (o + tpl[0].RunningTotalProfit_New) + "," + (h + tpl[0].RunningTotalProfit_New) + "," + (l + tpl[0].RunningTotalProfit_New) + "," + (c + tpl[0].RunningTotalProfit_New));
                     //	Debug.WriteLine(i + "," + P.Open + "," + "," + P.High + "," + P.Low + "," + P.Close);
                 }
             }
-           // sr.Close();
+            // sr.Close();
         }
 
         private void AdjustVolume(List<Trade> trade)
@@ -221,7 +223,7 @@ namespace AlsiUtils
             double tp = 0;
             for (int x = 1; x < count; x++)
             {
-
+                
                 trade[x].TradeVolume = 1;
                 trade[x].TotalPL = 0;
                 trade[x].RunningProfit = 0;
