@@ -9,7 +9,60 @@ namespace AlsiUtils
 	public class Factory_Indicator
 	{
 
+        public static List<ADX> createADX(int N, List<Price> Price)
+        {
+            List<ADX> ADX = new List<ADX>();
 
+
+            double[] _close = new double[Price.Count];
+            double[] _high = new double[Price.Count];
+            double[] _low = new double[Price.Count];
+            double[] _open = new double[Price.Count];
+
+            double[] _minusDi = new double[Price.Count];
+            double[] _plusDi = new double[Price.Count];
+
+            for (int x = 0; x < Price.Count; x++)
+            {
+                _close[x] = Price[x].Close;
+                _high[x] = Price[x].High;
+                _low[x] = Price[x].Low;
+                _open[x] = Price[x].Open;
+
+            }
+
+            int a, b;
+                                  
+           
+           // Core.Dx(0, Price.Count - 1, _high, _low, _close, N, out a, out b, _adx);
+            Core.MinusDI(0, Price.Count - 1, _high, _low, _close, N, out a, out b, _minusDi);
+            Core.PlusDI(0, Price.Count - 1, _high, _low, _close, N, out a, out b, _plusDi );
+
+
+            for (int x = 0; x < _plusDi.Count() - a; x++)
+            {
+                //Debug.WriteLine("UPPER " + _upperBand[x]);
+                //Debug.WriteLine("MID " + _midBand[x]);
+                //Debug.WriteLine("LOWER " + _lowerBand[x]);
+                //Debug.WriteLine(Price[x + a].TimeStamp + "   " + Price[x + a].Close);
+                //Debug.WriteLine("========" + x + "===========");
+
+                ADX adx = new ADX();
+                adx.AvDirIndex = 0;
+                adx.DI_Down = _minusDi[x];
+                adx.DI_Up = _plusDi[x];
+                adx.N = N;               
+                adx.TimeStamp = Price[x + a].TimeStamp;
+                adx.Price_Close = Price[x + a].Close;
+                adx.Price_High = Price[x + a].High;
+                adx.Price_Low = Price[x + a].Low;
+                adx.Price_Open = Price[x + a].Open;
+                ADX.Add(adx);
+            }
+
+            return ADX;
+           
+        }
 
 		public static List<Macd> createMACD(int M, int L, int S, List<Price> Price)
 		{
@@ -427,6 +480,32 @@ namespace AlsiUtils
 
 			return ema;
 		}
+
+        public static List<EMA> createEMA(int N, List<double> Value)
+        {
+            List<EMA> ema = new List<EMA>();
+
+            double[] _price = new double[Value.Count];
+
+            for (int x = 0; x < Value.Count; x++) _price[x] = Value[x];
+
+            double[] _ema = new double[Value.Count];
+            int a, b;
+
+            Core.Ema(0, Value.Count - 1, _price, N, out a, out b, _ema);
+
+            for (int x = 0; x < Value.Count - a; x++)
+            {
+                EMA e = new EMA
+                {                    
+                    CustomValue = Value[x + a],
+                    Ema = _ema[x],
+                };
+                ema.Add(e);
+            }
+
+            return ema;
+        }
 
 		public static List<SMA> createAdaptiveMA_KAMA(int N, List<VariableIndicator> Value)
 		{

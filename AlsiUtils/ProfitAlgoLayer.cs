@@ -55,14 +55,47 @@ namespace AlsiUtils
 
             // BOIL = AlsiUtils.Factory_Indicator.createBollingerBand(21, 1.5, OHLC_LIST, TicTacTec.TA.Library.Core.MAType.Kama);
             var EM = AlsiUtils.Factory_Indicator.createAdaptiveMA_MAMA(0.01, 0.01, OHLC_LIST);
-            //StreamWriter sw = new StreamWriter(@"D:\indicator.txt");
-            foreach (var r in EM)
+            var adx_DMI = AlsiUtils.Factory_Indicator.createADX(75, OHLC_LIST);
+            var RSI = AlsiUtils.Factory_Indicator.createRSI(20, OHLC_LIST);
+
+            var ohlcWriter = new StreamWriter(@"D:\RawAlgoOHLCV.csv");
+            foreach (var r in OHLC_LIST)
             {
-                var topband = r.Mama + 100;
-                var lowband = r.Mama - 100;
+                var trade = _FullTradeList.Where(z => z.TimeStamp == r.TimeStamp).First();
+                var v = orgVol.Where(x => x.Stamp == r.TimeStamp);
+                var vol = (v.Count() == 0) ? 0 : v.First().Vol;
+                ohlcWriter.WriteLine(r.TimeStamp.Date.ToShortDateString() +
+                    "," + r.TimeStamp.ToShortTimeString() +
+                    "," + r.Open +
+                    "," + r.High +
+                    "," + r.Low +
+                    "," + r.Close +
+                    "," + vol +
+                    ","+trade.Reason );
+            }
+
+            ohlcWriter.Close();
+
+
+            foreach (var r in adx_DMI)
+            {
+                var em = EM.Where(z => z.TimeStamp == r.TimeStamp);
+                var rs = RSI.Where(z => z.TimeStamp == r.TimeStamp);
+                var vol = orgVol.Where(z => z.Stamp == r.TimeStamp);
+
+                var volume = (vol.Count() == 0) ? 1 : vol.First().Vol;
+                var topband = r.DI_Up;
+                var midband = (em.Count() == 0) ? 0 : em.First().Mama;
+                var lowband = r.DI_Down;
+
+                var b1 = (rs.Count() == 0) ? 0 : rs.First().RSI;
+
+                var b2 = 0;
+                var b3 = 0;
+                var b4 = 0;
                 var trade = _FullTradeList.Where(z => z.TimeStamp == r.TimeStamp).First();
 
-                sw.WriteLine(trade.Reason + "," + r.TimeStamp + "," + r.Price_Close + "," + r.Mama + "," + topband + "," + lowband + "," + trade.TradeVolume);
+                sw.WriteLine(trade.Reason + "," + r.TimeStamp + "," + r.Price_Close + "," + midband + "," + topband + "," + lowband + "," + volume + "," + b1 + "," + b2 + "," + b3 + "," + b4);
             }
             sw.Close();
 
@@ -207,6 +240,7 @@ namespace AlsiUtils
             // sr.Close();
         }
 
+
         private void AdjustVolume(List<Trade> trade)
         {
             int count = trade.Count;
@@ -216,6 +250,13 @@ namespace AlsiUtils
                     trade[x].TradedPrice = trade[x].CurrentPrice;
                 else
                     trade[x].TradedPrice = trade[x - 1].TradedPrice;
+
+                var v = new OriginalVolume()
+                {
+                    Stamp = trade[x].TimeStamp,
+                    Vol = trade[x].TradeVolume
+                };
+                orgVol.Add(v);
             }
 
 
@@ -223,7 +264,7 @@ namespace AlsiUtils
             double tp = 0;
             for (int x = 1; x < count; x++)
             {
-                
+
                 trade[x].TradeVolume = 1;
                 trade[x].TotalPL = 0;
                 trade[x].RunningProfit = 0;
@@ -253,14 +294,18 @@ namespace AlsiUtils
                 else
                     trade[x].TotalRunningProfit = tp + trade[x].RunningProfit;
 
-
             }
 
 
-
-
-
         }
+
+        private List<OriginalVolume> orgVol = new List<OriginalVolume>();
+        internal class OriginalVolume
+        {
+            public int Vol { get; set; }
+            public DateTime Stamp { get; set; }
+        }
+
         private void CalcProfLoss(List<TakeProfitTrade> tpt)
         {
             int i = tpt.Count;

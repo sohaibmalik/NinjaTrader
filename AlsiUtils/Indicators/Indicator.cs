@@ -202,7 +202,6 @@ namespace AlsiUtils
         public double CustomValue { get; set; }
     }
   
-
     public class Macd : Indicator
     {
         private int _L;
@@ -277,6 +276,15 @@ namespace AlsiUtils
         }
 
 
+    }
+
+    public class ADX:Indicator
+    {
+        public int N { get; set; }
+        public double AvDirIndex { get; set; }
+        public double DI_Up { get; set; }
+        public double DI_Down { get; set; }
+        public double Test  { get; set; }
     }
 
     public class SAR : Indicator
