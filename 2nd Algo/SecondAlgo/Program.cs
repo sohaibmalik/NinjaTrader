@@ -12,7 +12,7 @@ namespace SecondAlgo
         {
             AlgoSecondLayer.Algo.LoadPrice();
             AlgoSecondLayer.Algo.CalcIndicators();
-            Console.ReadLine();
+            
         }
     }
 }

@@ -57,36 +57,82 @@ namespace AlgoSecondLayer
         public static void CalcIndicators()
         {
             Console.WriteLine("Calculating Indicators...");
+
+            //Base Level Calcs
              var ohlc=Trades.Select(z => z.OHLC);
              var OHLC_LIST = ohlc.ToList();           
-            var volume = ohlc.ToDictionary(x => x.TimeStamp, x => x.Volume);
+            var volume = Trades.ToDictionary(x => x.TimeStamp, x=>x.TradeVolume);
             var trigger=Trades.ToDictionary(x=>x.TimeStamp,x=>x.TradeTrigger);
-            var EM = AlsiUtils.Factory_Indicator.createAdaptiveMA_MAMA(0.01, 0.01, OHLC_LIST).ToDictionary(x => x.TimeStamp, x => x.Mama);
-
+            var EM = AlsiUtils.Factory_Indicator.createAdaptiveMA_MAMA(0.05, 0.05, OHLC_LIST).ToDictionary(x => x.TimeStamp, x => x.Mama);
             var adx_DMI = AlsiUtils.Factory_Indicator.createADX(75, OHLC_LIST);
-            var DMI_UP=adx_DMI.ToDictionary(x => x.TimeStamp, x => x.DI_Up);
-            var DMI_Down = adx_DMI.ToDictionary(x => x.TimeStamp, x => x.DI_Down);
-           
-            var RSI = AlsiUtils.Factory_Indicator.createRSI(20, OHLC_LIST).ToDictionary(x=>x.TimeStamp,x=>x.RSI);
+            var RSI = AlsiUtils.Factory_Indicator.createRSI(20, OHLC_LIST);
+
+
+            //Second Level Clacs
+           //EMA OF DMI+ and DMI-
+            List<VariableIndicator> varDmiUP = new List<VariableIndicator>();
+            List<VariableIndicator> varDmiDOWN = new List<VariableIndicator>();
+            foreach (var f in adx_DMI)
+            {
+                var vdown = new VariableIndicator()
+                    {
+                        TimeStamp = f.TimeStamp,
+                        Value = f.DI_Down,
+                    };
+                var vup = new VariableIndicator()
+                {
+                    TimeStamp = f.TimeStamp,
+                    Value = f.DI_Up,
+                };
+
+                varDmiUP.Add(vup);
+                varDmiDOWN.Add(vdown);
+            }
+            
+            var Dmi_Up_EMA = Factory_Indicator.createEMA(12,varDmiUP);
+            var Dmi_Down_EMA = Factory_Indicator.createEMA(12,varDmiDOWN);
+            
+            //EMA OF RSI
+            List<VariableIndicator> varRsi = new List<VariableIndicator>();
+            foreach (var r in RSI)
+            {
+                var rsi = new VariableIndicator()
+                {
+                    TimeStamp=r.TimeStamp,
+                    Value=r.RSI,
+                };
+                varRsi.Add(rsi);
+            }
+
+            var RSI_EMA = Factory_Indicator.createEMA (25, varRsi);
+
+
+            //CREATE DICTIONARY 
+            var DMI_UP_DIC=Dmi_Up_EMA.ToDictionary(x => x.TimeStamp, x => x.Ema);
+            var DMI_Down_DIC = Dmi_Down_EMA.ToDictionary(x => x.TimeStamp, x => x.Ema);
+            var RSI_DIC = RSI_EMA.ToDictionary(x => x.TimeStamp, x => x.Ema);
+         
+
+
 
             var sw = new StreamWriter(@"d:\Indicators.csv");
-            sw.WriteLine("Trade" + "," + "Stamp" + "," + "PriceClose" + "," + "MAMA" + "," + "DI-UP" + "," + "DI-DOWN" + "," + "VOL" + "," + "extra 1" + "," + "extra 2" + "," + "extra 3" + "," + "extra 4");
+            sw.WriteLine("Trade" + "," + "Stamp" + "," + "PriceClose" + "," + "MAMA" + "," + "DI-UP" + "," + "DI-DOWN" + "," + "VOL" + "," + "RSI" + "," + "extra 2" + "," + "extra 3" + "," + "extra 4");
             foreach (var r in adx_DMI)
             {
                 double em =0;
                 EM.TryGetValue(r.TimeStamp,out em);
 
                 double rs = 0;
-                RSI.TryGetValue(r.TimeStamp, out rs);
+                RSI_DIC.TryGetValue(r.TimeStamp, out rs);
 
-                double vol = 0;
+                int vol = 0;
                 volume.TryGetValue(r.TimeStamp,out vol);
 
                 double DI_UP=0;
-                DMI_UP.TryGetValue(r.TimeStamp,out DI_UP);
+                DMI_UP_DIC.TryGetValue(r.TimeStamp, out DI_UP);
 
                 double DI_DOWN=0;
-                DMI_Down.TryGetValue(r.TimeStamp,out DI_DOWN);
+                DMI_Down_DIC.TryGetValue(r.TimeStamp, out DI_DOWN);
 
                 Trade.Trigger Trig;
                 trigger.TryGetValue(r.TimeStamp,out Trig );
