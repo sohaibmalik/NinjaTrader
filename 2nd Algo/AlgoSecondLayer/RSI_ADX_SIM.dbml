@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Rsi_ADX" Class="RSI_ADX_SIMDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PIETER-PC;Initial Catalog=Rsi_ADX;Integrated Security=True" SettingsObjectName="AlgoSecondLayer.Properties.Settings" SettingsPropertyName="Rsi_ADXConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.tblSettings" Member="tblSettings">
+    <Type Name="tblSetting">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ADX_START" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ADX_END" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ADX_CURRENT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_START" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_END" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_CURRENT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MAMA_1_START" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MAMA_1_END" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MAMA_1_CURRENT" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MAMA_2_START" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MAMA_2_END" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MAMA_2_CURRENT" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="RSI_EMA_START" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_EMA_END" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_EMA_CURRENT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_SLOPE_START" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_SLOPE_END" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_SLOPE_CURRENT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_TOP_START" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_TOP_END" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_TOP_CURRENT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_BOTTOM_START" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_BOTTOM_END" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_BOTTOM_CURRENT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DMI_PLUS_START" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DMI_PLUS_END" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DMI_PLUS_CURRENT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DMI_MINUS_START" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DMI_MINUS_END" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DMI_MINUS_CURRENT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbl5Minute" Member="tbl5Minutes">
+    <Type Name="tbl5Minute">
+      <Column Name="ID" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Profit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ADX" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MAMA_1" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="MAMA_2" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="RSI_EMA" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_SLOPE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_TOP" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RSI_BOTTOM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DMI_PLUS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DMI_MINUS" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

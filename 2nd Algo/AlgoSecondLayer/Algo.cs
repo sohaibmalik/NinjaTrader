@@ -55,9 +55,11 @@ namespace AlgoSecondLayer
             }
         }
 
+        public static Parameters P = new Parameters();
+
         public static List<IndicatorBasket> CalcIndicators()
         {
-            Console.WriteLine("Calculating Indicators...");
+         //   Console.WriteLine("Calculating Indicators...");
             var Indicators = new List<IndicatorBasket>();
 
             //Base Level Calcs
@@ -65,9 +67,9 @@ namespace AlgoSecondLayer
             var OHLC_LIST = ohlc.ToList();
             var volume = Trades.ToDictionary(x => x.TimeStamp, x => x.TradeVolume);
             var trigger = Trades.ToDictionary(x => x.TimeStamp, x => x.TradeTrigger);
-            var EM = AlsiUtils.Factory_Indicator.createAdaptiveMA_MAMA(0.05, 0.05, OHLC_LIST).ToDictionary(x => x.TimeStamp, x => x.Mama);
-            var adx_DMI = AlsiUtils.Factory_Indicator.createADX(75, OHLC_LIST);
-            var RSI = AlsiUtils.Factory_Indicator.createRSI(20, OHLC_LIST);
+            var EM = AlsiUtils.Factory_Indicator.createAdaptiveMA_MAMA(P.Mamapar1, P.Mamapar2, OHLC_LIST).ToDictionary(x => x.TimeStamp, x => x.Mama);
+            var adx_DMI = AlsiUtils.Factory_Indicator.createADX(P.ADX_period, OHLC_LIST);
+            var RSI = AlsiUtils.Factory_Indicator.createRSI(P.RSI_period, OHLC_LIST);
 
 
             //Second Level Clacs
@@ -91,8 +93,8 @@ namespace AlgoSecondLayer
                 varDmiDOWN.Add(vdown);
             }
 
-            var Dmi_Up_EMA = Factory_Indicator.createEMA(12, varDmiUP);
-            var Dmi_Down_EMA = Factory_Indicator.createEMA(12, varDmiDOWN);
+            var Dmi_Up_EMA = Factory_Indicator.createEMA(P.Di_UP_avg_period, varDmiUP);
+            var Dmi_Down_EMA = Factory_Indicator.createEMA(P.Di_DOWN_avg_period, varDmiDOWN);
 
             //EMA OF RSI
             List<VariableIndicator> varRsi = new List<VariableIndicator>();
@@ -106,10 +108,10 @@ namespace AlgoSecondLayer
                 varRsi.Add(rsi);
             }
 
-            var RSI_EMA = Factory_Indicator.createEMA(25, varRsi);
+            var RSI_EMA = Factory_Indicator.createEMA(P.RSI_EMA, varRsi);
 
             //slope OF RSI
-            var rsi_slope = Factory_Indicator.createRegression(5, varRsi);
+            var rsi_slope = Factory_Indicator.createRegression(P.RSI_Slope_period, varRsi);
 
             //CREATE DICTIONARY 
             var DMI_UP_DIC = Dmi_Up_EMA.ToDictionary(x => x.TimeStamp, x => x.Ema);
@@ -119,8 +121,8 @@ namespace AlgoSecondLayer
 
 
 
-            var sw = new StreamWriter(@"d:\Indicators.csv");
-            sw.WriteLine("Trade" + "," + "Stamp" + "," + "PriceClose" + "," + "MAMA" + "," + "DI-UP" + "," + "DI-DOWN" + "," + "VOL" + "," + "RSI" + "," + "RSI SLOPE" + "," + "extra 3" + "," + "extra 4");
+          //  var sw = new StreamWriter(@"d:\Indicators.csv");
+           // sw.WriteLine("Trade" + "," + "Stamp" + "," + "PriceClose" + "," + "MAMA" + "," + "DI-UP" + "," + "DI-DOWN" + "," + "VOL" + "," + "RSI" + "," + "RSI SLOPE" + "," + "extra 3" + "," + "extra 4");
             foreach (var r in adx_DMI)
             {
                 double em = 0;
@@ -171,49 +173,54 @@ namespace AlgoSecondLayer
 
                 };
                 Indicators.Add(i);
-                sw.WriteLine(trade + "," + r.TimeStamp + "," + r.Price_Close + "," + midband + "," + topband + "," + lowband + "," + adjVol + "," + b1 + "," + b2 + "," + b3 + "," + b4);
+             //   sw.WriteLine(trade + "," + r.TimeStamp + "," + r.Price_Close + "," + midband + "," + topband + "," + lowband + "," + adjVol + "," + b1 + "," + b2 + "," + b3 + "," + b4);
             }
-            sw.Close();
-            Console.Write("Done");
+         //   sw.Close();
+           
             return Indicators;
         }
 
-        public static void CalculatePL(List<IndicatorBasket> I)
+        public static double CalculatePL(List<IndicatorBasket> I)
         {
+           // Console.WriteLine("Calculating Profit and Loss");
             var S = I[0];
             S.Direction = NORMALorREVERSE.Normal;
             S.Position = INorOUT.In;
 
-            var sw = new StreamWriter(@"d:\PLoutput.csv");
+          //  var sw = new StreamWriter(@"d:\PLoutput.csv");
 
             for (int x = 1; x < I.Count; x++)
             {
-                //I[x].BottomUpTurn = (I[x].RSI < 35
-                //    && I[x - 1].RSI_SLOPE > I[x].RSI_SLOPE
-                //    && I[x].RSI_SLOPE < 0);
+                I[x].BottomUpTurn = (I[x].RSI < P.RSI_BOTTOM
+                    && I[x - 1].RSI_SLOPE > I[x].RSI_SLOPE
+                    && I[x-1].RSI_SLOPE > 0
+                    && I[x].RSI_SLOPE<0);
 
-                //I[x].TopDownTurn = (I[x].RSI > 70
-                //    && I[x - 1].RSI_SLOPE < I[x].RSI_SLOPE
-                //     && I[x].RSI_SLOPE > 0
-                //     && I[x - 1].RSI_SLOPE < 0);
+                I[x].TopDownTurn = (I[x].RSI > P.RSI_TOP
+                    && I[x - 1].RSI_SLOPE < I[x].RSI_SLOPE
+                     && I[x].RSI_SLOPE > 0
+                     && I[x - 1].RSI_SLOPE < 0);
 
-                //I[x].exitTriggerRAW = (I[x].Price < I[x].Mama
-                //     || I[x].DI_DOWN > I[x].DI_UP
-                //     || I[x].RSI < 45);
 
-                //I[x].entryTriggerRAW = (I[x].Price > I[x].Mama
-                //     && I[x].DI_DOWN < I[x].DI_UP
-                //     || I[x].BottomUpTurn);
+                I[x].enterRevereseRAW = (I[x].Price < I[x].Mama
+                    && I[x].DI_DOWN > I[x].DI_UP
+                    && I[x].RSI < 45);
 
-                I[x].EntyTrigger = (I[x].entryTriggerRAW && !I[x - 1].entryTriggerRAW);
-                I[x].ExitTrigger = (I[x].exitTriggerRAW && !I[x - 1].exitTriggerRAW);
+
+                I[x].exitReverseRAW = (I[x].Price > I[x].Mama
+                     || I[x].DI_DOWN < I[x].DI_UP
+                     || I[x].BottomUpTurn);
+                               
+
+                I[x].EnterReverseTrigger = (I[x].enterRevereseRAW && !I[x - 1].enterRevereseRAW);
+                I[x].ExitReverseTrigger = (I[x].exitReverseRAW && !I[x - 1].exitReverseRAW);
                 I[x].StopTrigger = I[x].TopDownTurn;
 
                 //Direction
-                if (I[x].EntyTrigger) I[x].Direction = NORMALorREVERSE.Normal;
+                if (I[x].EnterReverseTrigger) I[x].Direction = NORMALorREVERSE.Reverse;
                 else
-                    if (I[x].ExitTrigger) I[x].Direction = NORMALorREVERSE.Reverse;
-                    else
+                    if (I[x].ExitReverseTrigger) I[x].Direction = NORMALorREVERSE.Normal;
+                    else 
                         I[x].Direction = I[x - 1].Direction;
 
                 //Position
@@ -239,11 +246,13 @@ namespace AlgoSecondLayer
                 I[x].Profit = WTF_Multiplier * InOut_NormalReverse;
                 I[x].RunningProfit = I[x].Profit + I[x - 1].RunningProfit;
 
-
+                
                // sw.WriteLine(I[x].Timestamp.ToShortDateString() + "      This Profit " +I[x].Profit + "    " + I[x].RunningProfit + "   " + I[x].Position);
-                sw.WriteLine(I[x].Timestamp + "," + I[x].Profit + "," +I[x].Price+","+ I[x].RunningProfit + "," + I[x].Position +","+ I[x].Direction + ","+I[x].EntyTrigger  );
+            //    sw.WriteLine(I[x].Timestamp + "," + I[x].Profit + "," + I[x].Price + "," + I[x].RunningProfit + "," + I[x].Position + "," + I[x].Direction + "," + I[x].BottomUpTurn);
             }
-            sw.Close();
+         //   sw.Close();
+
+            return I.Last().RunningProfit;
         }
 
         public class IndicatorBasket
@@ -261,14 +270,29 @@ namespace AlgoSecondLayer
             public double RSI_SLOPE { get; set; }
             public bool TopDownTurn { get; set; }
             public bool BottomUpTurn { get; set; }
-            public bool exitTriggerRAW { get; set; }
-            public bool entryTriggerRAW { get; set; }
+            public bool exitReverseRAW { get; set; }
+            public bool enterRevereseRAW { get; set; }
             public bool stopTriggerRAW { get; set; }
-            public bool EntyTrigger { get; set; }
-            public bool ExitTrigger { get; set; }
+            public bool EnterReverseTrigger { get; set; }
+            public bool ExitReverseTrigger { get; set; }
             public bool StopTrigger { get; set; }
             public NORMALorREVERSE Direction { get; set; }
             public INorOUT Position { get; set; }
+        }
+
+        public class Parameters
+        {
+            public double Mamapar1 { get; set; } //0.05
+            public double Mamapar2 { get; set; }//0.05
+            public int RSI_period{get;set;}//20
+            public int RSI_EMA { get; set; }//25
+            public int RSI_Slope_period { get; set; }//5
+            public int RSI_TOP { get; set; }//75
+            public int RSI_BOTTOM { get; set; }//35
+            public int ADX_period{ get; set; }//75
+            public int Di_DOWN_avg_period { get; set; }//12
+            public int Di_UP_avg_period { get; set; }//12
+
         }
 
         public enum NORMALorREVERSE
