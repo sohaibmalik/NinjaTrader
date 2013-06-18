@@ -187,7 +187,7 @@ namespace AlgoSecondLayer
             S.Direction = NORMALorREVERSE.Normal;
             S.Position = INorOUT.In;
 
-          //  var sw = new StreamWriter(@"d:\PLoutput.csv");
+            var sw = new StreamWriter(@"d:\PLoutput.csv");
 
             for (int x = 1; x < I.Count; x++)
             {
@@ -247,10 +247,10 @@ namespace AlgoSecondLayer
                 I[x].RunningProfit = I[x].Profit + I[x - 1].RunningProfit;
 
                 
-               // sw.WriteLine(I[x].Timestamp.ToShortDateString() + "      This Profit " +I[x].Profit + "    " + I[x].RunningProfit + "   " + I[x].Position);
-            //    sw.WriteLine(I[x].Timestamp + "," + I[x].Profit + "," + I[x].Price + "," + I[x].RunningProfit + "," + I[x].Position + "," + I[x].Direction + "," + I[x].BottomUpTurn);
+               
+                sw.WriteLine(I[x].Timestamp + "," + I[x].Profit + "," + I[x].Price + "," + I[x].RunningProfit + "," + I[x].Position + "," + I[x].Direction + "," + I[x].BottomUpTurn);
             }
-         //   sw.Close();
+            sw.Close();
 
             return I.Last().RunningProfit;
         }
