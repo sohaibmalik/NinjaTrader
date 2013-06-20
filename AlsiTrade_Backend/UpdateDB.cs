@@ -22,7 +22,10 @@ namespace AlsiTrade_Backend
 
             AlsiDBDataContext dc = new AlsiDBDataContext();
 
-            DateTime Last = dc.MasterMinutes.AsEnumerable().Last().Stamp;
+            var dateL = dc.MasterMinutes.AsEnumerable().Where(z => z.Instrument == ContractName);
+            if (dateL.Count() == 0) throw new Exception("Contract name has no match in database.\n" + ContractName + " caanot be found");
+
+            DateTime Last = dateL.Last().Stamp;
             DateTime Now = DateTime.UtcNow.AddHours(2);
             GlobalObjects.Points.Clear();
             GlobalObjects.Points = HiSat.HistData.GetHistoricalMINUTE_FromWEB(Last, Now, 1, ContractName);

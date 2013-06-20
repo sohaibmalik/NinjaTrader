@@ -11,19 +11,22 @@ namespace SecondAlgo
         static void Main(string[] args)
         {
             Algo.LoadPrice();
-             Algo.P.ADX_period = 75;
-                                                    Algo.P.RSI_period = 25;
-                                                    Algo.P.Mamapar1 = 0.01;
-                                                    Algo.P.Mamapar2 = 0.01;
-                                                    Algo.P.RSI_EMA = 28;
-                                                    Algo.P.RSI_Slope_period = 6;
-                                                    Algo.P.RSI_TOP = 71;
-                                                    Algo.P.RSI_BOTTOM = 33;
-                                                    Algo.P.Di_DOWN_avg_period = 8;
-                                                    Algo.P.Di_UP_avg_period = 12;
-                                                    var profit = Algo.CalculatePL(Algo.CalcIndicators());
+            Algo.P.ADX_period = 75;
+            Algo.P.RSI_period = 25;
+            Algo.P.Mamapar1 = 0.01;
+            Algo.P.Mamapar2 = 0.01;
+            Algo.P.RSI_EMA = 28;
+            Algo.P.RSI_Slope_period = 6;
+            Algo.P.RSI_TOP = 71;
+            Algo.P.RSI_BOTTOM = 33;
+            Algo.P.Di_DOWN_avg_period = 8;
+            Algo.P.Di_UP_avg_period = 12;
+            var profit = Algo.CalculatePL(Algo.CalcIndicators());
 
+            Console.WriteLine(CountCalcs());
+            Console.ReadLine();
         }
+
 
         private static void RunSIM()
         {
@@ -36,16 +39,16 @@ namespace SecondAlgo
             double total = CountCalcs();
             double progress = 0;
 
-            for (int ADX = (int)s.ADX_START; ADX <= s.ADX_END; ADX += 2)
-                for (int RSI = (int)s.RSI_START; RSI <= s.RSI_END; RSI += 2)
-                    for (double MAMA1 = (double)s.MAMA_1_START; MAMA1 <= s.MAMA_1_END; MAMA1 += 0.055)
-                        for (double MAMA2 = (double)s.MAMA_2_START; MAMA2 <= s.MAMA_2_END; MAMA2 += 0.055)
-                            for (int RSI_EMA = (int)s.RSI_EMA_START; RSI_EMA <= s.RSI_EMA_END; RSI_EMA += 2)
-                                for (int RSI_SLOPE = (int)s.RSI_SLOPE_START; RSI_SLOPE <= s.RSI_SLOPE_END; RSI_SLOPE += 2)
-                                    for (int RSI_TOP = (int)s.RSI_TOP_START; RSI_TOP <= s.RSI_TOP_END; RSI_TOP += 2)
-                                        for (int RSI_BOTTOM = (int)s.RSI_BOTTOM_START; RSI_BOTTOM >= s.RSI_BOTTOM_END; RSI_BOTTOM -= 2)
-                                            for (int DMI_P_EMA = (int)s.DMI_PLUS_START; DMI_P_EMA <= s.DMI_PLUS_END; DMI_P_EMA += 2)
-                                                for (int DMI_M_EMA = (int)s.DMI_MINUS_START; DMI_M_EMA <= s.DMI_MINUS_END; DMI_M_EMA += 2)
+            for (int ADX = 5; ADX <= 100; ADX += 1)
+                for (int RSI = 5; RSI <= 30; RSI += 1)
+                    for (double MAMA1 = 0.01; MAMA1 <= 0.5; MAMA1 += 0.055)
+                        for (double MAMA2 = 0.01; MAMA2 <= 0.5; MAMA2 += 0.055)
+                            for (int RSI_EMA = 2; RSI_EMA <= 40; RSI_EMA += 1)
+                                for (int RSI_SLOPE = 2; RSI_SLOPE <= 20; RSI_SLOPE += 1)
+                                    for (int RSI_TOP = 50; RSI_TOP <= 85; RSI_TOP += 1)
+                                        for (int RSI_BOTTOM = 50; RSI_BOTTOM >= 15; RSI_BOTTOM -= 1)
+                                            for (int DMI_P_EMA = 2; DMI_P_EMA <= 30; DMI_P_EMA += 1)
+                                                for (int DMI_M_EMA = 2; DMI_M_EMA <= 30; DMI_M_EMA += 1)
                                                 {
                                                     count++;
 
@@ -60,8 +63,9 @@ namespace SecondAlgo
                                                     Algo.P.Di_DOWN_avg_period = DMI_M_EMA;
                                                     Algo.P.Di_UP_avg_period = DMI_P_EMA;
                                                     var profit = Algo.CalculatePL(Algo.CalcIndicators());
-                                                    if (profit > 13000)
+                                                    if (profit > 13000 || profit < -13000)
                                                     {
+                                                        // SAVE RESULTS IN DATABASE
                                                         var r = new tbl5Minute()
                                                         {
                                                             ADX = ADX,
@@ -87,9 +91,7 @@ namespace SecondAlgo
                                                     }
                                                 }
 
-            // Console.WriteLine("COUNT " + count);
-            //    profit = Algo.CalculatePL(Algo.CalcIndicators());
-
+        
 
             Console.ReadLine();
         }
@@ -100,16 +102,16 @@ namespace SecondAlgo
             var s = dc.tblSettings.First();
             double count = 0;
 
-            for (int ADX = (int)s.ADX_START; ADX <= s.ADX_END; ADX += 2)
-                for (int RSI = (int)s.RSI_START; RSI <= s.RSI_END; RSI += 2)
-                    for (double MAMA1 = (double)s.MAMA_1_START; MAMA1 <= s.MAMA_1_END; MAMA1 += 0.055)
-                        for (double MAMA2 = (double)s.MAMA_2_START; MAMA2 <= s.MAMA_2_END; MAMA2 += 0.055)
-                            for (int RSI_EMA = (int)s.RSI_EMA_START; RSI_EMA <= s.RSI_EMA_END; RSI_EMA += 2)
-                                for (int RSI_SLOPE = (int)s.RSI_SLOPE_START; RSI_SLOPE <= s.RSI_SLOPE_END; RSI_SLOPE += 2)
-                                    for (int RSI_TOP = (int)s.RSI_TOP_START; RSI_TOP <= s.RSI_TOP_END; RSI_TOP += 2)
-                                        for (int RSI_BOTTOM = (int)s.RSI_BOTTOM_START; RSI_BOTTOM >= s.RSI_BOTTOM_END; RSI_BOTTOM -= 2)
-                                            for (int DMI_P_EMA = (int)s.DMI_PLUS_START; DMI_P_EMA <= s.DMI_PLUS_END; DMI_P_EMA += 2)
-                                                for (int DMI_M_EMA = (int)s.DMI_MINUS_START; DMI_M_EMA <= s.DMI_MINUS_END; DMI_M_EMA += 2)
+            for (int ADX = 5; ADX <= 65; ADX += 2)
+                for (int RSI = 5; RSI <= 30; RSI += 1)
+                    for (double MAMA1 = 0.01; MAMA1 <= 0.5; MAMA1 += 0.055)
+                        for (double MAMA2 = 0.01; MAMA2 <= 0.5; MAMA2 += 0.055)
+                            for (int RSI_EMA = 2; RSI_EMA <= 40; RSI_EMA += 1)
+                                for (int RSI_SLOPE = 2; RSI_SLOPE <= 20; RSI_SLOPE += 1)
+                                    for (int RSI_TOP = 50; RSI_TOP <= 85; RSI_TOP += 1)
+                                        for (int RSI_BOTTOM = 50; RSI_BOTTOM >= 15; RSI_BOTTOM -= 1)
+                                            for (int DMI_P_EMA = 2; DMI_P_EMA <= 30; DMI_P_EMA += 2)
+                                                for (int DMI_M_EMA = 2; DMI_M_EMA <= 30; DMI_M_EMA += 2)
                                                     count++;
             return count;
         }
