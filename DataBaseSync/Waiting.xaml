@@ -1,0 +1,8 @@
+﻿<Window x:Class="DataBaseSync.Waiting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Wait while database synchronize" Height="108" Width="382" Loaded="Window_Loaded" Icon="/DataBaseSync;component/Images/Icojam-Blue-Bits-Database-settings.ico">
+    <Grid>
+		<ProgressBar Margin="12" Name="progbar"  IsIndeterminate="True" ></ProgressBar>
+	</Grid>
+</Window>
