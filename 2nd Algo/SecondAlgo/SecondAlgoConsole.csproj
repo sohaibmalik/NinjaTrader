@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AlsiUtils">
-      <HintPath>..\..\..\..\GitHub\NinjaTrader\AlsiUtils\bin\Debug\AlsiUtils.dll</HintPath>
+      <HintPath>..\..\AlsiUtils\bin\Debug\AlsiUtils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
