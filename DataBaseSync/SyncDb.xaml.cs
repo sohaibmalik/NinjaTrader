@@ -144,53 +144,7 @@ namespace DataBaseSync
 							 };
 		}
 
-		//private IQueryable<SyncDB.DailyPriceData> GetDailyDatabasePrices(DateTime Start, DateTime End)
-		//{
-
-		//  return from q in dc.MasterMinutes.Where(z => z.Stamp >= Start && z.Stamp <= End).AsQueryable()
-		//         group q by new
-		//         {
-		//           Y = q.Stamp.Year,
-		//           M = q.Stamp.Month,
-		//           D = q.Stamp.Day,
-		//         }
-		//           into FGroup
-		//           orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.D
-		//           select new SyncDB.DailyPriceData
-		//           {
-		//             Open = FGroup.First().Stamp,
-		//             Close = FGroup.OrderByDescending(z => z.Stamp).First().Stamp,
-		//             Count = FGroup.Count(),
-
-		//           };
-
-
-		//}
-
-		//private IQueryable<DailyPriceData> GetDailyOnlinePrices(out DateTime StartDate, out DateTime EndDate)
-		//{
-		//  var data = AlsiTrade_Backend.HiSat.HistData.GetHistoricalMINUTE_FromWEB(DateTime.Now.AddMonths(-3), DateTime.Now, 1, AlsiUtils.WebSettings.General.HISAT_INST);
-		//  DateTime start;
-		//  start = data.First().TimeStamp;
-		//  EndDate = data.Last().TimeStamp;
-		//  StartDate = start;
-		//  return from q in data.Where(z => z.TimeStamp >= start && z.TimeStamp <= DateTime.Now).AsQueryable()
-		//         group q by new
-		//         {
-		//           Y = q.TimeStamp.Year,
-		//           M = q.TimeStamp.Month,
-		//           D = q.TimeStamp.Day,
-		//         }
-		//           into FGroup
-		//           orderby FGroup.Key.Y, FGroup.Key.M, FGroup.Key.D
-		//           select new DailyPriceData
-		//           {
-		//             Open = FGroup.First().TimeStamp,
-		//             Close = FGroup.OrderByDescending(z => z.TimeStamp).First().TimeStamp,
-		//             Count = FGroup.Count(),
-
-		//           };
-		//}
+		
 
 		private void ComparePrices()
 		{
