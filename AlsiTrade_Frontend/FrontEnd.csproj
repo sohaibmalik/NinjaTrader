@@ -165,8 +165,8 @@
       <Project>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</Project>
       <Name>AlsiUtils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Communicator\Communicator\Communicator.csproj">
-      <Project>{DADADE30-FDDF-4921-B96E-A8D0ECFFEB51}</Project>
+    <ProjectReference Include="..\Communicator\Communicator.csproj">
+      <Project>{dadade30-fddf-4921-b96e-a8d0ecffeb51}</Project>
       <Name>Communicator</Name>
     </ProjectReference>
     <ProjectReference Include="..\ExcelLink\ExcelLink\ExcelLink.csproj">
