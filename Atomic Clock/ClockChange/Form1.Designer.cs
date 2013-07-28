@@ -36,6 +36,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHOUR)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMINUTE)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSECOND)).BeginInit();
@@ -119,11 +120,22 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Second";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(15, 182);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(165, 79);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "Sych Atomic";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(212, 188);
+            this.ClientSize = new System.Drawing.Size(207, 286);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -135,6 +147,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Time Machine";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownHOUR)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMINUTE)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSECOND)).EndInit();
@@ -152,6 +165,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button1;
     }
 }
 

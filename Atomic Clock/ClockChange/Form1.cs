@@ -32,5 +32,32 @@ namespace ClockChange
             System.Threading.Thread.Sleep(1000);
             File.Delete(@"C:\time.bat");
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            var f = new Form2();
+            f.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            button1.BackColor = SynchTime() ? Color.Green : Color.Orange;
+            
+        }
+
+        private bool SynchTime()
+        {
+            bool synched = false;
+
+            try
+            {
+                Nist.NistClock c = new Nist.NistClock();
+                c.SynchronizeLocalClock();
+                synched = true;
+            }
+            catch { }
+
+            return synched; 
+        }
     }
 }
