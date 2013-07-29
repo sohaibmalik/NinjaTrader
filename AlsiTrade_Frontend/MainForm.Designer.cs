@@ -162,6 +162,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.cnbutton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -298,7 +299,7 @@
             this.tradeModeBESTAGGRESSIVERadioButton.AutoSize = true;
             this.tradeModeBESTAGGRESSIVERadioButton.Location = new System.Drawing.Point(16, 124);
             this.tradeModeBESTAGGRESSIVERadioButton.Name = "tradeModeBESTAGGRESSIVERadioButton";
-            this.tradeModeBESTAGGRESSIVERadioButton.Size = new System.Drawing.Size(107, 17);
+            this.tradeModeBESTAGGRESSIVERadioButton.Size = new System.Drawing.Size(115, 19);
             this.tradeModeBESTAGGRESSIVERadioButton.TabIndex = 6;
             this.tradeModeBESTAGGRESSIVERadioButton.TabStop = true;
             this.tradeModeBESTAGGRESSIVERadioButton.Text = "Best - Aggressive";
@@ -310,7 +311,7 @@
             this.tradeModeBESTRadioButton.AutoSize = true;
             this.tradeModeBESTRadioButton.Location = new System.Drawing.Point(16, 73);
             this.tradeModeBESTRadioButton.Name = "tradeModeBESTRadioButton";
-            this.tradeModeBESTRadioButton.Size = new System.Drawing.Size(46, 17);
+            this.tradeModeBESTRadioButton.Size = new System.Drawing.Size(47, 19);
             this.tradeModeBESTRadioButton.TabIndex = 5;
             this.tradeModeBESTRadioButton.TabStop = true;
             this.tradeModeBESTRadioButton.Text = "Best";
@@ -345,7 +346,7 @@
             this.tradeModeAGGRESSIVERadioButton.AutoSize = true;
             this.tradeModeAGGRESSIVERadioButton.Location = new System.Drawing.Point(16, 99);
             this.tradeModeAGGRESSIVERadioButton.Name = "tradeModeAGGRESSIVERadioButton";
-            this.tradeModeAGGRESSIVERadioButton.Size = new System.Drawing.Size(77, 17);
+            this.tradeModeAGGRESSIVERadioButton.Size = new System.Drawing.Size(82, 19);
             this.tradeModeAGGRESSIVERadioButton.TabIndex = 2;
             this.tradeModeAGGRESSIVERadioButton.TabStop = true;
             this.tradeModeAGGRESSIVERadioButton.Text = "Aggressive";
@@ -357,7 +358,7 @@
             this.tradeModeHITRadioButton.AutoSize = true;
             this.tradeModeHITRadioButton.Location = new System.Drawing.Point(16, 48);
             this.tradeModeHITRadioButton.Name = "tradeModeHITRadioButton";
-            this.tradeModeHITRadioButton.Size = new System.Drawing.Size(38, 17);
+            this.tradeModeHITRadioButton.Size = new System.Drawing.Size(41, 19);
             this.tradeModeHITRadioButton.TabIndex = 1;
             this.tradeModeHITRadioButton.TabStop = true;
             this.tradeModeHITRadioButton.Text = "Hit";
@@ -369,7 +370,7 @@
             this.tradeModeNORMALRadioButton.AutoSize = true;
             this.tradeModeNORMALRadioButton.Location = new System.Drawing.Point(16, 22);
             this.tradeModeNORMALRadioButton.Name = "tradeModeNORMALRadioButton";
-            this.tradeModeNORMALRadioButton.Size = new System.Drawing.Size(58, 17);
+            this.tradeModeNORMALRadioButton.Size = new System.Drawing.Size(65, 19);
             this.tradeModeNORMALRadioButton.TabIndex = 0;
             this.tradeModeNORMALRadioButton.TabStop = true;
             this.tradeModeNORMALRadioButton.Text = "Normal";
@@ -457,7 +458,7 @@
             this.tradelogOnlyTradesCheckBox.AutoSize = true;
             this.tradelogOnlyTradesCheckBox.Location = new System.Drawing.Point(9, 74);
             this.tradelogOnlyTradesCheckBox.Name = "tradelogOnlyTradesCheckBox";
-            this.tradelogOnlyTradesCheckBox.Size = new System.Drawing.Size(113, 17);
+            this.tradelogOnlyTradesCheckBox.Size = new System.Drawing.Size(121, 19);
             this.tradelogOnlyTradesCheckBox.TabIndex = 4;
             this.tradelogOnlyTradesCheckBox.Text = "Show Only Trades";
             this.tradelogOnlyTradesCheckBox.UseVisualStyleBackColor = true;
@@ -467,7 +468,7 @@
             this.loadTodayRadioButton.AutoSize = true;
             this.loadTodayRadioButton.Location = new System.Drawing.Point(9, 48);
             this.loadTodayRadioButton.Name = "loadTodayRadioButton";
-            this.loadTodayRadioButton.Size = new System.Drawing.Size(82, 17);
+            this.loadTodayRadioButton.Size = new System.Drawing.Size(87, 19);
             this.loadTodayRadioButton.TabIndex = 3;
             this.loadTodayRadioButton.Text = "Load Today";
             this.loadTodayRadioButton.UseVisualStyleBackColor = true;
@@ -478,7 +479,7 @@
             this.loadNumberRadioButton.Checked = true;
             this.loadNumberRadioButton.Location = new System.Drawing.Point(9, 23);
             this.loadNumberRadioButton.Name = "loadNumberRadioButton";
-            this.loadNumberRadioButton.Size = new System.Drawing.Size(72, 17);
+            this.loadNumberRadioButton.Size = new System.Drawing.Size(75, 19);
             this.loadNumberRadioButton.TabIndex = 2;
             this.loadNumberRadioButton.TabStop = true;
             this.loadNumberRadioButton.Text = "Load Last";
@@ -747,10 +748,10 @@
             this.tabPage2.Controls.Add(this.timeframeGroupBox);
             this.tabPage2.Controls.Add(this.timespanGroupBox);
             this.tabPage2.Controls.Add(this.runHistCalcButton);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(353, 516);
+            this.tabPage2.Size = new System.Drawing.Size(353, 514);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -868,7 +869,7 @@
             this.onlyTradesRadioButton.AutoSize = true;
             this.onlyTradesRadioButton.Location = new System.Drawing.Point(9, 48);
             this.onlyTradesRadioButton.Name = "onlyTradesRadioButton";
-            this.onlyTradesRadioButton.Size = new System.Drawing.Size(82, 17);
+            this.onlyTradesRadioButton.Size = new System.Drawing.Size(88, 19);
             this.onlyTradesRadioButton.TabIndex = 1;
             this.onlyTradesRadioButton.Text = "Trades Only";
             this.onlyTradesRadioButton.UseVisualStyleBackColor = true;
@@ -880,7 +881,7 @@
             this.fullTradesRadioButton.Checked = true;
             this.fullTradesRadioButton.Location = new System.Drawing.Point(9, 23);
             this.fullTradesRadioButton.Name = "fullTradesRadioButton";
-            this.fullTradesRadioButton.Size = new System.Drawing.Size(76, 17);
+            this.fullTradesRadioButton.Size = new System.Drawing.Size(82, 19);
             this.fullTradesRadioButton.TabIndex = 0;
             this.fullTradesRadioButton.TabStop = true;
             this.fullTradesRadioButton.Text = "Full Details";
@@ -904,7 +905,7 @@
             this._10minRadioButton.AutoSize = true;
             this._10minRadioButton.Location = new System.Drawing.Point(10, 73);
             this._10minRadioButton.Name = "_10minRadioButton";
-            this._10minRadioButton.Size = new System.Drawing.Size(77, 17);
+            this._10minRadioButton.Size = new System.Drawing.Size(83, 19);
             this._10minRadioButton.TabIndex = 2;
             this._10minRadioButton.Text = "10 Minutes";
             this._10minRadioButton.UseVisualStyleBackColor = true;
@@ -915,7 +916,7 @@
             this._5minRadioButton.Checked = true;
             this._5minRadioButton.Location = new System.Drawing.Point(10, 48);
             this._5minRadioButton.Name = "_5minRadioButton";
-            this._5minRadioButton.Size = new System.Drawing.Size(71, 17);
+            this._5minRadioButton.Size = new System.Drawing.Size(77, 19);
             this._5minRadioButton.TabIndex = 1;
             this._5minRadioButton.TabStop = true;
             this._5minRadioButton.Text = "5 Minutes";
@@ -926,7 +927,7 @@
             this._2minRadioButton.AutoSize = true;
             this._2minRadioButton.Location = new System.Drawing.Point(10, 23);
             this._2minRadioButton.Name = "_2minRadioButton";
-            this._2minRadioButton.Size = new System.Drawing.Size(71, 17);
+            this._2minRadioButton.Size = new System.Drawing.Size(77, 19);
             this._2minRadioButton.TabIndex = 0;
             this._2minRadioButton.Text = "2 Minutes";
             this._2minRadioButton.UseVisualStyleBackColor = true;
@@ -979,7 +980,7 @@
             this.recentRadioButton.Checked = true;
             this.recentRadioButton.Location = new System.Drawing.Point(44, 22);
             this.recentRadioButton.Name = "recentRadioButton";
-            this.recentRadioButton.Size = new System.Drawing.Size(104, 17);
+            this.recentRadioButton.Size = new System.Drawing.Size(114, 19);
             this.recentRadioButton.TabIndex = 1;
             this.recentRadioButton.TabStop = true;
             this.recentRadioButton.Text = "MasterMin Table";
@@ -1000,7 +1001,7 @@
             this.AllHistoRadioButton.AutoSize = true;
             this.AllHistoRadioButton.Location = new System.Drawing.Point(44, 47);
             this.AllHistoRadioButton.Name = "AllHistoRadioButton";
-            this.AllHistoRadioButton.Size = new System.Drawing.Size(98, 17);
+            this.AllHistoRadioButton.Size = new System.Drawing.Size(109, 19);
             this.AllHistoRadioButton.TabIndex = 2;
             this.AllHistoRadioButton.Text = "AllHistory Table";
             this.AllHistoRadioButton.UseVisualStyleBackColor = true;
@@ -1026,16 +1027,17 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.groupBox2);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(353, 516);
+            this.tabPage4.Size = new System.Drawing.Size(353, 514);
             this.tabPage4.TabIndex = 2;
             this.tabPage4.Text = "tabPage4";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cnbutton);
             this.groupBox2.Controls.Add(this.UpdateAllHistoPrices);
             this.groupBox2.Controls.Add(this.dbPriceCountLabel);
             this.groupBox2.Controls.Add(this.TableAllHistMinRadioButton);
@@ -1073,7 +1075,7 @@
             this.TableAllHistMinRadioButton.AutoSize = true;
             this.TableAllHistMinRadioButton.Location = new System.Drawing.Point(15, 77);
             this.TableAllHistMinRadioButton.Name = "TableAllHistMinRadioButton";
-            this.TableAllHistMinRadioButton.Size = new System.Drawing.Size(71, 17);
+            this.TableAllHistMinRadioButton.Size = new System.Drawing.Size(80, 19);
             this.TableAllHistMinRadioButton.TabIndex = 3;
             this.TableAllHistMinRadioButton.Text = "All History";
             this.TableAllHistMinRadioButton.UseVisualStyleBackColor = true;
@@ -1085,7 +1087,7 @@
             this.TableMastrMinRadioButton.Checked = true;
             this.TableMastrMinRadioButton.Location = new System.Drawing.Point(15, 52);
             this.TableMastrMinRadioButton.Name = "TableMastrMinRadioButton";
-            this.TableMastrMinRadioButton.Size = new System.Drawing.Size(92, 17);
+            this.TableMastrMinRadioButton.Size = new System.Drawing.Size(102, 19);
             this.TableMastrMinRadioButton.TabIndex = 2;
             this.TableMastrMinRadioButton.TabStop = true;
             this.TableMastrMinRadioButton.Text = "Master Minute";
@@ -1139,10 +1141,10 @@
             this.tabPage5.Controls.Add(this.name_EmailTextBox);
             this.tabPage5.Controls.Add(this.removeEmailButton);
             this.tabPage5.Controls.Add(this.addEmailButton);
-            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Location = new System.Drawing.Point(4, 24);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(353, 516);
+            this.tabPage5.Size = new System.Drawing.Size(353, 514);
             this.tabPage5.TabIndex = 3;
             this.tabPage5.Text = "Email";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1397,7 +1399,7 @@
             this.resetManualCheckBox.AutoSize = true;
             this.resetManualCheckBox.Location = new System.Drawing.Point(7, 140);
             this.resetManualCheckBox.Name = "resetManualCheckBox";
-            this.resetManualCheckBox.Size = new System.Drawing.Size(121, 17);
+            this.resetManualCheckBox.Size = new System.Drawing.Size(129, 19);
             this.resetManualCheckBox.TabIndex = 4;
             this.resetManualCheckBox.Text = "Reset Manual Close";
             this.resetManualCheckBox.UseVisualStyleBackColor = true;
@@ -1407,7 +1409,7 @@
             this.clearTradeHistoryWebCheckBox.AutoSize = true;
             this.clearTradeHistoryWebCheckBox.Location = new System.Drawing.Point(7, 115);
             this.clearTradeHistoryWebCheckBox.Name = "clearTradeHistoryWebCheckBox";
-            this.clearTradeHistoryWebCheckBox.Size = new System.Drawing.Size(118, 17);
+            this.clearTradeHistoryWebCheckBox.Size = new System.Drawing.Size(129, 19);
             this.clearTradeHistoryWebCheckBox.TabIndex = 3;
             this.clearTradeHistoryWebCheckBox.Text = "TradeHistory - Web";
             this.clearTradeHistoryWebCheckBox.UseVisualStyleBackColor = true;
@@ -1427,7 +1429,7 @@
             this.clearTradeLogWebCheckBox.AutoSize = true;
             this.clearTradeLogWebCheckBox.Location = new System.Drawing.Point(7, 90);
             this.clearTradeLogWebCheckBox.Name = "clearTradeLogWebCheckBox";
-            this.clearTradeLogWebCheckBox.Size = new System.Drawing.Size(100, 17);
+            this.clearTradeLogWebCheckBox.Size = new System.Drawing.Size(108, 19);
             this.clearTradeLogWebCheckBox.TabIndex = 2;
             this.clearTradeLogWebCheckBox.Text = "Tradelog - Web";
             this.clearTradeLogWebCheckBox.UseVisualStyleBackColor = true;
@@ -1437,7 +1439,7 @@
             this.clearTradeLogLocalCheckBox.AutoSize = true;
             this.clearTradeLogLocalCheckBox.Location = new System.Drawing.Point(7, 65);
             this.clearTradeLogLocalCheckBox.Name = "clearTradeLogLocalCheckBox";
-            this.clearTradeLogLocalCheckBox.Size = new System.Drawing.Size(103, 17);
+            this.clearTradeLogLocalCheckBox.Size = new System.Drawing.Size(112, 19);
             this.clearTradeLogLocalCheckBox.TabIndex = 1;
             this.clearTradeLogLocalCheckBox.Text = "Tradelog - Local";
             this.clearTradeLogLocalCheckBox.UseVisualStyleBackColor = true;
@@ -1447,7 +1449,7 @@
             this.clearEmailListCheckBox.AutoSize = true;
             this.clearEmailListCheckBox.Location = new System.Drawing.Point(7, 40);
             this.clearEmailListCheckBox.Name = "clearEmailListCheckBox";
-            this.clearEmailListCheckBox.Size = new System.Drawing.Size(70, 17);
+            this.clearEmailListCheckBox.Size = new System.Drawing.Size(76, 19);
             this.clearEmailListCheckBox.TabIndex = 0;
             this.clearEmailListCheckBox.Text = "Email List";
             this.clearEmailListCheckBox.UseVisualStyleBackColor = true;
@@ -1598,6 +1600,16 @@
             this.menuStrip1.Size = new System.Drawing.Size(1142, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // cnbutton
+            // 
+            this.cnbutton.Location = new System.Drawing.Point(254, 84);
+            this.cnbutton.Name = "cnbutton";
+            this.cnbutton.Size = new System.Drawing.Size(75, 23);
+            this.cnbutton.TabIndex = 6;
+            this.cnbutton.Text = "CS";
+            this.cnbutton.UseVisualStyleBackColor = true;
+            this.cnbutton.Click += new System.EventHandler(this.cnbutton_Click);
             // 
             // MainForm
             // 
@@ -1804,6 +1816,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.CheckBox smsCheckBox;
+        private System.Windows.Forms.Button cnbutton;
         
     }
 }

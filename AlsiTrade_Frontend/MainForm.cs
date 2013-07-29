@@ -10,6 +10,8 @@ using AlsiUtils.Data_Objects;
 using AlsiUtils.Strategies;
 using BrightIdeasSoftware;
 using Communicator;
+using System.IO;
+using System.Reflection;
 
 namespace FrontEnd
 {
@@ -1375,6 +1377,20 @@ namespace FrontEnd
             uploadButton.Visible = false;
             c.UploadFile();
            
+        }
+
+        private void cnbutton_Click(object sender, EventArgs e)
+        {
+            //Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True
+            //Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True
+            //Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True
+
+            var path = new FileInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var file = path + @"\ConnectionString.txt";           
+            var Sr = new StreamReader(file);
+            Properties.Settings.Default.ConnectionString = Sr.ReadLine();
+            Sr.Close();
+            Process.Start(file);
         }
 
        

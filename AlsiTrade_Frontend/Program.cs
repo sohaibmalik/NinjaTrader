@@ -25,13 +25,14 @@ namespace FrontEnd
                 Application.SetCompatibleTextRenderingDefault(false);
 
                // var con = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-                var con = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-                AlsiUtils.DataBase.SetConnectionString(con);
+               // var con = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+               // var con = @"Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True";
+               // AlsiUtils.DataBase.SetConnectionString(con);
 
 
                 //  Application.Run(new Chart());
-               // Application.Run(new StartupForm());
-                 Application.Run(new Test2());
+                Application.Run(new StartupForm());
+                // Application.Run(new Test2());
             }
         }
     }

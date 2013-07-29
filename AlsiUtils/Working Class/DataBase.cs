@@ -23,9 +23,9 @@ namespace AlsiUtils
             //Laptop
             // string css = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
             //PC
-            string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+            //string css = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
-            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
+            //AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = css;
 
         }
 
@@ -37,6 +37,7 @@ namespace AlsiUtils
                 AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = CCS;
                 AlsiDBDataContext dc = new AlsiDBDataContext();
                 dc.Connection.ConnectionString = CCS;
+              
                 dc.Connection.Open();
             }
             catch
@@ -434,7 +435,7 @@ namespace AlsiUtils
                 High = 0;
                 Low = 0;
             }
-        }					
+        }
 
         static public void insertTicks(DateTime Stamp, int Price)
         {
@@ -453,7 +454,7 @@ namespace AlsiUtils
             dc.SubmitChanges();
 
         }
-			
+
 
         public enum dataTable
         {

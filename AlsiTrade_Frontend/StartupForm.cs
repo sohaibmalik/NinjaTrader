@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using AlsiTrade_Backend;
+using System.Reflection;
+using System.IO;
+using System.Diagnostics;
 namespace FrontEnd
 {
     public partial class StartupForm : Form
@@ -21,9 +24,8 @@ namespace FrontEnd
         }
 
 
-        private string laptop = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-        private string pc = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-        private string custom = "";
+      
+        private string configfile = "";
         private void StartupForm_Load(object sender, EventArgs e)
         {
 
@@ -33,10 +35,18 @@ namespace FrontEnd
                 Environment.Exit(0);
                
             }
-            pcStringRadioButton.Text = pc;
-            laptopStringRadioButton.Text = laptop;
-            pcStringRadioButton.BackColor = Color.Yellow;
-            laptopStringRadioButton.BackColor = Color.Yellow;
+
+            //Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True
+            //Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True
+            //Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True
+
+            var path = new FileInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            var file = path + @"\ConnectionString.txt";
+            configfile = file;
+            var Sr = new StreamReader(file);
+            Properties.Settings.Default.ConnectionString = Sr.ReadLine();
+            Sr.Close();
+
         
             if (AlsiUtils.DataBase.TestSqlConnection(Properties.Settings.Default.ConnectionString))
             {
@@ -47,7 +57,7 @@ namespace FrontEnd
             }
             else
             {
-                this.Size = new Size(612, 167);
+                this.Size = new Size(612, 181);
             }
         }
 
@@ -73,35 +83,13 @@ namespace FrontEnd
 
         }
 
-        private void pcStringRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            if (pcStringRadioButton.Checked)
-                if (AlsiUtils.DataBase.TestSqlConnection(pc))
-                {
-                    pcStringRadioButton.BackColor = Color.Green;
-                    Properties.Settings.Default.ConnectionString = pc;
-                    Properties.Settings.Default.Save();
-                    MessageBox.Show("Sql connection made.\nPlease Restart App");
-                    Environment.Exit(0);
-                }
-                else
-                    pcStringRadioButton.BackColor = Color.Red;
+            Process.Start(configfile);
         }
 
-        private void laptopStringRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            if (laptopStringRadioButton.Checked)
-                if (AlsiUtils.DataBase.TestSqlConnection(laptop))
-                {
-                    laptopStringRadioButton.BackColor = Color.Green;
-                    Properties.Settings.Default.ConnectionString = laptop;
-                    Properties.Settings.Default.Save();
-                    MessageBox.Show("Sql connection made.\nPlease Restart App");
-                    Environment.Exit(0);
-                }
-                else
-                    laptopStringRadioButton.BackColor = Color.Red;
-        }
+
+     
     }
 
 

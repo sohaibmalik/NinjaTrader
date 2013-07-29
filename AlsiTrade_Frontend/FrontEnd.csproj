@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>69</ApplicationRevision>
+    <ApplicationRevision>73</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -84,9 +84,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="TA-Lib-Core, Version=1.0.2813.38947, Culture=neutral, PublicKeyToken=fdb2a6b268f56aa5, processorArchitecture=MSIL">
       <HintPath>..\External Libraries\TA-Lib-Core.dll</HintPath>
-    </Reference>
-    <Reference Include="WebKitBrowser">
-      <HintPath>..\..\..\..\Desktop\hiChart Example\WebKit.NET-0.5-bin-cairo\bin\WebKitBrowser.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
@@ -166,7 +163,7 @@
       <Name>AlsiUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Communicator\Communicator.csproj">
-      <Project>{dadade30-fddf-4921-b96e-a8d0ecffeb51}</Project>
+      <Project>{DADADE30-FDDF-4921-B96E-A8D0ECFFEB51}</Project>
       <Name>Communicator</Name>
     </ProjectReference>
     <ProjectReference Include="..\ExcelLink\ExcelLink\ExcelLink.csproj">
@@ -201,6 +198,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ConnectionString.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="stocks.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

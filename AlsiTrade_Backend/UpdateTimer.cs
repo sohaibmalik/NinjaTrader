@@ -79,9 +79,7 @@ namespace AlsiTrade_Backend
                 }
             }
         }
-
-
-
+        
         private void CheckForUpdate(int ten, int one)
         {
 
