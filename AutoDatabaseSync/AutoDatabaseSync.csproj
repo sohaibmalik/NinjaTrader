@@ -83,6 +83,10 @@
       <Project>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</Project>
       <Name>AlsiUtils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Communicator\Communicator.csproj">
+      <Project>{dadade30-fddf-4921-b96e-a8d0ecffeb51}</Project>
+      <Name>Communicator</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="AutoDatabaseSync_TemporaryKey.pfx" />

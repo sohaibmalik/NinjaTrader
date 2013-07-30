@@ -9,6 +9,7 @@ namespace OnlineDataVerify
     {
         static void Main(string[] args)
         {
+          
             Console.WriteLine("Checking last few days:\n");
             AlsiUtils.WebSettings.GetSettings();
             var data = AlsiTrade_Backend.HiSat.HistData.GetHistoricalMINUTE_FromWEB(DateTime.Now.AddDays(-10),
@@ -43,5 +44,7 @@ namespace OnlineDataVerify
 
         
         }
+
+     
     }
 }
