@@ -11,7 +11,7 @@ namespace AlgoSecondLayer
 {
     public class Algo
     {
-        private static List<Trade> Trades = new List<Trade>();
+        public static List<Trade> Trades = new List<Trade>();
         public static void LoadPrice()
         {
 
@@ -50,8 +50,7 @@ namespace AlgoSecondLayer
                 case "CloseLong": return Trade.Trigger.CloseLong;
                 case "CloseShort": return Trade.Trigger.CloseShort;
                 default: return Trade.Trigger.None;
-
-
+                    
             }
         }
 

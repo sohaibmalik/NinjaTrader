@@ -57,6 +57,8 @@
       <DependentUpon>RSI_ADX_SIM.dbml</DependentUpon>
     </Compile>
     <Compile Include="SinglePl.cs" />
+    <Compile Include="TrailingStop.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

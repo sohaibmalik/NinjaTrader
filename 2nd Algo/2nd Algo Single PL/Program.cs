@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlgoSecondLayer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,11 +11,11 @@ namespace _2nd_Algo_Single_PL
     {
         static void Main(string[] args)
         {
-           var a= new AlgoSecondLayer.SinglePl();
+            var algo = new TrailingStop();
+            algo.PrintTrades();
 
-           a.CheckTradeAfterPL(500,1);
-
-           Console.ReadLine();
+            Console.ReadLine();
+       
         }
     }
 
