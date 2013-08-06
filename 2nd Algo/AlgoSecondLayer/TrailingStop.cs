@@ -35,19 +35,10 @@ namespace AlgoSecondLayer
 
         public void SetTriggers()
         {
-            TrailTrade.SetTrailTrigger(250, 50, _Trades);     
+            TrailTrade.SetTrailTrigger(100, 50, _Trades);     
         }
 
-        public void PrintTrades()
-        {
-            for (int x = 0; x < _Trades.Count; x++)
-            {
-                var t = _Trades[x];
-                //   Utils.PrintAllProperties(t);
-                // Console.WriteLine("Trail Triggered {0}" , t.TrailTriggered);
-                //  Console.ReadLine();
-            }
-        }
+       
 
     }
 
@@ -83,7 +74,7 @@ namespace AlgoSecondLayer
             double trailProfit = 0;
             double thistradeDiff = 0;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < Li; i++)
             {
 
                 triggerlevel = 0;
@@ -101,7 +92,7 @@ namespace AlgoSecondLayer
                     }
                     t.TrailTriggered = tt;
 
-                    if (!tookprofit && t.OHLC.Close < (triggerlevel - trailSize))
+                    if (!tookprofit && t.OHLC.Close < (triggerlevel - trailSize) && (triggerlevel - trailSize)>0)
                     {
                         tookprofit = true;
                         t.TrailProfit = t.OHLC.Close;
@@ -111,14 +102,14 @@ namespace AlgoSecondLayer
 
                     thistradeDiff = trailProfit - t.OHLC.Close;
                     if (!tt) thistradeDiff = 0;
-                    Console.WriteLine("Trade: {0} Current PL {1} trig {2} Tl {3} SL {4} LP {5} diff {6}",
-                        t.Notes, t.OHLC.Close, tt, triggerlevel, (triggerlevel - trailSize), trailProfit, thistradeDiff);
-                    //Console.ReadLine();
+                    //Console.WriteLine("Trade: {0} Current PL {1} trig {2} Tl {3} SL {4} LP {5} diff {6}",
+                    //    t.Notes, t.OHLC.Close, tt, triggerlevel, (triggerlevel - trailSize), trailProfit, thistradeDiff);
+                   
                 }
                 if (trailProfit != 0) totalProfDiff += thistradeDiff;
                 thistradeDiff = 0;
-                Console.WriteLine("TOTAL : " + totalProfDiff);
-
+                //Console.WriteLine("TOTAL : " + totalProfDiff);
+                //Console.ReadLine();
             }
             var st = ("TOTAL : " + totalProfDiff + "  triggerPTS " + triggerPTS + "  trailSize " + trailSize);
             Console.WriteLine(st);

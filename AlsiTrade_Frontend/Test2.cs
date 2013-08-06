@@ -11,6 +11,7 @@ using AlsiUtils;
 using AlsiUtils.Strategies;
 using System.IO;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace FrontEnd
 {
@@ -29,14 +30,20 @@ namespace FrontEnd
             InitializeComponent();
         }
 
+        private string configfile = "";
         private void Test2_Load(object sender, EventArgs e)
-        {                                
-            start();									
-						//var tp = new TakeProfit(_FullTradeList, NewTrades, 0.01, 0.01);
-						//tp.Calculate();
-					
-						var tp = new ProfitAlgoLayer(_FullTradeList, NewTrades);
-						tp.Calculate();
+        {
+            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+       
+
+
+            start();							
+										
+                        //var tp = new ProfitAlgoLayer(_FullTradeList, NewTrades);
+                        //tp.Calculate();
+            var tp = new ProfitAlgoLayer(_FullTradeList, NewTrades);
+            tp.GetFullTradeList();
+
 			
             Close();
         }

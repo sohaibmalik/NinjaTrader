@@ -16,23 +16,23 @@ namespace AlgoSecondLayer
         public static void LoadPrice()
         {
 
-            var path = @"D:\RawAlgoOHLCV.csv";
+            var path = @"D:\ohlcPL.csv";
             int tradecount = 0;
             using (StreamReader sr = new StreamReader(path))
             {
                 while (sr.Peek() >= 0)
                 {
                     var s = sr.ReadLine().Split(',');
-
+                 
                     var d = DateTime.Parse(s[0]);
                     var t = DateTime.Parse(s[1]);
                     var stamp = new DateTime(d.Year, d.Month, d.Day, t.Hour, t.Minute, 00);
                     var trade = new Trade()
                     {
                         TimeStamp = stamp,
-                        OHLC = new Price(stamp, double.Parse(s[2]), double.Parse(s[3]), double.Parse(s[4]), double.Parse(s[5]), "Test"),
-                        TradeVolume = int.Parse(s[6]),
-                        TradeTrigger = GetTrigger(s[7]),
+                        OHLC = new Price(stamp, double.Parse(s[3]), double.Parse(s[4]), double.Parse(s[5]), double.Parse(s[6]), "Test"),
+                        TradeVolume = int.Parse(s[7]),
+                        TradeTrigger = GetTrigger(s[2]),
                     };
 
                     if (trade.TradeTrigger == Trade.Trigger.CloseLong || trade.TradeTrigger == Trade.Trigger.CloseShort)

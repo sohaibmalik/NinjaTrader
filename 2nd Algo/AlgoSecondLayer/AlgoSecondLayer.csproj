@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AlsiTrade_Backend">
-      <HintPath>..\..\AlsiTrade_Backend\bin\Debug\AlsiTrade_Backend.dll</HintPath>
-    </Reference>
     <Reference Include="AlsiUtils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\AlsiTrade_Backend\bin\Debug\AlsiUtils.dll</HintPath>
