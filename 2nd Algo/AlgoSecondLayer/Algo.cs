@@ -12,10 +12,12 @@ namespace AlgoSecondLayer
     public class Algo
     {
         public static List<Trade> Trades = new List<Trade>();
+        private static bool _position;
         public static void LoadPrice()
         {
 
             var path = @"D:\RawAlgoOHLCV.csv";
+            int tradecount = 0;
             using (StreamReader sr = new StreamReader(path))
             {
                 while (sr.Peek() >= 0)
@@ -32,6 +34,27 @@ namespace AlgoSecondLayer
                         TradeVolume = int.Parse(s[6]),
                         TradeTrigger = GetTrigger(s[7]),
                     };
+
+                    if (trade.TradeTrigger == Trade.Trigger.CloseLong || trade.TradeTrigger == Trade.Trigger.CloseShort)
+                    {
+                        trade.Position = false;
+                        _position = false;
+                        trade.Notes = tradecount.ToString();
+                    }
+                    if (trade.TradeTrigger == Trade.Trigger.OpenLong || trade.TradeTrigger == Trade.Trigger.OpenShort) 
+                    {
+                        trade.Position = true;
+                        _position = true;
+                        tradecount++;
+                        trade.Notes = tradecount.ToString();
+                    }
+                    if (trade.TradeTrigger == Trade.Trigger.None)
+                    {
+                        trade.Position = _position;
+                        trade.Notes = tradecount.ToString();
+                    }
+
+
                     Trades.Add(trade);
                 }
             }
@@ -53,6 +76,8 @@ namespace AlgoSecondLayer
                     
             }
         }
+
+        
 
         public static Parameters P = new Parameters();
 
