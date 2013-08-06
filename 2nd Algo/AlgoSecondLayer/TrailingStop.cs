@@ -25,12 +25,17 @@ namespace AlgoSecondLayer
         public void SetTriggers(int triggerPTS_Start, int triggerPTS_Stop, int trailSize_Start, int trailSize_Stop)
         {
             var sr = new StreamWriter(@"D:\Trailingstop");
-            for (int pts = triggerPTS_Start; pts < triggerPTS_Stop; pts+=5)
-                for (int sz = trailSize_Start; sz < trailSize_Stop; sz+=5)
+            for (int pts = triggerPTS_Start; pts < triggerPTS_Stop; pts += 5)
+                for (int sz = trailSize_Start; sz < trailSize_Stop; sz += 5)
                     sr.WriteLine(TrailTrade.SetTrailTrigger(pts, sz, _Trades));
 
             sr.Close();
             Console.WriteLine("COMPLETE");
+        }
+
+        public void SetTriggers()
+        {
+            TrailTrade.SetTrailTrigger(250, 50, _Trades);     
         }
 
         public void PrintTrades()
@@ -78,7 +83,7 @@ namespace AlgoSecondLayer
             double trailProfit = 0;
             double thistradeDiff = 0;
 
-            for (int i = 1; i < Li; i++)
+            for (int i = 0; i < 10; i++)
             {
 
                 triggerlevel = 0;
@@ -106,16 +111,16 @@ namespace AlgoSecondLayer
 
                     thistradeDiff = trailProfit - t.OHLC.Close;
                     if (!tt) thistradeDiff = 0;
-                    //Console.WriteLine("Trade: {0} Current PL {1} trig {2} Tl {3} SL {4} LP {5} diff {6}",
-                    //    t.Notes, t.OHLC.Close, tt, triggerlevel, (triggerlevel - trailSize), trailProfit,thistradeDiff);
-
+                    Console.WriteLine("Trade: {0} Current PL {1} trig {2} Tl {3} SL {4} LP {5} diff {6}",
+                        t.Notes, t.OHLC.Close, tt, triggerlevel, (triggerlevel - trailSize), trailProfit, thistradeDiff);
+                    //Console.ReadLine();
                 }
                 if (trailProfit != 0) totalProfDiff += thistradeDiff;
                 thistradeDiff = 0;
-                //Console.WriteLine("TOTAL : " + totalProfDiff);
+                Console.WriteLine("TOTAL : " + totalProfDiff);
 
             }
-            var st= ("TOTAL : " + totalProfDiff + "  triggerPTS " + triggerPTS + "  trailSize " + trailSize);
+            var st = ("TOTAL : " + totalProfDiff + "  triggerPTS " + triggerPTS + "  trailSize " + trailSize);
             Console.WriteLine(st);
             return st;
 
