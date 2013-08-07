@@ -250,7 +250,7 @@ namespace AlsiUtils
         private void SetOHLC_IntraTrade_SingleTradePL()
         {
             var tpl = new List<ProfitAlgoLayer.TakeProfitTrade>();
-                 StreamWriter sr = new StreamWriter(@"d:\ohlcPL.csv");
+                 StreamWriter sr = new StreamWriter(@"d:\ohlcPL2.csv");
             int C = _CompletedTrades.Count;
             double totProfit = 0;
             double start = 0;

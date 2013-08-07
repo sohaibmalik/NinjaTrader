@@ -35,7 +35,7 @@ namespace AlgoSecondLayer
 
         public void SetTriggers()
         {
-            TrailTrade.SetTrailTrigger(100, 50, _Trades);     
+            TrailTrade.SetTrailTrigger(460, 65, _Trades);     
         }
 
        

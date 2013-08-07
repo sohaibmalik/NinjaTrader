@@ -15,8 +15,8 @@ namespace _2nd_Algo_Single_PL
             var algo = new TrailingStop();
 
 
-            algo.SetTriggers(int.Parse(args[0].Split(',')[0]), int.Parse(args[0].Split(',')[1]), int.Parse(args[0].Split(',')[2]), int.Parse(args[0].Split(',')[3]));
-           // algo.SetTriggers();        
+            //algo.SetTriggers(int.Parse(args[0].Split(',')[0]), int.Parse(args[0].Split(',')[1]), int.Parse(args[0].Split(',')[2]), int.Parse(args[0].Split(',')[3]));
+            algo.SetTriggers();        
            
 
             Console.ReadLine();
