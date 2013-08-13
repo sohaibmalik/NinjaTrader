@@ -39,7 +39,9 @@ $(function () {
                 text: '%SUBTITLE%'
             },
             xAxis: [{
-              
+
+               labels: {enabled: false},
+
                 categories: [%X_LABELS%]
             }],
             yAxis: [{ // Primary yAxis
