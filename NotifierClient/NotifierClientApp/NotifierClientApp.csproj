@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>10</ApplicationRevision>
     <ApplicationVersion>2.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -134,11 +134,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
-    <Compile Include="WebDb.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WebDb.dbml</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="AdminForm.resx">
       <DependentUpon>AdminForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -167,9 +162,6 @@
     <EmbeddedResource Include="UpdateForm.resx">
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="WebDb.dbml.layout">
-      <DependentUpon>WebDb.dbml</DependentUpon>
-    </None>
     <None Include="app.config" />
     <None Include="NotifierClientApp_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
@@ -208,11 +200,6 @@
     <None Include="Web References\AlsiWebService_Local\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="WebDb.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>WebDb.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +276,10 @@
     <ProjectReference Include="..\..\AlsiUtils\AlsiUtils.csproj">
       <Project>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</Project>
       <Name>AlsiUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Communicator\Communicator.csproj">
+      <Project>{dadade30-fddf-4921-b96e-a8d0ecffeb51}</Project>
+      <Name>Communicator</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\External Libraries\ObjectListViewDemo\ObjectListView\ObjectListView2010.csproj">
       <Project>{18FEDA0C-D147-4286-B39A-01204808106A}</Project>

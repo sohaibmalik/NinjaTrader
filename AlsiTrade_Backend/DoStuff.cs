@@ -372,7 +372,7 @@ namespace AlsiTrade_Backend
 
             static void BW_DoWork(object sender, DoWorkEventArgs e)
             {
-                var dc = new WebDbDataContext();
+                var dc = new AlsiWebDataContext();
 
                // List<string> emails = dc.EmailLists.Where(z=>z.Active==true).Select(z => z.Email).ToList();
                 List<string> emails = WebUpdate._EmailList.Where(z => z.Active == true).Select(z => z.Email).ToList();
@@ -408,7 +408,7 @@ namespace AlsiTrade_Backend
 
             static void BW_DoWork(object sender, DoWorkEventArgs e)
             {
-                var dc = new WebDbDataContext();
+                var dc = new AlsiWebDataContext();
 
                 bool smsON = WebSettings.General.ENABLE_SMS;
                 List<string> sms = WebUpdate._SMSList.Where(z => z.Active == true).Select(z => z.TelNr).ToList();

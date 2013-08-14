@@ -8,10 +8,10 @@
         <elementListCompartment Id="8675d82b-0d15-4273-9c89-dff5e3725592" absoluteBounds="1.3900000000000001, 2.085, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="1ef46bdb-87cb-4cc9-9ed3-1af953e6102a" absoluteBounds="5.375, 2.25, 2, 3.3093082682291666">
+    <classShape Id="1ef46bdb-87cb-4cc9-9ed3-1af953e6102a" absoluteBounds="6.875, 2.125, 2, 3.3093082682291666">
       <DataClassMoniker Name="/SimDBDataContext/tbl2Min" />
       <nestedChildShapes>
-        <elementListCompartment Id="3597a07d-3a16-42e0-8667-7b2decacdcde" absoluteBounds="5.39, 2.71, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="3597a07d-3a16-42e0-8667-7b2decacdcde" absoluteBounds="6.89, 2.585, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
     <classShape Id="60c1bfcc-cc61-4549-a13d-2ee6ed99b29a" absoluteBounds="4, 0.625, 2, 2.7324039713541666">

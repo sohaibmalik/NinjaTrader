@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AlsiUtils;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -9,11 +10,11 @@ namespace NotifierClientApp
     public partial class NewOrderInput : Form
     {
         private newLogSaved _onSaved;
-        private TradeLog tl;
-        TradeLog EX;
-        WebDbDataContext dc;
+        private WebTradeLog tl;
+        WebTradeLog EX;
+        AlsiWebDataContext dc;
         private bool admin;
-        public NewOrderInput(newLogSaved Updatedeleagte, WebDbDataContext _dc,bool AdminRights)
+        public NewOrderInput(newLogSaved Updatedeleagte, AlsiWebDataContext _dc,bool AdminRights)
         {
             InitializeComponent();
             _onSaved = Updatedeleagte;
@@ -22,7 +23,7 @@ namespace NotifierClientApp
         }
 
         private bool loadExisting;
-        public NewOrderInput(newLogSaved Updatedeleagte, TradeLog Log,WebDbDataContext _dc,bool AdminRights)
+        public NewOrderInput(newLogSaved Updatedeleagte, WebTradeLog Log, AlsiWebDataContext _dc, bool AdminRights)
         {
             InitializeComponent();
             _onSaved = Updatedeleagte;
@@ -32,7 +33,7 @@ namespace NotifierClientApp
             admin = AdminRights;
         }
 
-        private void PopuilateFromExisting(TradeLog ex)
+        private void PopuilateFromExisting(WebTradeLog ex)
         {
 
             dateTimePicker.Value = ex.Time.Date;
@@ -77,9 +78,9 @@ namespace NotifierClientApp
             return DateTime.UtcNow.AddHours(2).ToString();
         }
 
-        private bool ValidateData(out TradeLog Log)
+        private bool ValidateData(out WebTradeLog Log)
         {
-            Log = new TradeLog();
+            Log = new WebTradeLog();
             if (loadExisting) return false;
             int price, priceMatched;
             int.TryParse(priceSubmitTextBox.Text, out price);
@@ -91,7 +92,7 @@ namespace NotifierClientApp
             var Time = new DateTime(dateTimePicker.Value.Year, dateTimePicker.Value.Month, dateTimePicker.Value.Day, timeTimePicker.Value.Hour, timeTimePicker.Value.Minute, 0, 0);
             if (price < 10000) return false;
 
-            Log = new TradeLog
+            Log = new WebTradeLog
             {
                 Time = Time,
                 Reason = reason,
@@ -137,8 +138,8 @@ namespace NotifierClientApp
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-           
-            if (EX == null) dc.TradeLogs.InsertOnSubmit(tl);
+
+            if (EX == null) dc.WebTradeLogs.InsertOnSubmit(tl);
             else
             {
                 EX.BuySell = tl.BuySell;

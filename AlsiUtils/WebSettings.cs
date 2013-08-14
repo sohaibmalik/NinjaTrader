@@ -8,13 +8,13 @@ namespace AlsiUtils
     public class WebSettings
     {
         public static bool _settingChanged;
-        private static System.Data.Linq.Table<Setting> Settings;
-        private static System.Data.Linq.Table<IndicatorSetting> IndicatorSettings;
-        public static WebDbDataContext DC = new WebDbDataContext();
+        private static System.Data.Linq.Table<tblSetting> Settings;
+        private static System.Data.Linq.Table<tblIndicatorSetting> IndicatorSettings;
+        public static AlsiWebDataContext DC = new AlsiWebDataContext();
         public static void GetSettings()
         {
-            Settings = DC.Settings;
-            IndicatorSettings = DC.IndicatorSettings;
+            Settings = DC.tblSettings;
+            IndicatorSettings = DC.tblIndicatorSettings;
         }
 
         public static void SaveSettings()
@@ -58,7 +58,7 @@ namespace AlsiUtils
             private static void SetTradeMode(TradeMode Mode)
             {
 
-                var setting = Settings.Where(z => z.Setting_Name == "TRADE_MODE").First();
+                var setting = Settings.Where(z => z.SettingName == "TRADE_MODE").First();
                 if (Mode == TradeMode.Normal) setting.ValueString = "NORMAL";
                 if (Mode == TradeMode.Hit) setting.ValueString = "HIT";
                 if (Mode == TradeMode.Aggressive) setting.ValueString = "AGGRESSIVE";
@@ -69,7 +69,7 @@ namespace AlsiUtils
 
             private static TradeMode GetTradeMode()
             {
-                var Mode = Settings.Where(z => z.Setting_Name == "TRADE_MODE").First().ValueString;
+                var Mode = Settings.Where(z => z.SettingName == "TRADE_MODE").First().ValueString;
                 if (Mode == "HIT") return TradeMode.Hit;
                 if (Mode == "AGGRESSIVE") return TradeMode.Aggressive;
                 if (Mode == "BEST") return TradeMode.BestBidOffer;
@@ -79,13 +79,13 @@ namespace AlsiUtils
 
             private static double GetSpread()
             {
-                var setting = Settings.Where(z => z.Setting_Name == "TRADE_MODE").First();
+                var setting = Settings.Where(z => z.SettingName == "TRADE_MODE").First();
                 return (double)setting.ValueNumber;
             }
 
             private static void SetSpread(double spread)
             {
-                var setting = Settings.Where(z => z.Setting_Name == "TRADE_MODE").First();
+                var setting = Settings.Where(z => z.SettingName == "TRADE_MODE").First();
                 setting.ValueNumber = (int)spread;
             }
 
@@ -154,13 +154,13 @@ namespace AlsiUtils
 
             private static string GetHiSat_Inst()
             {
-                return Settings.Where(z => z.Setting_Name == "HISAT_INST").First().ValueString;
+                return Settings.Where(z => z.SettingName == "HISAT_INST").First().ValueString;
                
             }
 
             private static void SetHiSat_Inst(string Instrument)
             {
-                var setting = Settings.Where(z => z.Setting_Name == "HISAT_INST").First();
+                var setting = Settings.Where(z => z.SettingName == "HISAT_INST").First();
                 setting.ValueString = Instrument;
             }
 
@@ -186,12 +186,12 @@ namespace AlsiUtils
 
             private static string GetOTS_Inst()
             {
-                return Settings.Where(z => z.Setting_Name == "OTS_INST").First().ValueString;
+                return Settings.Where(z => z.SettingName == "OTS_INST").First().ValueString;
             }
 
             private static void SetOTS_Inst(string Instrument)
             {
-                var setting = Settings.Where(z => z.Setting_Name == "OTS_INST").First();
+                var setting = Settings.Where(z => z.SettingName == "OTS_INST").First();
                 setting.ValueString = Instrument;
             }
 
@@ -222,12 +222,12 @@ namespace AlsiUtils
             private static int GetVOL()
             {
 
-                return (int)Settings.Where(z => z.Setting_Name == "VOL").First().ValueNumber;
+                return (int)Settings.Where(z => z.SettingName == "VOL").First().ValueNumber;
             }
 
             private static void SetVOL(int vol)
             {
-                var setting = Settings.Where(z => z.Setting_Name == "VOL").First();
+                var setting = Settings.Where(z => z.SettingName == "VOL").First();
                 setting.ValueNumber = vol;
             }
 
@@ -257,12 +257,12 @@ namespace AlsiUtils
 
             private static int GetSTOPLOSS()
             {
-                return (int)Settings.Where(z => z.Setting_Name == "STOPLOSS").First().ValueNumber;
+                return (int)Settings.Where(z => z.SettingName == "STOPLOSS").First().ValueNumber;
             }
 
             private static void SetSTOPLOSS(int STOPLOSS)
             {
-                var setting = Settings.Where(z => z.Setting_Name == "STOPLOSS").First();
+                var setting = Settings.Where(z => z.SettingName == "STOPLOSS").First();
                 setting.ValueNumber = STOPLOSS;
             }
 
@@ -290,12 +290,12 @@ namespace AlsiUtils
 
             private static int GetTAKE_PROFIT()
             {
-                return (int)Settings.Where(z => z.Setting_Name == "TAKE_PROFIT").First().ValueNumber;
+                return (int)Settings.Where(z => z.SettingName == "TAKE_PROFIT").First().ValueNumber;
             }
 
             private static void SetTAKE_PROFIT(int TAKE_PROFIT)
             {
-                var setting = Settings.Where(z => z.Setting_Name == "TAKE_PROFIT").First();
+                var setting = Settings.Where(z => z.SettingName == "TAKE_PROFIT").First();
                 setting.ValueNumber = TAKE_PROFIT;
             }
 
@@ -325,12 +325,12 @@ namespace AlsiUtils
 
             private static DateTime GetLIVE_START_DATE()
             {
-                return (DateTime)Settings.Where(z => z.Setting_Name == "LIVE_START_DATE").First().ValueDate;
+                return (DateTime)Settings.Where(z => z.SettingName == "LIVE_START_DATE").First().ValueDate;
             }
 
             private static void SetLIVE_START_DATE(DateTime LIVE_START_DATE)
             {
-                var setting = Settings.Where(z => z.Setting_Name == "LIVE_START_DATE").First();
+                var setting = Settings.Where(z => z.SettingName == "LIVE_START_DATE").First();
                 setting.ValueDate = LIVE_START_DATE;
             }
 
@@ -342,7 +342,7 @@ namespace AlsiUtils
 
             #region MANUAL_CLOSE_TRIGGER
 
-          //  public static WebDbDataContext dc = new WebDbDataContext();
+          //  public static AlsiWebDataContext dc = new AlsiWebDataContext();
             private static bool _MANUAL_CLOSE_TRIGGER;
             public static bool MANUAL_CLOSE_TRIGGER
             {  
@@ -362,14 +362,14 @@ namespace AlsiUtils
 
             private static bool GetMANUAL_CLOSE_TRIGGER()
             {
-                WebDbDataContext dc = new WebDbDataContext();
-                return bool.Parse(dc.Settings.Where(z => z.Setting_Name == "MANUAL_CLOSE_TRIGGER").First().ValueString);
+                AlsiWebDataContext dc = new AlsiWebDataContext();
+                return bool.Parse(dc.tblSettings.Where(z => z.SettingName == "MANUAL_CLOSE_TRIGGER").First().ValueString);
             }
 
             private static void SetMANUAL_CLOSE_TRIGGER(bool Triggered)
             {
-                WebDbDataContext dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "MANUAL_CLOSE_TRIGGER").First();
+                AlsiWebDataContext dc = new AlsiWebDataContext();
+                var setting = dc.tblSettings.Where(z => z.SettingName == "MANUAL_CLOSE_TRIGGER").First();
                 setting.ValueString = Triggered.ToString();
                 dc.SubmitChanges();
             }
@@ -396,14 +396,14 @@ namespace AlsiUtils
 
             private static bool GetENABLE_SMS()
             {
-                WebDbDataContext dc = new WebDbDataContext();
-                return bool.Parse(dc.Settings.Where(z => z.Setting_Name == "ENABLE_SMS").First().ValueString);
+                AlsiWebDataContext dc = new AlsiWebDataContext();
+                return bool.Parse(dc.tblSettings.Where(z => z.SettingName == "ENABLE_SMS").First().ValueString);
             }
 
             private static void Set_ENABLE_SMS(bool Triggered)
             {
-                WebDbDataContext dc = new WebDbDataContext();
-                var setting = dc.Settings.Where(z => z.Setting_Name == "ENABLE_SMS").First();
+                AlsiWebDataContext dc = new AlsiWebDataContext();
+                var setting = dc.tblSettings.Where(z => z.SettingName == "ENABLE_SMS").First();
                 setting.ValueString = Triggered.ToString();
                 dc.SubmitChanges();
             }

@@ -66,6 +66,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AlsiTM.dbml</DependentUpon>
     </Compile>
+    <Compile Include="AlsiWeb.cs">
+      <DependentUpon>AlsiWeb.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="AlsiWeb.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlsiWeb.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Data Objects\CompletedTrade.cs" />
     <Compile Include="Data Objects\RegressionExt.cs" />
     <Compile Include="Data Objects\GlobalObjects.cs" />
@@ -90,14 +98,6 @@
     <Compile Include="Strategies\TradeStrategy.cs" />
     <Compile Include="TakeProfit.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="WebDb.cs">
-      <DependentUpon>WebDb.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="WebDb.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WebDb.dbml</DependentUpon>
-    </Compile>
     <Compile Include="WebSettings.cs" />
     <Compile Include="Working Class\Calc_Indicator.cs" />
     <Compile Include="Data Objects\SummaryStats.cs" />
@@ -126,6 +126,11 @@
       <LastGenOutput>AlsiTM.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
+    <None Include="AlsiWeb.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>AlsiWeb.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -134,11 +139,6 @@
     <None Include="SimDB.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>SimDB.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="WebDb.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>WebDb.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -156,13 +156,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="WebDb.dbml.layout">
-      <DependentUpon>WebDb.dbml</DependentUpon>
+    <None Include="AlsiTM.dbml.layout">
+      <DependentUpon>AlsiTM.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AlsiTM.dbml.layout">
-      <DependentUpon>AlsiTM.dbml</DependentUpon>
+    <None Include="AlsiWeb.dbml.layout">
+      <DependentUpon>AlsiWeb.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

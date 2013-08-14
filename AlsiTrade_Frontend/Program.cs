@@ -32,7 +32,7 @@ namespace FrontEnd
 
                 //  Application.Run(new Chart());
                 Application.Run(new StartupForm());
-               //  Application.Run(new Test2());
+                 //Application.Run(new Test2());
             }
         }
     }

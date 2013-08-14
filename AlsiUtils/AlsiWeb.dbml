@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="AlsiWeb" Class="AlsiWebDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.tblEmail" Member="tblEmails">
+    <Type Name="tblEmail">
+      <Column Name="Email_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Admin" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tblIndicatorSetting" Member="tblIndicatorSettings">
+    <Type Name="tblIndicatorSetting">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="A1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="A2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="B1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="B2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="C1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="C2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="D1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="E1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="E2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="F2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tblSetting" Member="tblSettings">
+    <Type Name="tblSetting">
+      <Column Name="Setting_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SettingName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ValueString" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ValueNumber" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ValueDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tblSMS" Member="tblSMs">
+    <Type Name="tblSM">
+      <Column Name="SMS_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="TelNr" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Active" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Admin" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tblTradeLog" Member="WebTradeLogs">
+    <Type Name="WebTradeLog">
+      <Column Name="LOG_ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="BuySell" Type="System.String" DbType="VarChar(4) NOT NULL" CanBeNull="false" />
+      <Column Name="Reason" Type="System.String" DbType="VarChar(30) NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Volume" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Notes" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Column Name="ForeColor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="BackColor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PriceMatched" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Matched" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

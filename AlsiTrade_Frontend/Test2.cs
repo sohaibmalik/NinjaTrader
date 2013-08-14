@@ -58,9 +58,9 @@ namespace FrontEnd
         {
             Cursor = Cursors.WaitCursor;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
-            DataBase.dataTable dt = DataBase.dataTable.AllHistory;
+            DataBase.dataTable dt = DataBase.dataTable.MasterMinute ;
             //_FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), dt);
-            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunMAMAScalp(GetParametersMAMA(), t, false, new DateTime(2005, 01, 01), new DateTime(2011, 12, 31), dt);
+            _FullTradeList = AlsiTrade_Backend.RunCalcs.RunMAMAScalp(GetParametersMAMA(), t, false, new DateTime(2005, 01, 01), new DateTime(2014, 12, 31), dt);
             _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
             NewTrades = AlsiUtils.Strategies.TradeStrategy.Expansion.ApplyRegressionFilter(11, _FullTradeList);
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
@@ -93,8 +93,8 @@ namespace FrontEnd
                 B_EMA1 = 43,
                 B_EMA2 = 45,
                 C_EMA = 52,
-                TakeProfit = 550,
-                StopLoss = -250,
+                TakeProfit = 55550,
+                StopLoss = -22250,
                 TakeProfitFactor = TPF,
                 StoplossFactor = SLF,
                 CloseEndofDay = false,

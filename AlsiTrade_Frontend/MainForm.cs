@@ -1044,7 +1044,7 @@ namespace FrontEnd
         private void emailListView_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            WebUpdate.CheckUncheckEmailListUser(((EmailList)emailListView.SelectedItems[0].Tag).ID);
+            WebUpdate.CheckUncheckEmailListUser(((tblEmail)emailListView.SelectedItems[0].Tag).Email_ID);
             PopulateEmailTab();
             Cursor = Cursors.Default;
         }
@@ -1054,7 +1054,7 @@ namespace FrontEnd
         {
             Cursor = Cursors.WaitCursor;
 
-            var contat = new EmailList()
+            var contat = new tblEmail ()
             {
                 Name = name_EmailTextBox.Text.Trim(),
                 Email = emailTextBox.Text.Trim(),
@@ -1078,7 +1078,7 @@ namespace FrontEnd
         {
             if (e.Item != null)
             {
-                var u = (EmailList)e.Item.Tag;
+                var u = (tblEmail)e.Item.Tag;
                 emailTextBox.Text = u.Email;
                 name_EmailTextBox.Text = u.Name;
             }
@@ -1088,8 +1088,8 @@ namespace FrontEnd
         private void removeEmailButton_Click(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            var email = (EmailList)emailListView.SelectedItems[0].Tag;
-            WebUpdate.DeleteUserFromEmailList(email.ID);
+            var email = (tblEmail)emailListView.SelectedItems[0].Tag;
+            WebUpdate.DeleteUserFromEmailList(email.Email_ID);
             PopulateEmailTab();
             Cursor = Cursors.Default;
         }
@@ -1116,7 +1116,7 @@ namespace FrontEnd
       private void smsListView_MouseDoubleClick(object sender, MouseEventArgs e)
       {
           Cursor = Cursors.WaitCursor;
-          WebUpdate.CheckUncheckSmsListUser(((SmsList)smsListView.SelectedItems[0].Tag).ID);
+          WebUpdate.CheckUncheckSmsListUser(((tblSM)smsListView.SelectedItems[0].Tag).SMS_ID);
           PopulateSmsTab();
           Cursor = Cursors.Default;
       }
@@ -1125,7 +1125,7 @@ namespace FrontEnd
       {
           if (e.Item != null)
           {
-              var u = (SmsList)e.Item.Tag;
+              var u = (tblSM)e.Item.Tag;
               smsTextbox.Text = u.TelNr;
               name_SMSTextBox.Text = u.Name;
           }
@@ -1134,8 +1134,8 @@ namespace FrontEnd
       private void removeSMSButton_Click(object sender, EventArgs e)
       {
           Cursor = Cursors.WaitCursor;
-          var sms = (SmsList)smsListView.SelectedItems[0].Tag;
-          WebUpdate.DeleteUserFromSmsList(sms.ID);
+          var sms = (tblSM)smsListView.SelectedItems[0].Tag;
+          WebUpdate.DeleteUserFromSmsList(sms.SMS_ID);
           PopulateSmsTab();
           Cursor = Cursors.Default;
       }
@@ -1144,7 +1144,7 @@ namespace FrontEnd
       {
           Cursor = Cursors.WaitCursor;
 
-          var contat = new SmsList()
+          var contat = new tblSM()
           {
               Name = name_SMSTextBox.Text.Trim(),
               TelNr = smsTextbox.Text.Trim(),

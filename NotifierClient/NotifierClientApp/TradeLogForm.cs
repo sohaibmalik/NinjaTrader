@@ -7,14 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using AlsiUtils;
 
 namespace NotifierClientApp
 {
     public partial class TradeLogForm : Form
     {
         private newLogSaved onUpdate;
-        WebDbDataContext dc = new WebDbDataContext();
-        TradeLog _selectedLog;
+        AlsiWebDataContext dc = new AlsiWebDataContext();
+        WebTradeLog _selectedLog;
         int price;
         Admin _admin;
         public TradeLogForm(Admin admin)
@@ -40,9 +41,9 @@ namespace NotifierClientApp
 
         private void LoadListview()
         {
-            dc = new WebDbDataContext();
+            dc = new AlsiWebDataContext();
             tradeListView.Items.Clear();
-            var log = dc.TradeLogs.OrderByDescending(z => z.Time).Take(25);
+            var log = dc.WebTradeLogs.OrderByDescending(z => z.Time).Take(25);
 
             foreach (var t in log)
             {
@@ -79,7 +80,7 @@ namespace NotifierClientApp
                 Cursor = Cursors.Default;
                 return;
             }
-            dc.TradeLogs.DeleteOnSubmit(_selectedLog);
+            dc.WebTradeLogs.DeleteOnSubmit(_selectedLog);
             dc.SubmitChanges();
             LoadListview();
             Cursor = Cursors.Default;
@@ -94,7 +95,7 @@ namespace NotifierClientApp
         private void tradeListView_DoubleClick(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor;
-            var tl = (TradeLog)tradeListView.SelectedItems[0].Tag;
+            var tl = (WebTradeLog)tradeListView.SelectedItems[0].Tag;
             var n = new NewOrderInput(onUpdate, tl, dc,_admin.IsAdmin);
             n.Show();
             Cursor = Cursors.Default;
@@ -103,7 +104,7 @@ namespace NotifierClientApp
         private void tradeListView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
             if (tradeListView.SelectedItems.Count == 0) return;
-            _selectedLog = (TradeLog)tradeListView.SelectedItems[0].Tag;
+            _selectedLog = (WebTradeLog)tradeListView.SelectedItems[0].Tag;
             deleteButton.Enabled = true;
         }
 
@@ -120,7 +121,7 @@ namespace NotifierClientApp
             var diff = new List<double>();
             var totDiff = new List<double>();
             double sum = 0;
-            var DC=dc.TradeLogs.Where(z => z.Matched == true && z.Price != 0 && z.PriceMatched != 0);
+            var DC = dc.WebTradeLogs.Where(z => z.Matched == true && z.Price != 0 && z.PriceMatched != 0);
             foreach (var l in DC)
             {
                 if (l.Reason == "OpenLong" || l.Reason == "CloseShort")

@@ -14,8 +14,8 @@ namespace AlsiTrade_Backend
     {
 
         private static AlsiWebService.AlsiNotifyService service;
-        public static List<EmailList> _EmailList = new List<EmailList>();
-        public static List<SmsList> _SMSList = new List<SmsList>();
+        public static List<tblEmail> _EmailList = new List<tblEmail>();
+        public static List<tblSM> _SMSList = new List<tblSM>();
 
         public WebUpdate()
         {
@@ -28,28 +28,28 @@ namespace AlsiTrade_Backend
 
         public static void GetEmailList()
         {
-            var dc = new WebDbDataContext();
-            _EmailList = dc.EmailLists.OrderBy(z => z.ID).ToList();
+            var dc = new AlsiWebDataContext();
+            _EmailList = dc.tblEmails.OrderBy(z => z.Email_ID).ToList();
         }
 
         public static void GetSmsList()
         {
-            var dc = new WebDbDataContext();
-            _SMSList = dc.SmsLists.OrderBy(z => z.ID).ToList();
+            var dc = new AlsiWebDataContext();
+            _SMSList = dc.tblSMs.OrderBy(z => z.SMS_ID).ToList();
         }
 
         public static void CheckUncheckEmailListUser(int UserID)
         {
-            var dc = new WebDbDataContext();
-            var user = dc.EmailLists.Where(z => z.ID == UserID).First();
+            var dc = new AlsiWebDataContext();
+            var user = dc.tblEmails.Where(z => z.Email_ID == UserID).First();
             user.Active = !user.Active;
             dc.SubmitChanges();
             GetEmailList();
         }
         public static void CheckUncheckSmsListUser(int UserID)
         {
-            var dc = new WebDbDataContext();
-            var user = dc.SmsLists.Where(z => z.ID == UserID).First();
+            var dc = new AlsiWebDataContext();
+            var user = dc.tblSMs.Where(z => z.SMS_ID == UserID).First();
             user.Active = !user.Active;
             dc.SubmitChanges();
             GetSmsList();
@@ -57,44 +57,44 @@ namespace AlsiTrade_Backend
 
         public static void DeleteUserFromEmailList(int UserID)
         {
-            var dc = new WebDbDataContext();
-            var user = dc.EmailLists.Where(z => z.ID == UserID).First();
-            dc.EmailLists.DeleteOnSubmit(user);
+            var dc = new AlsiWebDataContext();
+            var user = dc.tblEmails.Where(z => z.Email_ID == UserID).First();
+            dc.tblEmails.DeleteOnSubmit(user);
             dc.SubmitChanges();
             GetEmailList();
         }
 
         public static void DeleteUserFromSmsList(int UserID)
         {
-            var dc = new WebDbDataContext();
-            var user = dc.SmsLists.Where(z => z.ID == UserID).First();
-            dc.SmsLists.DeleteOnSubmit(user);
+            var dc = new AlsiWebDataContext();
+            var user = dc.tblSMs.Where(z => z.SMS_ID == UserID).First();
+            dc.tblSMs.DeleteOnSubmit(user);
             dc.SubmitChanges();
             GetSmsList();
         }
 
-        public static bool InsertNewUsertoEmailList(EmailList user)
+        public static bool InsertNewUsertoEmailList(tblEmail user)
         {
-            var dc = new WebDbDataContext();
-            var insert = (!dc.EmailLists.Any(z => z.Email == user.Email));
+            var dc = new AlsiWebDataContext();
+            var insert = (!dc.tblEmails.Any(z => z.Email == user.Email));
             if (insert)
             {
                 user.Active = true;
-                dc.EmailLists.InsertOnSubmit(user);
+                dc.tblEmails.InsertOnSubmit(user);
                 dc.SubmitChanges();
                 GetEmailList();
             }
             return insert;
         }
 
-        public static bool InsertNewUsertoSmsList(SmsList user)
+        public static bool InsertNewUsertoSmsList(tblSM user)
         {
-            var dc = new WebDbDataContext();
-            var insert = (!dc.SmsLists.Any(z => z.TelNr == user.TelNr));
+            var dc = new AlsiWebDataContext();
+            var insert = (!dc.tblSMs.Any(z => z.TelNr == user.TelNr));
             if (insert)
             {
                 user.Active = true;
-                dc.SmsLists.InsertOnSubmit(user);
+                dc.tblSMs.InsertOnSubmit(user);
                 dc.SubmitChanges();
                 GetSmsList();
             }
@@ -144,43 +144,43 @@ namespace AlsiTrade_Backend
 
         public static void SyncOnlineDbTradeHistory(List<Trade> TradeOnly)
         {
-            var dc = new AlsiUtils.WebDbDataContext();
+            //var dc = new AlsiUtils.AlsiWebDataContext();
 
-            DateTime? lastWeb = new DateTime(1990, 01, 01);
-            if (dc.TradeHistories.Count() > 0)
-            {
-                lastWeb = dc.TradeHistories.Max(z => z.TimeStamp);
-            }
+            //DateTime? lastWeb = new DateTime(1990, 01, 01);
+            //if (dc.TradeHistories.Count() > 0)
+            //{
+            //    lastWeb = dc.TradeHistories.Max(z => z.TimeStamp);
+            //}
 
-            var dellist = dc.TradeHistories.Where(z => z.TimeStamp >= lastWeb);
-            dc.TradeHistories.DeleteAllOnSubmit(dellist);
-            dc.SubmitChanges();
+            //var dellist = dc.TradeHistories.Where(z => z.TimeStamp >= lastWeb);
+            //dc.TradeHistories.DeleteAllOnSubmit(dellist);
+            //dc.SubmitChanges();
 
-            var synclist = TradeOnly.Where(z => z.TimeStamp >= lastWeb);
+            //var synclist = TradeOnly.Where(z => z.TimeStamp >= lastWeb);
 
-            foreach (var t in synclist)
-            {
-                var th = new TradeHistory()
-                {
-                    TimeStamp = t.TimeStamp,
-                    BuySell = t.BuyorSell.ToString(),
-                    Reason = t.Reason.ToString(),
-                    Price = (int)t.TradedPrice,
-                    Volume = t.TradeVolume,
-                    Trade_Profit = (int)t.RunningProfit
-                };
+            //foreach (var t in synclist)
+            //{
+            //    var th = new TradeHistory()
+            //    {
+            //        TimeStamp = t.TimeStamp,
+            //        BuySell = t.BuyorSell.ToString(),
+            //        Reason = t.Reason.ToString(),
+            //        Price = (int)t.TradedPrice,
+            //        Volume = t.TradeVolume,
+            //        Trade_Profit = (int)t.RunningProfit
+            //    };
 
-                dc.TradeHistories.InsertOnSubmit(th);
-                Debug.WriteLine(th.TimeStamp + "  " + th.Volume);
-            }
+            //    dc.TradeHistories.InsertOnSubmit(th);
+            //    Debug.WriteLine(th.TimeStamp + "  " + th.Volume);
+            //}
 
 
-            dc.SubmitChanges();
+            //dc.SubmitChanges();
         }
 
         public static void SendOrderToWebDB(Trade trade)
         {
-            var dc = new WebDbDataContext();
+            var dc = new AlsiWebDataContext();
             string bs = "none";
             if (trade.BuyorSell == Trade.BuySell.Buy) bs = "Buy";
             if (trade.BuyorSell == Trade.BuySell.Sell) bs = "Sell";
@@ -214,7 +214,7 @@ namespace AlsiTrade_Backend
 
        
 
-        private static bool CheckDbCount(WebDbDataContext dc, Trade trade)
+        private static bool CheckDbCount(AlsiWebDataContext dc, Trade trade)
         {
             int c = dc.WebTradeLogs.Count();
             if (c > 0)
@@ -244,15 +244,15 @@ namespace AlsiTrade_Backend
 
         public static void ClearEmailList()
         {
-            var dc = new WebDbDataContext();
-            var delall = dc.EmailLists;
-            dc.EmailLists.DeleteAllOnSubmit(delall);
+            var dc = new AlsiWebDataContext();
+            var delall = dc.tblEmails;
+            dc.tblEmails.DeleteAllOnSubmit(delall);
             dc.SubmitChanges();
         }
 
         public static void ClearTradeLog()
         {
-            var dc = new WebDbDataContext();
+            var dc = new AlsiWebDataContext();
             var delall = dc.WebTradeLogs;
             dc.WebTradeLogs.DeleteAllOnSubmit(delall);
             dc.SubmitChanges();
@@ -260,10 +260,10 @@ namespace AlsiTrade_Backend
 
         public static void ClearTadeHistory()
         {
-            var dc = new WebDbDataContext();
-            var delall = dc.TradeHistories;
-            dc.TradeHistories.DeleteAllOnSubmit(delall);
-            dc.SubmitChanges();
+            //var dc = new AlsiWebDataContext();
+            //var delall = dc.TradeHistories;
+            //dc.TradeHistories.DeleteAllOnSubmit(delall);
+            //dc.SubmitChanges();
         }
 
 
