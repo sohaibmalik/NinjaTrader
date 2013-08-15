@@ -342,7 +342,7 @@ namespace AlsiUtils
 
             #region MANUAL_CLOSE_TRIGGER
 
-          //  public static AlsiWebDataContext dc = new AlsiWebDataContext();
+        
             private static bool _MANUAL_CLOSE_TRIGGER;
             public static bool MANUAL_CLOSE_TRIGGER
             {  

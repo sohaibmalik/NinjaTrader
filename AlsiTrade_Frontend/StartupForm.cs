@@ -24,7 +24,7 @@ namespace FrontEnd
         }
 
 
-      
+
         private string configfile = "";
         private void StartupForm_Load(object sender, EventArgs e)
         {
@@ -33,21 +33,22 @@ namespace FrontEnd
             {
                 MessageBox.Show("No Internet Connection", "Not Connected", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(0);
-               
+
             }
 
-            //Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True
-            //Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True
-            //Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True
 
             var path = new FileInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             var file = path + @"\ConnectionString.txt";
             configfile = file;
             var Sr = new StreamReader(file);
-            Properties.Settings.Default.ConnectionString = Sr.ReadLine();
+            var GeneralCS = Sr.ReadLine();
             Sr.Close();
 
-        
+
+            Properties.Settings.Default.ConnectionString = GetConnectionStringFromGeneral(GeneralCS);
+
+
+
             if (AlsiUtils.DataBase.TestSqlConnection(Properties.Settings.Default.ConnectionString))
             {
                 this.Shown += new EventHandler(StartupForm_Shown);
@@ -61,7 +62,6 @@ namespace FrontEnd
             }
         }
 
-
         void main_onStartupLoad(object sender, MainForm.LoadingStartupEvent e)
         {
 
@@ -70,7 +70,21 @@ namespace FrontEnd
 
         }
 
+        private string GetConnectionStringFromGeneral(string GeneralConnectionString)
+        {
+            var dc = new AlsiUtils.GeneralDataContext(GeneralConnectionString);
+            var macs = AlsiUtils.Utilities.GetMacAddress();
+            foreach (var m in macs)
+                foreach (var cs in dc.ConnectionStrings)
+                    if (cs.MacAdress == m)
+                        return cs.CS;
 
+
+
+            MessageBox.Show("Connectionstring cannot be found in Database 'General'");
+
+            return "ERROR";
+        }
 
         void StartupForm_Shown(object sender, EventArgs e)
         {
@@ -88,8 +102,13 @@ namespace FrontEnd
             Process.Start(configfile);
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
 
-     
+
+
     }
 
 

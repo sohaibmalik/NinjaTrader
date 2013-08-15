@@ -77,12 +77,12 @@
     <Compile Include="Data Objects\CompletedTrade.cs" />
     <Compile Include="Data Objects\RegressionExt.cs" />
     <Compile Include="Data Objects\GlobalObjects.cs" />
-    <Compile Include="ProfitAlgoLayer.cs" />
-    <Compile Include="SimDB.designer.cs">
+    <Compile Include="General.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SimDB.dbml</DependentUpon>
+      <DependentUpon>General.dbml</DependentUpon>
     </Compile>
+    <Compile Include="ProfitAlgoLayer.cs" />
     <Compile Include="Statistics.cs" />
     <Compile Include="Strategies\MAMA_Scalp.cs" />
     <Compile Include="Strategies\EMA_SAR.cs" />
@@ -132,14 +132,14 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="app.config" />
+    <None Include="General.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>General.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="SimDB.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>SimDB.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -151,11 +151,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SimDB.dbml.layout">
-      <DependentUpon>SimDB.dbml</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="AlsiTM.dbml.layout">
       <DependentUpon>AlsiTM.dbml</DependentUpon>
     </None>
@@ -163,6 +158,11 @@
   <ItemGroup>
     <None Include="AlsiWeb.dbml.layout">
       <DependentUpon>AlsiWeb.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="General.dbml.layout">
+      <DependentUpon>General.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

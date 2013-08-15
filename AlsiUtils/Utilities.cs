@@ -4,16 +4,17 @@ using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace AlsiUtils
 {
     public static class Utilities
     {
-        public static string GetMacAddress()
+        public static List<string> GetMacAddress()
         {
-           //return "test";
+        
             const int MIN_MAC_ADDR_LENGTH = 12;
-            string macAddress = "";
+            List<string> macAddress = new List<string>();
             long maxSpeed = -1;
 
             foreach (NetworkInterface nic in NetworkInterface.GetAllNetworkInterfaces())
@@ -24,7 +25,7 @@ namespace AlsiUtils
                 {
                     Debug.WriteLine("New Max Speed = " + nic.Speed + ", MAC: " + tempMac);
                     maxSpeed = nic.Speed;
-                    macAddress = tempMac;
+                    macAddress.Add(tempMac);
                 }
             }
             return macAddress;
