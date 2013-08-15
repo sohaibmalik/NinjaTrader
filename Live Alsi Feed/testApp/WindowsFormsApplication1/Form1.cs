@@ -64,8 +64,13 @@ namespace WindowsFormsApplication1
 
 		private void button2_Click(object sender, EventArgs e)
 		{			
-				datafeed.RequestInstrumentUpdate("SEP12ALSI");			
+				datafeed.RequestInstrumentUpdate("SEP13ALSI");			
 		}
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
 
 	}
 }
