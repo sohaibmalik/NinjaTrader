@@ -42,8 +42,8 @@ namespace DataBaseSync
 		{
 			InitializeComponent();
 
-			//string con = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
-			string con = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+
+            string con = AlsiUtils.WebSettings.General.GetConnectionStringFromGeneral(@"Data Source=85.214.244.19;Initial Catalog=General;Persist Security Info=True;User ID=Tradebot;Password=boeboe");
 			AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = con;
 			dc = new AlsiDBDataContext();
 			sdb = new SyncDB();

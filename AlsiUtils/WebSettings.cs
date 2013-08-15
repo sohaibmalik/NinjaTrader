@@ -408,6 +408,23 @@ namespace AlsiUtils
                 dc.SubmitChanges();
             }
             #endregion
+
+            #region Connection strings
+
+            public static string GetConnectionStringFromGeneral(string GeneralConnectionString)
+            {
+                var dc = new AlsiUtils.GeneralDataContext(GeneralConnectionString);
+                var macs = AlsiUtils.Utilities.GetMacAddress();
+                foreach (var m in macs)
+                    foreach (var cs in dc.ConnectionStrings)
+                        if (cs.MacAdress == m)
+                            return cs.CS;
+                          
+
+                return "ERROR";
+            }
+
+            #endregion
         }
 
         public class Indicators

@@ -45,7 +45,7 @@ namespace FrontEnd
             Sr.Close();
 
 
-            Properties.Settings.Default.ConnectionString = GetConnectionStringFromGeneral(GeneralCS);
+            Properties.Settings.Default.ConnectionString = AlsiUtils.WebSettings.General.GetConnectionStringFromGeneral(GeneralCS);
 
 
 
@@ -70,21 +70,7 @@ namespace FrontEnd
 
         }
 
-        private string GetConnectionStringFromGeneral(string GeneralConnectionString)
-        {
-            var dc = new AlsiUtils.GeneralDataContext(GeneralConnectionString);
-            var macs = AlsiUtils.Utilities.GetMacAddress();
-            foreach (var m in macs)
-                foreach (var cs in dc.ConnectionStrings)
-                    if (cs.MacAdress == m)
-                        return cs.CS;
-
-
-
-            MessageBox.Show("Connectionstring cannot be found in Database 'General'");
-
-            return "ERROR";
-        }
+      
 
         void StartupForm_Shown(object sender, EventArgs e)
         {
