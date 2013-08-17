@@ -23,7 +23,7 @@ namespace NotifierClientApp
 
             version = double.Parse(versionstring);
             dc = new AlsiTMDataContext();
-            mac = Utilities.GetMacAddress();
+            mac = Utilities.GetMacAddress().First();
             CreateNewUserIfNotExist();
             UserID = dc.tblUsers.Where(z => z.USER_MACADRESS == mac).Select(z => z.ID).First();
             UserList = dc.tblUsers.ToList();
@@ -80,7 +80,7 @@ namespace NotifierClientApp
                 Loaded = true;
             dc = new AlsiTMDataContext();
 
-            _IsAdmin = dc.tblUsers.Any(z => z.USER_MACADRESS == AlsiUtils.Utilities.GetMacAddress() && z.USER_ADMIN == true);
+            _IsAdmin = dc.tblUsers.Any(z => z.USER_MACADRESS == AlsiUtils.Utilities.GetMacAddress().First() && z.USER_ADMIN == true);
             return _IsAdmin;
         }
 

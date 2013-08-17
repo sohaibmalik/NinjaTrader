@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ExcelOrder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test.cs" />
     <Compile Include="xlTradeOrder.cs" />
   </ItemGroup>
   <ItemGroup>
