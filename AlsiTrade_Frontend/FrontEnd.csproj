@@ -27,10 +27,9 @@
     <MapFileExtensions>true</MapFileExtensions>
     <UpdateUrl>http://85.214.244.19/Trading/TradeBot/</UpdateUrl>
     <MinimumRequiredVersion>1.1.0.0</MinimumRequiredVersion>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
