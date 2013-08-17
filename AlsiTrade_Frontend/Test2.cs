@@ -33,7 +33,7 @@ namespace FrontEnd
        
         private void Test2_Load(object sender, EventArgs e)
         {
-            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True; Connect Timeout=120";
+            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True; Connect Timeout=120";
        
 
 
@@ -58,7 +58,7 @@ namespace FrontEnd
         {
             Cursor = Cursors.WaitCursor;
             GlobalObjects.TimeInterval t = GlobalObjects.TimeInterval.Minute_5;
-            DataBase.dataTable dt = DataBase.dataTable.MasterMinute ;
+            DataBase.dataTable dt = DataBase.dataTable.MasterMinute;
             //_FullTradeList = AlsiTrade_Backend.RunCalcs.RunEMAScalp(GetParametersSAR_EMA(), t, false, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), dt);
             _FullTradeList = AlsiTrade_Backend.RunCalcs.RunMAMAScalp(GetParametersMAMA(), t, false, new DateTime(2005, 01, 01), new DateTime(2014, 12, 31), dt);
             _FullTradeList = _Stats.CalcBasicTradeStats_old(_FullTradeList);
@@ -94,7 +94,7 @@ namespace FrontEnd
                 B_EMA2 = 45,
                 C_EMA = 52,
                 TakeProfit = 55550,
-                StopLoss = -22250,
+                StopLoss = -250,
                 TakeProfitFactor = TPF,
                 StoplossFactor = SLF,
                 CloseEndofDay = false,
