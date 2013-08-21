@@ -17,7 +17,7 @@ namespace AutoDatabaseBackup
 	
 			if(args.Count()>0)
 				if(args.Contains("PC"))
-					constring = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
+                    constring = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
 
 			if(CreateOrVerifyPath(new DirectoryInfo(@"C:\AlsiTradeDatabseBACKUP")))
 			{
