@@ -129,5 +129,15 @@ namespace AlsiUtils.Properties {
                 return ((string)(this["GeneralConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ALSI-PC;Initial Catalog=SP500Trade;Integrated Security=True")]
+        public string SP500TradeConnectionString {
+            get {
+                return ((string)(this["SP500TradeConnectionString"]));
+            }
+        }
     }
 }

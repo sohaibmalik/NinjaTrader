@@ -74,6 +74,12 @@ namespace AlsiUtils
     partial void DeleteTradeHistory(TradeHistory instance);
     #endregion
 		
+		public AlsiDBDataContext() : 
+				base(global::AlsiUtils.Properties.Settings.Default.AlsiTradeConnectionString1, mappingSource)
+		{
+			OnCreated();
+		}
+		
 		public AlsiDBDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
@@ -247,10 +253,10 @@ namespace AlsiUtils
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CleanLogs", IsComposable=true)]
-		public object CleanLogs()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CleanLogs")]
+		public void CleanLogs()
 		{
-			return ((object)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod()))).ReturnValue));
+			this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.CleanTick")]
@@ -274,10 +280,10 @@ namespace AlsiUtils
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ImportRawTick", IsComposable=true)]
-		public object ImportRawTick()
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.ImportRawTick")]
+		public void ImportRawTick()
 		{
-			return ((object)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod()))).ReturnValue));
+			this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.MergeTemp")]
@@ -388,7 +394,7 @@ namespace AlsiUtils
 		
 		private double _C;
 		
-		private double _V;
+		private int _V;
 		
 		private string _Instrument;
 		
@@ -406,7 +412,7 @@ namespace AlsiUtils
     partial void OnLChanged();
     partial void OnCChanging(double value);
     partial void OnCChanged();
-    partial void OnVChanging(double value);
+    partial void OnVChanging(int value);
     partial void OnVChanged();
     partial void OnInstrumentChanging(string value);
     partial void OnInstrumentChanged();
@@ -517,8 +523,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_V", DbType="Float NOT NULL")]
-		public double V
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_V", DbType="Int NOT NULL")]
+		public int V
 		{
 			get
 			{
@@ -848,7 +854,7 @@ namespace AlsiUtils
 		
 		private double _C;
 		
-		private double _V;
+		private int _V;
 		
 		private string _Instrument;
 		
@@ -866,7 +872,7 @@ namespace AlsiUtils
     partial void OnLChanged();
     partial void OnCChanging(double value);
     partial void OnCChanged();
-    partial void OnVChanging(double value);
+    partial void OnVChanging(int value);
     partial void OnVChanged();
     partial void OnInstrumentChanging(string value);
     partial void OnInstrumentChanged();
@@ -977,8 +983,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_V", DbType="Float NOT NULL")]
-		public double V
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_V", DbType="Int NOT NULL")]
+		public int V
 		{
 			get
 			{
@@ -1046,13 +1052,13 @@ namespace AlsiUtils
 		
 		private System.DateTime _Stamp;
 		
-		private int _O;
+		private double _O;
 		
-		private int _H;
+		private double _H;
 		
-		private int _L;
+		private double _L;
 		
-		private int _C;
+		private double _C;
 		
 		private System.Nullable<int> _V;
 		
@@ -1064,13 +1070,13 @@ namespace AlsiUtils
     partial void OnCreated();
     partial void OnStampChanging(System.DateTime value);
     partial void OnStampChanged();
-    partial void OnOChanging(int value);
+    partial void OnOChanging(double value);
     partial void OnOChanged();
-    partial void OnHChanging(int value);
+    partial void OnHChanging(double value);
     partial void OnHChanged();
-    partial void OnLChanging(int value);
+    partial void OnLChanging(double value);
     partial void OnLChanged();
-    partial void OnCChanging(int value);
+    partial void OnCChanging(double value);
     partial void OnCChanged();
     partial void OnVChanging(System.Nullable<int> value);
     partial void OnVChanged();
@@ -1103,8 +1109,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Int NOT NULL")]
-		public int O
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_O", DbType="Float NOT NULL")]
+		public double O
 		{
 			get
 			{
@@ -1123,8 +1129,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Int NOT NULL")]
-		public int H
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_H", DbType="Float NOT NULL")]
+		public double H
 		{
 			get
 			{
@@ -1143,8 +1149,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Int NOT NULL")]
-		public int L
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_L", DbType="Float NOT NULL")]
+		public double L
 		{
 			get
 			{
@@ -1163,8 +1169,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Int NOT NULL")]
-		public int C
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_C", DbType="Float NOT NULL")]
+		public double C
 		{
 			get
 			{
@@ -2388,7 +2394,7 @@ namespace AlsiUtils
 		
 		private System.Nullable<System.DateTime> _Stamp;
 		
-		private System.Nullable<int> _Price;
+		private System.Nullable<double> _Price;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2398,7 +2404,7 @@ namespace AlsiUtils
     partial void OnNChanged();
     partial void OnStampChanging(System.Nullable<System.DateTime> value);
     partial void OnStampChanged();
-    partial void OnPriceChanging(System.Nullable<int> value);
+    partial void OnPriceChanging(System.Nullable<double> value);
     partial void OnPriceChanged();
     #endregion
 		
@@ -2447,8 +2453,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Int")]
-		public System.Nullable<int> Price
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Float")]
+		public System.Nullable<double> Price
 		{
 			get
 			{
@@ -2868,9 +2874,9 @@ namespace AlsiUtils
 		
 		private System.Nullable<double> _Price;
 		
-		private System.Nullable<double> _Volume;
+		private System.Nullable<int> _Volume;
 		
-		private System.Nullable<double> _Trade_Profit;
+		private System.Nullable<int> _Trade_Profit;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2886,9 +2892,9 @@ namespace AlsiUtils
     partial void OnReasonChanged();
     partial void OnPriceChanging(System.Nullable<double> value);
     partial void OnPriceChanged();
-    partial void OnVolumeChanging(System.Nullable<double> value);
+    partial void OnVolumeChanging(System.Nullable<int> value);
     partial void OnVolumeChanged();
-    partial void OnTrade_ProfitChanging(System.Nullable<double> value);
+    partial void OnTrade_ProfitChanging(System.Nullable<int> value);
     partial void OnTrade_ProfitChanged();
     #endregion
 		
@@ -2997,8 +3003,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="Float")]
-		public System.Nullable<double> Volume
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Volume", DbType="Int")]
+		public System.Nullable<int> Volume
 		{
 			get
 			{
@@ -3017,8 +3023,8 @@ namespace AlsiUtils
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Trade_Profit", DbType="Float")]
-		public System.Nullable<double> Trade_Profit
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Trade_Profit", DbType="Int")]
+		public System.Nullable<int> Trade_Profit
 		{
 			get
 			{

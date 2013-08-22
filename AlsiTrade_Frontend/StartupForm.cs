@@ -45,9 +45,8 @@ namespace FrontEnd
             Sr.Close();
 
 
-            Properties.Settings.Default.ConnectionString = AlsiUtils.WebSettings.General.GetConnectionStringFromGeneral(GeneralCS);
-
-
+           Properties.Settings.Default.ConnectionString = AlsiUtils.WebSettings.General.GetConnectionStringFromGeneral(GeneralCS);
+          
 
             if (AlsiUtils.DataBase.TestSqlConnection(Properties.Settings.Default.ConnectionString))
             {
