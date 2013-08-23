@@ -9,135 +9,24 @@
 //------------------------------------------------------------------------------
 
 namespace AlsiUtils.Properties {
-    
-    
+
+
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase
+    {
+
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
-        
-        public static Settings Default {
-            get {
+
+        public static Settings Default
+        {
+            get
+            {
                 return defaultInstance;
             }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ALSI-PC\\SQLEXPRESS;Initial Catalog=AlsiTrade;Integrated Security=True" +
-            "")]
-        public string AlsiTradeConnectionString {
-            get {
-                return ((string)(this["AlsiTradeConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ALSI-PC;Initial Catalog=AlsiTrade;Integrated Security=True")]
-        public string AlsiTradeConnectionString1 {
-            get {
-                return ((string)(this["AlsiTradeConnectionString1"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PIETER-PC\\;Initial Catalog=AlsiTrade;Integrated Security=True")]
-        public string AlsiTradeConnectionString2 {
-            get {
-                return ((string)(this["AlsiTradeConnectionString2"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=PIETER-PC;Initial Catalog=emaSim;Integrated Security=True")]
-        public string emaSimConnectionString {
-            get {
-                return ((string)(this["emaSimConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiDb;User ID=Pieter;Password=1R" +
-            "achelle")]
-        public string AlsiDbConnectionString {
-            get {
-                return ((string)(this["AlsiDbConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiDb;Persist Security Info=True" +
-            ";User ID=Pieter;Password=1Rachelle")]
-        public string AlsiDbConnectionString1 {
-            get {
-                return ((string)(this["AlsiDbConnectionString1"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiTM;Persist Security Info=True" +
-            ";User ID=Pieter")]
-        public string AlsiTMConnectionString {
-            get {
-                return ((string)(this["AlsiTMConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sql.alsitm.com,1444;Initial Catalog=AlsiTM;Persist Security Info=True" +
-            ";User ID=Pieter;Password=1Rachelle")]
-        public string AlsiTMConnectionString1 {
-            get {
-                return ((string)(this["AlsiTMConnectionString1"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=85.214.244.19;Initial Catalog=AlsiWeb;Persist Security Info=True;User" +
-            " ID=Tradebot;Password=boeboe")]
-        public string AlsiWebConnectionString {
-            get {
-                return ((string)(this["AlsiWebConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=85.214.244.19;Initial Catalog=General;Persist Security Info=True;User" +
-            " ID=Tradebot;Password=boeboe")]
-        public string GeneralConnectionString {
-            get {
-                return ((string)(this["GeneralConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ALSI-PC;Initial Catalog=SP500Trade;Integrated Security=True")]
-        public string SP500TradeConnectionString {
-            get {
-                return ((string)(this["SP500TradeConnectionString"]));
-            }
+
+
+
         }
     }
 }

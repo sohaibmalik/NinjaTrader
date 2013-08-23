@@ -74,8 +74,8 @@ namespace AlsiUtils
     partial void DeleteOHLC_2_Minute(OHLC_2_Minute instance);
     #endregion
 		
-		public AlsiDBDataContext() : 
-				base(global::AlsiUtils.Properties.Settings.Default.AlsiTradeConnectionString2, mappingSource)
+		public AlsiDBDataContext() :
+        base(global::AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

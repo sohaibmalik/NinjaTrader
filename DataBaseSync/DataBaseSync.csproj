@@ -29,12 +29,10 @@
     <UpdateUrl>http://85.214.244.19/Trading/DatabaseSynch/</UpdateUrl>
     <ProductName>Alsi Database Synch</ProductName>
     <PublisherName>Pieter Fouché</PublisherName>
-    <ApplicationRevision>11</ApplicationRevision>
     <MinimumRequiredVersion>1.0.0.1</MinimumRequiredVersion>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>2</ApplicationRevision>
+    <ApplicationRevision>4</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
