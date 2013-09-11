@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="AlsiSim">
+  <DataContextMoniker Name="/AlsiSimDataContext" />
+  <nestedChildShapes>
+    <classShape Id="86001971-b7f5-4db0-9369-a6db445dd829" absoluteBounds="0.75, 0.75, 2, 1.3862939453125">
+      <DataClassMoniker Name="/AlsiSimDataContext/tblResult_5Min" />
+      <nestedChildShapes>
+        <elementListCompartment Id="dd7ca24b-1df2-4d41-a1af-393b2cd48bc4" absoluteBounds="0.765, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="50f11349-4415-4d27-8eff-e5be3d361ef0" absoluteBounds="3.75, 0.75, 2, 1.3862939453125">
+      <DataClassMoniker Name="/AlsiSimDataContext/tblSequence" />
+      <nestedChildShapes>
+        <elementListCompartment Id="57463155-190f-4786-888f-b2c2de24969d" absoluteBounds="3.765, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

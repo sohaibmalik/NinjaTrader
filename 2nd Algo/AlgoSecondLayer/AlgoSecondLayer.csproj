@@ -46,6 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algo.cs" />
+    <Compile Include="AlsiSim.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlsiSim.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -57,11 +62,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RSI_ADX_SIM.dbml</DependentUpon>
     </Compile>
+    <Compile Include="RSI_SS_StopLoss.cs" />
     <Compile Include="SinglePl.cs" />
     <Compile Include="TrailingStop.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="AlsiSim.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>AlsiSim.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -79,6 +90,11 @@
   <ItemGroup>
     <None Include="RSI_ADX_SIM.dbml.layout">
       <DependentUpon>RSI_ADX_SIM.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AlsiSim.dbml.layout">
+      <DependentUpon>AlsiSim.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
