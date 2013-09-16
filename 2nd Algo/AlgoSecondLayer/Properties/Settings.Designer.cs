@@ -42,5 +42,16 @@ namespace AlgoSecondLayer.Properties {
                 return ((string)(this["ALSI_SIMConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeb" +
+            "oe")]
+        public string ALSI_SIMConnectionString1 {
+            get {
+                return ((string)(this["ALSI_SIMConnectionString1"]));
+            }
+        }
     }
 }

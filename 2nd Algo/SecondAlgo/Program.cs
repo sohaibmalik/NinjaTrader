@@ -153,8 +153,13 @@ namespace SecondAlgo
     internal void Start()
     {
         Console.WriteLine("Starting Calculations..");
-        var s = new StochPOP();
-        s.Start();
+           string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
+
+           while (true)
+           {
+               var s = new StochPOP();
+               s.Start(SIMcontext);
+           }
         Console.WriteLine("Done");
     }
 }

@@ -20,8 +20,25 @@ namespace AlgoSecondLayer
         private double OPEN_Short_50 = 50;
         private double TOTALPROFIT = 0;
 
-        public void Start()
+        private Seq _Seq;
+
+        public void Start(string simcontext)
         {
+            var dc = new AlsiSimDataContext(simcontext);
+            var m = dc.tblSequences.Where(x => !x.Started).Count();
+            var _skip = Utils.RandomNumber(0, m - 1);
+
+            var _sequence = dc.tblSequences.Where(x => !x.Started).Skip(_skip).First();
+            var par = _sequence.Sequence.Split(',');
+            //Might cuase duplicates, but chances are slim
+             _sequence.Started = true;
+             dc.SubmitChanges();
+
+            _Seq = new Seq(_sequence.Sequence);
+            var rsi = _Seq.RSI;
+            var fastK = _Seq.Fast_K;
+            var slowK = _Seq.Slow_K;
+            var slowD = _Seq.Slow_D;
 
             var Prices = GlobalObjects.Points;
             SSPOP = new List<SS_Price>();
@@ -33,9 +50,7 @@ namespace AlgoSecondLayer
             //START LOOOP
 
 
-            int fastK = 16;
-            int slowK = 12;
-            int slowD = 6;
+           
 
             var SS = AlsiUtils.Factory_Indicator.createSlowStochastic(fastK, slowK, slowD, Prices);
 
@@ -72,7 +87,9 @@ namespace AlgoSecondLayer
             SetTriggers_TradeSignals();
 
 
-            WriteResults();
+           // WriteResults();
+            WriteResultsToDatabase(dc,_sequence , TOTALPROFIT);
+            Console.WriteLine("{0}  {1} {2} {3} ", TOTALPROFIT , fastK, slowK, slowD);
             //END LOOP
             //}
         }
@@ -309,6 +326,38 @@ namespace AlgoSecondLayer
             sr.Close();
         }
 
+        private void WriteResultsToDatabase(AlsiSimDataContext dc, tblSequence seq, double profit)
+        {
+            var r = new tblResult_5Min_SSPOP()
+            {
+                Profit = profit,
+                Sequence = seq.Sequence,
+                Trades = 0,                
+            };
+            dc.tblResult_5Min_SSPOPs.InsertOnSubmit(r);
+            dc.SubmitChanges();
+        }
+
+        class Seq
+        {
+            public int RSI { get; set; }
+            public int Fast_K { get; set; }
+            public int Slow_K { get; set; }
+            public int Slow_D { get; set; }
+            public int Lookback { get; set; }
+            public int Upper { get; set; }
+            public int Lower { get; set; }
+
+            public Seq(string Sequence)
+            {
+                var s = Sequence.Split(',');
+                this.RSI = int.Parse(s[0]);
+                this.Fast_K = int.Parse(s[1]);
+                this.Slow_K = int.Parse(s[2]);
+                this.Slow_D = int.Parse(s[3]);
+
+            }
+        }
         public class SS_Price
         {
             public double Volume { get; set; }

@@ -20,5 +20,11 @@
         <elementListCompartment Id="b4abb17a-c205-46cf-8c45-bc1504c25a8c" absoluteBounds="5.14, 4.335, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="cc09bacc-9761-43ba-9dc6-86198c8aa5a1" absoluteBounds="2.25, 3, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/AlsiSimDataContext/tblResult_5Min_SSPOP" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1bd5311c-d3f1-4eb9-8e20-8a723b3f983a" absoluteBounds="2.265, 3.46, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>
