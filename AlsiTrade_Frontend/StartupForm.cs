@@ -58,6 +58,7 @@ namespace FrontEnd
             else
             {
                 this.Size = new Size(612, 181);
+                MessageBox.Show("Cannot find connection string for this macadress");
             }
         }
 
