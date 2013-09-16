@@ -14,6 +14,8 @@ namespace AlgoSecondLayer
 {
     public class RSI_SS_StopLoss
     {
+        public event EventHandler Done;
+       
 
         private List<Price> Prices = new List<Price>();
         private List<RSI_SS_Price> RSICC = new List<RSI_SS_Price>();
@@ -24,65 +26,109 @@ namespace AlgoSecondLayer
         Dictionary<DateTime, string> NOTE1_DIC = new Dictionary<DateTime, string>();
         Dictionary<DateTime, bool> TRADETRIGGER_DIC = new Dictionary<DateTime, bool>();
 
-        public void Start()
+       
+        private string SIMCONTEXT = "";
+        private Seq _Seq;
+      
+        public void Start(string simcontext)
         {
-            Prices = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.Data_Objects.GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), false);
-            GlobalObjects.Points = Prices;
+            SIMCONTEXT = simcontext;
+          
+         
+                var Prices = GlobalObjects.Points;
+             
+        
 
-            for (int rsi = 4; rsi < 30; rsi++)
-                for (int fastK = 3; fastK < 30; fastK++)
-                    for (int slowK = 3; slowK < 30; slowK++)
-                        for (int slowD = 3; slowD < 30; slowD++)
-                        {
-                            //START LOOOP
-                            ClearDictionaries();
+            //for (int rsi = 4; rsi < 30; rsi++)
+            //    for (int fastK = 3; fastK < 30; fastK++)
+            //        for (int slowK = 3; slowK < 30; slowK++)
+            //            for (int slowD = 3; slowD < 30; slowD++)
+            //            {
+            var dc = new AlsiSimDataContext(simcontext);
+            var m = dc.tblSequences.Where(x => !x.Started).Count();
+            var _skip = Utils.RandomNumber(0, m - 1);
 
-                            var RSI = AlsiUtils.Factory_Indicator.createRSI(rsi, Prices);
-                            var SS = AlsiUtils.Factory_Indicator.createSlowStochastic(fastK, slowK, slowD, Prices);
+            var _sequence = dc.tblSequences.Where(x => !x.Started).Skip(_skip).First();
+            var par = _sequence.Sequence.Split(',');
+            //Might cuase duplicates, but chances are slim
+           // _sequence.Started = true;
+           // dc.SubmitChanges();
 
+            _Seq = new Seq(_sequence.Sequence);
+            var rsi = _Seq.RSI;
+            var fastK = _Seq.Fast_K;
+            var slowK = _Seq.Slow_K;
+            var slowD = _Seq.Slow_D;
 
-                            //CREATE DICTIONARY 
-                            RSI_DIC = RSI.ToDictionary(x => x.TimeStamp, x => Math.Round(x.RSI, 3));
-                            SS_DIC = SS.ToDictionary(x => x.TimeStamp, x => Math.Round(x.K, 3));
+            //START LOOOP
+            ClearDictionaries();
 
-                            //POPULATE
-                            foreach (var p in Prices)
-                            {
-                                RSI_SS_Price rsp = new RSI_SS_Price()
-                                {
-                                    ClosePrice = p.Close,
-                                    Volume = p.Volume,
-                                    Stamp = p.TimeStamp,
-                                    RSI = 0,
-                                    SS = 0,
-                                };
-                                double r, s;
-                                RSI_DIC.TryGetValue(p.TimeStamp, out r);
-                                SS_DIC.TryGetValue(p.TimeStamp, out s);
-
-                                if (r != 0 && s != 0)
-                                {
-                                    rsp.RSI = r;
-                                    rsp.SS = s;
-                                    RSICC.Add(rsp);
-                                }
-                            }
-
-                            //RUN CALCS
-                            SetTriggers_A(10);
-                            AddTradeslayer();
-                            //  WriteResults();
-                          
+            var RSI = AlsiUtils.Factory_Indicator.createRSI(rsi, Prices);
+            var SS = AlsiUtils.Factory_Indicator.createSlowStochastic(fastK, slowK, slowD, Prices);
 
 
-                            //END LOOP
-                        }
+            //CREATE DICTIONARY 
+            RSI_DIC = RSI.ToDictionary(x => x.TimeStamp, x => Math.Round(x.RSI, 3));
+            SS_DIC = SS.ToDictionary(x => x.TimeStamp, x => Math.Round(x.D , 3));
+
+            //POPULATE
+            foreach (var p in Prices)
+            {
+                RSI_SS_Price rsp = new RSI_SS_Price()
+                {
+                    ClosePrice = p.Close,
+                    Volume = p.Volume,
+                    Stamp = p.TimeStamp,
+                    RSI = 0,
+                    SS = 0,
+                };
+                double r, s;
+                RSI_DIC.TryGetValue(p.TimeStamp, out r);
+                SS_DIC.TryGetValue(p.TimeStamp, out s);
+
+                if (r != 0 && s != 0)
+                {
+                    rsp.RSI = r;
+                    rsp.SS = s;
+                    RSICC.Add(rsp);
+                }
+            }
+
+            //RUN CALCS
+            int lookback = Utils.RandomNumber(5, 15);
+            _Seq.Lookback = lookback;
+            SetTriggers_A(lookback);
+            var profit = AddTradeslayer();
+
+            Console.WriteLine("{0}  {1} {2} {3} {4} LB:{5} H:{6} L:{7}", profit, rsi, fastK, slowK, slowD,_Seq.Lookback,_Seq.Upper,_Seq.Lower );
+            WriteResults();
+           // WriteResultsToDatabase(dc,_sequence, profit);
+
+          //  Done(this, new EventArgs());
+           
+            //END LOOP
+            //}
+        }
+
+
+        private void WriteResultsToDatabase(AlsiSimDataContext dc,tblSequence seq, double profit)
+        {
+         
+            var r = new tblResult_5Min_D()
+            {
+                Profit=profit,
+                Sequence=seq.Sequence+" l:"+_Seq.Lookback+" H:"+_Seq.Upper+" L:"+_Seq.Lower,
+                Trades=0,
+                Notes = " l:" + _Seq.Lookback + " H:" + _Seq.Upper + " L:" + _Seq.Lower,
+            };
+            dc.tblResult_5Min_Ds.InsertOnSubmit(r);
+            dc.SubmitChanges();
         }
 
         public void CountPermutations()
         {
             List<string> Seq = new List<string>();
-           
+
             for (int rsi = 4; rsi < 30; rsi++)
                 for (int fastK = 3; fastK < 30; fastK++)
                     for (int slowK = 3; slowK < 30; slowK++)
@@ -90,8 +136,8 @@ namespace AlgoSecondLayer
                         {
                             StringBuilder s = new StringBuilder();
                             s.Append(rsi + "," + fastK + "," + slowK + "," + slowD);
-                            if(fastK !=slowK )
-                            Seq.Add(s.ToString());                   
+                            if (fastK != slowK)
+                                Seq.Add(s.ToString());
                         }
 
             string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
@@ -103,7 +149,7 @@ namespace AlgoSecondLayer
             MinData.Columns.Add("Completed", typeof(bool));
             foreach (var t in Seq)
             {
-              
+
                 MinData.Rows.Add(t, false, false);
                 Debug.WriteLine("Adding {0}", t);
             }
@@ -124,14 +170,19 @@ namespace AlgoSecondLayer
         {
             bool temptriggerLOW = false;
             bool temptriggerHIGH = false;
+            int h = Utils.RandomNumber(55, 85);
+            int l = Utils.RandomNumber(15, 45);
+            _Seq.Lower = l;
+            _Seq.Upper = h;
 
             for (int x = lookback; x < RSICC.Count; x++)
             {
-                
+
                 for (int lb = x - lookback; lb < x; lb++)
-                {
-                    if (RSICC[lb].RSI > 70 && RSICC[lb].SS > 70) RSICC[x].Trigger_High = true;
-                    if (RSICC[lb].RSI < 30 && RSICC[lb].SS < 30) RSICC[x].Trigger_Low = true;
+                {                   
+
+                    if (RSICC[lb].RSI > h && RSICC[lb].SS > h) RSICC[x].Trigger_High = true;
+                    if (RSICC[lb].RSI < l && RSICC[lb].SS < l) RSICC[x].Trigger_Low = true;
                 }
                 if (RSICC[x - 1].RSI > RSICC[x - 1].SS && RSICC[x].RSI < RSICC[x].SS) RSICC[x].Trigger_Crossed_Low = true;
                 if (RSICC[x - 1].RSI < RSICC[x - 1].SS && RSICC[x].RSI > RSICC[x].SS) RSICC[x].Trigger_Crossed_High = true;
@@ -170,6 +221,7 @@ namespace AlgoSecondLayer
             NOTE1_DIC.Clear();
             TRADETRIGGER_DIC.Clear();
             RSICC.Clear();
+
         }
 
 
@@ -178,7 +230,7 @@ namespace AlgoSecondLayer
         private List<CompletedTrade> NewTrades;
         public List<Trade> _TradeOnlyList;
         private double TOTALPROFIT = 0;
-        private void AddTradeslayer()
+        private double AddTradeslayer()
         {
             var PM = GetParametersMAMA();
             _FullTradeList = AlsiUtils.Strategies.MAMA_Scalp.MAMAScalp(PM, GlobalObjects.Points, false);
@@ -187,10 +239,10 @@ namespace AlgoSecondLayer
             NewTrades = _Stats.CalcExpandedTradeStats(NewTrades);
             _TradeOnlyList = CompletedTrade.CreateList(NewTrades);
 
-       
 
-           
-           int C = NewTrades.Count;
+
+
+            int C = NewTrades.Count;
             for (int i = 1; i < C; i++)
             {
                 var pl = from x in _FullTradeList
@@ -200,32 +252,32 @@ namespace AlgoSecondLayer
                 double volume = 0;
                 double volProfit = 0;
                 var PL = pl.ToList();
-                
+
                 foreach (var q in PL)
                 {
                     bool tookprofit = false;
                     volume = PL[0].TradeVolume;
                     TRADETRIGGER_DIC.TryGetValue(q.TimeStamp, out tookprofit);
 
-                    if (q.Reason == Trade.Trigger.None && ! tookprofit ) volProfit = volume * q.RunningProfit;
+                    if (q.Reason == Trade.Trigger.None && !tookprofit) volProfit = volume * q.RunningProfit;
                     else
-                        volProfit = q.RunningProfit; 
-                                      
+                        volProfit = q.RunningProfit;
+
 
                     PROF_DIC.Add(q.TimeStamp, volProfit);
                     NOTE1_DIC.Add(q.TimeStamp, q.Reason.ToString());
-                    VOL_DIC.Add(q.TimeStamp,volume );
+                    VOL_DIC.Add(q.TimeStamp, volume);
                     if (tookprofit)
                     {
                         TOTALPROFIT += volProfit;
                         break;
                     }
                     else
-                        if (q.Reason==Trade.Trigger.CloseLong || q.Reason ==Trade.Trigger.CloseShort) TOTALPROFIT += PL.Last().RunningProfit;
+                        if (q.Reason == Trade.Trigger.CloseLong || q.Reason == Trade.Trigger.CloseShort) TOTALPROFIT += PL.Last().RunningProfit;
                 }
 
-               
-                foreach (var t in RSICC.Where(x=>x.Stamp>=PL[0].TimeStamp && x.Stamp <=PL[PL.Count].TimeStamp))
+                var R = RSICC.Where(x => x.Stamp >= PL[0].TimeStamp && x.Stamp <= PL[PL.Count - 1].TimeStamp);
+                foreach (var t in R)
                 {
                     double r = 0;
                     double v = 0;
@@ -238,22 +290,21 @@ namespace AlgoSecondLayer
                     t.Volume = v;
                 }
 
-              
-                
-            
-            
 
-            //End loop
+
+
+
+
+                //End loop
             }
-            Console.WriteLine(TOTALPROFIT);
+            return TOTALPROFIT;
 
-          
-            
+
+
         }
 
         private void WriteResults()
         {
-
             var sr = new StreamWriter(@"D:\test.csv");
             foreach (var q in RSICC)
                 sr.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}"
@@ -305,5 +356,26 @@ namespace AlgoSecondLayer
             public string Note3 { get; set; }
         }
 
+        class Seq
+        {
+            public int RSI { get; set; }
+            public int Fast_K { get; set; }
+            public int Slow_K { get; set; }
+            public int Slow_D { get; set; }
+            public int Lookback { get; set; }
+            public int Upper { get; set; }
+            public int Lower { get; set; }
+
+            public Seq(string Sequence)
+            {
+                var s = Sequence.Split(',');
+                this.RSI = int.Parse(s[0]);
+                this.Fast_K = int.Parse(s[1]);
+                this.Slow_K = int.Parse(s[2]);
+                this.Slow_D = int.Parse(s[3]);
+
+            }
+        }
+               
     }
 }

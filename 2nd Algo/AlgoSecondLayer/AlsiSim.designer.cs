@@ -36,7 +36,16 @@ namespace AlgoSecondLayer
     partial void InserttblSequence(tblSequence instance);
     partial void UpdatetblSequence(tblSequence instance);
     partial void DeletetblSequence(tblSequence instance);
+    partial void InserttblResult_5Min_D(tblResult_5Min_D instance);
+    partial void UpdatetblResult_5Min_D(tblResult_5Min_D instance);
+    partial void DeletetblResult_5Min_D(tblResult_5Min_D instance);
     #endregion
+		
+		public AlsiSimDataContext() : 
+				base(global::AlgoSecondLayer.Properties.Settings.Default.ALSI_SIMConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
 		
 		public AlsiSimDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -75,6 +84,14 @@ namespace AlgoSecondLayer
 			get
 			{
 				return this.GetTable<tblSequence>();
+			}
+		}
+		
+		public System.Data.Linq.Table<tblResult_5Min_D> tblResult_5Min_Ds
+		{
+			get
+			{
+				return this.GetTable<tblResult_5Min_D>();
 			}
 		}
 	}
@@ -274,6 +291,140 @@ namespace AlgoSecondLayer
 					this._Completed = value;
 					this.SendPropertyChanged("Completed");
 					this.OnCompletedChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblResult_5Min_D")]
+	public partial class tblResult_5Min_D : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _Sequence;
+		
+		private System.Nullable<double> _Profit;
+		
+		private System.Nullable<int> _Trades;
+		
+		private string _Notes;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSequenceChanging(string value);
+    partial void OnSequenceChanged();
+    partial void OnProfitChanging(System.Nullable<double> value);
+    partial void OnProfitChanged();
+    partial void OnTradesChanging(System.Nullable<int> value);
+    partial void OnTradesChanged();
+    partial void OnNotesChanging(string value);
+    partial void OnNotesChanged();
+    #endregion
+		
+		public tblResult_5Min_D()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sequence", DbType="VarChar(50) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string Sequence
+		{
+			get
+			{
+				return this._Sequence;
+			}
+			set
+			{
+				if ((this._Sequence != value))
+				{
+					this.OnSequenceChanging(value);
+					this.SendPropertyChanging();
+					this._Sequence = value;
+					this.SendPropertyChanged("Sequence");
+					this.OnSequenceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Profit", DbType="Float")]
+		public System.Nullable<double> Profit
+		{
+			get
+			{
+				return this._Profit;
+			}
+			set
+			{
+				if ((this._Profit != value))
+				{
+					this.OnProfitChanging(value);
+					this.SendPropertyChanging();
+					this._Profit = value;
+					this.SendPropertyChanged("Profit");
+					this.OnProfitChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Trades", DbType="Int")]
+		public System.Nullable<int> Trades
+		{
+			get
+			{
+				return this._Trades;
+			}
+			set
+			{
+				if ((this._Trades != value))
+				{
+					this.OnTradesChanging(value);
+					this.SendPropertyChanging();
+					this._Trades = value;
+					this.SendPropertyChanged("Trades");
+					this.OnTradesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="VarChar(50)")]
+		public string Notes
+		{
+			get
+			{
+				return this._Notes;
+			}
+			set
+			{
+				if ((this._Notes != value))
+				{
+					this.OnNotesChanging(value);
+					this.SendPropertyChanging();
+					this._Notes = value;
+					this.SendPropertyChanged("Notes");
+					this.OnNotesChanged();
 				}
 			}
 		}

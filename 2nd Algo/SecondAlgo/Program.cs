@@ -14,18 +14,23 @@ namespace SecondAlgo
         // var con = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
         // var con = @"Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True";
 
+
         static void Main(string[] args)
         {
-            Console.WindowWidth = 100;
-            string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
-            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = @"Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True";
-            var a = new RSI_SS_StopLoss();
-            a.Start();
-         
 
-           // Console.ReadLine();
-           
+            Console.WindowWidth = 100;
+
+            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = @"Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True";
+
+           AlsiUtils.Data_Objects.GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.Data_Objects.GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), false);
+            var sim = new AlsiSim();
+            sim.Start();
         }
+
+
+
+
+
 
 
         #endregion
@@ -113,7 +118,7 @@ namespace SecondAlgo
         //                                            }
         //                                        }
 
-        
+
 
         //    Console.ReadLine();
         //}
@@ -139,5 +144,33 @@ namespace SecondAlgo
         //}
 
         #endregion
+    }
+
+    public class AlsiSim
+    {
+        private RSI_SS_StopLoss a;
+        private string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
+
+        public void Start()
+        {
+            while (true)
+            {
+                a = new RSI_SS_StopLoss();
+                // a.Done += a_Done;
+
+                a.Start(SIMcontext);
+                Environment.Exit(0);
+            }
+           
+        }
+
+        void a_Done(object sender, EventArgs e)
+        {
+            a.Done -= a_Done;
+            a = new RSI_SS_StopLoss();
+            a.Done += a_Done;
+            a.Start(SIMcontext);
+          
+        }
     }
 }
