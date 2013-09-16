@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="RSI_SS_StopLoss.cs" />
     <Compile Include="SinglePl.cs" />
+    <Compile Include="StochPOP.cs" />
     <Compile Include="TrailingStop.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>

@@ -13,27 +13,7 @@ namespace SecondAlgo
         // var con = @"Data Source=ALSI-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
         // var con = @"Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True";
         // var con = @"Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True";
-
-
-        static void Main(string[] args)
-        {
-
-            Console.WindowWidth = 100;
-
-            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = @"Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True";
-
-           AlsiUtils.Data_Objects.GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.Data_Objects.GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), false);
-            var sim = new AlsiSim();
-            sim.Start();
-        }
-
-
-
-
-
-
-
-        #endregion
+        #endregion              
 
         #region RSI_ADX Stop
         //static void Main(string[] args)
@@ -144,8 +124,40 @@ namespace SecondAlgo
         //}
 
         #endregion
+
+
+
+        static void Main(string[] args)
+        {
+
+            Console.WindowWidth = 100;
+            Console.WriteLine("Getting Prices...");
+            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = @"Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True";
+
+            AlsiUtils.Data_Objects.GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.Data_Objects.GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), false);
+            Console.WriteLine("Done.");
+            //var sim = new AlsiSim();
+            //sim.Start();
+
+            var sim = new AlsiPOP();
+            sim.Start();
+        }
+
+
+        
     }
 
+    public class AlsiPOP
+{
+
+    internal void Start()
+    {
+        Console.WriteLine("Starting Calculations..");
+        var s = new StochPOP();
+        s.Start();
+        Console.WriteLine("Done");
+    }
+}
     public class AlsiSim
     {
         private RSI_SS_StopLoss a;
@@ -164,13 +176,6 @@ namespace SecondAlgo
            
         }
 
-        void a_Done(object sender, EventArgs e)
-        {
-            a.Done -= a_Done;
-            a = new RSI_SS_StopLoss();
-            a.Done += a_Done;
-            a.Start(SIMcontext);
-          
-        }
+      
     }
 }

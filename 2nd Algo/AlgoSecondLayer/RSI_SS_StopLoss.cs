@@ -14,7 +14,7 @@ namespace AlgoSecondLayer
 {
     public class RSI_SS_StopLoss
     {
-        public event EventHandler Done;
+      
        
 
         private List<Price> Prices = new List<Price>();
