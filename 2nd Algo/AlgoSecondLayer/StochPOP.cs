@@ -36,9 +36,9 @@ namespace AlgoSecondLayer
 
             _Seq = new Seq(_sequence.Sequence);
             var rsi = _Seq.RSI;
-            var fastK = _Seq.Fast_K;
-            var slowK = _Seq.Slow_K;
-            var slowD = _Seq.Slow_D;
+            var fastK = 16;//_Seq.Fast_K;
+            var slowK = 17;// _Seq.Slow_K;
+            var slowD = 9;// _Seq.Slow_D;
 
             var Prices = GlobalObjects.Points;
             SSPOP = new List<SS_Price>();
@@ -87,8 +87,8 @@ namespace AlgoSecondLayer
             SetTriggers_TradeSignals();
 
 
-           // WriteResults();
-            WriteResultsToDatabase(dc,_sequence , TOTALPROFIT);
+            WriteResults();
+           // WriteResultsToDatabase(dc,_sequence , TOTALPROFIT);
             Console.WriteLine("{0}  {1} {2} {3} ", TOTALPROFIT , fastK, slowK, slowD);
             //END LOOP
             //}
