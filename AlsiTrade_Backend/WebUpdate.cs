@@ -110,19 +110,40 @@ namespace AlsiTrade_Backend
                 Message_Custom = "AlsiTrade"
 
             };
+            try
+            {
 
-            service.InsertMessage(b);
+                service.InsertMessage(b);
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public bool CheckForManualClose()
         {
-            return  service.GetManualTradeTrigger();                      
+            try
+            {
+                return service.GetManualTradeTrigger();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public static void SetManualTradeTrigger(bool bb)
         {
-            //tells the service to reset
-            service.TriggerManualTrade(bb);
+            //tells the service to reset  
+            try
+            {
+                service.TriggerManualTrade(bb);
+            }
+            catch (Exception ex)
+            {
+                
+            }
         }
 
         public static void SendOrder(Trade t, bool Matched)
