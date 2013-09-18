@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="General" Class="GeneralDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=85.214.244.19;Initial Catalog=General;Persist Security Info=True;User ID=Tradebot" SettingsObjectName="AutoDatabaseSync.Properties.Settings" SettingsPropertyName="GeneralConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.PublicHolidaysZAR" Member="PublicHolidaysZARs">
-    <Type Name="PublicHolidaysZAR">
-      <Column Name="Name" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Date" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-    </Type>
-  </Table>
-</Database>

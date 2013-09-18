@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<publishData>
-  <publishProfile publishUrl="C:\Users\Pieter\Dropbox\Alsi Trade App\ChatService" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="bin/AlsiChatService.pdb" publishTime="04/11/2013 22:17:33" />
-    <file relUrl="AlsiChatService.svc" publishTime="04/11/2013 22:06:34" />
-    <file relUrl="Web.config" publishTime="04/11/2013 22:19:32" />
-    <file relUrl="bin/AlsiChatService.dll" publishTime="04/11/2013 22:17:33" />
-  </publishProfile>
-</publishData>
