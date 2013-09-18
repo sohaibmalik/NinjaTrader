@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="RSI_ADX_SIM">
+  <DataContextMoniker Name="/RSI_ADX_SIMDataContext" />
+  <nestedChildShapes>
+    <classShape Id="34a0b376-f819-41d4-91b7-0e03255f9347" absoluteBounds="4, 1.125, 2, 6.7707340494791657">
+      <DataClassMoniker Name="/RSI_ADX_SIMDataContext/tblSetting" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f2caf86a-2da7-4c04-b3c8-d43bbfab8e96" absoluteBounds="4.015, 1.585, 1.9700000000000002, 6.2107340494791661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f8a0a74a-6970-49f6-b1a1-c61488a1aff1" absoluteBounds="1, 0.875, 2, 3.1170068359375">
+      <DataClassMoniker Name="/RSI_ADX_SIMDataContext/tbl5Minute" />
+      <nestedChildShapes>
+        <elementListCompartment Id="89794c7e-7b88-4a48-8695-1ad354b54a25" absoluteBounds="1.0150000000000001, 1.335, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

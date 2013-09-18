@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ALSI_SIM" Class="AlsiSimDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.tblResult_5Min" Member="tblResult_5Mins">
+    <Type Name="tblResult_5Min">
+      <Column Name="Sequence" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Profit" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Trades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tblSequence" Member="tblSequences">
+    <Type Name="tblSequence">
+      <Column Name="Sequence" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Started" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Completed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tblResult_5Min_D" Member="tblResult_5Min_Ds">
+    <Type Name="tblResult_5Min_D">
+      <Column Name="Sequence" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Profit" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Trades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tblResult_5Min_SSPOP" Member="tblResult_5Min_SSPOPs">
+    <Type Name="tblResult_5Min_SSPOP">
+      <Column Name="Sequence" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Profit" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Trades" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

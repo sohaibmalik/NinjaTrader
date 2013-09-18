@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D8E2B679-1244-470E-A240-AEB3B2C2DD19}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AlsiUtils</RootNamespace>
+    <AssemblyName>AlsiUtils</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MoreLinq">
+      <HintPath>..\External Libraries\MoreLinq\MoreLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TA-Lib-Core, Version=1.0.2813.38947, Culture=neutral, PublicKeyToken=fdb2a6b268f56aa5, processorArchitecture=MSIL">
+      <HintPath>..\External Libraries\TA-Lib-Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AlsiDB.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlsiDB.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="AlsiTM.cs">
+      <DependentUpon>AlsiTM.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="AlsiTM.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlsiTM.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="AlsiWeb.cs">
+      <DependentUpon>AlsiWeb.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="AlsiWeb.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AlsiWeb.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Data Objects\CompletedTrade.cs" />
+    <Compile Include="Data Objects\RegressionExt.cs" />
+    <Compile Include="Data Objects\GlobalObjects.cs" />
+    <Compile Include="General.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>General.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="ProfitAlgoLayer.cs" />
+    <Compile Include="Statistics.cs" />
+    <Compile Include="Strategies\MAMA_Scalp.cs" />
+    <Compile Include="Strategies\EMA_SAR.cs" />
+    <Compile Include="Strategies\EMA_Scalp.cs" />
+    <Compile Include="Strategies\IndicatorExtentions\StochAroon.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_MAMA.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_EMA_SAR.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_EMA_Scalp.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_Bollinger.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_General.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_SlowStoch.cs" />
+    <Compile Include="Strategies\Parameters\Parameter_SS_RSI.cs" />
+    <Compile Include="Strategies\TradeStrategy.cs" />
+    <Compile Include="TakeProfit.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="WebSettings.cs" />
+    <Compile Include="Working Class\Calc_Indicator.cs" />
+    <Compile Include="Data Objects\SummaryStats.cs" />
+    <Compile Include="Working Class\DataBase.cs" />
+    <Compile Include="Data Objects\LogData.cs" />
+    <Compile Include="Indicators\Factory_Indicator.cs" />
+    <Compile Include="Indicators\Indicator.cs" />
+    <Compile Include="Indicators\Price.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Data Objects\Trade.cs" />
+    <Compile Include="XmlPriceReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AlsiDB.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>AlsiDB.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="AlsiTM.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>AlsiTM.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="AlsiWeb.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>AlsiWeb.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="app.config" />
+    <None Include="General.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>General.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AlsiTM.dbml.layout">
+      <DependentUpon>AlsiTM.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AlsiWeb.dbml.layout">
+      <DependentUpon>AlsiWeb.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="General.dbml.layout">
+      <DependentUpon>General.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AlsiDB.dbml.layout">
+      <DependentUpon>AlsiDB.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

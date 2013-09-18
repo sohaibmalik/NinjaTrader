@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="AlsiWeb">
+  <DataContextMoniker Name="/AlsiWebDataContext" />
+  <nestedChildShapes>
+    <classShape Id="e412c874-eecb-472b-b6f9-b987fd5013e9" absoluteBounds="0.75, 0.75, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/AlsiWebDataContext/tblEmail" />
+      <nestedChildShapes>
+        <elementListCompartment Id="11a3390d-f6ad-4a48-82e8-a63152ca6929" absoluteBounds="0.765, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="95b5dc3f-f997-4e8b-ab56-db60493a879a" absoluteBounds="0.75, 3.75, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/AlsiWebDataContext/tblIndicatorSetting" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7d46d3dc-0e96-4bb1-b4aa-a8d2d80287bb" absoluteBounds="0.765, 4.21, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c0c06013-ca5e-4123-972d-1764e9768da5" absoluteBounds="6.75, 0.75, 2, 1.7708968098958329">
+      <DataClassMoniker Name="/AlsiWebDataContext/tblSetting" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4d1cf4f6-b4f8-44d2-9f7f-b1869c2435f6" absoluteBounds="6.765, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2dde7210-5670-4494-929c-886edd6d5cf4" absoluteBounds="3.625, 1.125, 2, 1.7708968098958331">
+      <DataClassMoniker Name="/AlsiWebDataContext/tblSM" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a7d19311-7e43-429a-b106-9e2a29b2bcde" absoluteBounds="3.64, 1.585, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a94d993c-c40e-4009-b26e-db8039129b36" absoluteBounds="4.125, 4, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/AlsiWebDataContext/WebTradeLog" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3c07ce7e-bc23-4b90-a753-30cf150271aa" absoluteBounds="4.14, 4.46, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

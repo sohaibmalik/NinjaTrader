@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="AlsiTrade" Class="AlsiDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PIETER-PC\;Initial Catalog=AlsiTrade;Integrated Security=True" SettingsObjectName="AlsiUtils.Properties.Settings" SettingsPropertyName="AlsiTradeConnectionString2" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.AllHistoricMinute" Member="AllHistoricMinutes">
+    <Type Name="AllHistoricMinute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="V" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TradeLog" Member="TradeLogs">
+    <Type Name="TradeLog">
+      <Column Name="N" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="BuySell" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="Reason" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Volume" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="VarChar(300)" CanBeNull="true" />
+      <Column Name="ForeColor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="BackColor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ImportMinute" Member="ImportMinutes">
+    <Type Name="ImportMinute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="V" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MasterMinute" Member="MasterMinutes">
+    <Type Name="MasterMinute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="V" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OHLC_10_Minute" Member="OHLC_10_Minutes">
+    <Type Name="OHLC_10_Minute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OHLC_3_Minute" Member="OHLC_3_Minutes">
+    <Type Name="OHLC_3_Minute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OHLC_5_Minute" Member="OHLC_5_Minutes">
+    <Type Name="OHLC_5_Minute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OHLC_Temp" Member="OHLC_Temps">
+    <Type Name="OHLC_Temp">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OHLC_Temp_2" Member="OHLC_Temp_2s">
+    <Type Name="OHLC_Temp_2">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Raw_Import" Member="Raw_Imports">
+    <Type Name="Raw_Import">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Raw_Import_Sorted" Member="Raw_Import_Sorteds">
+    <Type Name="Raw_Import_Sorted">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RawTick" Member="RawTicks">
+    <Type Name="RawTick">
+      <Column Name="N" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Price" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TickMinute" Member="TickMinutes">
+    <Type Name="TickMinute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TickTEMP" Member="TickTEMPs">
+    <Type Name="TickTEMP">
+      <Column Name="N" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Tick" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TradeHistory" Member="TradeHistories">
+    <Type Name="TradeHistory">
+      <Column Name="n" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TimeStamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="BuySell" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="Reason" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Volume" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Trade_Profit" Type="System.Double" DbType="Float" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OHLC_2_Minute" Member="OHLC_2_Minutes">
+    <Type Name="OHLC_2_Minute">
+      <Column Name="Stamp" Type="System.DateTime" DbType="DateTime NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="O" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="H" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="L" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="C" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="Instrument" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.Clean_OHLC_Temp" Method="Clean_OHLC_Temp">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.Clean_OHLC_Temp_2" Method="Clean_OHLC_Temp_2">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CleanLogs" Method="CleanLogs" IsComposable="true">
+    <Return Type="object" />
+  </Function>
+  <Function Name="dbo.CleanTick" Method="CleanTick">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.CleanUp" Method="CleanUp">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.ClearImportTable" Method="ClearImportTable">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.ImportRawTick" Method="ImportRawTick" IsComposable="true">
+    <Return Type="object" />
+  </Function>
+  <Function Name="dbo.MergeTemp" Method="MergeTemp">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_10" Method="OHLC_10">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_10_AllHistory" Method="OHLC_10_AllHistory">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_10_Temp" Method="OHLC_10_Temp">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_2" Method="OHLC_2">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_2_AllHistory" Method="OHLC_2_AllHistory">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_3" Method="OHLC_3">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_5" Method="OHLC_5">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_5_AllHistory" Method="OHLC_5_AllHistory">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.OHLC_5_Temp" Method="OHLC_5_Temp">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.RemoveDUPS_TickMinute" Method="RemoveDUPS_TickMinute">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.UpadteAllHistory" Method="UpadteAllHistory">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.UpadteImport" Method="UpadteImport">
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.UpdateTick" Method="UpdateTick">
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
