@@ -202,18 +202,18 @@ namespace AlsiUtils
 
                 if (T == GlobalObjects.TimeInterval.Minute_5)
                 {
-                    var min5 = dc.OHLC_5_Minutes;
-                    if (min5.Count() == 0)
-                    {
-                        dc.OHLC_5();
-                    }
-                    else
-                    {
-                        var firstinDB = min5.AsEnumerable().First().Stamp;
-                        var lastinDB = min5.AsEnumerable().Last().Stamp;
-                        if (firstinDB > Start) dc.OHLC_5();
-                        if (lastinDB < End) dc.OHLC_5();
-                    }
+                    //var min5 = dc.OHLC_5_Minutes;
+                    //if (min5.Count() == 0)
+                    //{
+                    //    dc.OHLC_5();
+                    //}
+                    //else
+                    //{
+                    //    var firstinDB = min5.AsEnumerable().First().Stamp;
+                    //    var lastinDB = min5.AsEnumerable().Last().Stamp;
+                    //    if (firstinDB > Start) dc.OHLC_5();
+                    //    if (lastinDB < End) dc.OHLC_5();
+                    //}
                 }
 
                 if (T == GlobalObjects.TimeInterval.Minute_10)

@@ -125,46 +125,7 @@ namespace AlgoSecondLayer
             dc.SubmitChanges();
         }
 
-        public void CountPermutations()
-        {
-            List<string> Seq = new List<string>();
-
-            for (int rsi = 4; rsi < 30; rsi++)
-                for (int fastK = 3; fastK < 30; fastK++)
-                    for (int slowK = 3; slowK < 30; slowK++)
-                        for (int slowD = 3; slowD < 30; slowD++)
-                        {
-                            StringBuilder s = new StringBuilder();
-                            s.Append(rsi + "," + fastK + "," + slowK + "," + slowD);
-                            if (fastK != slowK)
-                                Seq.Add(s.ToString());
-                        }
-
-            string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
-            var dc = new AlsiSimDataContext(SIMcontext);
-
-            DataTable MinData = new DataTable("tblSequence");
-            MinData.Columns.Add("Sequence", typeof(string));
-            MinData.Columns.Add("Started", typeof(bool));
-            MinData.Columns.Add("Completed", typeof(bool));
-            foreach (var t in Seq)
-            {
-
-                MinData.Rows.Add(t, false, false);
-                Debug.WriteLine("Adding {0}", t);
-            }
-
-            DataSet DataSet = new DataSet("Dataset");
-            DataSet.Tables.Add(MinData);
-            SqlConnection myConnection = new SqlConnection(SIMcontext);
-            myConnection.Open();
-            SqlBulkCopy bulkcopy = new SqlBulkCopy(myConnection);
-            bulkcopy.BulkCopyTimeout = 500000;
-            bulkcopy.DestinationTableName = "tblSequence";
-            bulkcopy.WriteToServer(MinData);
-            MinData.Dispose();
-            myConnection.Close();
-        }
+      
 
         private void SetTriggers_A(int lookback)
         {
