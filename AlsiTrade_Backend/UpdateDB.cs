@@ -23,7 +23,7 @@ namespace AlsiTrade_Backend
             AlsiDBDataContext dc = new AlsiDBDataContext();
           
             var dateL = dc.MasterMinutes.AsEnumerable().Where(z => z.Instrument == ContractName);
-            if (dateL.Count() == 0) throw new Exception("Contract name has no match in database.\n" + ContractName + " caanot be found");
+            if (dateL.Count() == 0) throw new Exception("Contract name has no match in database.\n" + ContractName + " cannot be found");
 
             DateTime Last = dateL.Last().Stamp;
             DateTime Now = DateTime.UtcNow.AddHours(2);

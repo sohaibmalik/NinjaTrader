@@ -129,19 +129,20 @@ namespace SecondAlgo
 
         static void Main(string[] args)
         {
-            string localdata = @"Data Source=ALSI-PC;Initial Catalog=AlsiTrade;Integrated Security=True";
-            string remotedata = @"Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True"; 
+           // string localdata = @"Data Source=ALSI-PC;Initial Catalog=AlsiTrade;Integrated Security=True";
+           // string remotedata = @"Data Source=85.214.244.19;Initial Catalog=AlsiTrade;Persist Security Info=True;User ID=Tradebot;Password=boeboe;MultipleActiveResultSets=True"; 
           
-            Console.WindowWidth = 100;
-            Console.WriteLine("Getting Prices...");
-            AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = localdata;
+           // Console.WindowWidth = 100;
+           // Console.WriteLine("Getting Prices...");
+           // AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = localdata;
 
-           AlsiUtils.Data_Objects.GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.Data_Objects.GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), false);
-            Console.WriteLine("Done.");
+           //AlsiUtils.Data_Objects.GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.Data_Objects.GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), false);
+           // Console.WriteLine("Done.");
           
 
-            var sim = new AlsiPOP();
-            sim.Start();
+           // var sim = new AlsiPOP();
+           // sim.Start();
+            Utils.CountPermutations();
            
         }
 

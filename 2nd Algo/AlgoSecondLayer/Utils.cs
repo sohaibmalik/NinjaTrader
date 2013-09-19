@@ -60,7 +60,7 @@ namespace AlgoSecondLayer
             List<string> Seq = new List<string>();
 
 
-            for (int fastK = 3; fastK < 30; fastK++)
+            for (int fastK = 10; fastK < 11; fastK++)
                 for (int slowK = 3; slowK < 30; slowK++)
                     for (int slowD = 3; slowD < 30; slowD++)
                         for (int u_75 = 65; u_75 < 85; u_75++)
