@@ -60,24 +60,24 @@ namespace AlgoSecondLayer
 
 
             #region Full
-            //var sr = new StreamWriter(@"d:\seq.txt");
+            //var sr = new StreamWriter(@"d:\seq2.txt");
 
-            //for (int fastK = 5; fastK < 30; fastK+=1)
-            //    for (int slowK = 5; slowK < 30; slowK+=1)
-            //        for (int slowD = 5; slowD < 30; slowD+=1)
-            //            for (int u_75 = 65; u_75 < 85; u_75+=5)
-            //                for (int l_25 = 15; l_25 < 45; l_25+=5)
-            //                    for (int lim_high = 70; lim_high < 90; lim_high+=5)
-            //                        for (int lim_low = 10; lim_low < 30; lim_low+=5)
-            //                            for (int stoploss = 50; stoploss < 200; stoploss += 25)
-            //                                for (int profit = 50; profit < 200; profit += 25)
+            //for (int fastK = 5; fastK < 30; fastK += 1)
+            //    for (int slowK = 5; slowK < 30; slowK += 1)
+            //        for (int slowD = 5; slowD < 30; slowD += 1)
+            //            for (int u_75 = 65; u_75 < 85; u_75 += 5)
+            //                for (int l_25 = 15; l_25 < 45; l_25 += 5)
+            //                    for (int lim_high = 70; lim_high < 90; lim_high += 5)
+            //                        for (int lim_low = 10; lim_low < 30; lim_low += 5)
+            //                            for (int stoploss = 499; stoploss < 500; stoploss += 50)
+            //                                for (int profit = 499; profit < 500; profit += 50)
             //                                {
             //                                    if (lim_high > u_75 && lim_low < l_25)
             //                                    {
-            //                                        StringBuilder s = new StringBuilder();
-            //                                        s.Append(fastK + "," + slowK + "," + slowD + "," + u_75 + "," + l_25 + "," + lim_high + "," + lim_low + "," + stoploss + "," + profit);
+            //                                        StringBuilder ss = new StringBuilder();
+            //                                        ss.Append(fastK + "," + slowK + "," + slowD + "," + u_75 + "," + l_25 + "," + lim_high + "," + lim_low + "," + stoploss + "," + profit);
             //                                        if (fastK != slowK)
-            //                                            sr.WriteLine(s);
+            //                                            sr.WriteLine(ss);
 
             //                                    }
             //                                }
@@ -102,7 +102,7 @@ namespace AlgoSecondLayer
 
             var lineCount = 0;
             Console.WriteLine("Start reading File");
-            using (var reader = File.OpenText(@"D:\seq.txt"))
+            using (var reader = File.OpenText(@"D:\seq2.txt"))
             {
                 while (reader.ReadLine() != null)
                 {
@@ -132,9 +132,9 @@ namespace AlgoSecondLayer
         public static void SendDatatoDatabase()
         {
             var max = 97200000;
-            var current = 32001000;
-            var interval = 200000;
-            var s = 32001000;
+            var current = 1;
+            var interval = 10000;
+            var s = 0;
             var e = s + interval;
 
             string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
@@ -154,7 +154,7 @@ namespace AlgoSecondLayer
 
                 var lineCount = 0;
                 Console.WriteLine("Start reading File");
-                using (var reader = File.OpenText(@"D:\seq.txt"))
+                using (var reader = File.OpenText(@"D:\seq2.txt"))
                 {
                     while (reader.ReadLine() != null)
                     {
