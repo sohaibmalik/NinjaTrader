@@ -57,27 +57,41 @@ namespace AlgoSecondLayer
 
         public static void CountPermutations()
         {
+
+
+            #region Full
+            //var sr = new StreamWriter(@"d:\seq.txt");
+
+            //for (int fastK = 5; fastK < 30; fastK+=1)
+            //    for (int slowK = 5; slowK < 30; slowK+=1)
+            //        for (int slowD = 5; slowD < 30; slowD+=1)
+            //            for (int u_75 = 65; u_75 < 85; u_75+=5)
+            //                for (int l_25 = 15; l_25 < 45; l_25+=5)
+            //                    for (int lim_high = 70; lim_high < 90; lim_high+=5)
+            //                        for (int lim_low = 10; lim_low < 30; lim_low+=5)
+            //                            for (int stoploss = 50; stoploss < 200; stoploss += 25)
+            //                                for (int profit = 50; profit < 200; profit += 25)
+            //                                {
+            //                                    if (lim_high > u_75 && lim_low < l_25)
+            //                                    {
+            //                                        StringBuilder s = new StringBuilder();
+            //                                        s.Append(fastK + "," + slowK + "," + slowD + "," + u_75 + "," + l_25 + "," + lim_high + "," + lim_low + "," + stoploss + "," + profit);
+            //                                        if (fastK != slowK)
+            //                                            sr.WriteLine(s);
+
+            //                                    }
+            //                                }
+            //sr.Close();
+            #endregion
+
+
+      
+
+        
+            
+
             List<string> Seq = new List<string>();
 
-
-            for (int fastK = 10; fastK < 11; fastK++)
-                for (int slowK = 3; slowK < 30; slowK++)
-                    for (int slowD = 3; slowD < 30; slowD++)
-                        for (int u_75 = 65; u_75 < 85; u_75++)
-                            for (int l_25 = 15; l_25 < 45; l_25++)
-                                for (int lim_high = 70; lim_high < 95; lim_high++)
-                                    for (int lim_low = 5; lim_low < 30; lim_low++)
-                                        for (int stoploss = 20; stoploss < 200; stoploss+=10)
-                                            for (int profit = 20; profit < 200; profit+=10)
-                                            {
-                                                if (lim_high > u_75 && lim_low < l_25)
-                                                {
-                                                    StringBuilder s = new StringBuilder();
-                                                    s.Append(fastK + "," + slowK + "," + slowD + "," + u_75 + "," + l_25 + "," + lim_high + "," + lim_low + "," + stoploss + "," + profit);
-                                                    if (fastK != slowK)
-                                                        Seq.Add(s.ToString());
-                                                }
-                                            }
 
             string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
             var dc = new AlsiSimDataContext(SIMcontext);
@@ -86,11 +100,28 @@ namespace AlgoSecondLayer
             MinData.Columns.Add("Sequence", typeof(string));
             MinData.Columns.Add("Started", typeof(bool));
             MinData.Columns.Add("Completed", typeof(bool));
-            foreach (var t in Seq)
+
+            var max = 97200000;
+
+            var s = 0;
+            var e = 100;
+
+            var lineCount = 0;
+            Console.WriteLine("Start reading File");
+            using (var reader = File.OpenText(@"D:\seq.txt"))
             {
-                MinData.Rows.Add(t, false, false);
-                Debug.WriteLine("Adding {0}", t);
+                while (reader.ReadLine() != null)
+                {
+                    lineCount++;
+                    if (lineCount <= e && lineCount > s)
+                        MinData.Rows.Add(reader.ReadLine(), false, false);
+                    else
+                        if(lineCount>e+1)
+                        break;
+                }
             }
+
+            Console.WriteLine("Sending data to databse");
 
             DataSet DataSet = new DataSet("Dataset");
             DataSet.Tables.Add(MinData);
@@ -102,6 +133,65 @@ namespace AlgoSecondLayer
             bulkcopy.WriteToServer(MinData);
             MinData.Dispose();
             myConnection.Close();
+        }
+
+        public static void SendDatatoDatabase()
+        {
+            var max = 97200000;
+            var current = 32001000;
+            var interval = 200000;
+            var s = 32001000;
+            var e = s + interval;
+
+            string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
+            var dc = new AlsiSimDataContext(SIMcontext);
+
+        Top:
+           
+
+            if (current < max)
+            {
+                DataTable MinData = new DataTable("tblSequence");
+                MinData.Columns.Add("Sequence", typeof(string));
+                MinData.Columns.Add("Started", typeof(bool));
+                MinData.Columns.Add("Completed", typeof(bool));
+
+
+
+                var lineCount = 0;
+                Console.WriteLine("Start reading File");
+                using (var reader = File.OpenText(@"D:\seq.txt"))
+                {
+                    while (reader.ReadLine() != null)
+                    {
+                        lineCount++;
+                        if (lineCount <= e && lineCount > s)
+                            MinData.Rows.Add(reader.ReadLine(), false, false);
+                        else
+                            if (lineCount > e + 1)
+                                break;
+                    }
+                }
+                current = e;
+                s = e;
+                e = e + interval;
+
+                Console.WriteLine("Sending data to databse lines " + e);
+                Debug.WriteLine("Sending data to databse lines " + e);
+
+                DataSet DataSet = new DataSet("Dataset");
+                DataSet.Tables.Add(MinData);
+                SqlConnection myConnection = new SqlConnection(SIMcontext);
+                myConnection.Open();
+                SqlBulkCopy bulkcopy = new SqlBulkCopy(myConnection);
+                bulkcopy.BulkCopyTimeout = 500000;
+                bulkcopy.DestinationTableName = "tblSequence";
+                bulkcopy.WriteToServer(MinData);
+                MinData.Dispose();
+                myConnection.Close();
+
+                goto Top;
+            }
         }
 
         public static void PrintTrades()

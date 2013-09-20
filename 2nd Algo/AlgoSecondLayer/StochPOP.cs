@@ -11,6 +11,8 @@ namespace AlgoSecondLayer
     public class StochPOP
     {
         private List<SS_Price> SSPOP;
+        private List<SS_Price> SSPOP_Raw_Trades_Only;
+        private List<Trade> TradeList;
         private Seq _Seq;
 
         public void Start(string simcontext)
@@ -31,6 +33,7 @@ namespace AlgoSecondLayer
 
             var Prices = GlobalObjects.Points;
             SSPOP = new List<SS_Price>();
+            SSPOP_Raw_Trades_Only = new List<SS_Price>();
 
             Dictionary<DateTime, SlowStoch> SS_DIC = new Dictionary<DateTime, SlowStoch>();
             Dictionary<DateTime, double> PROF_DIC = new Dictionary<DateTime, double>();
@@ -75,6 +78,7 @@ namespace AlgoSecondLayer
             SetTriggers_Limits();
             SetTriggers_TradeSignals();
             SetTriggers_StopLoss_TakeProfit();
+            GetTrades();
 
             WriteResults();
             // WriteResultsToDatabase(dc,_sequence , TOTALPROFIT);
@@ -84,7 +88,7 @@ namespace AlgoSecondLayer
         }
 
 
-
+        //Step 1
         private void SetTriggers_Crossed()
         {
             var Count = SSPOP.Count;
@@ -112,7 +116,7 @@ namespace AlgoSecondLayer
 
             }
         }
-
+        //Step 2
         private void SetTriggers_Limits()
         {
             var Count = SSPOP.Count;
@@ -155,7 +159,7 @@ namespace AlgoSecondLayer
 
             }
         }
-
+        //Step 3
         private void SetTriggers_TradeSignals()
         {
             var Count = SSPOP.Count;
@@ -324,8 +328,7 @@ namespace AlgoSecondLayer
                 continue;
             }
         }
-
-
+        //Step 4
         private void SetTriggers_StopLoss_TakeProfit()
         {
             var Count = SSPOP.Count;
@@ -387,16 +390,71 @@ namespace AlgoSecondLayer
                     }
             }
         }
+        //Step 5
+        private void GetTrades()
+        {
+            TradeList = new List<Trade>();
+             var Count = SSPOP.Count;
+             for (int x = 1; x < Count; x++)
+             {
+                 if (SSPOP[x].Position && !SSPOP[x - 1].Position)
+                 {
+                   
+                     var  Opentrade = SSPOP[x];
+                  
+                     for (int q = x + 1; q < Count; q++)
+                     {
+                         if (SSPOP[q].Position && SSPOP[q].Trigger != SS_Price.TradeTrigger.None)
+                         {
+                             var Closetrade = SSPOP[q];
+                             Trade t = new Trade()
+                             {
+                                 OpenTrade=Opentrade,
+                                 CloseTrade=Closetrade,
+                             };
+                             TradeList.Add(t);
+                             x = q;
+                             break;
+                         }
+                         
+                     }
+                 }
+                
+             }
+
+           
+        }
+
+
 
         private void WriteResults()
         {
-            var sr = new StreamWriter(@"D:\POPtest.csv");
+            var sr = new StreamWriter(@"D:\POPtestRAW.csv");
             sr.WriteLine("Date,ClosePrice,SS,Last Cross,Limit,Trailing,Trigger,Position,Direction,Traded Price,PL,TPL,Take Profit,Stop Loss");
             foreach (var q in SSPOP)
                 sr.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}"
                     , q.Stamp, q.ClosePrice, q.SS.K, q.LastCross, q.Limit, q.TrailingLevel, q.Trigger, q.Position
                     , q.Direction, q.TradedPrice, q.RunningProfit, q.TotalRunningProfit, q.TakeProfit, q.StopLoss
                     );
+            sr.Close();
+
+
+            sr = new StreamWriter(@"D:\POPtestTradesOnly.csv");
+            sr.WriteLine("Date,ClosePrice,SS,Last Cross,Limit,Trailing,Trigger,Position,Direction,Traded Price,PL,TPL,Take Profit,Stop Loss");
+            foreach (var q in TradeList)
+            {
+                var o = q.OpenTrade;
+                var c = q.CloseTrade;
+                sr.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}"
+                    , o.Stamp, o.ClosePrice, o.SS.K, o.LastCross, o.Limit, o.TrailingLevel, o.Trigger, o.Position
+                    , o.Direction, o.TradedPrice, o.RunningProfit, o.TotalRunningProfit, o.TakeProfit, o.StopLoss
+                    );
+
+                sr.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}"
+                  , c.Stamp, c.ClosePrice, c.SS.K, c.LastCross, c.Limit, c.TrailingLevel, c.Trigger, c.Position
+                  , c.Direction, c.TradedPrice, c.RunningProfit, c.TotalRunningProfit, c.TakeProfit, o.StopLoss
+                  );
+            }
             sr.Close();
         }
 
@@ -458,6 +516,12 @@ namespace AlgoSecondLayer
 
             }
         }
+
+        public class Trade
+        {
+            public SS_Price  OpenTrade { get; set; }
+            public SS_Price CloseTrade { get; set; }
+        }
         public class SS_Price
         {
             public double Volume { get; set; }
@@ -478,6 +542,12 @@ namespace AlgoSecondLayer
             public double TradedPrice { get; set; }
             public double StopLoss { get; set; }
             public double TakeProfit { get; set; }
+
+            public override string ToString()
+            {
+                var s = Stamp.ToString() + "  " + Trigger + " @ " + ClosePrice;
+                return s;
+            }
 
             public enum CrossType
             {
