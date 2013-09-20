@@ -2,6 +2,7 @@
 using AlsiUtils.Data_Objects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,22 +15,28 @@ namespace AlgoSecondLayer
         private List<SS_Price> SSPOP_Raw_Trades_Only;
         private List<Trade> TradeList;
         private Seq _Seq;
-
+        double Profit = 0;
+        int Trades = 0;
+        string _sequence = "";
         public void Start(string simcontext)
         {
-            //var dc = new AlsiSimDataContext(simcontext);
-            //var m = dc.tblSequences.Where(x => !x.Started).Count();
-            //var _skip = Utils.RandomNumber(0, m - 1);
+           // Console.WriteLine("Getting Sequence");
 
-            //var _sequence = dc.tblSequences.Where(x => !x.Started).Skip(_skip).First();
-            //var par = _sequence.Sequence.Split(',');
+
+             _sequence = Utils.GetRandomSequence();
+             if (_sequence == "None")
+             {
+                 Console.WriteLine("No elements found");
+                 return;
+             }
+            var par = _sequence.Split(',');
             ////Might cuase duplicates, but chances are slim
-            //_sequence.Started = true;
-            //dc.SubmitChanges();
+          //  _sequence.Started = true;
+           // dc.SubmitChanges();
 
-            _Seq = new Seq();
-            //  _Seq = new Seq(_sequence.Sequence);  
-
+           // _Seq = new Seq();
+              _Seq = new Seq(_sequence);
+             // Debug.WriteLine("Sequence selected " + _sequence);
 
             var Prices = GlobalObjects.Points;
             SSPOP = new List<SS_Price>();
@@ -79,10 +86,13 @@ namespace AlgoSecondLayer
             SetTriggers_TradeSignals();
             SetTriggers_StopLoss_TakeProfit();
             GetTrades();
+            CalcBasicStats();
 
-            WriteResults();
-            // WriteResultsToDatabase(dc,_sequence , TOTALPROFIT);
-            Console.WriteLine("{0}  {1} {2} {3} ", _Seq.TOTALPROFIT, _Seq.Fast_K, _Seq.Slow_K, _Seq.Slow_D);
+           // WriteResults();
+            if (Profit > 15000 || Profit < -15000) 
+                WriteResultsToDatabase(_sequence);
+            
+            
             //END LOOP
             //}
         }
@@ -277,7 +287,7 @@ namespace AlgoSecondLayer
                             SSPOP[x].RunningProfit = SSPOP[x].ClosePrice - SSPOP[x].TradedPrice;
                             _Seq.TOTALPROFIT += SSPOP[x].RunningProfit;
                             SSPOP[x].TotalRunningProfit = _Seq.TOTALPROFIT;
-                            SSPOP[x].TradedPrice = 0;
+                            SSPOP[x].TradedPrice = SSPOP[x].ClosePrice;
                             goto Done;
                         }
                         //Close Long  - Trailing
@@ -289,7 +299,7 @@ namespace AlgoSecondLayer
                             SSPOP[x].RunningProfit = SSPOP[x].ClosePrice - SSPOP[x].TradedPrice;
                             _Seq.TOTALPROFIT += SSPOP[x].RunningProfit;
                             SSPOP[x].TotalRunningProfit = _Seq.TOTALPROFIT;
-                            SSPOP[x].TradedPrice = 0;
+                            SSPOP[x].TradedPrice = SSPOP[x].ClosePrice;
                             goto Done;
                         }
 
@@ -306,7 +316,7 @@ namespace AlgoSecondLayer
                             SSPOP[x].RunningProfit = SSPOP[x].TradedPrice - SSPOP[x].ClosePrice;
                             _Seq.TOTALPROFIT += SSPOP[x].RunningProfit;
                             SSPOP[x].TotalRunningProfit = _Seq.TOTALPROFIT;
-                            SSPOP[x].TradedPrice = 0;
+                            SSPOP[x].TradedPrice = SSPOP[x].ClosePrice;
                             goto Done;
                         }
 
@@ -319,7 +329,7 @@ namespace AlgoSecondLayer
                         SSPOP[x].RunningProfit = SSPOP[x].TradedPrice - SSPOP[x].ClosePrice;
                         _Seq.TOTALPROFIT += SSPOP[x].RunningProfit;
                         SSPOP[x].TotalRunningProfit = _Seq.TOTALPROFIT;
-                        SSPOP[x].TradedPrice = 0;
+                        SSPOP[x].TradedPrice = SSPOP[x].ClosePrice;
                         goto Done;
                     }
                 }
@@ -341,11 +351,13 @@ namespace AlgoSecondLayer
                     {
                         SSPOP[x].Trigger = SS_Price.TradeTrigger.TakeProfit;
                         SSPOP[x].RunningProfit = SSPOP[x].ClosePrice - SSPOP[x].TradedPrice;
+                        SSPOP[x].TradedPrice = SSPOP[x].ClosePrice;
                     }
                     if (SSPOP[x].ClosePrice <= SSPOP[x].StopLoss)
                     {
                         SSPOP[x].Trigger = SS_Price.TradeTrigger.StopLoss;
                         SSPOP[x].RunningProfit = SSPOP[x].ClosePrice - SSPOP[x].TradedPrice;
+                        SSPOP[x].TradedPrice = SSPOP[x].ClosePrice;
                     }
                 }
 
@@ -356,11 +368,13 @@ namespace AlgoSecondLayer
                     {
                         SSPOP[x].Trigger = SS_Price.TradeTrigger.StopLoss;
                         SSPOP[x].RunningProfit = SSPOP[x].TradedPrice - SSPOP[x].ClosePrice;
+                        SSPOP[x].TradedPrice = SSPOP[x].ClosePrice;
                     }
                     if (SSPOP[x].ClosePrice <= SSPOP[x].TakeProfit)
                     {
                         SSPOP[x].Trigger = SS_Price.TradeTrigger.TakeProfit;
                         SSPOP[x].RunningProfit = SSPOP[x].TradedPrice - SSPOP[x].ClosePrice;
+                        SSPOP[x].TradedPrice = SSPOP[x].ClosePrice;
                     }
                 }
 
@@ -368,8 +382,9 @@ namespace AlgoSecondLayer
                 if (SSPOP[x].Stamp.Date != SSPOP[x - 1].Stamp.Date && _Seq.CLOSE_END_OF_DAY)
                 {
                     SSPOP[x - 1].Trigger = SS_Price.TradeTrigger.CloseEndOfDay;
-                    if (SSPOP[x-1].Direction == SS_Price.TradeDirection.Long) SSPOP[x-1].RunningProfit = SSPOP[x-1].ClosePrice - SSPOP[x-1].TradedPrice;
-                    if (SSPOP[x-1].Direction == SS_Price.TradeDirection.Short) SSPOP[x-1].RunningProfit = SSPOP[x-1].TradedPrice - SSPOP[x-1].ClosePrice;
+                    if (SSPOP[x - 1].Direction == SS_Price.TradeDirection.Long) SSPOP[x - 1].RunningProfit = SSPOP[x - 1].ClosePrice - SSPOP[x - 1].TradedPrice;
+                    if (SSPOP[x - 1].Direction == SS_Price.TradeDirection.Short) SSPOP[x - 1].RunningProfit = SSPOP[x - 1].TradedPrice - SSPOP[x - 1].ClosePrice;
+                    SSPOP[x - 1].TradedPrice = SSPOP[x - 1].ClosePrice;
                 }
             }
 
@@ -394,38 +409,48 @@ namespace AlgoSecondLayer
         private void GetTrades()
         {
             TradeList = new List<Trade>();
-             var Count = SSPOP.Count;
-             for (int x = 1; x < Count; x++)
-             {
-                 if (SSPOP[x].Position && !SSPOP[x - 1].Position)
-                 {
-                   
-                     var  Opentrade = SSPOP[x];
-                  
-                     for (int q = x + 1; q < Count; q++)
-                     {
-                         if (SSPOP[q].Position && SSPOP[q].Trigger != SS_Price.TradeTrigger.None)
-                         {
-                             var Closetrade = SSPOP[q];
-                             Trade t = new Trade()
-                             {
-                                 OpenTrade=Opentrade,
-                                 CloseTrade=Closetrade,
-                             };
-                             TradeList.Add(t);
-                             x = q;
-                             break;
-                         }
-                         
-                     }
-                 }
-                
-             }
+            var Count = SSPOP.Count;
+            for (int x = 1; x < Count; x++)
+            {
+                if (SSPOP[x].Position && !SSPOP[x - 1].Position && SSPOP[x].Trigger != SS_Price.TradeTrigger.CloseEndOfDay)
+                {
 
-           
+                    var Opentrade = SSPOP[x];
+
+                    for (int q = x + 1; q < Count; q++)
+                    {
+                        if (SSPOP[q].Position && SSPOP[q].Trigger != SS_Price.TradeTrigger.None
+                            || (!SSPOP[q].Position && SSPOP[q].Trigger == SS_Price.TradeTrigger.CloseLong || !SSPOP[q].Position && SSPOP[q].Trigger == SS_Price.TradeTrigger.CloseShort)
+                            || (!SSPOP[q].Position && SSPOP[q].Trigger == SS_Price.TradeTrigger.CloseEndOfDay)
+                            )
+                        {
+                            var Closetrade = SSPOP[q];
+                            Trade t = new Trade()
+                            {
+                                OpenTrade = Opentrade,
+                                CloseTrade = Closetrade,
+                            };
+                            TradeList.Add(t);
+                            x = q;
+                            break;
+                        }
+
+
+
+                    }
+                }
+
+            }
+
+
         }
-
-
+        //Step 6 
+        private void CalcBasicStats()
+        {
+            Profit = TradeList.Select(z => z.CloseTrade).Sum(x => x.RunningProfit);
+            Trades = TradeList.Select(z => z.CloseTrade).Count();
+            Console.WriteLine("Total Profit : {0}   Trades : {1} SEQ : {2}  "  , Profit, Trades,_sequence);
+        }
 
         private void WriteResults()
         {
@@ -458,16 +483,25 @@ namespace AlgoSecondLayer
             sr.Close();
         }
 
-        private void WriteResultsToDatabase(AlsiSimDataContext dc, tblSequence seq, double profit)
+        private void WriteResultsToDatabase(string seq)
         {
-            var r = new tblResult_5Min_SSPOP()
+            var r = new tblResults_5Min
             {
-                Profit = profit,
-                Sequence = seq.Sequence,
-                Trades = 0,
+                Profit = Profit,
+                Sequence = seq,
+                Trades = Trades,
+                
             };
-            dc.tblResult_5Min_SSPOPs.InsertOnSubmit(r);
-            dc.SubmitChanges();
+            var dc = new AlgoSecondLayer.SPPOPRESULTDataContext();           
+            dc.tblResults_5Mins.InsertOnSubmit(r);
+            try
+            {
+                dc.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(seq + " already exists");
+            }
         }
 
         class Seq
@@ -499,27 +533,34 @@ namespace AlgoSecondLayer
                 this.LIMIT_LOW = 15;
                 this.OPEN_Long_50 = 50;
                 this.OPEN_Short_50 = 50;
-                this.STOPLOSS = 50;
-                this.TAKEPROFIT = 50;
+                this.STOPLOSS = 5000;
+                this.TAKEPROFIT = 5000;
 
-                this.CLOSE_END_OF_DAY = true;
+                this.CLOSE_END_OF_DAY = false;
             }
 
 
             public Seq(string Sequence)
             {
+             
                 var s = Sequence.Split(',');
 
                 this.Fast_K = int.Parse(s[0]);
                 this.Slow_K = int.Parse(s[1]);
                 this.Slow_D = int.Parse(s[2]);
-
+                this.UPPER_75 = int.Parse(s[3]);
+                this.LOWER_25 = int.Parse(s[4]);
+                this.LIMIT_HIGH = int.Parse(s[5]);
+                this.LIMIT_LOW = int.Parse(s[6]);
+                this.STOPLOSS = int.Parse(s[7]);
+                this.TAKEPROFIT = int.Parse(s[8]);
+                this.CLOSE_END_OF_DAY = false;
             }
         }
 
         public class Trade
         {
-            public SS_Price  OpenTrade { get; set; }
+            public SS_Price OpenTrade { get; set; }
             public SS_Price CloseTrade { get; set; }
         }
         public class SS_Price

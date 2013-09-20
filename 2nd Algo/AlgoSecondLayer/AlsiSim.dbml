@@ -29,4 +29,11 @@
       <Column Name="Notes" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
     </Type>
   </Table>
+  <Function Name="dbo.GetRandomTable" Method="GetRandomTable">
+    <ElementType Name="GetRandomTableResult">
+      <Column Name="Sequence" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Started" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Completed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
 </Database>

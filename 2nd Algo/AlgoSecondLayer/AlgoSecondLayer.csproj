@@ -64,6 +64,11 @@
     </Compile>
     <Compile Include="RSI_SS_StopLoss.cs" />
     <Compile Include="SinglePl.cs" />
+    <Compile Include="SPPOPRESULT.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SPPOPRESULT.dbml</DependentUpon>
+    </Compile>
     <Compile Include="StochPOP.cs" />
     <Compile Include="TrailingStop.cs" />
     <Compile Include="Utils.cs" />
@@ -84,6 +89,11 @@
       <LastGenOutput>RSI_ADX_SIM.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
+    <None Include="SPPOPRESULT.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>SPPOPRESULT.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
@@ -96,6 +106,11 @@
   <ItemGroup>
     <None Include="AlsiSim.dbml.layout">
       <DependentUpon>AlsiSim.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SPPOPRESULT.dbml.layout">
+      <DependentUpon>SPPOPRESULT.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

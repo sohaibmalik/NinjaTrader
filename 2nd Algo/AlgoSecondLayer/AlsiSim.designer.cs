@@ -99,6 +99,13 @@ namespace AlgoSecondLayer
 				return this.GetTable<tblResult_5Min_SSPOP>();
 			}
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.GetRandomTable")]
+		public ISingleResult<GetRandomTableResult> GetRandomTable()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<GetRandomTableResult>)(result.ReturnValue));
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblResult_5Min")]
@@ -585,6 +592,68 @@ namespace AlgoSecondLayer
 			if ((this.PropertyChanged != null))
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	public partial class GetRandomTableResult
+	{
+		
+		private string _Sequence;
+		
+		private bool _Started;
+		
+		private bool _Completed;
+		
+		public GetRandomTableResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Sequence", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Sequence
+		{
+			get
+			{
+				return this._Sequence;
+			}
+			set
+			{
+				if ((this._Sequence != value))
+				{
+					this._Sequence = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Started", DbType="Bit NOT NULL")]
+		public bool Started
+		{
+			get
+			{
+				return this._Started;
+			}
+			set
+			{
+				if ((this._Started != value))
+				{
+					this._Started = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Completed", DbType="Bit NOT NULL")]
+		public bool Completed
+		{
+			get
+			{
+				return this._Completed;
+			}
+			set
+			{
+				if ((this._Completed != value))
+				{
+					this._Completed = value;
+				}
 			}
 		}
 	}

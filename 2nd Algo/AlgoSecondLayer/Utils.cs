@@ -83,13 +83,7 @@ namespace AlgoSecondLayer
             //                                }
             //sr.Close();
             #endregion
-
-
-      
-
-        
-            
-
+             
             List<string> Seq = new List<string>();
 
 
@@ -192,6 +186,23 @@ namespace AlgoSecondLayer
 
                 goto Top;
             }
+        }
+
+        public static string GetRandomSequence()
+        {
+            string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
+            var dc = new AlsiSimDataContext(SIMcontext);
+
+            var rt = dc.GetRandomTable();
+            string q = "None";
+            try
+            {
+                q = rt.Select(x => x.Sequence).First();
+            }
+            catch (Exception ex)
+            {
+            }
+                return q;
         }
 
         public static void PrintTrades()

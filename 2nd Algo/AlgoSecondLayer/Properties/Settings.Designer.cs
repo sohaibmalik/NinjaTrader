@@ -53,5 +53,38 @@ namespace AlgoSecondLayer.Properties {
                 return ((string)(this["ALSI_SIMConnectionString1"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;Persist Security Info=True;Use" +
+            "r ID=SimLogin")]
+        public string ALSI_SIMConnectionString2 {
+            get {
+                return ((string)(this["ALSI_SIMConnectionString2"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=85.214.244.19;Initial Catalog=STOCHPOP_RESULTS;Persist Security Info=" +
+            "True;User ID=SimLogin;Password=boeboe")]
+        public string STOCHPOP_RESULTSConnectionString {
+            get {
+                return ((string)(this["STOCHPOP_RESULTSConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;Persist Security Info=True;Use" +
+            "r ID=SimLogin;Password=boeboe")]
+        public string ALSI_SIMConnectionString3 {
+            get {
+                return ((string)(this["ALSI_SIMConnectionString3"]));
+            }
+        }
     }
 }
