@@ -55,83 +55,49 @@ namespace AlgoSecondLayer
             }
         }
 
-        public static void CountPermutations()
+        public static long WriteSequenceToFile()
         {
 
 
             #region Full
-            //var sr = new StreamWriter(@"d:\seq2.txt");
 
-            //for (int fastK = 5; fastK < 30; fastK += 1)
-            //    for (int slowK = 5; slowK < 30; slowK += 1)
-            //        for (int slowD = 5; slowD < 30; slowD += 1)
-            //            for (int u_75 = 65; u_75 < 85; u_75 += 5)
-            //                for (int l_25 = 15; l_25 < 45; l_25 += 5)
-            //                    for (int lim_high = 70; lim_high < 90; lim_high += 5)
-            //                        for (int lim_low = 10; lim_low < 30; lim_low += 5)
-            //                            for (int stoploss = 499; stoploss < 500; stoploss += 50)
-            //                                for (int profit = 499; profit < 500; profit += 50)
-            //                                {
-            //                                    if (lim_high > u_75 && lim_low < l_25)
-            //                                    {
-            //                                        StringBuilder ss = new StringBuilder();
-            //                                        ss.Append(fastK + "," + slowK + "," + slowD + "," + u_75 + "," + l_25 + "," + lim_high + "," + lim_low + "," + stoploss + "," + profit);
-            //                                        if (fastK != slowK)
-            //                                            sr.WriteLine(ss);
+            long linecount = 0;
 
-            //                                    }
-            //                                }
-            //sr.Close();
+            var sr = new StreamWriter(@"d:\seq.txt");
+
+            for (int fastK = 3; fastK < 30; fastK += 1)
+                for (int slowK = 12; slowK < 13; slowK += 1)
+                    for (int slowD = 11; slowD < 12; slowD += 1)
+                        for (int u_75 = 65; u_75 < 85; u_75 += 5)
+                            for (int l_25 = 15; l_25 < 45; l_25 += 5)
+                                for (int lim_high = 70; lim_high < 90; lim_high += 5)
+                                    for (int lim_low = 10; lim_low < 30; lim_low += 5)
+                                        for (int stoploss = 499; stoploss < 500; stoploss += 50)
+                                            for (int profit = 499; profit < 500; profit += 50)
+                                            {
+                                                if (lim_high > u_75 && lim_low < l_25)
+                                                {
+                                                    StringBuilder ss = new StringBuilder();
+                                                    ss.Append(fastK + "," + slowK + "," + slowD + "," + u_75 + "," + l_25 + "," + lim_high + "," + lim_low + "," + stoploss + "," + profit);
+                                                    if (fastK != slowK)
+                                                    {
+                                                        sr.WriteLine(ss);
+                                                        linecount++;
+                                                    }
+
+
+                                                }
+                                            }
+            sr.Close();
+            return linecount;
             #endregion
              
-            List<string> Seq = new List<string>();
-
-
-            string SIMcontext = @"Data Source=85.214.244.19;Initial Catalog=ALSI_SIM;User ID=SimLogin;Password=boeboe;MultipleActiveResultSets=True";
-            var dc = new AlsiSimDataContext(SIMcontext);
-
-            DataTable MinData = new DataTable("tblSequence");
-            MinData.Columns.Add("Sequence", typeof(string));
-            MinData.Columns.Add("Started", typeof(bool));
-            MinData.Columns.Add("Completed", typeof(bool));
-
-            var max = 97200000;
-
-            var s = 0;
-            var e = 100;
-
-            var lineCount = 0;
-            Console.WriteLine("Start reading File");
-            using (var reader = File.OpenText(@"D:\seq2.txt"))
-            {
-                while (reader.ReadLine() != null)
-                {
-                    lineCount++;
-                    if (lineCount <= e && lineCount > s)
-                        MinData.Rows.Add(reader.ReadLine(), false, false);
-                    else
-                        if(lineCount>e+1)
-                        break;
-                }
-            }
-
-            Console.WriteLine("Sending data to databse");
-
-            DataSet DataSet = new DataSet("Dataset");
-            DataSet.Tables.Add(MinData);
-            SqlConnection myConnection = new SqlConnection(SIMcontext);
-            myConnection.Open();
-            SqlBulkCopy bulkcopy = new SqlBulkCopy(myConnection);
-            bulkcopy.BulkCopyTimeout = 500000;
-            bulkcopy.DestinationTableName = "tblSequence";
-            bulkcopy.WriteToServer(MinData);
-            MinData.Dispose();
-            myConnection.Close();
+            
         }
 
-        public static void SendDatatoDatabase()
+        public static void SendDatatoDatabase(long lines)
         {
-            var max = 97200000;
+            var max = lines;
             var current = 1;
             var interval = 10000;
             var s = 0;
@@ -146,21 +112,20 @@ namespace AlgoSecondLayer
             if (current < max)
             {
                 DataTable MinData = new DataTable("tblSequence");
-                MinData.Columns.Add("Sequence", typeof(string));
-                MinData.Columns.Add("Started", typeof(bool));
+                MinData.Columns.Add("Sequence", typeof(string));              
                 MinData.Columns.Add("Completed", typeof(bool));
 
 
 
                 var lineCount = 0;
                 Console.WriteLine("Start reading File");
-                using (var reader = File.OpenText(@"D:\seq2.txt"))
+                using (var reader = File.OpenText(@"D:\seq.txt"))
                 {
                     while (reader.ReadLine() != null)
                     {
                         lineCount++;
                         if (lineCount <= e && lineCount > s)
-                            MinData.Rows.Add(reader.ReadLine(), false, false);
+                            MinData.Rows.Add(reader.ReadLine(), false);
                         else
                             if (lineCount > e + 1)
                                 break;
@@ -201,6 +166,7 @@ namespace AlgoSecondLayer
             }
             catch (Exception ex)
             {
+                
             }
                 return q;
         }

@@ -18,21 +18,26 @@ namespace AlgoSecondLayer
         double Profit = 0;
         int Trades = 0;
         string _sequence = "";
-        public void Start(string simcontext)
+        
+        public List<string> Start(string Sequence,string simcontext,bool single)
         {
            // Console.WriteLine("Getting Sequence");
 
+            if (!single)
+            {
+                _sequence = Utils.GetRandomSequence();
 
-             _sequence = Utils.GetRandomSequence();
-             if (_sequence == "None")
-             {
-                 Console.WriteLine("No elements found");
-                 return;
-             }
-            var par = _sequence.Split(',');
-            ////Might cuase duplicates, but chances are slim
-          //  _sequence.Started = true;
-           // dc.SubmitChanges();
+                if (_sequence == "None")
+                {
+                    Console.WriteLine("No elements found");
+                    return null;
+                }
+            }
+            else
+            {
+                _sequence = Sequence;
+            }
+            var par = _sequence.Split(',');       
 
            // _Seq = new Seq();
               _Seq = new Seq(_sequence);
@@ -89,9 +94,20 @@ namespace AlgoSecondLayer
             CalcBasicStats();
 
            // WriteResults();
-            if (Profit > 15000 || Profit < -15000) 
+            if (Profit > 15000 || Profit < -15000 && !single)
                 WriteResultsToDatabase(_sequence);
-            
+            else
+                if (single)
+                {
+                    WriteResults();
+                }
+            var output = new List<string>()
+            {
+                _sequence,
+                Profit.ToString(),
+                Trades.ToString(),
+            };
+            return output;
             
             //END LOOP
             //}
@@ -542,19 +558,25 @@ namespace AlgoSecondLayer
 
             public Seq(string Sequence)
             {
-             
-                var s = Sequence.Split(',');
+                try
+                {
+                    var s = Sequence.Split(',');
 
-                this.Fast_K = int.Parse(s[0]);
-                this.Slow_K = int.Parse(s[1]);
-                this.Slow_D = int.Parse(s[2]);
-                this.UPPER_75 = int.Parse(s[3]);
-                this.LOWER_25 = int.Parse(s[4]);
-                this.LIMIT_HIGH = int.Parse(s[5]);
-                this.LIMIT_LOW = int.Parse(s[6]);
-                this.STOPLOSS = int.Parse(s[7]);
-                this.TAKEPROFIT = int.Parse(s[8]);
-                this.CLOSE_END_OF_DAY = false;
+                    this.Fast_K = int.Parse(s[0]);
+                    this.Slow_K = int.Parse(s[1]);
+                    this.Slow_D = int.Parse(s[2]);
+                    this.UPPER_75 = int.Parse(s[3]);
+                    this.LOWER_25 = int.Parse(s[4]);
+                    this.LIMIT_HIGH = int.Parse(s[5]);
+                    this.LIMIT_LOW = int.Parse(s[6]);
+                    this.STOPLOSS = int.Parse(s[7]);
+                    this.TAKEPROFIT = int.Parse(s[8]);
+                    this.CLOSE_END_OF_DAY = false;
+                }
+                catch (Exception ex)
+                {
+                   
+                }
             }
         }
 
