@@ -29,19 +29,22 @@ namespace AlsiUtils
 
         }
 
-        public static bool TestSqlConnection(string CCS)
+        public static bool TestSqlConnection(string CCS, out string Error)
         {
             bool alive = true;
             try
             {
                 AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = CCS;
                 AlsiDBDataContext dc = new AlsiDBDataContext();
-                dc.Connection.ConnectionString = CCS;
-              
+                dc.Connection.ConnectionString = CCS;              
                 dc.Connection.Open();
+                Error = "";
             }
-            catch
-            { alive = false; }
+            catch(Exception ex)
+            {
+                alive = false;
+                Error = ex.Message;
+            }
             return alive;
         }
 

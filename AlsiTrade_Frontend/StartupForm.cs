@@ -46,9 +46,9 @@ namespace FrontEnd
 
 
            Properties.Settings.Default.ConnectionString = AlsiUtils.WebSettings.General.GetConnectionStringFromGeneral(GeneralCS);
-           
 
-            if (AlsiUtils.DataBase.TestSqlConnection(Properties.Settings.Default.ConnectionString))
+           string ConnectionError = "";
+            if (AlsiUtils.DataBase.TestSqlConnection(Properties.Settings.Default.ConnectionString,out ConnectionError))
             {
                 this.Shown += new EventHandler(StartupForm_Shown);
                 main.Shown += new EventHandler(main_Shown);
@@ -57,8 +57,12 @@ namespace FrontEnd
             }
             else
             {
-                this.Size = new Size(612, 181);
-                MessageBox.Show("Cannot find connection string for this macadress");
+                this.Size = new Size(612, 181);                
+                var ma = new StringBuilder();
+                foreach (var m in AlsiUtils.Utilities.GetMacAddress()) ma.AppendLine(m);
+
+                MessageBox.Show("Cannot find connection string for this macadress " + ma.ToString() + "\n\nConnectionString  Found : " + Properties.Settings.Default.ConnectionString
+                    +"\n\nERROR:"+ConnectionError );
             }
         }
 
