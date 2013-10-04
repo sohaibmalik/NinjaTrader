@@ -97,21 +97,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\2nd Algo Single PL\2nd Algo Single PL.csproj">
-      <Project>{99bc9613-c218-437c-9cca-77d833f74587}</Project>
-      <Name>2nd Algo Single PL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AlgoSecondLayer\AlgoSecondLayer.csproj">
       <Project>{b6d033b9-8bf0-480b-9a74-7f8ae7d7dd97}</Project>
       <Name>AlgoSecondLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SecondAlgo\SecondAlgoConsole.csproj">
-      <Project>{d51d9dc9-1f4d-4d87-9549-3334eff89254}</Project>
-      <Name>SecondAlgoConsole</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SequenceUploader\SequenceUploader.csproj">
-      <Project>{3c2197e5-b258-4bae-bcc1-abd3d28f9543}</Project>
-      <Name>SequenceUploader</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

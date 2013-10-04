@@ -266,7 +266,7 @@ namespace AlgoSecondLayer
 
         private void WriteResults()
         {
-            var sr = new StreamWriter(@"D:\test.csv");
+            var sr = new StreamWriter(@"e:\algotest.csv");
             foreach (var q in RSICC)
                 sr.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}"
                     , q.Stamp, q.ClosePrice, q.RSI, q.SS, q.Trigger_High,

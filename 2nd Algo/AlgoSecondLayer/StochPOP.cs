@@ -99,7 +99,7 @@ namespace AlgoSecondLayer
             else
                 if (single)
                 {
-                    WriteResults();
+                  //  WriteResults();
                 }
             var output = new List<string>()
             {
@@ -470,7 +470,7 @@ namespace AlgoSecondLayer
 
         private void WriteResults()
         {
-            var sr = new StreamWriter(@"D:\POPtestRAW.csv");
+            var sr = new StreamWriter(@"e:\POPtestRAW.csv");
             sr.WriteLine("Date,ClosePrice,SS,Last Cross,Limit,Trailing,Trigger,Position,Direction,Traded Price,PL,TPL,Take Profit,Stop Loss");
             foreach (var q in SSPOP)
                 sr.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}"
@@ -480,7 +480,7 @@ namespace AlgoSecondLayer
             sr.Close();
 
 
-            sr = new StreamWriter(@"D:\POPtestTradesOnly.csv");
+            sr = new StreamWriter(@"e:\POPtestTradesOnly.csv");
             sr.WriteLine("Date,ClosePrice,SS,Last Cross,Limit,Trailing,Trigger,Position,Direction,Traded Price,PL,TPL,Take Profit,Stop Loss");
             foreach (var q in TradeList)
             {
@@ -571,7 +571,7 @@ namespace AlgoSecondLayer
                     this.LIMIT_LOW = int.Parse(s[6]);
                     this.STOPLOSS = int.Parse(s[7]);
                     this.TAKEPROFIT = int.Parse(s[8]);
-                    this.CLOSE_END_OF_DAY = false;
+                    this.CLOSE_END_OF_DAY = true;
                 }
                 catch (Exception ex)
                 {
