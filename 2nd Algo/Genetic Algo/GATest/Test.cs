@@ -103,7 +103,7 @@ public class Test
         //  Population size = 100
         //  Generations		= 2000
         //  Genome size		= 2
-        GA ga = new GA(0.8, 0.05, 10000, 10, 9,MaxMin.Minimize );
+        GA ga = new GA(0.8, 0.05, 100, 5, 9,MaxMin.Minimize );
 
         ga.FitnessFunction = new GAFunction(theActualFunction);
 

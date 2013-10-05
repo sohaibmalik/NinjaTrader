@@ -18,10 +18,12 @@ namespace AlgoSecondLayer
         double Profit = 0;
         int Trades = 0;
         string _sequence = "";
-        
-        public List<string> Start(string Sequence,string simcontext,bool single)
+        public DateTime StartDate;
+        public DateTime EndDate;
+
+        public List<string> Start(string Sequence, string simcontext, bool single)
         {
-           // Console.WriteLine("Getting Sequence");
+            // Console.WriteLine("Getting Sequence");
 
             if (!single)
             {
@@ -37,13 +39,19 @@ namespace AlgoSecondLayer
             {
                 _sequence = Sequence;
             }
-            var par = _sequence.Split(',');       
+            var par = _sequence.Split(',');
 
-           // _Seq = new Seq();
-              _Seq = new Seq(_sequence);
-             // Debug.WriteLine("Sequence selected " + _sequence);
+            // _Seq = new Seq();
+            _Seq = new Seq(_sequence);
+            // Debug.WriteLine("Sequence selected " + _sequence);
 
-            var Prices = GlobalObjects.Points;
+
+            List<Price> Prices;
+            if (StartDate.Year == 1) Prices = GlobalObjects.Points;
+            else
+                Prices = GlobalObjects.Points.Where(z => z.TimeStamp >= StartDate && z.TimeStamp <= EndDate).ToList();
+
+
             SSPOP = new List<SS_Price>();
             SSPOP_Raw_Trades_Only = new List<SS_Price>();
 
@@ -93,13 +101,13 @@ namespace AlgoSecondLayer
             GetTrades();
             CalcBasicStats();
 
-           // WriteResults();
+            WriteResults();
             if (Profit > 15000 || Profit < -15000 && !single)
                 WriteResultsToDatabase(_sequence);
             else
                 if (single)
                 {
-                  //  WriteResults();
+                    //  WriteResults();
                 }
             var output = new List<string>()
             {
@@ -108,7 +116,7 @@ namespace AlgoSecondLayer
                 Trades.ToString(),
             };
             return output;
-            
+
             //END LOOP
             //}
         }
@@ -465,7 +473,7 @@ namespace AlgoSecondLayer
         {
             Profit = TradeList.Select(z => z.CloseTrade).Sum(x => x.RunningProfit);
             Trades = TradeList.Select(z => z.CloseTrade).Count();
-            Console.WriteLine("Total Profit : {0}   Trades : {1} SEQ : {2}  "  , Profit, Trades,_sequence);
+            Console.WriteLine("Total Profit : {0}   Trades : {1} SEQ : {2}  ", Profit, Trades, _sequence);
         }
 
         private void WriteResults()
@@ -506,9 +514,9 @@ namespace AlgoSecondLayer
                 Profit = Profit,
                 Sequence = seq,
                 Trades = Trades,
-                
+
             };
-            var dc = new AlgoSecondLayer.SPPOPRESULTDataContext();           
+            var dc = new AlgoSecondLayer.SPPOPRESULTDataContext();
             dc.tblResults_5Mins.InsertOnSubmit(r);
             try
             {
@@ -575,7 +583,7 @@ namespace AlgoSecondLayer
                 }
                 catch (Exception ex)
                 {
-                   
+
                 }
             }
         }

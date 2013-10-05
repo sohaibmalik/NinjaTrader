@@ -17,7 +17,7 @@
     <DelaySign>false</DelaySign>
     <OutputType>Exe</OutputType>
     <RootNamespace>GATest</RootNamespace>
-    <StartupObject>Test</StartupObject>
+    <StartupObject>GATest.TestConsole</StartupObject>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -94,6 +94,7 @@
     <Compile Include="Test.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestConsole.cs" />
     <Content Include="App.ico" />
   </ItemGroup>
   <ItemGroup>
