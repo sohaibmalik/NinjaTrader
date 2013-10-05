@@ -11,7 +11,8 @@ namespace GATest
     public class EvolvingTradingSystemTest
     {
         private List<TradePeriod> _Periods = new List<TradePeriod>();
-       
+        private DateTime _CurrentStart;
+        private DateTime _CurrentEnd;
 
         public void Start()
         {
@@ -45,7 +46,7 @@ namespace GATest
                          {
                              Y = q.TimeStamp.Year,
                              M = q.TimeStamp.Month,
-                             W = Math.Floor((decimal)q.TimeStamp.DayOfYear / 7) + 1,
+                             W = Math.Floor((decimal)q.TimeStamp.DayOfYear / 30) + 1,
                              //D=(DateTime)q.TimeStamp
                          }
                              into FGroup
@@ -84,6 +85,8 @@ namespace GATest
 
         private void RunEvolve()
         {
+            _CurrentStart = _Periods[0].Start;
+            _CurrentEnd = _Periods[0].End;
             var firstSeq = RunAlgo().GetSequence();
             _Periods[0].Seq = firstSeq;
             for (int x = 1; x < _Periods.Count; x++)
@@ -95,6 +98,8 @@ namespace GATest
                 var s = new AlgoSecondLayer.StochPOP();
                 s.StartDate = _Periods[x].Start;
                 s.EndDate = _Periods[x].End;
+                _CurrentStart = _Periods[x].Start;
+                _CurrentEnd = _Periods[x].End;
                 var o = s.Start(_Periods[x].Seq_prev, null, true);
               
                _Periods[x].Profit= double.Parse(o[1]);
@@ -107,7 +112,7 @@ namespace GATest
 
         private void WriteTradesToFile()
         {
-            var sr = new StreamWriter(@"d:\Evolving.csv");
+            var sr = new StreamWriter(@"e:\Evolving.csv");
         
             sr.WriteLine("StartDate,EndDate,Profit,Trades,Seq");
             foreach (var v in _Periods)
@@ -153,7 +158,8 @@ namespace GATest
                  "," + ((int)g).ToString() + "," + ((int)h).ToString() + "," + ((int)i).ToString();
 
             var s = new AlgoSecondLayer.StochPOP();
-
+            s.StartDate = _CurrentStart;
+            s.EndDate = _CurrentEnd; ;
             var o = s.Start(seq, null, true);
 
 
@@ -165,8 +171,9 @@ namespace GATest
             double profit = double.Parse(o[1]);
             double trades = double.Parse(o[2]);
             double avg = profit / (trades + 1);
-
-            return profit;
+            if (trades == 0) return 1;
+            else
+            return profit ;
 
         }
 
@@ -178,7 +185,7 @@ namespace GATest
             //  Population size = 100
             //  Generations		= 2000
             //  Genome size		= 2
-            GA ga = new GA(0.8, 0.05, 1000, 10, 9, MaxMin.Minimize);
+            GA ga = new GA(0.8, 0.05, 100, 5, 9, MaxMin.Minimize);
 
             ga.FitnessFunction = new GAFunction(theActualFunction);
 

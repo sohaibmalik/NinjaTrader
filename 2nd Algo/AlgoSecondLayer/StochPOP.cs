@@ -46,11 +46,8 @@ namespace AlgoSecondLayer
             // Debug.WriteLine("Sequence selected " + _sequence);
 
 
-            List<Price> Prices;
-            if (StartDate.Year == 1) Prices = GlobalObjects.Points;
-            else
-                Prices = GlobalObjects.Points.Where(z => z.TimeStamp >= StartDate && z.TimeStamp <= EndDate).ToList();
-
+            List<Price> Prices= GlobalObjects.Points;
+           
 
             SSPOP = new List<SS_Price>();
             SSPOP_Raw_Trades_Only = new List<SS_Price>();
@@ -101,9 +98,9 @@ namespace AlgoSecondLayer
             GetTrades();
             CalcBasicStats();
 
-            WriteResults();
-            if (Profit > 15000 || Profit < -15000 && !single)
-                WriteResultsToDatabase(_sequence);
+         //   WriteResults();
+            if (Profit > 15000 || Profit < -15000 && !single) ;
+            //   WriteResultsToDatabase(_sequence);
             else
                 if (single)
                 {

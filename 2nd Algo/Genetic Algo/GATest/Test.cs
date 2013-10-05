@@ -79,7 +79,7 @@ public class Test
         double trades = double.Parse(o[2]);
         double avg = profit / (trades+1);
 
-        return profit;
+        return avg;
        
     }
 

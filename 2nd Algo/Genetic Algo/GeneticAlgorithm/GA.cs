@@ -25,7 +25,7 @@ using System.IO;
 namespace BTL.generic
 {
     public enum MaxMin
-    {//
+    {
         Maximize = 0,
         Minimize = 1,
     }
