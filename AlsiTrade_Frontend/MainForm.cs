@@ -43,6 +43,11 @@ namespace FrontEnd
 
         DateTime masterStart, masterEnd, allhistoStart, allhistoEnd;
 
+        //GENETIC PLUG IN
+        private GeneticFrontEnd genetic = new GeneticFrontEnd();
+        private GeneticBackend gb;
+        private GeneticAlgoForm gf = new GeneticAlgoForm(); 
+
 
 
         public MainForm()
@@ -58,7 +63,7 @@ namespace FrontEnd
             onStartupLoad(this, start);
 
             CheckForIllegalCrossThreadCalls = false;
-             Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
+           //  Debug.WriteLine("Time Synched " + DoStuff.SynchronizeTime());
             _Interval = GlobalObjects.TimeInterval.Minute_5;
 
             start.Progress = 10;
@@ -123,15 +128,38 @@ namespace FrontEnd
             comboBox2.Items.Add(Trade.BuySell.None);
             comboBox2.Items.Add(Trade.BuySell.Buy);
             comboBox2.Items.Add(Trade.BuySell.Sell);
+
+           //Genetic plugin
+            gb = GeneticBackend.GetSingletonGB();
+            gb.Mf = this;
+            gb.onUpdate += gb_onUpdate;
+            gf.Show();
         }
 
+        void gb_onUpdate(object sender, GeneticBackend.GeneticUpdateEventsArgs e)
+        {
+            Debug.WriteLine(e.Msg);
+
+            var currentOrderTRADE = e.oTrade;
+            var currentOrder = e.FinalTrigger;
+            Debug.WriteLine("Open Trade {0}   Direction {1}  Traded Price {2}  Running Prof {3}", currentOrder.Trade.OpenPosition, currentOrder.Trade.TradeDirection, currentOrder.Trade.TradedPrice[0],
+              currentOrder.Trade.RunningProfit);
+            Debug.WriteLine("Open Trigger {0}  Close Trigger {1}", currentOrder.Trade.TradeTrigger_Open, currentOrder.Trade.TradeTrigger_Close);
+
+            marketOrder.SendOrderToMarket(e.oTrade);
+            if (e.oTrade.BuyorSell != Trade.BuySell.None) 
+            gf.WriteText(e.FinalTrigger.Trade.ToString() + " vol: " + e.oTrade.TradeVolume);
+            
+        }
+
+       
+                       
         void U5_OnConnectionExpired(object sender, UpdateTimer.ConnectionExpiredEventArgs e)
         {
             feed = new AlsiTrade_Backend.HiSat.LiveFeed(WebSettings.General.HISAT_INST);
             Debug.WriteLine("RE-CONNECTING TO HI SAT");
         }
         
-
         void marketOrder_onOrderMatch(object sender, MarketOrder.OrderMatchEvent e)
         {
             EmailMsg msg = new EmailMsg();
@@ -211,7 +239,7 @@ namespace FrontEnd
                 Debug.WriteLine("##############################################################");
                 foreach (var ct in Final.Where(z => z.TimeStamp > DateTime.Now.AddDays(-5)))
                 {
-                    Debug.WriteLine(ct.InstrumentName + "  " + ct.TimeStamp + "  reason " + ct.Reason + " " + ct.TradedPrice + "  " + ct.IndicatorNotes + "  " + ct.CurrentDirection + " Vol " + ct.TradeVolume);
+                   // Debug.WriteLine(ct.InstrumentName + "  " + ct.TimeStamp + "  reason " + ct.Reason + " " + ct.TradedPrice + "  " + ct.IndicatorNotes + "  " + ct.CurrentDirection + " Vol " + ct.TradeVolume);
                 }
 
                 var algotime = DoStuff.GetAlgoTime();
@@ -239,7 +267,10 @@ namespace FrontEnd
                 currentOrder.TradeVolume = Final.Last().TradeVolume * WebSettings.General.VOL;
                 currentOrder.InstrumentName = WebSettings.General.OTS_INST;
                 Debug.WriteLine("Sending " + currentOrder);
-                marketOrder.SendOrderToMarket(currentOrder);
+                //original model entry
+                //marketOrder.SendOrderToMarket(currentOrder);
+                //algo order entry
+
                 UpdateTradeLog(SetTradeLogColor(currentOrder), true);
             }
             else
@@ -257,6 +288,9 @@ namespace FrontEnd
                     p.GetPricesFromWeb();
                 }
             }
+
+            var ps = new NotifyOnPriceSynch();
+            OnGeneticNotified(this, ps);
 
         }
 
@@ -1354,12 +1388,7 @@ namespace FrontEnd
                 Cursor = Cursors.Default;
             }
         }
-
-      
-
-       
-
-
+                    
         void U5_OnManualCloseTrigger(object sender, UpdateTimer.ManualCloseTriggerEventArgs e)
         {
             Debug.WriteLine(e.Msg);
@@ -1394,6 +1423,14 @@ namespace FrontEnd
         }
 
        
+
+       //GENETIC ALGO PLUGIN
+        public event NotifyGenetic OnGeneticNotified;
+        public delegate void NotifyGenetic(object sender, NotifyOnPriceSynch e);
+        public class NotifyOnPriceSynch : EventArgs
+        {
+            
+        }
 
      
 

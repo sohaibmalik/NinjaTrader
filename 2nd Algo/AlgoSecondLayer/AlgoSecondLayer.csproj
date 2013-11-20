@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AlsiUtils">
-      <HintPath>..\..\AlsiUtils\bin\Debug\AlsiUtils.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Linq" />
@@ -111,6 +108,12 @@
     <None Include="SPPOPRESULT.dbml.layout">
       <DependentUpon>SPPOPRESULT.dbml</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AlsiUtils\AlsiUtils.csproj">
+      <Project>{d8e2b679-1244-470e-a240-aeb3b2c2dd19}</Project>
+      <Name>AlsiUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

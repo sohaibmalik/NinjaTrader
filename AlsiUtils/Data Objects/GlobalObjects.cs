@@ -18,6 +18,7 @@ namespace AlsiUtils.Data_Objects
             Minute_2 = 2,
             Minute_5 = 5,
             Minute_10 = 10,
+            Hour_1=60,
 
         }
 

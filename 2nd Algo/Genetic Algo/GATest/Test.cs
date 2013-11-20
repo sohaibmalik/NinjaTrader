@@ -79,7 +79,7 @@ public class Test
         double trades = double.Parse(o[2]);
         double avg = profit / (trades+1);
 
-        return avg;
+        return profit;
        
     }
 
@@ -93,7 +93,7 @@ public class Test
         Console.WriteLine("Getting Prices...");
         AlsiUtils.Data_Objects.GlobalObjects.CustomConnectionString = remotedata;
 
-        AlsiUtils.Data_Objects.GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.Data_Objects.GlobalObjects.TimeInterval.Minute_5, AlsiUtils.DataBase.dataTable.MasterMinute, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), false);
+        AlsiUtils.Data_Objects.GlobalObjects.Points = AlsiUtils.DataBase.readDataFromDataBase(AlsiUtils.Data_Objects.GlobalObjects.TimeInterval.Hour_1, AlsiUtils.DataBase.dataTable.MasterMinute, new DateTime(2012, 01, 01), new DateTime(2014, 01, 01), false);
         Console.WriteLine("Done.");
 
 
@@ -103,7 +103,7 @@ public class Test
         //  Population size = 100
         //  Generations		= 2000
         //  Genome size		= 2
-        GA ga = new GA(0.8, 0.05, 100, 5, 9,MaxMin.Minimize );
+        GA ga = new GA(0.8, 0.05, 100, 50, 9,MaxMin.Minimize );
 
         ga.FitnessFunction = new GAFunction(theActualFunction);
 

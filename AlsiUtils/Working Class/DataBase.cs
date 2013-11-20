@@ -234,6 +234,11 @@ namespace AlsiUtils
                         if (lastinDB < End) dc.OHLC_10();
                     }
                 }
+
+                if (T == GlobalObjects.TimeInterval.Hour_1)
+                {
+                   dc.OHLC_Hour_1();
+                }
             }
 
 
@@ -299,7 +304,25 @@ namespace AlsiUtils
                 }
             }
 
+            if (T == GlobalObjects.TimeInterval.Hour_1)
+            {
+                var result = from q in dc.OHLC_1_Hours 
+                             where q.Stamp > Start && q.Stamp < End
+                             select new { q.Stamp, q.O, q.H, q.L, q.C, q.Instrument };
 
+                foreach (var v in result)
+                {
+                    Price p = new Price();
+                    p.Close = v.C;
+                    p.Open = v.O;
+                    p.High = v.H;
+                    p.Low = v.L;
+                    p.TimeStamp = v.Stamp;
+                    p.InstrumentName = v.Instrument;
+                    prices.Add(p);
+
+                }
+            }
 
 
 

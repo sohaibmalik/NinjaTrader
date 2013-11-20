@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FrontEnd</RootNamespace>
     <AssemblyName>AlsiTrade</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -45,6 +45,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -54,6 +55,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>4AF31DBF02B8137C7DAB1C393BBB10217EF4630E</ManifestCertificateThumbprint>
@@ -71,8 +73,24 @@
     <ApplicationIcon>stocks.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GeneticAlgorithmTest">
+      <HintPath>..\..\EvolvingTradingModel\Genetic Algo\GeneticAlgorithm\bin\Debug\GeneticAlgorithmTest.dll</HintPath>
+    </Reference>
+    <Reference Include="Indicators">
+      <HintPath>..\..\EvolvingTradingModel\Genetic Algo\GeneticAlgorithm\bin\Debug\Indicators.dll</HintPath>
+    </Reference>
+    <Reference Include="ObjectListView">
+      <HintPath>..\External Libraries\ObjectListView.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="RuleModelCalc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\EvolvingTradingModel\RuleModelCalc\bin\Debug\RuleModelCalc.dll</HintPath>
+    </Reference>
+    <Reference Include="Stats">
+      <HintPath>..\..\EvolvingTradingModel\Genetic Algo\GeneticAlgorithm\bin\Debug\Stats.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -101,6 +119,19 @@
     <Compile Include="Chart.Designer.cs">
       <DependentUpon>Chart.cs</DependentUpon>
     </Compile>
+    <Compile Include="GeneticAlgo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeneticAlgo.Designer.cs">
+      <DependentUpon>GeneticAlgo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneticBackend.cs" />
+    <Compile Include="GeneticFrontEnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeneticFrontEnd.Designer.cs">
+      <DependentUpon>GeneticFrontEnd.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +154,12 @@
     </Compile>
     <EmbeddedResource Include="Chart.resx">
       <DependentUpon>Chart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneticAlgo.resx">
+      <DependentUpon>GeneticAlgo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneticFrontEnd.resx">
+      <DependentUpon>GeneticFrontEnd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -175,10 +212,6 @@
     <ProjectReference Include="..\ExcelLink\ExcelLink\ExcelLink.csproj">
       <Project>{102678C8-C660-4FC3-89BE-B46D2F82C614}</Project>
       <Name>ExcelLink</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\External Libraries\ObjectListViewDemo\ObjectListView\ObjectListView2010.csproj">
-      <Project>{18FEDA0C-D147-4286-B39A-01204808106A}</Project>
-      <Name>ObjectListView2010</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -75,7 +75,7 @@ namespace AlsiTrade_Backend
                 {
                     AlsiTrade_Backend.HiSat.LivePrice.LastUpdate = DateTime.UtcNow.AddHours(2).AddSeconds(-30);
                     ConnectionExpiredEventArgs E = new ConnectionExpiredEventArgs();
-                    OnConnectionExpired(this, E);
+                 //   OnConnectionExpired(this, E);
                 }
             }
         }

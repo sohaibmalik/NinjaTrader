@@ -98,7 +98,7 @@ namespace AlgoSecondLayer
             GetTrades();
             CalcBasicStats();
 
-         //   WriteResults();
+            WriteResults();
             if (Profit > 15000 || Profit < -15000 && !single) ;
             //   WriteResultsToDatabase(_sequence);
             else
@@ -475,7 +475,7 @@ namespace AlgoSecondLayer
 
         private void WriteResults()
         {
-            var sr = new StreamWriter(@"e:\POPtestRAW.csv");
+            var sr = new StreamWriter(@"d:\POPtestRAW.csv");
             sr.WriteLine("Date,ClosePrice,SS,Last Cross,Limit,Trailing,Trigger,Position,Direction,Traded Price,PL,TPL,Take Profit,Stop Loss");
             foreach (var q in SSPOP)
                 sr.WriteLine("{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}"
@@ -485,7 +485,7 @@ namespace AlgoSecondLayer
             sr.Close();
 
 
-            sr = new StreamWriter(@"e:\POPtestTradesOnly.csv");
+            sr = new StreamWriter(@"d:\POPtestTradesOnly.csv");
             sr.WriteLine("Date,ClosePrice,SS,Last Cross,Limit,Trailing,Trigger,Position,Direction,Traded Price,PL,TPL,Take Profit,Stop Loss");
             foreach (var q in TradeList)
             {

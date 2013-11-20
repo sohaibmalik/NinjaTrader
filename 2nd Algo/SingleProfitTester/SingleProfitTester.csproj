@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AlsiUtils">
-      <HintPath>..\..\AlsiUtils\bin\Debug\AlsiUtils.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -97,6 +94,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AlsiUtils\AlsiUtils.csproj">
+      <Project>{d8e2b679-1244-470e-a240-aeb3b2c2dd19}</Project>
+      <Name>AlsiUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AlgoSecondLayer\AlgoSecondLayer.csproj">
       <Project>{b6d033b9-8bf0-480b-9a74-7f8ae7d7dd97}</Project>
       <Name>AlgoSecondLayer</Name>

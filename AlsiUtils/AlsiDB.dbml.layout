@@ -98,5 +98,11 @@
         <elementListCompartment Id="dc198eed-0fa1-4e92-866b-728f14cc9e14" absoluteBounds="6.89, 3.835, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="5404b8fc-6ac9-4d14-9bb2-1aefc3932851" absoluteBounds="3.5, 3.875, 2, 1.9631982421875">
+      <DataClassMoniker Name="/AlsiDBDataContext/OHLC_1_Hour" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ca7ab935-c168-473d-af17-5796eeb8d1ef" absoluteBounds="3.515, 4.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

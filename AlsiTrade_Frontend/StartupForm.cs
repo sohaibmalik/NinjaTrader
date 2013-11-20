@@ -15,7 +15,7 @@ namespace FrontEnd
     public partial class StartupForm : Form
     {
         private MainForm main = new MainForm();
-
+      
 
         public StartupForm()
         {
@@ -79,6 +79,7 @@ namespace FrontEnd
         void StartupForm_Shown(object sender, EventArgs e)
         {
             main.Show();
+          
         }
 
         void main_Shown(object sender, EventArgs e)

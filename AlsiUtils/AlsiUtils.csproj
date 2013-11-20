@@ -50,6 +50,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlsiDB.cs">
+      <DependentUpon>AlsiDB.dbml</DependentUpon>
+    </Compile>
     <Compile Include="AlsiDB.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
