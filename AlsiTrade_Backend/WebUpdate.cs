@@ -198,8 +198,8 @@ namespace AlsiTrade_Backend
                     PriceMatched = 0,
                     Matched = false,
                 };
-                dc.WebTradeLogs.InsertOnSubmit(wtl);
-                dc.SubmitChanges();
+               // dc.WebTradeLogs.InsertOnSubmit(wtl);
+                //dc.SubmitChanges();
             }
             else
             {

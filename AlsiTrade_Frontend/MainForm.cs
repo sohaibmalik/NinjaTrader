@@ -44,7 +44,7 @@ namespace FrontEnd
         DateTime masterStart, masterEnd, allhistoStart, allhistoEnd;
 
         //GENETIC PLUG IN
-        private GeneticFrontEnd genetic = new GeneticFrontEnd();
+       
         private GeneticBackend gb;
         private GeneticAlgoForm gf = new GeneticAlgoForm(); 
 
@@ -146,7 +146,7 @@ namespace FrontEnd
               currentOrder.Trade.RunningProfit);
             Debug.WriteLine("Open Trigger {0}  Close Trigger {1}", currentOrder.Trade.TradeTrigger_Open, currentOrder.Trade.TradeTrigger_Close);
 
-            marketOrder.SendOrderToMarket(e.oTrade);
+            marketOrder.SendOrderToMarketGenetic(e.oTrade);
             if (e.oTrade.BuyorSell != Trade.BuySell.None) 
             gf.WriteText(e.FinalTrigger.Trade.ToString() + " vol: " + e.oTrade.TradeVolume);
             

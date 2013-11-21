@@ -44,7 +44,7 @@ namespace AlsiTrade_Backend
                         onOrderSend(this, oe);
                         e.StartCheckWhenOrderCompletedTimer(10000);
                     }
-                
+
                 }
                 catch (Exception ex)
                 {
@@ -56,45 +56,72 @@ namespace AlsiTrade_Backend
             }
         }
 
-        public void SendOrderToMarketMANUALCLOSE(Trade trade)
+        public void SendOrderToMarketGenetic(Trade trade)
         {
-            double price = trade.BuyorSell == Trade.BuySell.Buy ? HiSat.LivePrice.Offer : HiSat.LivePrice.Bid;           
-          
+            if (trade.BuyorSell != Trade.BuySell.None)
+            {
+                double price = WebSettings.TradeApproach.AdjustPriceToStrategy(trade, HiSat.LivePrice.Bid, HiSat.LivePrice.Offer);
+                trade.TradedPrice =  price;
                 ExcelLink.xlTradeOrder o = new xlTradeOrder()
                 {
                     BS = trade.BuyorSell,
                     Price = price,
                     Volume = trade.TradeVolume,
-                    Contract = WebSettings.General.OTS_INST,
+                    Contract = trade.InstrumentName,
 
                 };
 
-                try
-                {
-                        e.Connect();
-                        e.WriteOrder(o);
-                        e.Disconnect();
-                        OrderSendEvent oe = new OrderSendEvent();
-                        oe.Success = true;
-                        oe.Trade = trade;
-                        onOrderSend(this, oe);
-                        e.StartCheckWhenOrderCompletedTimer(10000);                    
-                }
-                catch (Exception ex)
-                {
-                    OrderSendEvent oe = new OrderSendEvent();
-                    oe.Success = false;
-                    oe.Trade = trade;
-                    onOrderSend(this, oe);
-                }
+               
+                e.Connect();
+                e.WriteOrder(o);
+                e.Disconnect();
+                OrderSendEvent oe = new OrderSendEvent();
+                oe.Success = true;
+                oe.Trade = trade;
+                onOrderSend(this, oe);
+                e.StartCheckWhenOrderCompletedTimer(10000);
             }
-        
+        }
+
+        public void SendOrderToMarketMANUALCLOSE(Trade trade)
+        {
+            double price = trade.BuyorSell == Trade.BuySell.Buy ? HiSat.LivePrice.Offer : HiSat.LivePrice.Bid;
+
+            ExcelLink.xlTradeOrder o = new xlTradeOrder()
+            {
+                BS = trade.BuyorSell,
+                Price = price,
+                Volume = trade.TradeVolume,
+                Contract = WebSettings.General.OTS_INST,
+
+            };
+
+            try
+            {
+                e.Connect();
+                e.WriteOrder(o);
+                e.Disconnect();
+                OrderSendEvent oe = new OrderSendEvent();
+                oe.Success = true;
+                oe.Trade = trade;
+                onOrderSend(this, oe);
+                e.StartCheckWhenOrderCompletedTimer(10000);
+            }
+            catch (Exception ex)
+            {
+                OrderSendEvent oe = new OrderSendEvent();
+                oe.Success = false;
+                oe.Trade = trade;
+                onOrderSend(this, oe);
+            }
+        }
+
 
         void e_onMatch(object sender, OrderMatchEventArgs e)
         {
             var et = e.LastOrder;
 
-            
+
             Trade t = new Trade()
             {
                 TimeStamp = e.Matched ? e.LastOrder.TimeStamp : DateTime.UtcNow.AddHours(2),

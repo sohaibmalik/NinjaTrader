@@ -29,7 +29,7 @@
     <MinimumRequiredVersion>1.1.0.0</MinimumRequiredVersion>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>17</ApplicationRevision>
+    <ApplicationRevision>19</ApplicationRevision>
     <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -126,12 +126,6 @@
       <DependentUpon>GeneticAlgo.cs</DependentUpon>
     </Compile>
     <Compile Include="GeneticBackend.cs" />
-    <Compile Include="GeneticFrontEnd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GeneticFrontEnd.Designer.cs">
-      <DependentUpon>GeneticFrontEnd.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,9 +151,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GeneticAlgo.resx">
       <DependentUpon>GeneticAlgo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GeneticFrontEnd.resx">
-      <DependentUpon>GeneticFrontEnd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
