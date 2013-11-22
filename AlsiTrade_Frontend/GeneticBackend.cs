@@ -171,7 +171,7 @@ namespace FrontEnd
             int x = 1;
             Trade.BuySell bs = Trade.BuySell.None;
 
-            if (t.TradeTrigger_Open == objTrade.TriggerOpen.ReverseLong)
+            if (t.TradeTrigger_Open == objTrade.TriggerOpen.OpenLong && t.Exit_Reason == objTrade.ExitReason.ReverseSignal)
             {
                 x = 2;
                 bs = Trade.BuySell.Buy;
@@ -179,7 +179,7 @@ namespace FrontEnd
                 return bs;
             }
 
-            if (t.TradeTrigger_Open == objTrade.TriggerOpen.ReverseShort)
+            if (t.TradeTrigger_Open == objTrade.TriggerOpen.OpenLong && t.Exit_Reason == objTrade.ExitReason.ReverseSignal)
             {
                 x = 2;
                 bs = Trade.BuySell.Sell;
