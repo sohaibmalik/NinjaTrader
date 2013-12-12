@@ -56,6 +56,7 @@ namespace AlsiTrade_Backend
 
         void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+           
             _Now = DateTime.UtcNow.AddHours(2);
 
             if (_Now > _marketOpen && _Now < _marketClose)
