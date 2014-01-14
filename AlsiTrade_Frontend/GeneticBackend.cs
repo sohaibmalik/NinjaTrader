@@ -16,7 +16,7 @@ namespace FrontEnd
         #region ALSI
         private static GeneticBackend GB;
         private MainForm _mf;
-        private RuleModelCalc.objCalcData _objCalcData;
+        private RuleModelCalc.CalcDataObject _objCalcData;
         private FitnessFunction _FitnessFunction;
         public MainForm Mf
         {
@@ -39,7 +39,7 @@ namespace FrontEnd
 
         public GeneticBackend()
         {
-            _objCalcData = new objCalcData();
+            _objCalcData = new CalcDataObject();
             _FitnessFunction = new FitnessFunction(_objCalcData);
         }
 
@@ -58,33 +58,33 @@ namespace FrontEnd
         public void SetGenes()
         {
 
-            //Hardcode template
+            ////Hardcode template
 
-            _objCalcData.TEMPLATES_Long_Entry.Add(new EMA_Price_Cross());
-            _objCalcData.TEMPLATES_Long_Entry.Add(new EMA_Price_Cross());
-            _objCalcData.TEMPLATES_Long_Entry.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Long_Entry.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Long_Entry.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Long_Entry.Add(new EMA_Price_Cross());
 
-            _objCalcData.TEMPLATES_Long_Exit.Add(new EMA_Price_Cross());
-            _objCalcData.TEMPLATES_Long_Exit.Add(new EMA_Price_Cross());
-            _objCalcData.TEMPLATES_Long_Exit.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Long_Exit.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Long_Exit.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Long_Exit.Add(new EMA_Price_Cross());
 
-            _objCalcData.TEMPLATES_Short_Entry.Add(new EMA_Price_Cross());
-            _objCalcData.TEMPLATES_Short_Entry.Add(new EMA_Price_Cross());
-            _objCalcData.TEMPLATES_Short_Entry.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Short_Entry.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Short_Entry.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Short_Entry.Add(new EMA_Price_Cross());
 
-            _objCalcData.TEMPLATES_Short_Exit.Add(new EMA_Price_Cross());
-            _objCalcData.TEMPLATES_Short_Exit.Add(new EMA_Price_Cross());
-            _objCalcData.TEMPLATES_Short_Exit.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Short_Exit.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Short_Exit.Add(new EMA_Price_Cross());
+            //_objCalcData.TEMPLATES_Short_Exit.Add(new EMA_Price_Cross());
 
 
-            StandardExitStrategy.Long_Stoploss_Points = 275;
-            StandardExitStrategy.Long_TakeProfit_Points = 706;
-            StandardExitStrategy.Long_TimeExit_Bars = 132;
-            StandardExitStrategy.Short_Stoploss_Points = 384;
-            StandardExitStrategy.Short_TakeProfit_Points = 682;
-            StandardExitStrategy.Short_TimeExit_Bars = 226;
+            //StandardExitStrategy.Long_Stoploss_Points = 275;
+            //StandardExitStrategy.Long_TakeProfit_Points = 706;
+            //StandardExitStrategy.Long_TimeExit_Bars = 132;
+            //StandardExitStrategy.Short_Stoploss_Points = 384;
+            //StandardExitStrategy.Short_TakeProfit_Points = 682;
+            //StandardExitStrategy.Short_TimeExit_Bars = 226;
 
-            AlgoSettings.General.RunSingleResult = true;
+            //AlgoSettings.General.RunSingleResult = true;
 
 
 
@@ -151,7 +151,7 @@ namespace FrontEnd
             onUpdate(this, E);
         }
 
-        private AlsiUtils.Trade BuildTrade(RuleModelCalc.objCalcData.FinalTrigger t)
+        private AlsiUtils.Trade BuildTrade(RuleModelCalc.CalcDataObject.FinalTrigger t)
         {
             ////Test
             //t.Trade.TradeTrigger_Open = objTrade.TriggerOpen.ReverseLong;
@@ -166,12 +166,12 @@ namespace FrontEnd
             return T;
         }
 
-        private AlsiUtils.Trade.BuySell GetBS(objTrade t, out int Vol)
+        private AlsiUtils.Trade.BuySell GetBS(TradeObject t, out int Vol)
         {
             int x = 1;
             Trade.BuySell bs = Trade.BuySell.None;
 
-            if (t.TradeTrigger_Open == objTrade.TriggerOpen.OpenLong && t.Exit_Reason == objTrade.ExitReason.ReverseSignal)
+            if (t.TradeTrigger_Open == TradeObject.TriggerOpen.OpenLong && t.Exit_Reason == TradeObject.ExitReason.ReverseSignal)
             {
                 x = 2;
                 bs = Trade.BuySell.Buy;
@@ -179,7 +179,7 @@ namespace FrontEnd
                 return bs;
             }
 
-            if (t.TradeTrigger_Open == objTrade.TriggerOpen.OpenLong && t.Exit_Reason == objTrade.ExitReason.ReverseSignal)
+            if (t.TradeTrigger_Open == TradeObject.TriggerOpen.OpenLong && t.Exit_Reason == TradeObject.ExitReason.ReverseSignal)
             {
                 x = 2;
                 bs = Trade.BuySell.Sell;
@@ -187,12 +187,12 @@ namespace FrontEnd
                 return bs;
             }
 
-            
-            if (t.TradeTrigger_Open == objTrade.TriggerOpen.OpenLong) bs = Trade.BuySell.Buy;
-            if (t.TradeTrigger_Open == objTrade.TriggerOpen.OpenShort) bs = Trade.BuySell.Sell;
 
-            if (t.TradeTrigger_Close == objTrade.TriggerClose.CloseLong) bs = Trade.BuySell.Sell;
-            if (t.TradeTrigger_Close == objTrade.TriggerClose.CloseShort) bs = Trade.BuySell.Buy;
+            if (t.TradeTrigger_Open == TradeObject.TriggerOpen.OpenLong) bs = Trade.BuySell.Buy;
+            if (t.TradeTrigger_Open == TradeObject.TriggerOpen.OpenShort) bs = Trade.BuySell.Sell;
+
+            if (t.TradeTrigger_Close == TradeObject.TriggerClose.CloseLong) bs = Trade.BuySell.Sell;
+            if (t.TradeTrigger_Close == TradeObject.TriggerClose.CloseShort) bs = Trade.BuySell.Buy;
 
           
 
@@ -208,7 +208,7 @@ namespace FrontEnd
         {
             public string Msg { get; set; }
             public AlsiUtils.Trade oTrade { get; set; }
-            public RuleModelCalc.objCalcData.FinalTrigger FinalTrigger { get; set; }
+            public RuleModelCalc.CalcDataObject.FinalTrigger FinalTrigger { get; set; }
         }
 
 

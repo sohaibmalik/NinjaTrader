@@ -107,6 +107,7 @@
             this.runHistCalcButton = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cnbutton = new System.Windows.Forms.Button();
             this.UpdateAllHistoPrices = new System.Windows.Forms.Button();
             this.dbPriceCountLabel = new System.Windows.Forms.Label();
             this.TableAllHistMinRadioButton = new System.Windows.Forms.RadioButton();
@@ -162,7 +163,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.runningMinuteTooltripLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.cnbutton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -956,6 +956,7 @@
             this.fullHistoUpdateButton.TabIndex = 11;
             this.fullHistoUpdateButton.Text = "Full Update";
             this.fullHistoUpdateButton.UseVisualStyleBackColor = true;
+            this.fullHistoUpdateButton.Visible = false;
             this.fullHistoUpdateButton.Click += new System.EventHandler(this.fullHistoUpdateButton_Click);
             // 
             // startDateTimePicker
@@ -1050,6 +1051,16 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "groupBox2";
+            // 
+            // cnbutton
+            // 
+            this.cnbutton.Location = new System.Drawing.Point(254, 84);
+            this.cnbutton.Name = "cnbutton";
+            this.cnbutton.Size = new System.Drawing.Size(75, 23);
+            this.cnbutton.TabIndex = 6;
+            this.cnbutton.Text = "CS";
+            this.cnbutton.UseVisualStyleBackColor = true;
+            this.cnbutton.Click += new System.EventHandler(this.cnbutton_Click);
             // 
             // UpdateAllHistoPrices
             // 
@@ -1371,10 +1382,10 @@
             // tabPage6
             // 
             this.tabPage6.Controls.Add(this.groupBox3);
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Location = new System.Drawing.Point(4, 24);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(353, 516);
+            this.tabPage6.Size = new System.Drawing.Size(353, 514);
             this.tabPage6.TabIndex = 4;
             this.tabPage6.Text = "tabPage6";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -1600,16 +1611,6 @@
             this.menuStrip1.Size = new System.Drawing.Size(1142, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // cnbutton
-            // 
-            this.cnbutton.Location = new System.Drawing.Point(254, 84);
-            this.cnbutton.Name = "cnbutton";
-            this.cnbutton.Size = new System.Drawing.Size(75, 23);
-            this.cnbutton.TabIndex = 6;
-            this.cnbutton.Text = "CS";
-            this.cnbutton.UseVisualStyleBackColor = true;
-            this.cnbutton.Click += new System.EventHandler(this.cnbutton_Click);
             // 
             // MainForm
             // 

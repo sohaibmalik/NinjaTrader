@@ -1055,7 +1055,7 @@ namespace FrontEnd
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-           UpdateDB.FullHistoricUpdate_MasterMinute(WebSettings.General.HISAT_INST);
+           
             Environment.Exit(0);
         }
 

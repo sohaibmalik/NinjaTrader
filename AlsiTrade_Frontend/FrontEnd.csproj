@@ -29,7 +29,7 @@
     <MinimumRequiredVersion>1.1.0.0</MinimumRequiredVersion>
     <WebPage>publish.htm</WebPage>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>22</ApplicationRevision>
+    <ApplicationRevision>31</ApplicationRevision>
     <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -67,10 +67,13 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>stocks.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GeneticAlgorithmTest">
@@ -86,10 +89,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="RuleModelCalc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\EvolvingTradingModel\RuleModelCalc\bin\Debug\RuleModelCalc.dll</HintPath>
-    </Reference>
-    <Reference Include="Stats">
-      <HintPath>..\..\EvolvingTradingModel\Genetic Algo\GeneticAlgorithm\bin\Debug\Stats.dll</HintPath>
+      <HintPath>..\..\EvolvingTradingModel\DataManager\bin\Debug\RuleModelCalc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
